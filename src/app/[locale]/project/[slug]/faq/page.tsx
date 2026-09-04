@@ -30,17 +30,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { title, desc } = faqMeta(locale, { name, comm, dev });
   const path  = `/project/${slug}/faq`;
 
-  // Only index when the project has real DB FAQs. Otherwise the page is the
-  // generic fallback Q&A (boilerplate shared across projects) — keep it
-  // crawlable (follow) but out of the index, like the [searchSlug] matrix.
-  const hasContent = ((project.faqs as Array<{ question?: string }> | null) || []).some(f => f?.question?.trim());
-
   return {
     title,
     description: desc,
-    alternates: hasContent
-      ? { canonical: makeCanonical(locale, path), languages: altLangs(path) }
-      : { canonical: makeCanonical(locale, `/project/${slug}`) },
+    // Always noindex: measured against the parent /project/{slug} this page is a
+    // ~95% word-for-word duplicate (the parent already renders the full FAQ
+    // section), so it only competes with its own parent. `follow` keeps the
+    // internal links crawlable, and the canonical stays SELF-referencing — a
+    // noindex page that canonicals elsewhere sends contradictory signals.
+    robots: { index: false, follow: true },
+    alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph:   {
       locale: OG_LOCALE[locale] ?? "en_AE", title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },
@@ -93,10 +92,11 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
 
   return (
     <>
-      {/* Only emit FAQPage schema when the page is self-canonical (real DB FAQs).
-          When there are no DB FAQs the metadata canonicals to the parent project,
-          so emitting rich-result schema on a declared-non-canonical page would be
-          contradictory — the boilerplate Q&A still renders for users. */}
+      {/* Only emit FAQPage schema when the project has real DB FAQs — the
+          fallback Q&A is boilerplate shared across every project, so it is not
+          rich-result material. The page is noindex either way; the schema is
+          kept for the DB-FAQ case because the markup still describes the
+          content accurately for any consumer that reads it. */}
       {dbFaqs.length > 0 && (
         <script
           type="application/ld+json"

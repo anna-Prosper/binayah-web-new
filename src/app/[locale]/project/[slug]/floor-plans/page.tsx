@@ -34,20 +34,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { title, desc } = floorPlansMeta(locale, { name, comm, dev, unitStr });
   const path  = `/project/${slug}/floor-plans`;
 
-  // Only index when there are real floor plans or a unit-size spec table.
-  // Otherwise it's template prose + a "request" CTA — crawlable (follow) but noindex.
-  const hasContent = !!(
-    (Array.isArray(project.floorPlans) && project.floorPlans.length > 0) ||
-    (Array.isArray(project.unitTypes) && project.unitTypes.length > 0 &&
-      (project.unitSizeMin != null || project.unitSizeMax != null))
-  );
-
   return {
     title,
     description: desc,
-    alternates: hasContent
-      ? { canonical: makeCanonical(locale, path), languages: altLangs(path) }
-      : { canonical: makeCanonical(locale, `/project/${slug}`) },
+    // Always noindex: measured against the parent /project/{slug} this page is a
+    // ~84-90% word-for-word duplicate — the parent already renders the floor-plan
+    // section and the unit-size range, and everything unique here is template SEO
+    // prose. `follow` keeps the internal links crawlable, and the canonical stays
+    // SELF-referencing — a noindex page that canonicals elsewhere sends
+    // contradictory signals.
+    robots: { index: false, follow: true },
+    alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph:   {
       locale: OG_LOCALE[locale] ?? "en_AE", title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },

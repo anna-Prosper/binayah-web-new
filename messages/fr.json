@@ -1005,6 +1005,12 @@
     }
   },
   "projectDetail": {
+    "driveMinutes": "{minutes} min en voiture",
+    "walkMinutes": "{minutes} min à pied",
+    "driveTimesHeading": "Temps de trajet depuis {area}",
+    "driveTimesSummary": "{first} se trouve à environ {firstMins} minutes en voiture, et {second} à environ {secondMins} minutes.",
+    "driveTimesSummaryOne": "{first} se trouve à environ {firstMins} minutes en voiture.",
+    "driveTimesSource": "Mesuré sur de véritables itinéraires routiers via le routage OpenStreetMap, et non en distance directe.",
     "tabs": {
       "overview": "Aperçu",
       "floorPlans": "Plans d'étage",

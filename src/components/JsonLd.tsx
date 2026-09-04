@@ -1,3 +1,5 @@
+import { RU_DOMAIN_LIVE } from "@/lib/site";
+
 // JSON.stringify does not escape </script> sequences, which can break out of the
 // script tag if a DB field contains that string. Replace < to be safe.
 function safeJsonLd(data: unknown): string {
@@ -90,7 +92,9 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       "https://www.facebook.com/BinayahRealEstateLLC",
       "https://www.youtube.com/@binayahproperties",
       "https://www.linkedin.com/company/binayah-real-estate",
-      "https://binayah.ru",
+      // Gated on the same switch as the Russian canonicals: while the host is
+      // dark, sameAs shouldn't point the entity graph at a dead domain.
+      ...(RU_DOMAIN_LIVE ? ["https://binayah.ru"] : []),
     ],
     // Must match the hours shown on /contact and /about (messages `contact.hours`
     // = "Mon - Sat: 9:00 AM - 6:00 PM"). Structured data that contradicts the

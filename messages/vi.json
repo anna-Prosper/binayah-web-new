@@ -1005,6 +1005,12 @@
     }
   },
   "projectDetail": {
+    "driveMinutes": "{minutes} phút lái xe",
+    "walkMinutes": "{minutes} phút đi bộ",
+    "driveTimesHeading": "Thời gian di chuyển từ {area}",
+    "driveTimesSummary": "{first} cách khoảng {firstMins} phút lái xe, và {second} khoảng {secondMins} phút.",
+    "driveTimesSummaryOne": "{first} cách khoảng {firstMins} phút lái xe.",
+    "driveTimesSource": "Được đo theo lộ trình đường bộ thực tế bằng định tuyến OpenStreetMap, không phải khoảng cách đường chim bay.",
     "tabs": {
       "overview": "Tổng quan",
       "floorPlans": "Mặt bằng",

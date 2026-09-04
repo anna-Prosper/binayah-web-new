@@ -39,7 +39,7 @@ import { DetailTabs } from "@/components/DetailTabs";
 import { ProjectSeoBlock } from "@/components/ProjectSeoBlock";
 import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 import { LocationSection } from "@/components/LocationSection";
-import { parseNearbyFromDescription, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
+import { parseNearbyFromDescription, resolveNearbyOrigin, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
 import { useCurrency, CurrencyPrice } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = IMAGE_PLACEHOLDER;
@@ -107,6 +107,10 @@ interface ProjectDetailClientProps {
   defaultTab?: "overview" | "floor-plans" | "location" | "payment" | "faq";
   // Server-fetched community market stats, woven into the SEO copy (location).
   seoStats?: { avgPricePerSqft?: number; rentalYield?: number; yieldSource?: string } | null;
+  // Real, road-routed drive times resolved on the server so the numbers are in
+  // the served HTML. Only consulted when the project has no DB / description
+  // nearby data of its own. Empty array = nothing trustworthy to show.
+  serverNearby?: ParsedNearbyItem[];
 }
 
 const LANGUAGES = [
@@ -170,7 +174,7 @@ const attractionIcon = (type: string) => {
 };
 
 
-const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStats }: ProjectDetailClientProps) => {
+const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStats, serverNearby }: ProjectDetailClientProps) => {
   const t = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
   const tE = useTranslations("enums");
@@ -235,6 +239,55 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
   const [enquirySending, setEnquirySending] = useState(false);
   const [enquiryError, setEnquiryError] = useState(false);
   const [brochureModalOpen, setBrochureModalOpen] = useState(false);
+
+  // ─── Nearby places / drive times ────────────────────────────────────────────
+  // Priority: 1) project.nearbyAttractions (DB)
+  //           2) parsed out of locationDescription
+  //           3) real road-routed times from OSRM (server-rendered on the
+  //              /location sub-page; fetched here on the overview page, which
+  //              has no server-side hook of its own).
+  // Nothing is ever estimated. If no trustworthy origin coordinate resolves, or
+  // the router is unreachable, the list stays empty and no distance renders.
+  const dbNearby: NearbyAttraction[] = Array.isArray(serverProject.nearbyAttractions)
+    ? (serverProject.nearbyAttractions as NearbyAttraction[])
+    : [];
+  const parsedNearby = parseNearbyFromDescription(serverProject.locationDescription as string | undefined);
+  const needsRoutedNearby = dbNearby.length === 0 && parsedNearby.length === 0;
+  const [routedNearby, setRoutedNearby] = useState<ParsedNearbyItem[]>(() =>
+    needsRoutedNearby && Array.isArray(serverNearby) ? serverNearby : []
+  );
+
+  useEffect(() => {
+    if (!needsRoutedNearby || routedNearby.length > 0) return;
+    // Resolve the origin here instead of letting /api/nearby-places match on the
+    // community name: its matcher is fuzzy and can land in the wrong emirate
+    // ("Arjan" → "Al Marjan Island"). Passing explicit lat/lng skips that path.
+    const origin = resolveNearbyOrigin({
+      latitude: serverProject.latitude,
+      longitude: serverProject.longitude,
+      community: serverProject.community,
+    });
+    if (!origin) return;
+    let cancelled = false;
+    // ISR-cached 24h at the route (s-maxage) and in the OSRM fetch data cache,
+    // so this is not a per-request call to the external router.
+    fetch(`/api/nearby-places?lat=${origin[0]}&lng=${origin[1]}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled) return;
+        // Keep measured results only — items without `minutes` are the route's
+        // legacy straight-line estimates and must never be presented as fact.
+        const items: ParsedNearbyItem[] = (d?.items ?? []).filter(
+          (i: ParsedNearbyItem) => i && typeof i.minutes === "number"
+        );
+        if (items.length > 0) setRoutedNearby(items);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needsRoutedNearby, routedNearby.length, serverProject.slug]);
   // Seed from the server-fetched related projects so their links are present in
   // the SSR HTML (crawlable internal links). Show up to 6 for a richer graph.
   const [similarProjects, setSimilarProjects] = useState<Array<{ _id: string; name: string; slug: string; community?: string; status?: string; startingPrice?: number; featuredImage?: string }>>(
@@ -431,14 +484,25 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
     : project.featuredImage
       ? [project.featuredImage]
       : [IMAGE_PLACEHOLDER];
-  // Priority: 1) DB nearbyAttractions  2) parsed from locationDescription  3) empty
-  const nearby: NearbyAttraction[] = (() => {
-    const db = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
-    if (db.length > 0) return db;
-    const parsed = parseNearbyFromDescription(project.locationDescription as string | undefined);
-    if (parsed.length > 0) return parsed as unknown as NearbyAttraction[];
-    return [];
-  })();
+  // Routed items carry `minutes` + `mode`; their label is built here so every
+  // locale renders a native "12 min drive" instead of an English string. DB and
+  // description-parsed items keep their own project-specific wording.
+  const routedNearbyActive = needsRoutedNearby && routedNearby.length > 0;
+  const nearby: NearbyAttraction[] =
+    dbNearby.length > 0
+      ? dbNearby
+      : parsedNearby.length > 0
+        ? (parsedNearby as unknown as NearbyAttraction[])
+        : routedNearby.map((item) => ({
+            name: item.name,
+            type: item.type,
+            distance:
+              typeof item.minutes === "number"
+                ? t(item.mode === "walk" ? "walkMinutes" : "driveMinutes", {
+                    minutes: String(item.minutes),
+                  })
+                : item.distance,
+          }));
   const dbFaqs = ((project.faqs as FAQ[] | null) || []).filter(f => f.question?.trim());
   // Generated fallback FAQs (when the project has no editorial FAQs). Localized
   // via the projectFaq namespace so non-EN pages render native Q&A + FAQPage
@@ -2510,17 +2574,56 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                       || (project.latitude && project.longitude
                           ? `https://www.google.com/maps/search/?api=1&query=${project.latitude},${project.longitude}`
                           : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${project.name} ${project.community || project.city || ""} ${project.country || "UAE"}`.trim())}`);
+                    // Real road-routed drive times, led with on the /location
+                    // sub-page — proximity is the whole point of this page, and
+                    // measured numbers are what make it worth reading on its own.
+                    // Only rendered when the figures were actually measured; the
+                    // full list follows inside LocationSection below.
+                    const timed = routedNearbyActive
+                      ? routedNearby.filter((i) => typeof i.minutes === "number")
+                      : [];
+                    const driveArea = project.community || project.city || "Dubai";
                     return (
-                      <LocationSection
-                        community={project.community}
-                        city={project.city}
-                        country={project.country}
-                        mapEmbedSrc={mapSrc}
-                        description={project.locationDescription}
-                        externalMapUrl={externalMapUrl}
-                        nearby={nearby}
-                        iconForType={attractionIcon}
-                      />
+                      <>
+                        {timed.length > 0 && (
+                          <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8 mb-4 sm:mb-8">
+                            <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
+                              <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                                <Clock className="h-4 w-4 text-accent" />
+                              </div>
+                              <h2 className="text-lg sm:text-xl font-bold text-foreground">
+                                {t("driveTimesHeading", { area: driveArea })}
+                              </h2>
+                            </div>
+                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                              {timed.length > 1
+                                ? t("driveTimesSummary", {
+                                    first: timed[0].name,
+                                    firstMins: String(timed[0].minutes),
+                                    second: timed[1].name,
+                                    secondMins: String(timed[1].minutes),
+                                  })
+                                : t("driveTimesSummaryOne", {
+                                    first: timed[0].name,
+                                    firstMins: String(timed[0].minutes),
+                                  })}
+                            </p>
+                            <p className="text-[10px] sm:text-[11px] text-muted-foreground/70 leading-relaxed mt-3">
+                              {t("driveTimesSource")}
+                            </p>
+                          </div>
+                        )}
+                        <LocationSection
+                          community={project.community}
+                          city={project.city}
+                          country={project.country}
+                          mapEmbedSrc={mapSrc}
+                          description={project.locationDescription}
+                          externalMapUrl={externalMapUrl}
+                          nearby={nearby}
+                          iconForType={attractionIcon}
+                        />
+                      </>
                     );
                   })()}
                 </motion.div>

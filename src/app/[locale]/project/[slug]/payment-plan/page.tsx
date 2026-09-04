@@ -31,20 +31,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { title, desc } = paymentPlanMeta(locale, { name, comm, dev, dp });
   const path  = `/project/${slug}/payment-plan`;
 
-  // Only index when the project has a real payment plan (details/steps/summary).
-  // Otherwise the page is generic boilerplate — crawlable (follow) but noindex.
-  const hasContent = !!(
-    project.paymentPlanDetails ||
-    (Array.isArray(project.paymentPlanSteps) && project.paymentPlanSteps.length > 0) ||
-    (project.paymentPlanSummary && project.paymentPlanSummary !== "TBA")
-  );
-
   return {
     title,
     description: desc,
-    alternates: hasContent
-      ? { canonical: makeCanonical(locale, path), languages: altLangs(path) }
-      : { canonical: makeCanonical(locale, `/project/${slug}`) },
+    // Always noindex: measured against the parent /project/{slug} this page is a
+    // ~89-91% word-for-word duplicate. The only thing it adds is the milestone
+    // table, whose AED figures are pure arithmetic on the starting price and the
+    // split ratio the parent already publishes — no independent data. `follow`
+    // keeps the internal links crawlable, and the canonical stays SELF-referencing
+    // — a noindex page that canonicals elsewhere sends contradictory signals.
+    robots: { index: false, follow: true },
+    alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph:   {
       locale: OG_LOCALE[locale] ?? "en_AE", title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },

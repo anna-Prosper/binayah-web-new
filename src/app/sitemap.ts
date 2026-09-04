@@ -8,7 +8,7 @@ import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 import { CRYPTO_SLUGS } from "@/lib/crypto-pages";
 import { getAgents, isPublishableAgent } from "@/lib/agents";
 
-import { AE_URL, RU_URL, SITE_URL } from "@/lib/site";
+import { AE_URL, RU_BASE, SITE_URL } from "@/lib/site";
 
 // Fetch all slugs directly from MongoDB — bypasses the API's 100-item hard cap.
 // Falls back to empty array on any error so the sitemap still builds.
@@ -61,13 +61,15 @@ async function fetchAllListingSlugs(): Promise<{ slug: string; lastmod?: Date }[
   return out;
 }
 
-// Projects for the sitemap, with per-sub-page indexability flags. The flags
-// MUST mirror the `robots: noindex` guards in each sub-page's generateMetadata
-// so we never submit a URL that self-noindexes (which GSC flags as "Submitted
-// URL marked noindex"). One query serves both the main /project/{slug} entries
-// and the four sub-pages.
+// Projects for the sitemap, with the /location sub-page's indexability flag.
+// The flag MUST mirror the `robots: noindex` guard in location/page.tsx's
+// generateMetadata so we never submit a URL that self-noindexes (which GSC flags
+// as "Submitted URL marked noindex"). /faq, /floor-plans and /payment-plan are
+// now unconditionally noindex (they were 84-95% duplicates of the parent, which
+// already renders all of their sections), so they are no longer submitted at all
+// and no flags are computed for them.
 async function fetchProjectsForSitemap(): Promise<
-  { slug: string; lastmod?: Date; sub: { faq: boolean; payment: boolean; location: boolean; floorplans: boolean } }[]
+  { slug: string; lastmod?: Date; sub: { location: boolean } }[]
 > {
   const uri = process.env.MONGODB_URI;
   if (!uri) return [];
@@ -77,25 +79,18 @@ async function fetchProjectsForSitemap(): Promise<
     await client.connect();
     const docs = await client.db().collection("projects").find(
       { publishStatus: "published", slug: { $exists: true, $ne: "" } },
-      { projection: { _id: 0, slug: 1, updatedAt: 1, faqs: 1, paymentPlanDetails: 1, paymentPlanSteps: 1, paymentPlanSummary: 1, locationDescription: 1, nearbyAttractions: 1, floorPlans: 1, unitTypes: 1, unitSizeMin: 1, unitSizeMax: 1 } }
+      { projection: { _id: 0, slug: 1, updatedAt: 1, locationDescription: 1, nearbyAttractions: 1 } }
     ).toArray();
     return (docs as Record<string, unknown>[])
       .filter((d) => d.slug)
       .map((d) => {
         const t = d.updatedAt ? new Date(d.updatedAt as string) : null;
-        const faqs = (d.faqs as Array<{ question?: string }> | undefined) || [];
-        const steps = d.paymentPlanSteps as unknown[] | undefined;
         const nearby = d.nearbyAttractions as unknown[] | undefined;
-        const floorPlans = d.floorPlans as unknown[] | undefined;
-        const unitTypes = d.unitTypes as unknown[] | undefined;
         return {
           slug: d.slug as string,
           lastmod: t && !isNaN(t.getTime()) ? t : undefined,
           sub: {
-            faq: faqs.some((f) => f?.question?.trim()),
-            payment: !!(d.paymentPlanDetails || (Array.isArray(steps) && steps.length > 0) || (d.paymentPlanSummary && d.paymentPlanSummary !== "TBA")),
             location: !!((d.locationDescription && String(d.locationDescription).trim()) || (Array.isArray(nearby) && nearby.length > 0)),
-            floorplans: !!((Array.isArray(floorPlans) && floorPlans.length > 0) || (Array.isArray(unitTypes) && unitTypes.length > 0 && (d.unitSizeMin != null || d.unitSizeMax != null))),
           },
         };
       });
@@ -269,7 +264,7 @@ async function fetchSuperlativeCombos(): Promise<string[]> {
 const IS_RU = SITE_URL.includes("binayah.ru");
 
 function localeUrl(path: string, locale: string) {
-  if (locale === "ru") return `${RU_URL}/ru${path}`;
+  if (locale === "ru") return `${RU_BASE}${path}`;
   if (locale === "en") return `${AE_URL}${path}`;
   return `${AE_URL}/${locale}${path}`;
 }
@@ -289,14 +284,14 @@ function enOnly(path: string, priority: number, changeFrequency: MetadataRoute.S
 
 function withAlternates(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
   return {
-    url: IS_RU ? `${RU_URL}/ru${path}` : `${AE_URL}${path}`,
+    url: IS_RU ? `${RU_BASE}${path}` : `${AE_URL}${path}`,
     lastModified,
     changeFrequency,
     priority,
     alternates: {
       languages: {
         en: `${AE_URL}${path}`,
-        ru: path === "/" ? `${RU_URL}/ru` : `${RU_URL}/ru${path}`,
+        ru: path === "/" ? RU_BASE : `${RU_BASE}${path}`,
         ar: localeAlt(AE_URL, "ar", path),
         zh: localeAlt(AE_URL, "zh", path),
         vi: localeAlt(AE_URL, "vi", path),
@@ -314,7 +309,7 @@ function withAlternates(path: string, priority: number, changeFrequency: Metadat
 // the middleware's HTTP Link headers.
 function plainEntry(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
   return {
-    url: IS_RU ? `${RU_URL}/ru${path}` : `${AE_URL}${path}`,
+    url: IS_RU ? `${RU_BASE}${path}` : `${AE_URL}${path}`,
     lastModified,
     changeFrequency,
     priority,
@@ -491,16 +486,16 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
 
   const dynamicPages: MetadataRoute.Sitemap = [
     ...projects.map((p) => withAlternates(`/project/${p.slug}`, 0.8, "weekly", p.lastmod ?? now)),
-    // Project sub-pages — only emit the ones with real content (their metadata
-    // self-noindexes when the backing field is empty, so submitting an empty one
-    // would trip a GSC "marked noindex" notice). Lean entries (no hreflang
+    // Project sub-pages — /location ONLY. /faq, /floor-plans and /payment-plan
+    // are unconditionally noindex (84-95% duplicates of the parent, which already
+    // renders every one of those sections in full), so submitting them would both
+    // contradict their own robots tag and burn crawl budget. /location carries
+    // genuine unique content, so it stays. Emitted with the backing-field guard
+    // so we never submit a self-noindexing URL. Lean entries (no hreflang
     // alternates) to keep the sitemap under Vercel's 19 MB cap.
-    ...projects.flatMap((p) => [
-      ...(p.sub.floorplans ? [plainEntry(`/project/${p.slug}/floor-plans`, 0.6, "weekly", p.lastmod ?? now)] : []),
-      ...(p.sub.location ? [plainEntry(`/project/${p.slug}/location`, 0.6, "weekly", p.lastmod ?? now)] : []),
-      ...(p.sub.payment ? [plainEntry(`/project/${p.slug}/payment-plan`, 0.6, "weekly", p.lastmod ?? now)] : []),
-      ...(p.sub.faq ? [plainEntry(`/project/${p.slug}/faq`, 0.6, "weekly", p.lastmod ?? now)] : []),
-    ]),
+    ...projects.flatMap((p) =>
+      p.sub.location ? [plainEntry(`/project/${p.slug}/location`, 0.6, "weekly", p.lastmod ?? now)] : []
+    ),
     ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
     ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),
     ...reports.map((r) => withAlternates(`/pulse/reports/${r.slug}`, 0.7, "weekly", r.lastmod ?? now)),

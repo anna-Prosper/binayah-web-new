@@ -1005,6 +1005,12 @@
     }
   },
   "projectDetail": {
+    "driveMinutes": "{minutes} min drive",
+    "walkMinutes": "{minutes} min walk",
+    "driveTimesHeading": "Drive times from {area}",
+    "driveTimesSummary": "{first} is about {firstMins} minutes away by road, and {second} about {secondMins} minutes.",
+    "driveTimesSummaryOne": "{first} is about {firstMins} minutes away by road.",
+    "driveTimesSource": "Measured along real road routes with OpenStreetMap routing, not straight-line distance.",
     "tabs": {
       "overview": "Overview",
       "floorPlans": "Floor Plans",

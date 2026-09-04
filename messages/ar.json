@@ -1005,6 +1005,12 @@
     }
   },
   "projectDetail": {
+    "driveMinutes": "{minutes} دقيقة بالسيارة",
+    "walkMinutes": "{minutes} دقيقة سيراً على الأقدام",
+    "driveTimesHeading": "أزمنة القيادة من {area}",
+    "driveTimesSummary": "يبعد {first} نحو {firstMins} دقيقة بالسيارة، و{second} نحو {secondMins} دقيقة.",
+    "driveTimesSummaryOne": "يبعد {first} نحو {firstMins} دقيقة بالسيارة.",
+    "driveTimesSource": "قياس فعلي على طرق حقيقية عبر خدمة التوجيه OpenStreetMap، وليس مسافة بخط مستقيم.",
     "tabs": {
       "overview": "نظرة عامة",
       "floorPlans": "المخططات",

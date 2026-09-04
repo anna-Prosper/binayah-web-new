@@ -1005,6 +1005,12 @@
     }
   },
   "projectDetail": {
+    "driveMinutes": "{minutes} мин на машине",
+    "walkMinutes": "{minutes} мин пешком",
+    "driveTimesHeading": "Время в пути от {area}",
+    "driveTimesSummary": "{first} — примерно {firstMins} минут на машине, {second} — около {secondMins} минут.",
+    "driveTimesSummaryOne": "{first} — примерно {firstMins} минут на машине.",
+    "driveTimesSource": "Рассчитано по реальным дорожным маршрутам через маршрутизацию OpenStreetMap, а не по прямой.",
     "tabs": {
       "overview": "Обзор",
       "floorPlans": "Планировки",

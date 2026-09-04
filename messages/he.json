@@ -1005,6 +1005,12 @@
     }
   },
   "projectDetail": {
+    "driveMinutes": "{minutes} דקות נסיעה",
+    "walkMinutes": "{minutes} דקות הליכה",
+    "driveTimesHeading": "זמני נסיעה מ־{area}",
+    "driveTimesSummary": "{first} נמצא במרחק של כ־{firstMins} דקות נסיעה, ו{second} כ־{secondMins} דקות.",
+    "driveTimesSummaryOne": "{first} נמצא במרחק של כ־{firstMins} דקות נסיעה.",
+    "driveTimesSource": "נמדד לאורך מסלולי כביש אמיתיים באמצעות ניווט OpenStreetMap, ולא במרחק אווירי.",
     "tabs": {
       "overview": "סקירה כללית",
       "floorPlans": "תוכניות קומה",

@@ -1011,6 +1011,12 @@
     }
   },
   "projectDetail": {
+    "driveMinutes": "驾车 {minutes} 分钟",
+    "walkMinutes": "步行 {minutes} 分钟",
+    "driveTimesHeading": "从{area}出发的驾车时间",
+    "driveTimesSummary": "{first}约 {firstMins} 分钟车程，{second}约 {secondMins} 分钟。",
+    "driveTimesSummaryOne": "{first}约 {firstMins} 分钟车程。",
+    "driveTimesSource": "基于 OpenStreetMap 实际道路路线测算，而非直线距离。",
     "tabs": {
       "overview": "项目概览",
       "floorPlans": "户型图",
