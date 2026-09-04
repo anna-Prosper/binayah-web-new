@@ -130,7 +130,7 @@ const Footer = () => {
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Mail className="h-3.5 w-3.5 text-accent" />
               </div>
-              <Link href="/contact" className="hover:text-accent transition-colors">{t("email")}</Link>
+              <a href={`mailto:${t("email")}`} className="hover:text-accent transition-colors">{t("email")}</a>
             </li>
             <li className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">

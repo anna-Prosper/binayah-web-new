@@ -60,6 +60,10 @@ interface Props {
   counts: { projects: number; forSale: number; forRent: number };
   developers: string[];
   nearby: Nearby[];
+  // True only when `nearby` was ranked by real distance from this community.
+  // False means the list is the API's unranked fallback, and the section must
+  // NOT be headed with a proximity claim.
+  nearbyIsGeo?: boolean;
   // Curated sub-communities that sit INSIDE this area (e.g. Majan, Mudon within
   // Dubailand). Renders a "Communities within {name}" hub — distinct from the
   // geo-proximity `nearby` list — turning an area page into a proper area overview.
@@ -74,6 +78,14 @@ const year = (d?: string | null) => { if (!d) return null; const dt = new Date(d
 const projSlug = (name: string) => name.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-");
 const isPlaceholder = (v?: string) => !v || /^(n\/?a|tba|tbd|not specified|not available|unknown|-)$/i.test(v.trim());
 
+// The enrichment model named Binayah as the master developer of six
+// communities (Dubai Marina, Business Bay, Al Furjan and others). Binayah is
+// the brokerage publishing the page, never the developer of a community, so
+// reject it here as well as clearing the stored values — otherwise the next
+// regeneration can put the claim straight back into a table answer engines
+// read as fact.
+const isOwnBrand = (v?: string) => !!v && /binayah/i.test(v);
+
 function amenityIcon(title: string) {
   const t = title.toLowerCase();
   if (/din|food|restaur|retail|shop|souk|mall/.test(t)) return /shop|retail|mall|souk/.test(t) ? ShoppingBag : UtensilsCrossed;
@@ -83,7 +95,7 @@ function amenityIcon(title: string) {
   return Sparkles;
 }
 
-export default async function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, childCommunities = [], locale, market, topBuildings = [] }: Props) {
+export default async function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, nearbyIsGeo = false, childCommunities = [], locale, market, topBuildings = [] }: Props) {
   // Localized UI chrome (eyebrows, stat labels, CTAs). Per-community editorial
   // content is already translated upstream in the enrichment object.
   const t = await getTranslations({ locale, namespace: "communityRich" });
@@ -108,7 +120,7 @@ export default async function CommunityRichClient({ community, projects, forSale
   const priceFrom = (e.highlights || []).find((h) => /price/i.test(h.label))?.value;
 
   const glanceRows = ([
-    [t("glDeveloper"), kf.developer], [t("glCommunityType"), kf.communityType], [t("glLandArea"), kf.landArea],
+    [t("glDeveloper"), isOwnBrand(kf.developer) ? undefined : kf.developer], [t("glCommunityType"), kf.communityType], [t("glLandArea"), kf.landArea],
     [t("glPropertyTypes"), kf.propertyTypes], [t("glHandover"), kf.handover], [t("glIdealFor"), e.targetBuyer],
   ] as [string, string | undefined][]).filter(([, v]) => !isPlaceholder(v)) as [string, string][];
 
@@ -143,9 +155,18 @@ export default async function CommunityRichClient({ community, projects, forSale
   // non-EN pages keep just the translated aiFaqs rather than mixing in English.
   const dataFaqs: { q: string; a: string }[] = [];
   if (locale === "en" && market?.avgPpsfSqft) {
+    // avgPpsfSqft and avgPrice are two DIFFERENT DLD metrics — a rate per square
+    // foot and the average price of a whole transaction — and the stat block
+    // above shows both. Never describe one using the other's label.
+    const sample = market.sales12m
+      ? `, across ${market.sales12m.toLocaleString("en-AE")} recorded sales${market.salesSince ? ` since ${market.salesSince}` : " in the last 12 months"}`
+      : "";
+    const whole = market.avgPrice
+      ? `, and the average sale price of a whole unit is around AED ${market.avgPrice.toLocaleString("en-AE")}`
+      : "";
     dataFaqs.push({
       q: `What is the average price per square foot in ${name}?`,
-      a: `Based on Dubai Land Department transaction records, the average sale price in ${name} is around AED ${market.avgPpsfSqft.toLocaleString("en-AE")} per square foot${market.sales12m ? `, across ${market.sales12m.toLocaleString("en-AE")} recorded sales${market.salesSince ? ` since ${market.salesSince}` : " in the last 12 months"}` : ""}.`,
+      a: `Based on Dubai Land Department transaction records, the average price per square foot in ${name} is around AED ${market.avgPpsfSqft.toLocaleString("en-AE")}${whole}${sample}.`,
     });
   }
   if (locale === "en" && market?.grossYieldPct) {
@@ -552,7 +573,15 @@ export default async function CommunityRichClient({ community, projects, forSale
         {/* ===== Communities you may like ===== */}
         {nearby.length > 0 && (
           <section className="scroll-mt-28">
-            <SecHead eyebrow={t("ebNearby")} title={sh.nearby || t("nearbyTitle")} />
+            {/* Both the editorial heading (sh.nearby — e.g. "Explore the
+                Surrounding Attractions") and the default "Explore nearby"
+                eyebrow assert adjacency. That is only true of a distance-ranked
+                list, so an unranked one falls back to neutral "you may like"
+                framing rather than claiming proximity we did not measure. */}
+            <SecHead
+              eyebrow={nearbyIsGeo ? t("ebNearby") : t("ebNearbyAlt")}
+              title={nearbyIsGeo ? t("nearbyNearTitle", { name }) : t("nearbyTitle")}
+            />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {nearby.map((n) => (
                 <Link key={n.slug} href={`/communities/${n.slug}`} className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-border/50">

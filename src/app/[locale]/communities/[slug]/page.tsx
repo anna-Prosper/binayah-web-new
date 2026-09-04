@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
 import { dldAreaFor } from "@/lib/market";
 import { getCommunityEnrichmentTranslation, mergeEnrichment } from "@/lib/community-i18n";
+import { findCommunityCoords } from "@/lib/parseNearby";
 
 export const revalidate = 3600;
 
@@ -22,6 +23,94 @@ const AREA_SUBCOMMUNITIES: Record<string, string[]> = {
     "palm-jebel-ali", "jebel-ali-village", "downtown-jebel-ali",
   ],
 };
+
+// ─── Geographic "communities near here" ─────────────────────────────────────
+// The API's `nearby` payload is not geographic: it returns the same handful of
+// slugs for almost every community (Dubai Marina, Business Bay and Palm
+// Jumeirah were all served Dubai South ~40 km away and Dubai Islands on the far
+// side of the city). The section asserts proximity, so the list has to be
+// measured rather than assumed.
+//
+// Origin AND candidates are both resolved through findCommunityCoords() against
+// the vetted COMMUNITY_COORDS table in parseNearby.ts. That lookup is exact-match
+// by design — see the warning there — so most of the ~149 indexed communities
+// resolve to nothing. That is the intended outcome: an unmeasurable community is
+// dropped from the candidate pool, and a community whose own centre is unknown
+// keeps the API's list while the page softens the heading (`nearbyIsGeo=false`)
+// instead of claiming an adjacency we cannot verify.
+
+interface NearbyCard { name: string; slug: string; featuredImage?: string }
+
+// parseNearby.ts keeps its own haversine private and the module is frozen, so
+// the formula (not the coordinate data) is repeated here.
+function haversineKm([lat1, lng1]: [number, number], [lat2, lng2]: [number, number]): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+// Resolve a community's centre from its display name, falling back to the slug
+// ("difc-dubai" → "difc dubai" → "difc"). Both go through the same exact-match
+// lookup, so neither can invent a coordinate.
+function coordsFor(c: { name?: string; slug?: string }): [number, number] | null {
+  return (
+    findCommunityCoords(c.name) ||
+    findCommunityCoords((c.slug || "").replace(/-/g, " ")) ||
+    null
+  );
+}
+
+const GEO_NEARBY_COUNT = 6;
+// Below this the row reads as a thin accident rather than a neighbourhood, so we
+// keep the editorial list instead and drop the proximity claim.
+const MIN_GEO_NEARBY = 4;
+const coordKey = ([lat, lng]: [number, number]) => `${lat.toFixed(3)},${lng.toFixed(3)}`;
+
+/**
+ * The `GEO_NEARBY_COUNT` communities closest to `name`, by straight-line distance.
+ * Returns null when the distance cannot be measured — callers must then fall back
+ * to the unranked API list and must not describe it as nearby.
+ */
+function geoNearby(
+  name: string,
+  slug: string,
+  index: NearbyCard[]
+): NearbyCard[] | null {
+  const origin = coordsFor({ name, slug });
+  if (!origin) return null;
+
+  // Several index entries are aliases sharing one centre ("JVC" / "Jumeirah
+  // Village Circle", "Damac Hills" / "Akoya Damac Hills"). Keep one card per
+  // coordinate — index order wins, upgraded if a later alias has the image —
+  // and drop the current community's own centre so a page never links to itself.
+  const byCoord = new Map<string, { card: NearbyCard; km: number }>();
+  byCoord.set(coordKey(origin), { card: { name, slug }, km: -1 });
+
+  for (const c of index) {
+    if (!c.slug || !c.name || c.slug === slug) continue;
+    const coords = coordsFor(c);
+    if (!coords) continue;
+    const key = coordKey(coords);
+    const existing = byCoord.get(key);
+    if (existing) {
+      if (existing.km >= 0 && !existing.card.featuredImage && c.featuredImage) existing.card = c;
+      continue;
+    }
+    byCoord.set(key, { card: c, km: haversineKm(origin, coords) });
+  }
+
+  const ranked = [...byCoord.values()]
+    .filter((v) => v.km >= 0)
+    .sort((a, b) => a.km - b.km)
+    .slice(0, GEO_NEARBY_COUNT)
+    .map((v) => v.card);
+
+  return ranked.length >= MIN_GEO_NEARBY ? ranked : null;
+}
 
 // Locale-aware title + lead-sentence templates. The community name is a proper
 // noun kept verbatim; the surrounding phrasing is localized so each locale URL
@@ -268,15 +357,21 @@ export default async function CommunityPage({
     // slugs to cards from the cached communities index, preserving curated order
     // and dropping any that don't have a live page.
     const childSlugs = AREA_SUBCOMMUNITIES[slug] ?? [];
-    let childCommunities: { name: string; slug: string; featuredImage?: string }[] = [];
+    // One 1h-cached fetch, shared by the sub-community hub and the geographic
+    // nearby ranking below.
+    const index = await getCommunitiesIndex();
+    let childCommunities: NearbyCard[] = [];
     if (childSlugs.length) {
-      const index = await getCommunitiesIndex();
       const bySlug = new Map(index.map((c) => [c.slug, c]));
       childCommunities = childSlugs
         .map((s) => bySlug.get(s))
         .filter((c): c is { name: string; slug: string; featuredImage: string } => !!c)
         .map((c) => ({ name: c.name, slug: c.slug, featuredImage: c.featuredImage }));
     }
+
+    // Distance-ranked neighbours when this community's centre is known; the
+    // API's unranked list (with a softened heading) when it is not.
+    const ranked = geoNearby(communityName, slug, index);
 
     return (
       <CommunityRichClient
@@ -286,7 +381,8 @@ export default async function CommunityPage({
         forRent={d.forRent || []}
         counts={d.counts || { projects: (d.projects || []).length, forSale: 0, forRent: 0 }}
         developers={d.developers || []}
-        nearby={d.nearby || []}
+        nearby={ranked ?? d.nearby ?? []}
+        nearbyIsGeo={!!ranked}
         childCommunities={childCommunities}
         locale={locale}
         market={market}

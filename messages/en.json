@@ -3203,6 +3203,8 @@
     "goodToKnow": "Good to know",
     "ebNearby": "Explore nearby",
     "nearbyTitle": "Communities you may like",
+    "ebNearbyAlt": "You may also like",
+    "nearbyNearTitle": "Communities near {name}",
     "readyInvest": "Ready to invest in {name}?",
     "ctaSub": "Our advisors have been matching clients with the right {name} homes and off-plan opportunities since 2007. Let's find yours.",
     "bookConsult": "Book a free consultation",

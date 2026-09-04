@@ -3203,6 +3203,8 @@
     "goodToKnow": "Bon à savoir",
     "ebNearby": "Explorer les environs",
     "nearbyTitle": "Des quartiers qui pourraient vous plaire",
+    "ebNearbyAlt": "Vous aimerez aussi",
+    "nearbyNearTitle": "Quartiers proches de {name}",
     "readyInvest": "Prêt à investir à {name} ?",
     "ctaSub": "Nos conseillers mettent en relation leurs clients avec les bonnes résidences et opportunités sur plan de {name} depuis 2007. Trouvons la vôtre.",
     "bookConsult": "Réserver une consultation gratuite",

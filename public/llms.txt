@@ -2,9 +2,9 @@
 
 > Dubai real estate agency for buying, selling, renting and investing. Off-plan and secondary listings, free DLD-backed property valuation, and a weekly data-driven market report (Pulse). Active across Dubai Marina, Downtown Dubai, Palm Jumeirah, Palm Jebel Ali, Business Bay, JVC, JLT, Dubai Hills and 50+ other communities.
 
-Binayah Properties is a UAE real estate agency headquartered on Marasi Drive, Business Bay, Dubai. We help buyers, investors and tenants find apartments, villas, townhouses and penthouses across Dubai's primary (off-plan) and secondary markets, and we manage properties for landlords. Our Pulse section publishes market intelligence built on Dubai Land Department (DLD) transaction data — price-per-sqft trends, transaction volumes and area-level rental yields — alongside long-form investor guides.
+Binayah Properties is a UAE real estate agency headquartered at Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai. It has traded since 2007 and is registered with the Dubai Land Department's Real Estate Regulatory Agency under broker registration number (ORN) 1162. We help buyers, investors and tenants find apartments, villas, townhouses and penthouses across Dubai's primary (off-plan) and secondary markets, and we manage properties for landlords. Our Pulse section publishes market intelligence built on Dubai Land Department (DLD) transaction data — price-per-sqft trends, transaction volumes and area-level rental yields — alongside long-form investor guides.
 
-Canonical host is https://www.binayah.ae. The site is published in 7 languages: English (default), Arabic (/ar), French (/fr), Hebrew (/he), Vietnamese (/vi), Chinese (/zh), and Russian — Russian is served on a separate domain, https://binayah.ru/ru/. Every page declares hreflang alternates; prefer the canonical English URL unless a specific locale is requested. All prices are in AED unless noted; rentals are quoted annually.
+Canonical host is https://www.binayah.ae. The site is published in 7 languages: English (default), Arabic (/ar), French (/fr), Hebrew (/he), Vietnamese (/vi), Chinese (/zh), and Russian (/ru). Russian was previously served from binayah.ru; while that host is unavailable it is served from the canonical domain at https://www.binayah.ae/ru/. Every page declares hreflang alternates; prefer the canonical English URL unless a specific locale is requested. All prices are in AED unless noted; rentals are quoted annually.
 
 ## Core pages
 
@@ -52,9 +52,12 @@ Canonical host is https://www.binayah.ae. The site is published in 7 languages: 
 ## Contact
 
 - Phone / WhatsApp: +971 55 509 9157
-- Address: Marasi Drive, Business Bay, Dubai, UAE
-- Office hours: Monday–Sunday, 09:00–21:00 GST
-- Email: via contact form at https://www.binayah.ae/contact
+- Address: Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai, UAE
+- Office hours: Monday–Saturday, 09:00–18:00 GST
+- Email: info@binayah.com (or the contact form at https://www.binayah.ae/contact)
+- Legal name: Binayah Properties L.L.C
+- RERA broker registration (ORN): 1162
+- Trading since: 2007
 
 ## Optional
 

@@ -18,8 +18,17 @@ export const WA_DEFAULT_MESSAGE =
  * @param number   optional override (e.g. a project's own WhatsApp number);
  *                 non-digits are stripped. Defaults to the company number.
  */
+/** Attribution refs are passed as bare paths by most callers ("/buy"), which put
+ *  an unclickable relative path in the WhatsApp message. Absolutise them, and drop
+ *  a redundant /en prefix since English is served unprefixed. */
+function absoluteRef(ref: string): string {
+  if (!ref.startsWith("/")) return ref;
+  const path = ref.replace(/^\/en(?=\/|$)/, "") || "/";
+  return `https://www.binayah.ae${path}`;
+}
+
 export function waHref(message: string, ref?: string, number?: string): string {
-  const text = ref ? `${message}\n\n🔗 ${ref}` : message;
+  const text = ref ? `${message}\n\n🔗 ${absoluteRef(ref)}` : message;
   const to = (number || WHATSAPP_NUMBER).replace(/[^0-9]/g, "") || WHATSAPP_NUMBER;
   return `https://wa.me/${to}?text=${encodeURIComponent(text)}`;
 }

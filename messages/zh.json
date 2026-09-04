@@ -3209,6 +3209,8 @@
     "goodToKnow": "温馨提示",
     "ebNearby": "探索周边",
     "nearbyTitle": "您可能喜欢的社区",
+    "ebNearbyAlt": "您可能也喜欢",
+    "nearbyNearTitle": "{name}附近的社区",
     "readyInvest": "准备好投资{name}了吗？",
     "ctaSub": "自2007年以来，我们的顾问一直为客户匹配{name}合适的住宅与期房机会。让我们为您找到理想之选。",
     "bookConsult": "预约免费咨询",
