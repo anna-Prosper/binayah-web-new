@@ -443,6 +443,9 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
     withAlternates("/about", 0.5, "monthly", now),
     withAlternates("/team", 0.6, "weekly", now),
     withAlternates("/contact", 0.5, "monthly", now),
+    // Indexable and linked from the footer, but were never submitted.
+    withAlternates("/privacy-policy", 0.3, "yearly", now),
+    withAlternates("/terms-of-service", 0.3, "yearly", now),
     // Individual agent profiles — only those with a real bio + BRN (the rest are
     // noindex until enriched, so they'd be "submitted URL marked noindex").
     ...publishableAgents.map((a) => withAlternates(`/team/${a.slug}`, 0.4, "monthly", now)),

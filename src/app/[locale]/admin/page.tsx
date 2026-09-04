@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 export const dynamic = "force-dynamic";
+
+// robots.txt blocks crawling, but a URL linked from anywhere can still be
+// indexed without content. This page returned an indexable 200 "Unauthorized"
+// shell, so state noindex explicitly.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
