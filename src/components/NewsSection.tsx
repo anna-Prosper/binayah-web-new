@@ -41,7 +41,10 @@ export default async function NewsSection({ articles: propArticles = [], locale 
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
       {/* Mobile: compact inline header */}
       <div className="sm:hidden flex items-center justify-between mb-4">
-        <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
+        {/* <p>, not <h2>: the desktop header below is the section heading and
+            both blocks sit in the DOM, so a second h2 duplicated it in the
+            outline. */}
+        <p className="text-sm font-bold text-foreground">{t("title")}</p>
         <Link href="/news" className="group flex items-center gap-1 text-primary font-semibold text-xs">
           {t("viewAll")} <ArrowUpRight className="h-3 w-3" />
         </Link>

@@ -88,7 +88,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       .trim();
   const titleFallback = `${projName}${communityStr}${priceShort ? ` | ${pj.from} ${priceShort}` : ""} | Binayah`;
   const descFallbackRaw = pj.desc(project.name, project.community || "", project.developerName || pj.dev, priceShort);
-  const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "â¦";
+  const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
   // Always self-referential to the .ae URL. Migrated projects carry stale
   // seo.canonicalUrl values â legacy binayah.com/projects/<slug> (the old WP

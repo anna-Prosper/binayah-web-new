@@ -76,7 +76,14 @@ export default async function CommunitiesSection({ locale }: { locale: string })
       <div className="sm:hidden flex items-center justify-between mb-4">
         <div>
           <p className="text-[10px] font-semibold tracking-[0.3em] uppercase mb-1" style={{ color: "#A07924" }}>{t("label")}</p>
-          <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
+          {/* Not an <h2>: the desktop header below carries the section
+              heading, and both blocks are always in the DOM (CSS picks one),
+              so a second h2 here put "Top" and "Top Communities" in the
+              outline. It also rendered only t("title"), so mobile readers
+              saw a heading that literally said "Top". */}
+          <p className="text-sm font-bold text-foreground">
+            {t("title")} <span className="font-light">{t("titleItalic")}</span>
+          </p>
         </div>
         <Link href="/communities" className="group flex items-center gap-1 text-primary font-semibold text-xs">
           {t("viewAll")} <ArrowUpRight className="h-3 w-3" />

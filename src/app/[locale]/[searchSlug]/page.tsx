@@ -84,7 +84,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const title = `${fillT(M.h1, { beds: bedsL, type: typeL, verb: verbL, community: c.name })} | Binayah`;
   const soldSentence = soldCombo ? fillT(M.soldSentence, { median: soldCombo.medianPrice.toLocaleString("en-AE"), count: soldCombo.count.toLocaleString("en-AE") }) + " " : "";
   const descLead = fillT(M.descLead, { beds: bedsL.toLowerCase(), type: typeL.toLowerCase(), verb: verbL.toLowerCase(), community: c.name });
-  const description = `${descLead} ${soldSentence}${M.descTail}`.slice(0, 158);
+  const descriptionFull = `${descLead} ${soldSentence}${M.descTail}`;
+  const description = descriptionFull.length <= 158
+    ? descriptionFull
+    : descriptionFull.slice(0, 157).replace(/\s+\S*$/, "") + "…";
   const path = `/${searchSlug}`;
 
   // Thin-content guard: 404 matrix combos with zero inventory so Google drops

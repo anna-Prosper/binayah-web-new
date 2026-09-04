@@ -51,7 +51,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const position = agent.position || meta.role;
   const role = agent.position ? `${agent.position}, ` : "";
   const title = `${agent.name} | ${position} | Binayah Properties`;
-  const description = bio ? bio.slice(0, 155) : meta.desc(agent.name, role);
+  // Trim on a word boundary and mark the cut. A bare slice(0,155) cut bios
+  // mid-word ("...in Dubai real estat") in every search snippet.
+  const description = bio
+    ? (bio.length <= 158 ? bio : bio.slice(0, 157).replace(/\s+\S*$/, "") + "…")
+    : meta.desc(agent.name, role);
   return {
     title,
     description,
