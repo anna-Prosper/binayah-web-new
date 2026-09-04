@@ -411,7 +411,14 @@ export default async function OfferPage({ params }: Props) {
              bg-card, not bg-background) keeps it from reading as a
              continuation of the highlight band above: a warm gold-to-cream
              gradient, same palette as the rest of the page, no pattern. ──── */}
-      {!!offer.explainer?.body?.length && (
+      {/* Section renders if EITHER the prose explainer OR the eligibility/Key
+          Facts list has content — the two used to be coupled to one gate
+          (offer.explainer), which meant any offer without an explainer block
+          (most of them) silently dropped its entire Key Facts list: developer,
+          price, payment plan, down payment, handover, eligibility — the exact
+          crawlable-text content search engines and quick-scanning buyers need.
+          That's now its own independent condition below. */}
+      {!!(offer.explainer?.body?.length || offer.eligibility?.length) && (
       <section
         className="relative overflow-hidden py-14 sm:py-20"
         style={{ background: "linear-gradient(180deg, #F7EFDC 0%, #FBF8F1 45%, #FBF8F1 100%)" }}
@@ -425,35 +432,39 @@ export default async function OfferPage({ params }: Props) {
         />
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
           <Reveal>
-            <h2 className="text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
-              {offer.explainer.heading}
-            </h2>
+            {!!offer.explainer?.body?.length && (
+              <>
+                <h2 className="text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
+                  {offer.explainer.heading}
+                </h2>
 
-            {offer.explainer.highlight && (
-              <div
-                className="mt-5 flex items-start gap-3 rounded-2xl px-5 py-4"
-                style={{
-                  background: "linear-gradient(135deg, rgba(212,168,71,0.14), rgba(212,168,71,0.05))",
-                  border: `1px solid rgba(212,168,71,0.35)`,
-                }}
-              >
-                <Sparkles className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
-                <p className="text-sm font-semibold leading-relaxed text-foreground sm:text-[15px]">
-                  {emphasizeStats(offer.explainer.highlight)}
-                </p>
-              </div>
+                {offer.explainer.highlight && (
+                  <div
+                    className="mt-5 flex items-start gap-3 rounded-2xl px-5 py-4"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(212,168,71,0.14), rgba(212,168,71,0.05))",
+                      border: `1px solid rgba(212,168,71,0.35)`,
+                    }}
+                  >
+                    <Sparkles className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
+                    <p className="text-sm font-semibold leading-relaxed text-foreground sm:text-[15px]">
+                      {emphasizeStats(offer.explainer.highlight)}
+                    </p>
+                  </div>
+                )}
+
+                <div className="mt-6 max-w-2xl space-y-5">
+                  {offer.explainer.body.map((p, i) => (
+                    <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+                      {emphasizeStats(p)}
+                    </p>
+                  ))}
+                </div>
+              </>
             )}
 
-            <div className="mt-6 max-w-2xl space-y-5">
-              {offer.explainer.body.map((p, i) => (
-                <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                  {emphasizeStats(p)}
-                </p>
-              ))}
-            </div>
-
             {!!offer.eligibility?.length && (
-              <div className="mt-9 border-t border-border/50 pt-8">
+              <div className={!!offer.explainer?.body?.length ? "mt-9 border-t border-border/50 pt-8" : ""}>
                 <Eyebrow>{t("detailEyebrow")}</Eyebrow>
                 <h3 className="mt-3 text-lg font-bold tracking-[-0.01em] text-foreground sm:text-xl">
                   {t("detailHeading")}
