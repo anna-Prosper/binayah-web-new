@@ -2,11 +2,15 @@ import DevelopersPageClient from "@/app/_clients/developers/DevelopersPageClient
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 3600;
 
 interface Props { params: Promise<{ locale: string }> }
 
+const CRUMB_HOME: Record<string, string> = {
+  en: "Home", fr: "Accueil", ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית",
+};
 const titles: Record<string, string> = {
   fr: "Promoteurs Immobiliers à Dubaï | Binayah Properties",
   en: "Dubai Property Developers | Binayah Properties",
@@ -49,10 +53,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const BATCH_SIZE = 24;
 
 export default async function DevelopersPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ page?: string }>;
 }) {
+  const { locale } = await params;
+  const lp = locale === "en" ? "" : `/${locale}`;
   const sp = await searchParams;
   const page = Math.max(1, Math.min(50, parseInt(sp.page ?? "1") || 1));
   const limit = page * BATCH_SIZE;
@@ -72,11 +80,21 @@ export default async function DevelopersPage({
   }
 
   return (
+    <>
+      {/* This hub had no BreadcrumbList, so it was ineligible for the breadcrumb
+          rich result its own child pages already qualify for. */}
+      <BreadcrumbJsonLd
+        items={[
+          { name: CRUMB_HOME[locale] ?? CRUMB_HOME.en, href: `${lp}/` },
+          { name: (titles[locale] ?? titles.en).split(" | ")[0], href: `${lp}/developers` },
+        ]}
+      />
     <DevelopersPageClient
       initialDevelopers={initialDevelopers}
       totalCount={totalCount}
       initialPage={page}
       batchSize={BATCH_SIZE}
     />
+    </>
   );
 }

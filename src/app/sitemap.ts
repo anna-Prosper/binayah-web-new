@@ -7,6 +7,7 @@ import { BUY_COMMUNITIES, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities"
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 import { CRYPTO_SLUGS } from "@/lib/crypto-pages";
 import { getAgents, isPublishableAgent } from "@/lib/agents";
+import { isIndexableNewsArticle } from "@/lib/news-topicality";
 
 import { AE_URL, RU_BASE, SITE_URL } from "@/lib/site";
 
@@ -316,6 +317,34 @@ function plainEntry(path: string, priority: number, changeFrequency: MetadataRou
   };
 }
 
+// News articles that are ALLOWED to be indexed. Must mirror the robots guard in
+// news/[slug]/page.tsx's generateMetadata — hence the shared
+// isIndexableNewsArticle() predicate rather than a second copy of the rules
+// here: off-topic scraped articles (restaurant round-ups, concerts, chip fabs)
+// are noindex,follow, so submitting them would be a straight contradiction.
+async function fetchIndexableNewsForSitemap(): Promise<{ slug: string; lastmod?: Date }[]> {
+  try {
+    // The API caps `limit` at 100 and ignores field projection, so this returns
+    // the whole feed with the title/excerpt/category the classifier needs.
+    const res = await serverFetch(serverApiUrl("/api/news?limit=1000&excludeCategory=Weekly%20Report"), 10_000);
+    if (!res.ok) return [];
+    const data = await res.json();
+    const items: {
+      slug?: string; title?: string; excerpt?: string; metaDescription?: string;
+      category?: string; tags?: string[]; updatedAt?: string; modifiedAt?: string; publishedAt?: string;
+    }[] = Array.isArray(data) ? data : [];
+    return items
+      .filter((d) => d.slug && isIndexableNewsArticle(d))
+      .map((d) => {
+        const raw = d.updatedAt || d.modifiedAt || d.publishedAt;
+        const t = raw ? new Date(raw) : null;
+        return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
+      });
+  } catch {
+    return [];
+  }
+}
+
 async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date }[]> {
   try {
     const res = await serverFetch(serverApiUrl(path), 10_000);
@@ -398,7 +427,8 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
       fetchProjectsForSitemap(),
       fetchAllListingSlugs(),
       // News feed excludes weekly market reports — those live under /pulse/reports.
-      fetchSlugs("/api/news?limit=1000&excludeCategory=Weekly%20Report&fields=slug,updatedAt"),
+      // Off-topic articles are dropped here (see fetchIndexableNewsForSitemap).
+      fetchIndexableNewsForSitemap(),
       fetchSlugs("/api/news?limit=1000&category=Weekly%20Report&fields=slug,updatedAt"),
       fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
       fetchSlugs("/api/developers?limit=500&fields=slug,updatedAt"),

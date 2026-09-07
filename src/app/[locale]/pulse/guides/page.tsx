@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { canonical, altLangs } from "@/lib/site";
 import { getTranslations } from "next-intl/server";
 import { loadGuides } from "@/lib/guides-data";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -34,11 +35,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function GuidesPage() {
+export default async function GuidesPage({ params }: Props) {
+  const { locale } = await params;
+  const lp = locale === "en" ? "" : `/${locale}`;
+  const t = await getTranslations({ locale, namespace: "pulseGuides" });
+  const tCrumb = await getTranslations({ locale, namespace: "breadcrumbs" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
   const guides = await loadGuides();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      {/* The guide detail pages carry a BreadcrumbList; this hub did not, so the
+          Home > Market Pulse > Guides trail broke at the level Google reads for
+          the breadcrumb rich result. */}
+      <BreadcrumbJsonLd
+        items={[
+          { name: tCrumb("home"), href: `${lp}/` },
+          { name: tNav("pulse"), href: `${lp}/pulse` },
+          { name: `${t("title")} ${t("titleItalic")}`.trim(), href: `${lp}/pulse/guides` },
+        ]}
+      />
       <PulseEmirateNav />
       <GuidesClient guides={guides} />
       <NewsletterStrip source="guides-index" />

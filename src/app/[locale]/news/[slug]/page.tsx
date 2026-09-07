@@ -7,6 +7,7 @@ import { canonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { sanitizeArticleHtml } from "@/lib/sanitize";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { isIndexableNewsArticle } from "@/lib/news-topicality";
 
 export const revalidate = 3600;
 // Pre-render the most recent articles (the hot pages) at build so they never hit
@@ -29,7 +30,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug, locale } = await params;
   const article = await getNewsArticle(slug, locale);
   if (!article) return { title: "Not Found" };
+  // The /news feed is a general UAE news scrape, so a chunk of it (restaurant
+  // openings, concerts, chip fabs) has nothing to do with property. Those pages
+  // stay live and readable, but they are noindexed so they stop diluting the
+  // domain's topical authority and stop eating crawl budget — follow stays on,
+  // so they still pass link equity to the property pages they link to.
+  // sitemap.ts imports this SAME predicate, so a noindexed article is never
+  // submitted (a drift between the two produces GSC's "Submitted URL marked
+  // noindex"). Classification runs on the English base fields, which every
+  // locale shares, so all 7 locales agree.
+  const indexable = isIndexableNewsArticle(article);
   return {
+    ...(indexable ? {} : { robots: { index: false, follow: true } }),
     title: article.metaTitle || `${article.title} | Binayah Properties`,
     description: article.metaDescription || article.excerpt,
     alternates: {
