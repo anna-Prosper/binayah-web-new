@@ -76,7 +76,13 @@ interface Props {
 const WA = "https://wa.me/971555099157";
 const year = (d?: string | null) => { if (!d) return null; const dt = new Date(d); return isNaN(dt.getTime()) ? d : dt.getFullYear(); };
 const projSlug = (name: string) => name.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-");
-const isPlaceholder = (v?: string) => !v || /^(n\/?a|tba|tbd|not specified|not available|unknown|-)$/i.test(v.trim());
+// Widened after an audit found "Not publicly specified", "Varied" and "Upon
+// request" rendering as facts in the At-a-glance table and as hero stats.
+const isPlaceholder = (v?: string) =>
+  !v ||
+  /^(n\/?a|tba|tbd|not specified|not publicly specified|not available|unknown|varied|upon request|to be announced|-)$/i.test(
+    v.trim(),
+  );
 
 // The enrichment model named Binayah as the master developer of six
 // communities (Dubai Marina, Business Bay, Al Furjan and others). Binayah is
@@ -118,6 +124,13 @@ export default async function CommunityRichClient({ community, projects, forSale
   const overview = aiOverview.length >= dbDesc.length ? aiOverview : dbDesc;
   const kf = e.keyFacts || {};
   const priceFrom = (e.highlights || []).find((h) => /price/i.test(h.label))?.value;
+
+  // subCommunities had no placeholder filter at all, so "Not specified"
+  // shipped as a district chip. Also drop any entry that just repeats the
+  // community itself — several records listed their own name.
+  const subCommunities = (e.subCommunities || []).filter(
+    (v) => !isPlaceholder(v) && v.trim().toLowerCase() !== (name || "").trim().toLowerCase(),
+  );
 
   const glanceRows = ([
     [t("glDeveloper"), isOwnBrand(kf.developer) ? undefined : kf.developer], [t("glCommunityType"), kf.communityType], [t("glLandArea"), kf.landArea],
@@ -432,10 +445,10 @@ export default async function CommunityRichClient({ community, projects, forSale
                 })}
               </div>
             ) : null}
-            {e.subCommunities?.length ? (
+            {subCommunities.length ? (
               <div className="mt-8 flex flex-wrap gap-2.5">
                 <span className="text-sm font-semibold text-foreground mr-1 self-center flex items-center gap-1.5"><Layers className="h-4 w-4 text-accent" />{t("districts")}</span>
-                {e.subCommunities.map((s, i) => <span key={i} className="rounded-lg bg-muted/60 border border-border/50 px-3 py-1.5 text-sm text-foreground">{s}</span>)}
+                {subCommunities.map((s, i) => <span key={i} className="rounded-lg bg-muted/60 border border-border/50 px-3 py-1.5 text-sm text-foreground">{s}</span>)}
               </div>
             ) : null}
           </section>
