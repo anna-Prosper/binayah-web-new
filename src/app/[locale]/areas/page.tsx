@@ -1,67 +1,25 @@
-import CommunitiesPageClient from "@/app/_clients/communities/CommunitiesPageClient";
-import { fetchPlaceCards } from "../communities/fetchPlaces";
-import type { Metadata } from "next";
-import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
-import { CollectionPageJsonLd } from "@/components/JsonLd";
+import { redirect } from "next/navigation";
 
-export const revalidate = 3600;
-
-interface Props { params: Promise<{ locale: string }> }
-
-const titles: Record<string, string> = {
-  fr: "Quartiers & Districts de Dubaï | Binayah Properties",
-  en: "Dubai Areas & Districts | Binayah Properties",
-  ru: "Районы и округа Дубая | Цены на недвижимость | Binayah",
-  ar: "مناطق وأحياء دبي | بناية للعقارات",
-  zh: "迪拜地区与街区 | Binayah Properties",
-  vi: "Khu vực & Quận ở Dubai | Binayah Properties",
-  he: "אזורים ורובעים בדובאי | Binayah Properties",
-};
-const descriptions: Record<string, string> = {
-  fr: "Explorez tous les quartiers et districts de Dubaï, Downtown Dubaï, Dubai Marina, Jumeirah, Business Bay, Palm Jumeirah et plus encore. Comparez les prix et trouvez des propriétés par quartier.",
-  en: "Explore all Dubai areas and districts, Downtown Dubai, Dubai Marina, Jumeirah, Business Bay, Palm Jumeirah and more. Compare prices and find properties by area.",
-  ru: "Изучите все районы Дубая, Даунтаун, Дубай Марина, Джумейра, Бизнес-Бей, Пальма Джумейра и другие. Сравните цены и найдите недвижимость по районам.",
-  ar: "استكشف جميع مناطق وأحياء دبي, وسط المدينة، دبي مارينا، جميرا، الخليج التجاري، نخلة جميرا والمزيد.",
-  zh: "探索迪拜所有地区和街区, , 市中心、迪拜marina、朱美拉、商业湾、棕榈岛等。比较价格，按区域查找房产。",
-  vi: "Khám phá tất cả các khu vực và quận ở Dubai, Downtown Dubai, Dubai Marina, Jumeirah, Business Bay, Palm Jumeirah và nhiều hơn nữa. So sánh giá và tìm bất động sản theo khu vực.",
-  he: "חקור את כל האזורים והמחוזות בדובאי, Downtown Dubai, Dubai Marina, Jumeirah, Business Bay, Palm Jumeirah ועוד. השווה מחירים ומצא נכסים לפי אזור.",
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+/**
+ * /areas is a permanent redirect to /communities.
+ *
+ * It rendered the same CommunitiesPageClient over the same 73 cards — 1,637
+ * words against /communities' 1,620, differing only in the H1 ("Premier Areas"
+ * vs "Premier Communities") and the metadata. It was also orphaned: absent from
+ * the sitemap and unlinked from nav and footer, so it accrued nothing while
+ * splitting topical signals with the page it duplicates.
+ *
+ * Its children already redirected here — /areas/[slug] has forwarded to
+ * /communities/[slug] all along — so the index was the last piece of the
+ * section still serving a duplicate. Redirecting consolidates any equity the
+ * duplicate held rather than stranding it behind a noindex.
+ */
+export default async function AreasPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
-  return {
-    title: titles[locale] || titles.en,
-    description: descriptions[locale] || descriptions.en,
-    alternates: {
-      canonical: canonical(locale, "/areas"),
-      languages: altLangs("/areas"),
-    },
-    openGraph: {
-      title: titles[locale] || titles.en,
-      description: descriptions[locale] || descriptions.en,
-      url: canonical(locale, "/areas"),
-      type: "website",
-      locale: OG_LOCALE[locale] ?? "en_AE",
-      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
-    },
-  };
-}
-
-export default async function AreasPage({ params }: Props) {
-  const { locale } = await params;
-  const merged = await fetchPlaceCards("area");
-  const items = merged
-    .filter((c) => c.slug && c.name)
-    .map((c) => ({ url: `/areas/${c.slug}`, name: c.name }));
-  return (
-    <>
-      <CollectionPageJsonLd
-        name={(titles[locale] || titles.en).split(" | ")[0]}
-        description={descriptions[locale] || descriptions.en}
-        url="/areas"
-        items={items}
-      />
-      <CommunitiesPageClient communities={merged} kind="area" />
-    </>
-  );
+  const lp = locale === "en" ? "" : `/${locale}`;
+  redirect(`${lp}/communities`);
 }

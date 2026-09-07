@@ -10,6 +10,7 @@ import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { getAgents } from "@/lib/agents";
 import { waHref } from "@/lib/whatsapp";
 import { SUPPORT_TEAM } from "@/lib/support-team";
+import TeamDirectoryClient, { type LanguageOption } from "./TeamDirectoryClient";
 
 export const revalidate = 3600;
 
@@ -96,6 +97,14 @@ interface TeamCopy {
   salesHeading: string;
   supportHeading: string;
   supportIntro: string;
+  // Language-facet control. Language NAMES come from the agent data and are
+  // never translated; only the chrome around them is.
+  filterLabel: string;
+  allLangs: string;
+  clearFilter: string;
+  noLangs: string;
+  showing: string; // "{shown}" / "{total}" placeholders
+  noMatch: string;
 }
 
 const TEAM_L: Record<string, TeamCopy> = {
@@ -118,6 +127,12 @@ const TEAM_L: Record<string, TeamCopy> = {
     salesHeading: "Our property agents in Dubai",
     supportHeading: "Operations & Support",
     supportIntro: "The people behind the scenes keeping every deal, viewing and handover running smoothly.",
+    filterLabel: "Filter by language",
+    allLangs: "All languages",
+    clearFilter: "Clear",
+    noLangs: "Language not listed",
+    showing: "Showing {shown} of {total} agents",
+    noMatch: "No agents match this language.",
   },
   fr: {
     crumb: "Agents immobiliers",
@@ -138,6 +153,12 @@ const TEAM_L: Record<string, TeamCopy> = {
     salesHeading: "Nos agents immobiliers à Dubaï",
     supportHeading: "Opérations et support",
     supportIntro: "Les personnes en coulisses qui font que chaque transaction, visite et remise se déroule sans accroc.",
+    filterLabel: "Filtrer par langue",
+    allLangs: "Toutes les langues",
+    clearFilter: "Effacer",
+    noLangs: "Langue non renseignée",
+    showing: "{shown} agents affichés sur {total}",
+    noMatch: "Aucun agent ne correspond à cette langue.",
   },
   ru: {
     crumb: "Агенты по недвижимости",
@@ -158,6 +179,12 @@ const TEAM_L: Record<string, TeamCopy> = {
     salesHeading: "Наши агенты по недвижимости в Дубае",
     supportHeading: "Операции и поддержка",
     supportIntro: "Люди за кулисами, благодаря которым каждая сделка, просмотр и передача проходят гладко.",
+    filterLabel: "Фильтр по языку",
+    allLangs: "Все языки",
+    clearFilter: "Сбросить",
+    noLangs: "Язык не указан",
+    showing: "Показано {shown} из {total} агентов",
+    noMatch: "Нет агентов, говорящих на этом языке.",
   },
   ar: {
     crumb: "وكلاء العقارات",
@@ -178,6 +205,12 @@ const TEAM_L: Record<string, TeamCopy> = {
     salesHeading: "وكلاء العقارات لدينا في دبي",
     supportHeading: "العمليات والدعم",
     supportIntro: "الفريق خلف الكواليس الذي يضمن سير كل صفقة ومعاينة وتسليم بسلاسة.",
+    filterLabel: "تصفية حسب اللغة",
+    allLangs: "كل اللغات",
+    clearFilter: "مسح",
+    noLangs: "اللغة غير مذكورة",
+    showing: "عرض {shown} من أصل {total} وكيلاً",
+    noMatch: "لا يوجد وكلاء يتحدثون هذه اللغة.",
   },
   zh: {
     crumb: "房产经纪人",
@@ -198,6 +231,12 @@ const TEAM_L: Record<string, TeamCopy> = {
     salesHeading: "我们的迪拜房产顾问",
     supportHeading: "运营与支持",
     supportIntro: "幕后团队，确保每一笔交易、看房与交接顺利进行。",
+    filterLabel: "按语言筛选",
+    allLangs: "所有语言",
+    clearFilter: "清除",
+    noLangs: "未注明语言",
+    showing: "显示 {total} 位顾问中的 {shown} 位",
+    noMatch: "没有符合该语言的顾问。",
   },
   vi: {
     crumb: "Môi giới bất động sản",
@@ -218,6 +257,12 @@ const TEAM_L: Record<string, TeamCopy> = {
     salesHeading: "Chuyên viên bất động sản của chúng tôi tại Dubai",
     supportHeading: "Vận hành & hỗ trợ",
     supportIntro: "Những người phía sau giúp mọi giao dịch, buổi xem nhà và bàn giao diễn ra suôn sẻ.",
+    filterLabel: "Lọc theo ngôn ngữ",
+    allLangs: "Tất cả ngôn ngữ",
+    clearFilter: "Xóa bộ lọc",
+    noLangs: "Chưa ghi ngôn ngữ",
+    showing: "Hiển thị {shown} trong {total} chuyên viên",
+    noMatch: "Không có chuyên viên nào phù hợp với ngôn ngữ này.",
   },
   he: {
     crumb: 'סוכני נדל"ן',
@@ -238,6 +283,12 @@ const TEAM_L: Record<string, TeamCopy> = {
     salesHeading: 'סוכני הנדל"ן שלנו בדובאי',
     supportHeading: "תפעול ותמיכה",
     supportIntro: "האנשים שמאחורי הקלעים שדואגים שכל עסקה, סיור ומסירה יתנהלו בצורה חלקה.",
+    filterLabel: "סינון לפי שפה",
+    allLangs: "כל השפות",
+    clearFilter: "נקה",
+    noLangs: "השפה לא צוינה",
+    showing: "מוצגים {shown} מתוך {total} סוכנים",
+    noMatch: "אין סוכנים התואמים לשפה זו.",
   },
 };
 
@@ -265,6 +316,44 @@ export default async function TeamPage({ params }: Props) {
         .filter(Boolean),
     ),
   );
+  // ── Language facet ────────────────────────────────────────────────────────
+  // Built from `teamLanguages` above (the same de-duplicated roster list the
+  // intro copy uses), so the chips can never drift from what the cards say.
+  // Nothing here is hardcoded and nothing is fetched: the filter is a pure
+  // client-side facet over the cards this server render already emits.
+  const langToken = (l: string, i: number) => {
+    const t = l.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    // A name with no Latin characters would slug to "" — keep it addressable.
+    return t || `lang-${i}`;
+  };
+  const NO_LANG = "__none";
+  const tokenByLang = new Map(teamLanguages.map((l, i) => [l, langToken(l, i)]));
+  // The 2-of-36 agents with no `languages` are bucketed under NO_LANG rather
+  // than dropped: they stay in the default (unfiltered) view like everyone
+  // else, and they remain reachable through their own labelled chip instead of
+  // silently disappearing the moment any language is picked.
+  const tokensFor = (langs?: string[]) => {
+    const t = (langs ?? [])
+      .map((l) => tokenByLang.get(l.trim()))
+      .filter((t): t is string => !!t);
+    return t.length ? Array.from(new Set(t)) : [NO_LANG];
+  };
+  const langCounts = new Map<string, number>();
+  for (const a of sortedAgents) {
+    for (const t of tokensFor(a.languages)) langCounts.set(t, (langCounts.get(t) ?? 0) + 1);
+  }
+  const languageOptions: LanguageOption[] = teamLanguages
+    .map((l, i) => {
+      const token = tokenByLang.get(l) ?? langToken(l, i);
+      return { token, label: l, count: langCounts.get(token) ?? 0 };
+    })
+    .filter((o) => o.count > 0)
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  const noLangCount = langCounts.get(NO_LANG) ?? 0;
+  if (noLangCount > 0) {
+    languageOptions.push({ token: NO_LANG, label: L.noLangs, count: noLangCount });
+  }
+
   const linkCls = "text-primary underline underline-offset-2 hover:no-underline";
 
   return (
@@ -307,6 +396,20 @@ export default async function TeamPage({ params }: Props) {
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight mb-6">{L.salesHeading}</h2>
+          {/* The grid below is server-rendered in full and passed through the
+              client facet as children — every agent card, and therefore every
+              profile link, is in the served HTML regardless of filter state. */}
+          <TeamDirectoryClient
+            options={languageOptions}
+            total={sortedAgents.length}
+            labels={{
+              filter: L.filterLabel,
+              all: L.allLangs,
+              clear: L.clearFilter,
+              showing: L.showing,
+              noMatch: L.noMatch,
+            }}
+          >
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {sortedAgents.map((a) => {
               const tel = (a.mobile || "").replace(/[^\d+]/g, "");
@@ -314,6 +417,7 @@ export default async function TeamPage({ params }: Props) {
               return (
                 <div
                   key={a.slug}
+                  data-agent-langs={tokensFor(a.languages).join(" ")}
                   className="group flex flex-col rounded-2xl border border-border/60 bg-card overflow-hidden hover:border-primary/40 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                 >
                   {/* Photo → profile */}
@@ -390,6 +494,7 @@ export default async function TeamPage({ params }: Props) {
               );
             })}
           </div>
+          </TeamDirectoryClient>
           {sortedAgents.length === 0 && (
             <p className="text-sm text-muted-foreground">{L.empty}</p>
           )}
