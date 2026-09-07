@@ -155,6 +155,7 @@ export const COMMUNITY_COORDS: Record<string, [number, number]> = {
   // ~278 sq km no single centroid gives a drive time worth publishing.
   "dubai islands":             [25.3179, 55.3263],
   "mohammad bin rashid city":  [25.1641, 55.2857],
+  "mohammed bin rashid city":  [25.1641, 55.2857],
   "jvt":                       [25.0449, 55.182],
   "majan":                     [25.0929, 55.3185],
   "meydan":                    [25.1629, 55.3143],
