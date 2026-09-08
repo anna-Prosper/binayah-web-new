@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import PropertyDetailClient from "@/app/_clients/property/[slug]/PropertyDetailClient";
 import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
@@ -84,6 +84,18 @@ export default async function PropertyPage({
   const data = await getListing(slug);
   if (!data) return notFound();
   const { listing, similarListings } = data;
+
+  // Retired legacy-only listings (not migrated to the live secondary source) are
+  // 301'd into the matching community search so users land on live inventory and
+  // Google consolidates the old URLs. Overlapping slugs now resolve to secondary
+  // (tagged _source: "secondary") and are unaffected.
+  if (listing._source === "legacy") {
+    const lp = locale === "en" ? "" : `/${locale}`;
+    const base = String(listing.listingType || "").toLowerCase() === "rent" ? "rent" : "buy";
+    const q = listing.community ? `?locations=${encodeURIComponent(listing.community)}` : "";
+    permanentRedirect(`${lp}/${base}${q}`);
+  }
+
   const nonce = await getNonce();
 
   const jsonLd = {
