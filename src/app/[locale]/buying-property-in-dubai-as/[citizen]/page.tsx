@@ -25,6 +25,13 @@ export function generateStaticParams() {
 // naive slugification produced /buy-property-in/jbr, /jvc, /the-greens and
 // /arjan, none of which exist in BUY_COMMUNITIES, so every one 404'd. Areas
 // with no community entry are omitted below rather than linked into a 404.
+// "as a Indian Citizen" reads as a typo in the H1 and the <title>. The demonym
+// is data, so pick the article from it rather than hardcoding "a" — this hits
+// American, Australian, Egyptian, Indian and Israeli today.
+function articleFor(demonym: string): string {
+  return /^[AEIOU]/i.test(demonym) ? "an" : "a";
+}
+
 const AREA_COMMUNITY_SLUGS: Record<string, string> = {
   "Dubai Marina": "dubai-marina",
   "Downtown Dubai": "downtown-dubai",
@@ -609,7 +616,7 @@ export async function generateMetadata({
     ? `קניית נדל"ן בדובאי לאזרחי ${b.citizen} ${b.flag} | מדריך מלא | Binayah`
     : isFr
     ? `Acheter un bien immobilier à Dubaï en tant que ressortissant ${b.citizen} ${b.flag} | Guide complet | Binayah`
-    : `Buying Property in Dubai as a ${b.citizen} Citizen ${b.flag} | Complete Guide | Binayah`;
+    : `Buying Property in Dubai as ${articleFor(b.citizen)} ${b.citizen} Citizen ${b.flag} | Complete Guide | Binayah`;
 
   const description = isRu
     ? `Полное руководство для граждан по покупке недвижимости в Дубае: правовой статус, финансирование, налоги, репатриация средств и предпочтительные районы.`
@@ -712,7 +719,7 @@ export default async function ForeignBuyerPage({
             {c.introBadge}{" "}
             <span className="font-light text-primary-foreground/70">
               {locale === "en"
-                ? `as a ${b.citizen} Citizen`
+                ? `as ${articleFor(b.citizen)} ${b.citizen} Citizen`
                 : locale === "ru"
                 ? `для граждан ${b.country === "Russian" ? "России" : b.country}`
                 : locale === "ar" // vi branch below
