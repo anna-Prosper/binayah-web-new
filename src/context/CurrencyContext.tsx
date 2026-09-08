@@ -9,7 +9,7 @@ type Currency = (typeof SUPPORTED)[number];
 
 // Per 1 AED. Fallbacks only — live daily rates from /api/currency-rates override these.
 const FALLBACK_RATES: Record<string, number> = {
-  AED: 1, USD: 0.2723, EUR: 0.2512, GBP: 0.2155, CNY: 1.9788, RUB: 24.89, ILS: 0.8033, VND: 7137, SGD: 0.3487, INR: 24.05, PKR: 76.9,
+  AED: 1, USD: 0.2723, EUR: 0.2343, GBP: 0.2011, CNY: 1.8321, RUB: 23.4444, ILS: 0.8207, VND: 7072, SGD: 0.3447, INR: 25.745, PKR: 75.6127,
 };
 
 // Default currency per language, used until the visitor picks one explicitly.
