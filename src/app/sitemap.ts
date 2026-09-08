@@ -573,6 +573,9 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
     // Area ranking pages.
     withAlternates("/highest-yield-areas-in-dubai", 0.7, "weekly", now),
     withAlternates("/most-affordable-areas-in-dubai", 0.7, "weekly", now),
+    // Hub for the per-nationality buyer guides. Without it the whole cluster is
+    // orphaned: the profile pages carry no inbound internal links at all.
+    withAlternates("/buying-property-in-dubai-as", 0.7, "monthly", now),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];

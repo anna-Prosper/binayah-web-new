@@ -95,6 +95,10 @@ const Footer = () => {
             <li><Link href="/communities" className="hover:text-accent transition-colors">{t("links.communities")}</Link></li>
             <li><Link href="/developers" className="hover:text-accent transition-colors">{t("links.developers")}</Link></li>
             <li><Link href="/valuation" className="hover:text-accent transition-colors">{t("links.valuation")}</Link></li>
+            {/* Hub for the per-nationality buyer guides. Those 12+ pages were
+                reachable only from the sitemap; this is their one crawlable
+                inbound link from every page on the site. */}
+            <li><Link href="/buying-property-in-dubai-as" className="hover:text-accent transition-colors">{t("links.foreignBuyers")}</Link></li>
           </ul>
         </div>
 
