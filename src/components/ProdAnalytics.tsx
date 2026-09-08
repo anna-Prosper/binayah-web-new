@@ -31,12 +31,27 @@ export default function ProdAnalytics({ nonce }: { nonce: string }) {
       <Script id="gtm-init" strategy="afterInteractive" nonce={nonce}>
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
       </Script>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="lazyOnload" nonce={nonce} />
-      <Script id="ga-init" strategy="lazyOnload" nonce={nonce}>
+      {/*
+        No direct gtag.js load here on purpose. The GTM container above already
+        loads its own copy of gtag.js and has a GA4 config tag for ${GA_ID} —
+        confirmed via PageSpeed Insights' network trace, which showed gtag.js
+        downloading twice (~190KB each) for the same measurement ID, the second
+        request carrying GTM's own cache-buster ("&gtm=...") signature. Loading
+        it again here was pure duplication: same script fetched and executed
+        twice, and a real risk of GA4 double-counting page_views since two
+        independent gtag instances would each fire their own hit.
+
+        The dataLayer + bare gtag() shim below still has to stay — src/lib/gtag.ts
+        (trackEvent/trackLead/trackCta, used by every lead-capture and CTA-click
+        event on the site) calls window.gtag() directly. GTM's internally-loaded
+        gtag.js reads from this same dataLayer regardless of which script defines
+        the push shim, so custom events keep flowing; only the redundant script
+        tag and the redundant gtag('config', ...) call are gone.
+      */}
+      <Script id="ga-shim" strategy="afterInteractive" nonce={nonce}>
         {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_ID}');`}
+window.gtag = gtag;`}
       </Script>
       <Script id="clarity-init" strategy="lazyOnload" nonce={nonce}>
         {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "${CLARITY_ID}");`}
