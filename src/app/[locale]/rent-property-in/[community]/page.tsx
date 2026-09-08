@@ -2,9 +2,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
-import { serverApiUrl, serverFetch } from "@/lib/api";
+import { serverApiUrl, serverFetch, getDldBuildings } from "@/lib/api";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
-import { getCommunityStats, buildMarketNote } from "@/lib/market";
+import { getCommunityStats, buildMarketNote, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
+import CommunityStatsBand from "@/components/CommunityStatsBand";
+import { getNonce } from "@/lib/nonce";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
@@ -125,25 +127,49 @@ export default async function RentInCommunityPage({
     console.warn("[RentInCommunityPage] API unavailable:", (err as Error).message);
   }
 
-  // When no rentals exist, load off-plan projects and a cross-community rental sample.
+  // When no rentals exist, load off-plan projects for this community. The
+  // generic Dubai-wide "rentals available" fallback below is a last resort,
+  // fetched only when off-plan is also empty — see the identical fix (and its
+  // rationale) on /buy-property-in: it used to run unconditionally whenever
+  // totalCount was 0, so every zero-inventory community page rendered the
+  // same unfiltered top-6 Dubai rentals regardless of which community it was,
+  // a cross-page duplicate-content signal.
   let offPlanProjects: any[] = [];
   let similarListings: any[] = [];
   if (totalCount === 0) {
     try {
-      const [projRes, similarRes] = await Promise.all([
-        serverFetch(serverApiUrl(`/api/projects?community=${encodeURIComponent(c.name)}&limit=6`)),
-        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&limit=6`)),
-      ]);
+      const projRes = await serverFetch(serverApiUrl(`/api/projects?community=${encodeURIComponent(c.name)}&limit=6`));
       if (projRes.ok) offPlanProjects = await projRes.json();
-      if (similarRes.ok) {
-        const data = await similarRes.json();
-        similarListings = Array.isArray(data) ? data : (data.results ?? []);
-      }
     } catch { /* best-effort */ }
+
+    if (offPlanProjects.length === 0) {
+      try {
+        const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Rent&limit=6`));
+        if (similarRes.ok) {
+          const data = await similarRes.json();
+          similarListings = Array.isArray(data) ? data : (data.results ?? []);
+        }
+      } catch { /* best-effort */ }
+    }
   }
 
   // Rent-side DLD market note — diverges this page from its /buy-property-in twin.
-  const marketNote = buildMarketNote(c.name, await getCommunityStats(apiCommunity), "rent", locale);
+  const stats = await getCommunityStats(apiCommunity);
+  const marketNote = buildMarketNote(c.name, stats, "rent", locale);
+  // Data-driven FAQs are safe here despite citing sale-side figures — each
+  // question is self-labeled ("average price per square foot", "gross rental
+  // yield"), unlike the removed price-range/yield tiles above which showed
+  // bare, unlabeled BUY numbers that read as if they were about renting.
+  const faqs = buildCommunityFaqs(c.name, stats, locale);
+  const nonce = await getNonce();
+
+  let areaBuildings: { slug: string; name: string }[] = [];
+  try {
+    areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(apiCommunity))}&limit=12&sortBy=sales`)).results
+      .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
+      .slice(0, 12)
+      .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
+  } catch { /* best-effort */ }
 
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
@@ -267,6 +293,18 @@ export default async function RentInCommunityPage({
     </div>
   );
 
+  // FAQs + building links only — no numeric price/yield card grid. Passing
+  // stats={null} here (while faqs/areaBuildings above were still built from
+  // the real stats) suppresses just CommunityStatsBand's unlabeled "Avg Sale
+  // Price" / "Avg Price/sqft" tiles, the same class of buy/rent conflation
+  // the comment above the removed price-range tiles already called out.
+  const headerSlot = (
+    <>
+      {seoBlock}
+      <CommunityStatsBand name={c.name} stats={null} faqs={faqs} buildings={areaBuildings} localePrefix={localePrefix} nonce={nonce} />
+    </>
+  );
+
   return (
     <>
       <BreadcrumbJsonLd items={breadcrumbs} />
@@ -279,7 +317,7 @@ export default async function RentInCommunityPage({
         initialPage={1}
         batchSize={BATCH_SIZE}
         community={apiCommunity}
-        headerSlot={seoBlock}
+        headerSlot={headerSlot}
         emptyState={emptyState}
       />
     </>
