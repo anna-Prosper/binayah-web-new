@@ -2,9 +2,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
-import { serverApiUrl, serverFetch } from "@/lib/api";
+import { serverApiUrl, serverFetch, getDldBuildings } from "@/lib/api";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities";
-import { getCommunityStats, buildMarketNote } from "@/lib/market";
+import { getCommunityStats, buildMarketNote, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
+import CommunityStatsBand from "@/components/CommunityStatsBand";
+import { getNonce } from "@/lib/nonce";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
@@ -132,25 +134,52 @@ export default async function BuyInCommunityPage({
     console.warn("[BuyInCommunityPage] API unavailable:", (err as Error).message);
   }
 
-  // When no secondary listings exist, load off-plan projects and a cross-community sample.
+  // When no secondary listings exist, load off-plan projects for this community.
+  // The generic Dubai-wide "similar listings" fallback below is a LAST resort,
+  // fetched only when off-plan is also empty — it used to run unconditionally
+  // whenever totalCount was 0, rendering the same unfiltered top-6 sale listings
+  // on every zero-inventory community page regardless of which community it was.
+  // That cross-page duplicate block was flagged as a likely cause of Google
+  // "crawled - currently not indexed" verdicts on thin community pages (e.g.
+  // Town Square, which has 6 real off-plan projects but was also getting this
+  // identical generic block on top of them).
   let offPlanProjects: any[] = [];
   let similarListings: any[] = [];
   if (totalCount === 0) {
     try {
-      const [projRes, similarRes] = await Promise.all([
-        serverFetch(serverApiUrl(`/api/projects?community=${encodeURIComponent(c.name)}&limit=6`)),
-        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&limit=6`)),
-      ]);
+      const projRes = await serverFetch(serverApiUrl(`/api/projects?community=${encodeURIComponent(c.name)}&limit=6`));
       if (projRes.ok) offPlanProjects = await projRes.json();
-      if (similarRes.ok) {
-        const data = await similarRes.json();
-        similarListings = Array.isArray(data) ? data : (data.results ?? []);
-      }
     } catch { /* best-effort */ }
+
+    if (offPlanProjects.length === 0) {
+      try {
+        const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Sale&limit=6`));
+        if (similarRes.ok) {
+          const data = await similarRes.json();
+          similarListings = Array.isArray(data) ? data : (data.results ?? []);
+        }
+      } catch { /* best-effort */ }
+    }
   }
 
-  // Sale-side DLD market note — diverges this page from its /rent-property-in twin.
-  const marketNote = buildMarketNote(c.name, await getCommunityStats(apiCommunity), "buy", locale);
+  // Real market depth: same DLD stats object powers both the sale-side market
+  // note below and the data-driven FAQ set + stats band further down — one
+  // fetch, reused, rather than the market note computing its own copy.
+  const stats = await getCommunityStats(apiCommunity);
+  const marketNote = buildMarketNote(c.name, stats, "buy", locale);
+  const faqs = buildCommunityFaqs(c.name, stats, locale);
+  const nonce = await getNonce();
+
+  // Real DLD buildings in this area — crawlable links that pass hub equity to
+  // /building/[slug] pages, same pattern as /off-plan-in. Hidden when the area
+  // name doesn't match a DLD record.
+  let areaBuildings: { slug: string; name: string }[] = [];
+  try {
+    areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(apiCommunity))}&limit=12&sortBy=sales`)).results
+      .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
+      .slice(0, 12)
+      .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
+  } catch { /* best-effort */ }
 
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
@@ -297,6 +326,18 @@ export default async function BuyInCommunityPage({
     </div>
   );
 
+  // Real, data-driven depth appended after the intro copy: DLD stats snapshot,
+  // FAQ accordion (+ FAQPage schema for rich results), and buildings-in-area
+  // links — the same CommunityStatsBand already used on /off-plan-in and
+  // /communities, just not previously wired into this template even though the
+  // page already fetches (or can trivially fetch) everything it needs.
+  const headerSlot = (
+    <>
+      {seoBlock}
+      <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} buildings={areaBuildings} localePrefix={localePrefix} nonce={nonce} />
+    </>
+  );
+
   return (
     <>
       <BreadcrumbJsonLd items={breadcrumbs} />
@@ -309,7 +350,7 @@ export default async function BuyInCommunityPage({
         initialPage={1}
         batchSize={BATCH_SIZE}
         community={apiCommunity}
-        headerSlot={seoBlock}
+        headerSlot={headerSlot}
         emptyState={emptyState}
       />
     </>

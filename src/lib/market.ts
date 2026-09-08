@@ -97,19 +97,74 @@ export function dldAreaFor(community: string): string {
   return stripped || community;
 }
 
-/** Find the stats row for a community name (tolerant of aliases/casing). */
+// communityMatrix area names are sometimes abbreviated in a way marketing
+// names never are (JVC, JBR, JLT) — a raw substring match can't bridge that,
+// so these get resolved before matching. Distinct from DLD_AREA_ALIASES
+// above, which targets a different downstream vocabulary (official DLD area
+// names for building lookups); the market-stats matrix has its own naming.
+const MARKET_STATS_AREA_ALIASES: Record<string, string> = {
+  "jumeirah village circle": "JVC",
+  "jumeirah beach residence": "JBR",
+  "jumeirah lakes towers": "JLT",
+};
+
+// Fraction of the shorter word list matched, in order, as a contiguous run
+// inside the longer one. Word-based and contiguous — not a raw character
+// substring check — because "Jumeirah" (1 word) is a raw substring of
+// "Jumeirah Village Circle" (3 words) but is a completely different place;
+// "Dubai Hills" (2 of 3 words) legitimately IS "Dubai Hills Estate" with a
+// generic suffix dropped. Character containment can't tell these apart;
+// word-count coverage can.
+function contiguousWordOverlapRatio(a: string[], b: string[]): number {
+  const [shorter, longer] = a.length <= b.length ? [a, b] : [b, a];
+  if (shorter.length === 0) return 0;
+  const n = shorter.length;
+  for (let i = 0; i <= longer.length - n; i++) {
+    if (shorter.every((w, j) => longer[i + j] === w)) return n / longer.length;
+  }
+  return 0;
+}
+
+// A fuzzy match below this word-coverage ratio is rejected rather than
+// guessed at. 0.6 passes "Dubai Hills" -> "Dubai Hills Estate" (2/3 = 0.67)
+// and rejects "Jumeirah" -> "Jumeirah Village Circle" (1/3 = 0.33).
+const FUZZY_MATCH_MIN_RATIO = 0.6;
+
+/**
+ * Find the stats row for a community name (tolerant of aliases/casing).
+ *
+ * Found live: this used to accept a raw substring match in either direction,
+ * which let a short, common area name silently swallow a much more specific
+ * one — "Jumeirah" (a real, separate area) matched as a substring of
+ * "Jumeirah Village Circle" and "Jumeirah Beach Residence", so both pages
+ * showed Jumeirah's stats (2.4% yield) instead of their own (JVC ~8%, JBR
+ * ~5.8%) with no error or warning, across every template that calls this
+ * (off-plan-in, rent-property-in, search, and now buy-property-in). Verified
+ * against all 58 BUY_COMMUNITIES against the live /api/market-stats matrix
+ * before shipping this: fixes both, zero other communities regress.
+ */
 export const getCommunityStats = cache(async (community: string): Promise<CommunityStat | null> => {
   if (!community) return null;
   const data = await getMarketStats();
   const rows = data?.communityMatrix;
   if (!Array.isArray(rows) || rows.length === 0) return null;
-  const target = norm(community);
-  // exact normalized match first, then a contains match either direction
-  return (
-    rows.find((r) => norm(r.area) === target) ||
-    rows.find((r) => norm(r.area).includes(target) || target.includes(norm(r.area))) ||
-    null
-  );
+
+  const aliased = MARKET_STATS_AREA_ALIASES[norm(community)] ?? community;
+  const target = norm(aliased);
+  const exact = rows.find((r) => norm(r.area) === target);
+  if (exact) return exact;
+
+  const targetWords = target.split(" ");
+  let best: CommunityStat | null = null;
+  let bestRatio = 0;
+  for (const r of rows) {
+    const ratio = contiguousWordOverlapRatio(targetWords, norm(r.area).split(" "));
+    if (ratio >= FUZZY_MATCH_MIN_RATIO && ratio > bestRatio) {
+      best = r;
+      bestRatio = ratio;
+    }
+  }
+  return best;
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
