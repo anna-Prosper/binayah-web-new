@@ -45,7 +45,11 @@ const DLD_TO_COMMUNITY_SLUG: Record<string, string> = {
   "madinat hind 4": "damac-hills-2",
   "al hebiah fifth": "damac-lagoons",
   "dubai hills": "dubai-hills-estate",
-  "hadaeq sheikh mohammed bin rashid": "mohammed-bin-rashid-city",
+  // "Sheikh Mohammed Bin Rashid Gardens" is Dubai Hills Estate's official DLD
+  // sector, not MBR City. Its buildings are Emaar's Dubai Hills stock —
+  // Greencrest, Rosehill, Elvira, Hills Park, Palace/Vida Residences Hillside —
+  // and DLD files the rest of the same estate under the "Dubai Hills" name below.
+  "hadaeq sheikh mohammed bin rashid": "dubai-hills-estate",
   "marsa dubai": "dubai-marina",
   "al thanyah fifth": "jlt",
   "jumeirah lakes towers": "jlt",
