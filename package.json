@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "community-seo-audit": "tsx scripts/community-seo-audit.ts"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.2",
