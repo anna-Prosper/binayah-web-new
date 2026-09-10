@@ -313,9 +313,18 @@ export default async function CommunityPage({
     if (locale !== "en") {
       const trans = await getCommunityEnrichmentTranslation(locale, slug);
       if (trans) {
+        const merged = mergeEnrichment(d.community?.enrichment, trans) as any;
         d.community = {
           ...d.community,
-          enrichment: mergeEnrichment(d.community?.enrichment, trans),
+          enrichment: merged,
+          // The body picks whichever of enrichment.overview / community.description
+          // is LONGER, and description is English-only. A translated overview that
+          // happens to be shorter than the English prose therefore lost the race and
+          // the page rendered an English paragraph under a localized heading —
+          // Chinese lost it every time, being far more compact than English. Point
+          // description at the translated overview so both sides of that comparison
+          // are in the visitor's language whichever one wins.
+          ...(merged?.overview ? { description: merged.overview } : {}),
         };
       }
     }
