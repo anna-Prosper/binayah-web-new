@@ -33,7 +33,12 @@ import {
   MIN_COMPS_USABLE,
   MORTGAGE_REGISTRATION_ADMIN,
   MORTGAGE_REGISTRATION_RATE,
+  IMPLAUSIBLE_DELTA_ABOVE,
+  IMPLAUSIBLE_DELTA_BELOW,
   MUNICIPALITY_HOUSING_FEE_RATE,
+  PLAUSIBLE_GROSS_YIELD_MAX,
+  PLAUSIBLE_GROSS_YIELD_MIN,
+  PLAUSIBLE_SALE_PSF_MIN,
   NOC_FEE_MAX,
   NOC_FEE_MIN,
   NOC_FEE_TYPICAL,
@@ -120,6 +125,35 @@ export function assessPrice(input: DealInput, comps: CompSet): PriceAssessment {
   } else if (subjectPsf && comps.areaSalePsf) {
     deltaPct = subjectPsf / comps.areaSalePsf - 1;
     basis = "psf-area";
+  }
+
+  /**
+   * Guard before we label anything. A delta this extreme, or a subject PSF
+   * below what Dubai property can physically sell for, means the INPUT is
+   * wrong — most often an annual rent parsed as a purchase price. Report it as
+   * unknown and explain, rather than announcing a 92% discount.
+   */
+  const implausible =
+    (subjectPsf != null && subjectPsf < PLAUSIBLE_SALE_PSF_MIN) ||
+    (deltaPct != null && (deltaPct <= IMPLAUSIBLE_DELTA_BELOW || deltaPct >= IMPLAUSIBLE_DELTA_ABOVE));
+
+  if (implausible) {
+    return {
+      verdict: "unknown",
+      subjectPsf: subjectPsf ? money(subjectPsf) : null,
+      comparablePsf: comps.pricePsf ? money(comps.pricePsf) : null,
+      deltaPct: null,
+      comparableMedianPrice: comps.medianPrice ? money(comps.medianPrice) : null,
+      sampleSize: comps.count || null,
+      confidence: "none",
+      comparableLabel: comps.label || null,
+      summary:
+        subjectPsf != null && subjectPsf < PLAUSIBLE_SALE_PSF_MIN
+          ? `At AED ${money(subjectPsf).toLocaleString()}/sqft this is far below anything Dubai property sells for, which usually means the figure we read is an annual rent rather than a purchase price. Check the price and size above and run it again.`
+          : "The price we read is too far from comparable sales to be credible — that normally means a rent was read as a price, or a digit is missing. Check the details above and run the check again.",
+      source: comps.areaName ? `DLD registered sales, ${comps.areaName}` : null,
+      periodLabel: comps.periodLabel,
+    };
   }
 
   const verdict: PriceAssessment["verdict"] =
@@ -473,7 +507,39 @@ export function computeRental(input: DealInput, comps: CompSet, cash: CashRequir
   const totalDeductions = deductions.reduce((s, d) => s + d.amount, 0);
   const netIncome = grossRent != null ? money(grossRent - totalDeductions) : null;
 
-  const grossYieldPct = grossRent && price ? (grossRent / price) * 100 : null;
+  const rawGrossYield = grossRent && price ? (grossRent / price) * 100 : null;
+
+  /**
+   * If the implied gross yield is outside anything Dubai property produces,
+   * the price and the rent are not describing the same transaction — almost
+   * always an annual rent parsed as a purchase price. Publish nothing rather
+   * than a 66% yield: an impossible number with a confident label is worse
+   * than no number at all.
+   */
+  const yieldImplausible =
+    rawGrossYield != null &&
+    (rawGrossYield < PLAUSIBLE_GROSS_YIELD_MIN || rawGrossYield > PLAUSIBLE_GROSS_YIELD_MAX);
+
+  if (yieldImplausible) {
+    return {
+      grossRent,
+      grossRentSource,
+      serviceCharge,
+      serviceChargePsf: scPsf,
+      deductions: [],
+      netIncome: null,
+      grossYieldPct: null,
+      netYieldPct: null,
+      netYieldOnCashPct: null,
+      areaGrossYieldPct: comps.areaGrossYieldPct,
+      confidence: "none",
+      assumptions: [
+        `The rent and the price we read imply a gross yield of about ${Math.round(rawGrossYield)}%, which no Dubai property produces. That almost always means an annual rent was read as a purchase price, or the two figures come from different listings. We've left the rental maths out rather than show you a number we don't believe.`,
+      ],
+    };
+  }
+
+  const grossYieldPct = rawGrossYield;
   const netYieldPct = netIncome != null && price ? (netIncome / price) * 100 : null;
 
   /**

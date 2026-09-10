@@ -144,6 +144,17 @@ export async function POST(req: NextRequest) {
           confidence: extraction.confidence,
         });
 
+        // A rental listing cannot be assessed as a purchase. Running it anyway
+        // compares an annual rent against sale comparables and produces
+        // nonsense — a "92% below market" verdict and an impossible yield.
+        if (extraction.listingIntent === "rent") {
+          send(
+            "error",
+            "That looks like a rental listing rather than a property for sale — the figure is an annual rent, not a purchase price. Deal Check assesses purchases. If you're buying this unit, send the sale listing or enter the asking price.",
+          );
+          return;
+        }
+
         if (input.price == null) {
           send(
             "error",

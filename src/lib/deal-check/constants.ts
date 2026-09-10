@@ -268,3 +268,35 @@ export const PRICE_BAND_ABOVE = 0.03;
 export const PRICE_BAND_WELL_ABOVE = 0.1;
 
 export const SQM_TO_SQFT = 10.7639;
+
+/**
+ * Plausibility guards — the last line of defence before a figure reaches a
+ * visitor.
+ *
+ * These exist because a rental listing was once parsed as a purchase: an
+ * AED 134,999 annual rent became the "price" of a 1,217 sqft Arjan apartment,
+ * and the report confidently announced a 92% discount to market and a 66% net
+ * yield. Every individual calculation was correct; the input was garbage, and
+ * nothing downstream objected.
+ *
+ * So: whenever a derived figure lands outside the range Dubai property can
+ * actually occupy, we suppress the verdict and say the input looks wrong,
+ * rather than rendering an impossible number with a confident label. A visitor
+ * seeing "66% net yield" learns nothing except that the tool cannot be trusted.
+ */
+
+/** Dubai sale PSF floor/ceiling. Below ~AED 300/sqft is not a sale price. */
+export const PLAUSIBLE_SALE_PSF_MIN = 300;
+export const PLAUSIBLE_SALE_PSF_MAX = 15_000;
+
+/** Gross yields outside this band mean the price or the rent is wrong. */
+export const PLAUSIBLE_GROSS_YIELD_MIN = 1;
+export const PLAUSIBLE_GROSS_YIELD_MAX = 15;
+
+/**
+ * A price this far from the comparable median is not a discount, it is a data
+ * problem — a rent read as a price, a missing digit, a per-sqft figure read as
+ * a total. Real distressed sales in Dubai bottom out around 35-40% below market.
+ */
+export const IMPLAUSIBLE_DELTA_BELOW = -0.45;
+export const IMPLAUSIBLE_DELTA_ABOVE = 3;

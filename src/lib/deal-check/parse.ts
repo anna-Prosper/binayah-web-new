@@ -23,14 +23,15 @@ You return ONLY JSON matching the provided schema.
 Absolute rules:
 - Extract ONLY what the source actually states. If a field is not stated, return null. Never estimate, infer, or fill from general knowledge.
 - Never invent a price, a rent, a size, or a service charge. A wrong number here becomes wrong financial advice.
-- price: the asking/sale price in AED as a plain number. Strip currency symbols, commas and words like "starting from". If the price is a range, take the lower bound. If the price is in another currency, still return the number but set currencyNote.
+- listingIntent: FIRST decide what this listing is. "sale" if the property is for sale. "rent" if it is a rental/leasing listing — look for "for rent", "to let", "per year", "yearly", "annually", "/yr", "per month", "monthly", cheques/"chqs" terms, "tenancy", or a price that is obviously an annual rent rather than a purchase price. "unclear" if you genuinely cannot tell. This matters more than any other field: a rental listing run as a purchase produces completely wrong financial advice.
+- price: the asking/sale PURCHASE price in AED as a plain number. Strip currency symbols, commas and words like "starting from". If the price is a range, take the lower bound. If the price is in another currency, still return the number but set currencyNote. CRITICAL: if listingIntent is "rent", price MUST be null and the figure goes in statedRent instead — never put an annual rent in price.
 - areaSqft: the internal/built-up area in SQUARE FEET as a number. If the source gives square metres, multiply by 10.7639 and return the result. If both are given prefer sqft. Note in sizeNote whether it is built-up, plot, or unclear.
 - bedrooms: integer. A studio is 0. "1BR"/"1 bed"/"1BHK" is 1. Penthouses still report their bedroom count.
 - community: the Dubai community or district only — e.g. "Business Bay", "Dubai Marina", "Jumeirah Village Circle". NOT the building name, NOT "Dubai", NOT the emirate.
 - building: the tower, project or development name if stated, otherwise null.
 - propertyKind: one of apartment, villa, townhouse, penthouse, plot, commercial.
 - purchaseType: "off-plan" if it is under construction / sold by a developer / has a handover date or payment plan. "ready" if it is an existing completed unit or a resale. null if genuinely unclear.
-- statedRent: ONLY if the source states an actual annual rent or current rental income in AED. Convert monthly figures to annual by multiplying by 12. If the source only advertises a projected/estimated ROI percentage, leave this null and put the claim in marketingClaims.
+- statedRent: the ANNUAL rent in AED. Set it when the source states an actual annual rent, a current rental income, or (when listingIntent is "rent") the advertised rent itself. Convert monthly figures to annual by multiplying by 12. If the source only advertises a projected/estimated ROI percentage, leave this null and put the claim in marketingClaims.
 - paymentPlan: for off-plan, the instalment schedule. Each step needs a label, a percentage (number, no % sign) or an amount, and a phase from: booking, construction, handover, post-handover. Return an empty array if no plan is stated.
 - handover: the stated completion/handover date as written, e.g. "Q4 2027".
 - developer: the developer name if stated.
@@ -43,6 +44,7 @@ const EXTRACTION_SCHEMA = {
   type: "object",
   additionalProperties: false,
   properties: {
+    listingIntent: { type: "string", enum: ["sale", "rent", "unclear"] },
     price: { type: ["number", "null"] },
     currencyNote: { type: ["string", "null"] },
     areaSqft: { type: ["number", "null"] },
@@ -77,6 +79,7 @@ const EXTRACTION_SCHEMA = {
     confidence: { type: "number" },
   },
   required: [
+    "listingIntent",
     "price",
     "currencyNote",
     "areaSqft",
@@ -96,8 +99,12 @@ const EXTRACTION_SCHEMA = {
   ],
 } as const;
 
+export type ListingIntent = "sale" | "rent" | "unclear";
+
 export interface ExtractionResult {
   input: DealInput;
+  /** What the source actually is. "rent" short-circuits the whole report. */
+  listingIntent: ListingIntent;
   marketingClaims: string[];
   redFlags: string[];
   sizeNote: string | null;
@@ -157,7 +164,10 @@ export async function extractDeal(source: ParseSource): Promise<ExtractionResult
       }),
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error("[deal-check] OpenAI returned", res.status, (await res.text()).slice(0, 400));
+      return null;
+    }
 
     const json = await res.json();
     const raw = json?.choices?.[0]?.message?.content;
@@ -165,7 +175,11 @@ export async function extractDeal(source: ParseSource): Promise<ExtractionResult
 
     const parsed = JSON.parse(raw);
     return normalize(parsed, source);
-  } catch {
+  } catch (err) {
+    // Log the cause. A silent null here surfaces to the visitor as the generic
+    // "we couldn't read that", which is indistinguishable from a genuinely
+    // unreadable listing and hid a schema regression during development.
+    console.error("[deal-check] extraction failed:", err);
     return null;
   }
 }
@@ -181,10 +195,39 @@ function normalize(raw: Record<string, unknown>, source: ParseSource): Extractio
     return Number.isFinite(n) && n >= min && n <= max ? n : null;
   };
 
-  const price = num(raw.price, 50_000, 2_000_000_000);
+  let intent: ListingIntent =
+    raw.listingIntent === "rent" || raw.listingIntent === "unclear" || raw.listingIntent === "sale"
+      ? raw.listingIntent
+      : "unclear";
+
+  let price = num(raw.price, 50_000, 2_000_000_000);
   const areaSqft = num(raw.areaSqft, 100, 200_000);
   const bedroomsRaw = num(raw.bedrooms, 0, 20);
   const statedRent = num(raw.statedRent, 5_000, 100_000_000);
+
+  let statedRentFinal = statedRent;
+
+  /**
+   * Backstop for a misclassified rental. A Dubai purchase essentially never
+   * costs under ~AED 300k, while annual rents essentially never exceed it, so
+   * a "sale" price below that floor is far more likely to be an annual rent
+   * that the extractor mislabelled. Reclassify rather than run purchase maths
+   * on a rent figure — that path produced a 92%-below-market verdict and a 66%
+   * net yield on a real Arjan rental listing.
+   */
+  const RENT_PRICE_CEILING = 300_000;
+  if (intent !== "rent" && price != null && price < RENT_PRICE_CEILING) {
+    intent = "rent";
+    statedRentFinal = statedRentFinal ?? price;
+    price = null;
+  }
+
+  // A rental listing has no purchase price by definition; if the model set
+  // both, the price field is the rent restated.
+  if (intent === "rent") {
+    statedRentFinal = statedRentFinal ?? price;
+    price = null;
+  }
 
   const kind = raw.propertyKind as DealPropertyKind | null;
   const purchase = raw.purchaseType as DealPurchaseType | null;
@@ -217,7 +260,7 @@ function normalize(raw: Record<string, unknown>, source: ParseSource): Extractio
     building: cleanStr(raw.building, 120),
     propertyKind: kind ?? null,
     purchaseType: purchase ?? (planUsable ? "off-plan" : null),
-    statedRent,
+    statedRent: statedRentFinal,
     paymentPlan: planUsable ? plan : null,
     handover: cleanStr(raw.handover, 40),
     developer: cleanStr(raw.developer, 80),
@@ -228,6 +271,7 @@ function normalize(raw: Record<string, unknown>, source: ParseSource): Extractio
 
   return {
     input,
+    listingIntent: intent,
     marketingClaims: strArray(raw.marketingClaims, 6),
     redFlags: strArray(raw.redFlags, 6),
     sizeNote: cleanStr(raw.sizeNote, 200),

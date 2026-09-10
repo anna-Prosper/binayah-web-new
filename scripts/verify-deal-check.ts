@@ -247,5 +247,47 @@ console.log("\nRental economics");
   check("no size and no stated rent means no rental model", noSize.grossRent === null);
 }
 
+console.log("\nImplausible input guards (the Arjan rental regression)");
+{
+  // The real failure: an AED 134,999 annual rent on a 1,217 sqft Arjan
+  // apartment was parsed as a purchase price. Every calculation was correct;
+  // the input was garbage and nothing objected. It rendered "92% below market"
+  // and a 66% net yield.
+  const arjanComps: CompSet = {
+    ...comps,
+    pricePsf: 1386,
+    medianPrice: 1_600_000,
+    count: 325,
+    areaSalePsf: 1386,
+    areaName: "Arjan",
+    label: "2-bedroom apartments in Arjan",
+  };
+  const rentAsPrice: DealInput = {
+    ...baseInput,
+    price: 134_999,
+    areaSqft: 1217,
+    community: "Arjan",
+  };
+
+  const p = assessPrice(rentAsPrice, arjanComps);
+  check("a rent-as-price does not get a confident verdict", p.verdict === "unknown", p.verdict);
+  check("no misleading delta is published", p.deltaPct === null, String(p.deltaPct));
+  check("the summary names the likely cause", /annual rent/i.test(p.summary), p.summary.slice(0, 60));
+
+  const cash = computeCash(rentAsPrice);
+  const r = computeRental({ ...rentAsPrice, statedRent: 134_999 }, arjanComps, cash);
+  check("no impossible gross yield is published", r.grossYieldPct === null, String(r.grossYieldPct));
+  check("no impossible net yield is published", r.netYieldPct === null, String(r.netYieldPct));
+  check("the rental assumption explains the omission", /no Dubai property produces/i.test(r.assumptions[0] ?? ""));
+
+  // The guard must not fire on genuine bargains or genuine premiums.
+  const realBargain = assessPrice({ ...baseInput, price: 1_500_000 }, comps); // 25% under
+  check("a genuine 25% discount still reports", realBargain.verdict === "well-below", realBargain.verdict);
+  const realPremium = assessPrice({ ...baseInput, price: 2_600_000 }, comps); // 30% over
+  check("a genuine 30% premium still reports", realPremium.verdict === "well-above", realPremium.verdict);
+  const normalYield = computeRental({ ...baseInput, statedRent: 120_000 }, comps, computeCash({ ...baseInput }));
+  check("a normal 6% yield is unaffected", normalYield.grossYieldPct === 6, String(normalYield.grossYieldPct));
+}
+
 console.log(`\n${checks - failures}/${checks} checks passed\n`);
 process.exit(failures > 0 ? 1 : 0);
