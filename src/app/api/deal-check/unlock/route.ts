@@ -1,12 +1,16 @@
 /**
  * POST /api/deal-check/unlock
  *
- * Captures the lead attached to a Deal Check report.
+ * Captures the lead and releases the gated half of a Deal Check report.
  *
- * The report itself is NOT gated — a visitor gets the full assessment whether
- * or not they leave details. This endpoint is for someone who wants an agent
- * to review the deal with them. Gating honest financial analysis behind a form
- * would undercut the entire premise of the tool.
+ * The visitor sees the verdict, the price-vs-comparables comparison and the
+ * headline cash figure for free — enough to prove the numbers are real. The
+ * cost breakdown, rental economics, diligence questions and alternatives are
+ * released here, in exchange for a name and a phone number.
+ *
+ * The locked half is fetched from the server store (deal-check/store.ts) and
+ * returned in this response. It is never sent to the browser beforehand, so
+ * the gate cannot be bypassed by reading the page payload.
  *
  * Follows the list-your-property pattern: PII encrypted at rest with a
  * searchable HMAC, honeypot trips persist the lead FLAGGED rather than
@@ -21,6 +25,7 @@ import { isHoneypotTripped } from "@/lib/honeypot";
 import { notifyNewLead } from "@/lib/leads/notify";
 import { sendMail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { unlockReport } from "@/lib/deal-check/store";
 
 export const dynamic = "force-dynamic";
 
@@ -85,14 +90,19 @@ export async function POST(req: NextRequest) {
       console.error("[deal-check] honeypot lead save failed:", e);
     }
     console.warn("[honeypot] deal-check tripped — saved flagged, notifications skipped.");
+    // Deliberately no `locked` payload: the bot gets a success shape and
+    // nothing of value, and learns nothing about the trap.
     return NextResponse.json({ ok: true });
   }
 
   if (!name) {
     return NextResponse.json({ error: "Please add your name." }, { status: 400 });
   }
-  if (!email || !EMAIL_RE.test(email)) {
-    return NextResponse.json({ error: "Please add a valid email address." }, { status: 400 });
+  // Email is optional on this gate — we ask for name and phone only, because
+  // every extra field measurably costs completions and the sales team follows
+  // up by phone. It is still validated when supplied.
+  if (email && !EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: "That email doesn't look right." }, { status: 400 });
   }
   if (!phone || !PHONE_RE.test(phone)) {
     return NextResponse.json({ error: "Please add a valid phone number." }, { status: 400 });
@@ -112,8 +122,8 @@ export async function POST(req: NextRequest) {
   try {
     await col.insertOne({
       name: encrypt(name),
-      email: encrypt(email),
-      emailH: fieldHash(email),
+      email: email ? encrypt(email) : null,
+      emailH: email ? fieldHash(email) : undefined,
       phone: encrypt(phone),
       phoneH: normalisedPhone ? fieldHash(normalisedPhone) : undefined,
       deal,
@@ -143,14 +153,26 @@ export async function POST(req: NextRequest) {
     console.error("[deal-check] notify failed:", e);
   }
 
+  // The lead is stored and notifications are away — release the report.
+  const reportId = typeof body.reportId === "string" ? body.reportId : null;
+  let locked: unknown = null;
+  if (reportId) {
+    try {
+      const payload = await unlockReport(reportId);
+      locked = payload?.locked ?? null;
+    } catch (e) {
+      console.error("[deal-check] unlock fetch failed:", e);
+    }
+  }
+
   sendMail({
     to: process.env.INQUIRY_EMAIL || "info@binayah.com",
     subject: `Deal Check review request — ${deal.community ?? "Dubai"}`,
     html: `
       <h2>Deal Check review request</h2>
-      <p><strong>${escapeHtml(name)}</strong> asked for a second opinion on a property.</p>
+      <p><strong>${escapeHtml(name)}</strong> unlocked a full assessment.</p>
       <ul>
-        <li>Email: ${escapeHtml(email)}</li>
+        <li>Email: ${email ? escapeHtml(email) : "not provided"}</li>
         <li>Phone: ${escapeHtml(phone)}</li>
       </ul>
       <h3>The deal</h3>
@@ -167,7 +189,7 @@ export async function POST(req: NextRequest) {
     `,
   }).catch(() => {});
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, locked });
 }
 
 /** Whitelist + bound the summary so a crafted payload can't bloat the doc. */

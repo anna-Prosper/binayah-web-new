@@ -14,11 +14,13 @@
 
 import {
   assessPrice,
+  assessRent,
   computeCash,
   computeRental,
   serviceChargePsfFor,
   type CompSet,
 } from "../src/lib/deal-check/engine";
+import { splitReport } from "../src/lib/deal-check/gate";
 import type { DealInput } from "../src/lib/deal-check/types";
 
 let failures = 0;
@@ -287,6 +289,65 @@ console.log("\nImplausible input guards (the Arjan rental regression)");
   check("a genuine 30% premium still reports", realPremium.verdict === "well-above", realPremium.verdict);
   const normalYield = computeRental({ ...baseInput, statedRent: 120_000 }, comps, computeCash({ ...baseInput }));
   check("a normal 6% yield is unaffected", normalYield.grossYieldPct === 6, String(normalYield.grossYieldPct));
+}
+
+console.log("\nRent assessment");
+{
+  const rentComps: CompSet = { ...comps, areaRentPsf: 100, rentSampleSize: 5000, areaSalePsf: 2000 };
+  const at = assessRent({ ...baseInput, price: null, statedRent: 100_000 }, rentComps);
+  check("rent at the area median reads in-line", at.verdict === "in-line", at.verdict);
+  check("asking rent psf is rent over size", at.askingRentPsf === 100, String(at.askingRentPsf));
+  check("implied market rent uses the area median", at.impliedMarketRent === 100_000, String(at.impliedMarketRent));
+
+  const high = assessRent({ ...baseInput, price: null, statedRent: 130_000 }, rentComps);
+  check("30% over the median reads well-above", high.verdict === "well-above", high.verdict);
+
+  const low = assessRent({ ...baseInput, price: null, statedRent: 80_000 }, rentComps);
+  check("20% under the median reads well-below", low.verdict === "well-below", low.verdict);
+
+  check("rent-vs-buy price comes from area sale psf", at.impliedPurchasePrice === 2_000_000, String(at.impliedPurchasePrice));
+  check("implied gross yield is rent over that price", at.impliedGrossYieldPct === 5, String(at.impliedGrossYieldPct));
+  check("tenant questions are returned", at.questions.length >= 4, String(at.questions.length));
+
+  // An area with no registered contracts must say so, not fail silently.
+  const noRent = assessRent({ ...baseInput, price: null, statedRent: 100_000 }, { ...rentComps, areaRentPsf: null, rentSampleSize: 0 });
+  check("no rent data yields an unknown verdict", noRent.verdict === "unknown", noRent.verdict);
+  check("the message explains the data gap", /registered tenancy contracts/i.test(noRent.summary));
+  check("rent-vs-buy still works without rent data", noRent.impliedPurchasePrice === 2_000_000);
+}
+
+console.log("\nGating");
+{
+  const input = { ...baseInput };
+  const cash = computeCash(input);
+  const rental = computeRental({ ...input, statedRent: 120_000 }, comps, cash);
+  const report = {
+    input,
+    missing: [],
+    price: assessPrice(input, comps),
+    cash,
+    rental,
+    questions: [{ question: "q", why: "w", category: "c", priority: true }],
+    alternatives: [],
+    verdict: "v",
+    assumptions: [],
+    dataAsOf: null,
+    generatedAt: new Date().toISOString(),
+  };
+
+  const { teaser, locked } = splitReport(report);
+  const wire = JSON.stringify(teaser);
+
+  // The whole point of the gate: none of this may reach the browser.
+  check("teaser carries no cost line items", !wire.includes("DLD transfer fee"));
+  check("teaser carries no net yield", !wire.includes("netYieldPct"));
+  check("teaser carries no rental deductions", !wire.includes("Service charge"));
+  check("teaser carries no questions", !wire.includes('"why"'));
+  check("teaser keeps the price comparison", teaser.price.comparablePsf === 2000);
+  check("teaser keeps the headline cash figure", teaser.cashTotal > 0);
+  check("teaser reports how much is locked", teaser.lockedCounts.costLines === cash.lines.length);
+  check("locked half carries the full breakdown", locked.cash.lines.length === cash.lines.length);
+  check("locked half carries the rental model", locked.rental.netYieldPct === rental.netYieldPct);
 }
 
 console.log(`\n${checks - failures}/${checks} checks passed\n`);

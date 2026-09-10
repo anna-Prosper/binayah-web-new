@@ -63,6 +63,7 @@ import type {
   DealInput,
   DealQuestion,
   PriceAssessment,
+  RentAssessment,
   RentalEconomics,
 } from "./types";
 
@@ -781,4 +782,173 @@ export function buildVerdict(
   }
 
   return parts.join(" ");
+}
+
+// ── Rent assessment ─────────────────────────────────────────────────────────
+
+/**
+ * Assess an asking RENT against median registered Ejari contracts for the area.
+ *
+ * This is a different question from the purchase report — a tenant wants to
+ * know whether they are being overcharged, not whether the unit is a good buy.
+ * The comparison is per sqft, because that is the only way to compare a 900
+ * sqft one-bed against a 1,400 sqft one-bed honestly.
+ *
+ * Ejari data is area-level, not building-level: DLD's rent feed carries the
+ * area and the size but rarely a usable building or bedroom count. So this
+ * compares against the surrounding area, and says so.
+ */
+export function assessRent(input: DealInput, comps: CompSet): RentAssessment {
+  const rent = input.statedRent;
+  const sqft = input.areaSqft;
+  const askingRentPsf = rent && sqft && sqft > 0 ? rent / sqft : null;
+  const marketRentPsf = comps.areaRentPsf;
+
+  const sample = comps.rentSampleSize ?? 0;
+  const confidence: RentAssessment["confidence"] =
+    sample >= 500 ? "strong" : sample >= 100 ? "usable" : sample > 0 ? "thin" : "none";
+
+  const impliedMarketRent = marketRentPsf && sqft ? money(sqft * marketRentPsf) : null;
+  const deltaPct =
+    askingRentPsf && marketRentPsf ? askingRentPsf / marketRentPsf - 1 : null;
+
+  // Same band logic as the purchase side, so the two reports read consistently.
+  const verdict: RentAssessment["verdict"] =
+    deltaPct === null
+      ? "unknown"
+      : deltaPct <= PRICE_BAND_WELL_BELOW
+        ? "well-below"
+        : deltaPct <= PRICE_BAND_BELOW
+          ? "below"
+          : deltaPct < PRICE_BAND_ABOVE
+            ? "in-line"
+            : deltaPct < PRICE_BAND_WELL_ABOVE
+              ? "above"
+              : "well-above";
+
+  // What buying the same unit would cost, and the yield that implies. Useful
+  // context for a tenant weighing renting against buying.
+  const impliedPurchasePrice =
+    comps.areaSalePsf && sqft ? money(sqft * comps.areaSalePsf) : null;
+  const impliedGrossYieldPct =
+    rent && impliedPurchasePrice ? round1((rent / impliedPurchasePrice) * 100) : null;
+
+  return {
+    verdict,
+    askingRent: rent,
+    askingRentPsf: askingRentPsf ? money(askingRentPsf) : null,
+    marketRentPsf: marketRentPsf ? money(marketRentPsf) : null,
+    impliedMarketRent,
+    deltaPct,
+    sampleSize: comps.rentSampleSize,
+    confidence,
+    areaName: comps.areaName,
+    summary: rentSummary(verdict, deltaPct, rent, impliedMarketRent, comps, confidence),
+    impliedPurchasePrice,
+    impliedGrossYieldPct,
+    questions: rentQuestions(input, verdict),
+  };
+}
+
+function rentSummary(
+  verdict: RentAssessment["verdict"],
+  deltaPct: number | null,
+  rent: number | null,
+  impliedMarketRent: number | null,
+  comps: CompSet,
+  confidence: RentAssessment["confidence"],
+): string {
+  if (verdict === "unknown" || deltaPct === null) {
+    // Distinguish "we don't hold contracts here" from "you didn't give us a
+    // size". The first is our gap and common in newly-handed-over communities
+    // where nothing has been let long enough to register with Ejari; the
+    // second the visitor can fix. Saying "no data" when we mean "no size"
+    // sends people away for no reason.
+    const area = comps.areaName ?? "this community";
+    if (comps.areaRentPsf == null) {
+      return `We don't hold enough registered tenancy contracts in ${area} to benchmark this rent. That is usually a sign of a newer community where most stock has only recently handed over, so few leases have reached Ejari yet. The purchase-side figures below still come from registered sales.`;
+    }
+    return "We couldn't compare this rent — we need the property's size in square feet to work out the rate per square foot.";
+  }
+
+  const pct = Math.abs(deltaPct * 100);
+  const rounded = pct < 1 ? pct.toFixed(1) : Math.round(pct).toString();
+  const area = comps.areaName ?? "this area";
+  const sample = comps.rentSampleSize
+    ? ` across ${comps.rentSampleSize.toLocaleString()} registered contracts`
+    : "";
+  const caveat =
+    confidence === "thin"
+      ? " That is a thin sample, so treat it as a rough signal."
+      : "";
+  const marketLine =
+    impliedMarketRent != null
+      ? ` At the area median, a unit this size would let for about AED ${impliedMarketRent.toLocaleString()} a year.`
+      : "";
+
+  switch (verdict) {
+    case "well-below":
+      return `This is asking about ${rounded}% below the median registered rent in ${area}${sample}.${marketLine} That is meaningfully cheap — worth checking the condition, the floor, and whether the service charge or chiller is excluded.${caveat}`;
+    case "below":
+      return `The asking rent is around ${rounded}% under the ${area} median${sample}.${marketLine} A fair deal on the face of it.${caveat}`;
+    case "in-line":
+      return `The asking rent is within ${rounded}% of the median registered rent in ${area}${sample}.${marketLine} It is priced at the market.${caveat}`;
+    case "above":
+      return `The asking rent is roughly ${rounded}% above the ${area} median${sample}.${marketLine} That is negotiable territory, particularly if the unit has been listed a while.${caveat}`;
+    case "well-above":
+      return `The asking rent is about ${rounded}% above the median registered rent in ${area}${sample}.${marketLine} Unless the unit is materially better than the average — high floor, full view, upgraded, furnished — there is real room to negotiate.${caveat}`;
+    default:
+      return "";
+  }
+}
+
+/** Tenant-side diligence. Different concerns entirely from a buyer's. */
+function rentQuestions(input: DealInput, verdict: RentAssessment["verdict"]): DealQuestion[] {
+  const q: DealQuestion[] = [];
+
+  q.push({
+    question: "How many cheques, and is the rent different for fewer cheques?",
+    why: "Dubai landlords routinely discount for one or two cheques and charge a premium for four or six. The advertised figure is usually the multi-cheque price, so ask what a single cheque would cost.",
+    category: "payment",
+    priority: true,
+  });
+
+  q.push({
+    question: "Is DEWA, chiller and internet included, or billed separately?",
+    why: "District cooling in particular can add several thousand dirhams a year and is often a separate account from DEWA. A rent that looks competitive can lose that advantage once chiller is added.",
+    category: "costs",
+    priority: true,
+  });
+
+  q.push({
+    question: "Will the landlord register the Ejari contract, and who pays for it?",
+    why: "Ejari registration is what makes your tenancy legally recognised — you need it for DEWA, visas and any dispute at the Rental Disputes Centre. It is inexpensive but must actually be done.",
+    category: "legal",
+    priority: true,
+  });
+
+  if (verdict === "above" || verdict === "well-above") {
+    q.push({
+      question: "How long has this unit been vacant?",
+      why: "A unit sitting empty for weeks is costing the landlord more than the discount you are asking for. Time on market is your strongest negotiating lever.",
+      category: "market",
+      priority: true,
+    });
+  }
+
+  q.push({
+    question: "What is the security deposit, and what are the conditions for getting it back?",
+    why: "Five per cent of annual rent is the norm for unfurnished, ten per cent for furnished. Agree in writing what counts as fair wear and tear before you hand it over.",
+    category: "payment",
+    priority: false,
+  });
+
+  q.push({
+    question: "What increase can the landlord apply at renewal?",
+    why: "Dubai caps rent increases by reference to the RERA rental index — how far the current rent sits below the market rate determines the permitted rise. A rent already at or above market usually cannot be increased at all.",
+    category: "legal",
+    priority: false,
+  });
+
+  return q;
 }

@@ -1,8 +1,8 @@
-/* eslint-disable i18next/no-literal-string -- English-only tool copy, matching the valuation page pattern */
 "use client";
 
 import { useCallback, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Link2, Upload, Type, X, Loader2, ArrowRight } from "lucide-react";
 
 export type SubmitMode = "url" | "text" | "image";
@@ -22,13 +22,14 @@ interface Props {
 
 const MAX_IMAGE_MB = 6;
 
-const tabs: { id: SubmitMode; label: string; icon: typeof Link2 }[] = [
-  { id: "url", label: "Paste a link", icon: Link2 },
-  { id: "image", label: "Upload a screenshot", icon: Upload },
-  { id: "text", label: "Paste the details", icon: Type },
-];
-
 export default function DealCheckForm({ onSubmit, busy }: Props) {
+  const t = useTranslations("dealCheck");
+  const tabs: { id: SubmitMode; label: string; icon: typeof Link2 }[] = [
+    { id: "url", label: t("tabLink"), icon: Link2 },
+    { id: "image", label: t("tabUpload"), icon: Upload },
+    { id: "text", label: t("tabText"), icon: Type },
+  ];
+
   const [mode, setMode] = useState<SubmitMode>("url");
   const [url, setUrl] = useState("");
   const [text, setText] = useState("");
@@ -43,11 +44,11 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
     setError(null);
 
     if (!file.type.startsWith("image/") && file.type !== "application/pdf") {
-      setError("That file type isn't supported. Upload a screenshot or a PDF brochure.");
+      setError(t("errFileType"));
       return;
     }
     if (file.size > MAX_IMAGE_MB * 1024 * 1024) {
-      setError(`That file is over ${MAX_IMAGE_MB}MB. Try a smaller screenshot.`);
+      setError(t("errFileSize", { mb: MAX_IMAGE_MB }));
       return;
     }
 
@@ -56,30 +57,30 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
       setImage(String(reader.result));
       setImageName(file.name);
     };
-    reader.onerror = () => setError("We couldn't read that file. Try another.");
+    reader.onerror = () => setError(t("errFileRead"));
     reader.readAsDataURL(file);
-  }, []);
+  }, [t]);
 
   const submit = () => {
     setError(null);
 
     if (mode === "url") {
       const trimmed = url.trim();
-      if (!trimmed) return setError("Paste the link to the property listing.");
+      if (!trimmed) return setError(t("errNoLink"));
       if (!/^https?:\/\//i.test(trimmed)) {
-        return setError("That doesn't look like a web address. It should start with https://");
+        return setError(t("errBadLink"));
       }
       return onSubmit({ url: trimmed, mortgage, downPaymentPct: mortgage ? depositPct / 100 : null });
     }
 
     if (mode === "image") {
-      if (!image) return setError("Choose a screenshot or brochure to upload.");
+      if (!image) return setError(t("errNoFile"));
       return onSubmit({ image, mortgage, downPaymentPct: mortgage ? depositPct / 100 : null });
     }
 
     const trimmed = text.trim();
     if (trimmed.length < 25) {
-      return setError("Add a bit more detail — price, size, bedrooms and the community.");
+      return setError(t("errShortText"));
     }
     return onSubmit({ text: trimmed, mortgage, downPaymentPct: mortgage ? depositPct / 100 : null });
   };
@@ -88,16 +89,20 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
     <div className="rounded-2xl bg-card border border-border/50 shadow-sm overflow-hidden">
       {/* Tabs */}
       <div className="flex border-b border-border/50" role="tablist">
-        {tabs.map((t) => {
-          const Icon = t.icon;
-          const active = mode === t.id;
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const active = mode === tab.id;
           return (
             <button
-              key={t.id}
+              key={tab.id}
               role="tab"
               aria-selected={active}
+              // The label is visually hidden on small screens to fit three
+              // tabs, so name the control explicitly — otherwise the tab has
+              // no accessible name at all on mobile.
+              aria-label={tab.label}
               onClick={() => {
-                setMode(t.id);
+                setMode(tab.id);
                 setError(null);
               }}
               className={`flex-1 flex items-center justify-center gap-2 px-3 py-4 text-sm font-medium transition-colors ${
@@ -107,7 +112,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" aria-hidden />
-              <span className="hidden sm:inline">{t.label}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
             </button>
           );
         })}
@@ -117,7 +122,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
         {mode === "url" && (
           <div>
             <label htmlFor="dc-url" className="block text-sm font-medium text-foreground mb-2">
-              Link to the listing
+              {t("linkLabel")}
             </label>
             <input
               id="dc-url"
@@ -126,11 +131,10 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
               onChange={(e) => setUrl(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !busy && submit()}
               placeholder="https://..."
-              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all"
+              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all"
             />
             <p className="mt-2 text-xs text-muted-foreground">
-              Any portal, any agency — it doesn&apos;t have to be a Binayah listing. Some portals block
-              automated reads; if that happens we&apos;ll ask you for a screenshot instead.
+              {t("linkHint")}
             </p>
           </div>
         )}
@@ -138,7 +142,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
         {mode === "image" && (
           <div>
             <span className="block text-sm font-medium text-foreground mb-2">
-              Screenshot or brochure
+              {t("uploadLabel")}
             </span>
             {image ? (
               <div className="flex items-center gap-3 rounded-xl border border-border/80 bg-background px-4 py-3">
@@ -153,7 +157,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
                     if (fileRef.current) fileRef.current.value = "";
                   }}
                   className="text-muted-foreground hover:text-foreground p-1 rounded"
-                  aria-label="Remove file"
+                  aria-label={t("uploadRemove")}
                 >
                   <X className="w-4 h-4" aria-hidden />
                 </button>
@@ -171,10 +175,10 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
               >
                 <Upload className="w-6 h-6 text-muted-foreground mx-auto mb-3" aria-hidden />
                 <span className="block text-sm text-foreground font-medium">
-                  Drop a file here, or click to choose
+                  {t("uploadCta")}
                 </span>
                 <span className="block text-xs text-muted-foreground mt-1">
-                  PNG, JPG or PDF, up to {MAX_IMAGE_MB}MB
+                  {t("uploadHint", { mb: MAX_IMAGE_MB })}
                 </span>
               </button>
             )}
@@ -194,17 +198,15 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
         {mode === "text" && (
           <div>
             <label htmlFor="dc-text" className="block text-sm font-medium text-foreground mb-2">
-              The listing details
+              {t("textLabel")}
             </label>
             <textarea
               id="dc-text"
               value={text}
               onChange={(e) => setText(e.target.value)}
               rows={6}
-              placeholder={
-                "Paste whatever you have — for example:\n\n2-bed apartment, Business Bay, 1,150 sqft, AED 2.4M, service charge AED 18/sqft, currently rented at AED 130,000"
-              }
-              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all resize-y"
+              placeholder={t("textPlaceholder")}
+              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all resize-y"
             />
           </div>
         )}
@@ -218,7 +220,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
               onChange={(e) => setMortgage(e.target.checked)}
               className="w-4 h-4 rounded border-border text-accent focus:ring-accent/30"
             />
-            <span className="text-sm text-foreground">I&apos;m planning to use a mortgage</span>
+            <span className="text-sm text-foreground">{t("mortgageToggle")}</span>
           </label>
 
           {mortgage && (
@@ -228,7 +230,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
               className="mt-4 pl-7"
             >
               <label htmlFor="dc-deposit" className="block text-xs text-muted-foreground mb-2">
-                Deposit: <span className="text-foreground font-medium">{depositPct}%</span>
+                {t("depositLabel")}: <span className="text-foreground font-medium">{depositPct}%</span>
               </label>
               <input
                 id="dc-deposit"
@@ -241,9 +243,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
                 className="w-full accent-accent"
               />
               <p className="mt-2 text-xs text-muted-foreground">
-                Expat buyers can usually borrow up to 75% on a ready property under AED 5M, and 50%
-                on off-plan. Since 2025 the DLD fee and agency commission can&apos;t be added to the
-                loan — they have to be paid in cash.
+                {t("mortgageHint")}
               </p>
             </motion.div>
           )}
@@ -264,18 +264,18 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
           {busy ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
-              Checking the deal…
+              {t("submitBusy")}
             </>
           ) : (
             <>
-              Check this deal
-              <ArrowRight className="w-4 h-4" aria-hidden />
+              {t("submit")}
+              <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden />
             </>
           )}
         </button>
 
         <p className="text-xs text-center text-muted-foreground">
-          Free, no sign-up, and you get the full assessment — we don&apos;t hide the numbers behind a form.
+          {t("formFooter")}
         </p>
       </div>
     </div>

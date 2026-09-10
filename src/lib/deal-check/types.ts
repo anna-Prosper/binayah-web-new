@@ -134,6 +134,33 @@ export interface DealAlternative {
   image: string | null;
 }
 
+/**
+ * Assessment of a RENTAL listing — asking rent against median registered
+ * Ejari contracts for the area. A separate product from the purchase report:
+ * a tenant is answering "is this rent fair?", not "is this a good buy?".
+ */
+export interface RentAssessment {
+  verdict: "well-below" | "below" | "in-line" | "above" | "well-above" | "unknown";
+  askingRent: number | null;
+  /** Asking rent per sqft, the comparable unit. */
+  askingRentPsf: number | null;
+  /** Median registered Ejari rent per sqft for the area. */
+  marketRentPsf: number | null;
+  /** What the area median implies this unit should rent for. */
+  impliedMarketRent: number | null;
+  deltaPct: number | null;
+  sampleSize: number | null;
+  confidence: "strong" | "usable" | "thin" | "none";
+  areaName: string | null;
+  summary: string;
+  /** What buying the same unit would cost, from area sale PSF. */
+  impliedPurchasePrice: number | null;
+  /** Gross yield the asking rent implies against that price. */
+  impliedGrossYieldPct: number | null;
+  /** Tenant-side costs and diligence, not a buyer's. */
+  questions: DealQuestion[];
+}
+
 export interface DealCheckReport {
   input: DealInput;
   /** What the parser could not establish — drives the "what's missing" prompts. */

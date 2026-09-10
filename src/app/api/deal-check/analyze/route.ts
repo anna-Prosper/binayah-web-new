@@ -11,6 +11,10 @@
 import { NextRequest } from "next/server";
 import { extractDeal } from "@/lib/deal-check/parse";
 import { buildReport } from "@/lib/deal-check/report";
+import { splitReport, splitRent } from "@/lib/deal-check/gate";
+import { newReportId, storeReport } from "@/lib/deal-check/store";
+import { assessRent } from "@/lib/deal-check/engine";
+import { emptyComps, resolveComps } from "@/lib/deal-check/comps";
 import { fetchListingText } from "@/lib/deal-check/fetch-source";
 import { checkRateLimit } from "@/lib/rateLimit";
 import type { DealInput } from "@/lib/deal-check/types";
@@ -144,14 +148,39 @@ export async function POST(req: NextRequest) {
           confidence: extraction.confidence,
         });
 
-        // A rental listing cannot be assessed as a purchase. Running it anyway
-        // compares an annual rent against sale comparables and produces
-        // nonsense — a "92% below market" verdict and an impossible yield.
+        /**
+         * A rental listing gets its own assessment rather than being refused.
+         * Running it through the PURCHASE maths is what produced the "92%
+         * below market" nonsense, but we hold real Ejari data, so the right
+         * answer is a rent check: asking rent against median registered
+         * contracts for the area.
+         */
         if (extraction.listingIntent === "rent") {
-          send(
-            "error",
-            "That looks like a rental listing rather than a property for sale — the figure is an annual rent, not a purchase price. Deal Check assesses purchases. If you're buying this unit, send the sale listing or enter the asking price.",
+          if (!input.statedRent) {
+            send(
+              "error",
+              "That looks like a rental listing, but we couldn't read the rent. Add the annual rent and we'll compare it against registered contracts in the area.",
+            );
+            return;
+          }
+
+          send("comparing", { community: input.community });
+          const rentComps = input.community ? await resolveComps(input) : emptyComps();
+          const rent = assessRent(input, rentComps);
+
+          send("costing");
+          const { teaser, locked } = splitRent(input, rent);
+          const rentReportId = newReportId();
+          await storeReport(rentReportId, { kind: "rent", locked }).catch((e) =>
+            console.error("[deal-check] rent store failed:", e),
           );
+
+          send("final", {
+            mode: "rent",
+            reportId: rentReportId,
+            teaser,
+            marketingClaims: extraction.marketingClaims,
+          });
           return;
         }
 
@@ -168,8 +197,19 @@ export async function POST(req: NextRequest) {
         const report = await buildReport(input);
 
         send("costing");
+
+        // Split before sending. The locked half never touches the browser —
+        // see the security note in gate.ts.
+        const { teaser, locked } = splitReport(report);
+        const reportId = newReportId();
+        await storeReport(reportId, { kind: "purchase", locked }).catch((e) =>
+          console.error("[deal-check] store failed:", e),
+        );
+
         send("final", {
-          report,
+          mode: "purchase",
+          reportId,
+          teaser,
           marketingClaims: extraction.marketingClaims,
           extractionFlags: extraction.redFlags,
           sizeNote: extraction.sizeNote,
