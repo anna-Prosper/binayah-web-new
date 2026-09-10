@@ -480,6 +480,7 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
     // noindex until enriched, so they'd be "submitted URL marked noindex").
     ...publishableAgents.map((a) => withAlternates(`/team/${a.slug}`, 0.4, "monthly", now)),
     withAlternates("/valuation", 0.5, "monthly", now),
+    withAlternates("/deal-check", 0.6, "monthly", now),
     withAlternates("/pulse", 0.7, "daily", now),
     withAlternates("/pulse/reports", 0.7, "weekly", now),
     withAlternates("/pulse/guides", 0.6, "weekly", now),

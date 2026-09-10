@@ -47,7 +47,11 @@ function normalizePhone(input: string): string {
 // Paths where a promo pop-up would be intrusive or redundant.
 // /offers pages carry their own lead form and a countdown; a second overlay
 // competes with that conversion and hides the form behind it.
-const SUPPRESS = [/\/admin(\/|$)/, /\/privacy/, /\/terms/, /\/cookie/, /\/legal/, /\/list-your-property/, /\/contact/, /\/offers(\/|$)/];
+// Pages where an unsolicited lead popup would interrupt something the visitor
+// is in the middle of. /deal-check is on the list because it renders a long
+// financial assessment — covering that with a guide offer mid-read undercuts
+// the tool's promise that the analysis is not a lead-capture device.
+const SUPPRESS = [/\/admin(\/|$)/, /\/privacy/, /\/terms/, /\/cookie/, /\/legal/, /\/list-your-property/, /\/contact/, /\/offers(\/|$)/, /\/deal-check(\/|$)/];
 
 function readCookie(): string | null {
   if (typeof document === "undefined") return null;
