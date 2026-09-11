@@ -140,6 +140,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("mortgageGuide"), href: "/mortgage" },
         { label: t("goldenVisaGuide"), href: "/golden-visa" },
         { label: t("valuationTool"), href: "/valuation" },
+        { label: t("dealCheckTool"), href: "/deal-check" },
       ],
     },
     {
@@ -160,6 +161,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("sellYourProperty"), href: "/sell" },
         { label: t("listYourPropertyLink"), href: "/list-your-property" },
         { label: t("freeValuation"), href: "/valuation" },
+        { label: t("dealCheckTool"), href: "/deal-check" },
         { label: t("realEstateMarketing"), href: "/real-estate-marketing" },
         { label: t("mortgageCalculator"), href: "/mortgage" },
       ],

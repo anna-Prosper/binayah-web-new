@@ -84,6 +84,16 @@ const FAQS: Record<string, { question: string; answer: string }[]> = {
         "The check is free. You see the verdict, the price against comparable registered sales, and the total cash required without giving us anything. The full cost breakdown, the rental economics, the questions to ask and the comparable properties need a name and a phone number, because an agent may follow up about the property.",
     },
     {
+      question: "How do I know if a Dubai asking price is fair, and is there room to negotiate?",
+      answer:
+        "Compare the price per square foot against what comparable units in the same community actually sold for, not against other asking prices — asking prices anchor to each other and drift above the market together. Deal Check does that comparison for you and shows the sample size. A property more than 10% above comparable registered sales needs a concrete justification, such as a high floor, an unobstructed view or a recent full renovation. Without one, that gap is your negotiating room.",
+    },
+    {
+      question: "What rental yield should I expect in Dubai?",
+      answer:
+        "Gross rental yields in Dubai typically run from around 4% in prime waterfront communities to 7-8% in higher-yielding areas like Jumeirah Village Circle. Net yield is the figure that matters, and it lands well below the gross once the service charge, vacancy, management, maintenance and the 5% municipality housing fee come out. Deal Check models the net figure and shows every deduction, so you can see where the gap goes.",
+    },
+    {
       question: "Can I use this instead of a valuation?",
       answer:
         "No. This is market information to help you ask better questions and spot things worth checking. It is not a valuation and not financial advice. Banks require a RICS-certified or bank-approved valuer for mortgage purposes, and anything with legal consequences needs a professional appraisal.",

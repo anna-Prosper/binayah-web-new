@@ -95,7 +95,8 @@
     "megaSellServices": "Services",
     "megaOffPlanAreas": "Popular Areas",
     "ourTeam": "Our Team",
-    "offers": "Offers"
+    "offers": "Offers",
+    "dealCheckTool": "Deal Check"
   },
   "common": {
     "viewAll": "View All",
@@ -702,7 +703,8 @@
       "developers": "Developers",
       "team": "Our Team",
       "offers": "Offers & Payment Plans",
-      "foreignBuyers": "Buying by nationality"
+      "foreignBuyers": "Buying by nationality",
+      "dealCheck": "Deal Check"
     },
     "phoneNumber": "+971 55 509 9157",
     "email": "info@binayah.com",

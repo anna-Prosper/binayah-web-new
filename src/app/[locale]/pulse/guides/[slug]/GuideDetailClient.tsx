@@ -66,13 +66,60 @@ function escapeRe(s: string): string {
 // FIRST mention of each community is linked (via the shared `seen` set) so the
 // copy isn't peppered with repeated links. The name set is the guide's own
 // relatedCommunities, so matches are intentional (no stray word linking).
+/**
+ * Auto-link bare tool paths written in guide body text.
+ *
+ * Guide bodies reference our tools as plain paths ("run it through
+ * /deal-check") rather than markdown links, partly by habit and partly
+ * because for a long time the renderer did not support markdown links at all.
+ * Left as text those mentions pass no link equity and a reader cannot click
+ * them, so the reference is wasted twice over. Only known tool paths are
+ * linked — never arbitrary slash-text, which would turn prices like "sqft/yr"
+ * into broken links.
+ */
+const TOOL_PATHS: Record<string, string> = {
+  "/deal-check": "Deal Check",
+  "/valuation": "property valuation",
+  "/mortgage": "mortgage calculator",
+  "/pulse": "Market Pulse",
+};
+const TOOL_RX = new RegExp(`(?<![\\w/])(${Object.keys(TOOL_PATHS).map(escapeRe).join("|")})(?![\\w/-])`, "g");
+
+function linkTools(node: React.ReactNode, keyBase: string): React.ReactNode {
+  if (typeof node !== "string") return node;
+  TOOL_RX.lastIndex = 0;
+  if (!TOOL_RX.test(node)) return node;
+  TOOL_RX.lastIndex = 0;
+
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let k = 0;
+  while ((m = TOOL_RX.exec(node)) !== null) {
+    if (m.index > last) out.push(node.slice(last, m.index));
+    const path = m[1];
+    out.push(
+      <Link
+        key={`${keyBase}-tool${k++}`}
+        href={path}
+        className="font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
+      >
+        {TOOL_PATHS[path]}
+      </Link>,
+    );
+    last = m.index + path.length;
+  }
+  if (last < node.length) out.push(node.slice(last));
+  return out;
+}
+
 function linkCommunities(
   text: string,
   communities: string[],
   locale: string,
   seen: Set<string>,
 ): React.ReactNode {
-  if (!communities?.length || !text) return text;
+  if (!communities?.length || !text) return linkTools(text, "lc");
   const names = [...new Set(communities.map((c) => c.trim()).filter(Boolean))]
     .sort((a, b) => b.length - a.length); // longest first: "Dubai Marina" before "Dubai"
   const rx = new RegExp(`\\b(${names.map(escapeRe).join("|")})\\b`, "gi");
@@ -86,7 +133,7 @@ function linkCommunities(
     const key = canonical.toLowerCase();
     if (seen.has(key)) continue; // already linked earlier — leave as plain text
     seen.add(key);
-    if (m.index > last) out.push(text.slice(last, m.index));
+    if (m.index > last) out.push(linkTools(text.slice(last, m.index), `lc${k}`));
     out.push(
       <Link
         key={`c-${key}-${k++}`}
@@ -98,8 +145,9 @@ function linkCommunities(
     );
     last = m.index + matched.length;
   }
-  if (out.length === 0) return text;
-  if (last < text.length) out.push(text.slice(last));
+  // No community matched — the text may still contain a tool path.
+  if (out.length === 0) return linkTools(text, "lc0");
+  if (last < text.length) out.push(linkTools(text.slice(last), "lct"));
   return out;
 }
 

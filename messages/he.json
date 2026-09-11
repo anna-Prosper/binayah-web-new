@@ -95,7 +95,8 @@
     "megaSellServices": "שירותים",
     "megaOffPlanAreas": "אזורים פופולריים",
     "ourTeam": "הצוות שלנו",
-    "offers": "מבצעים"
+    "offers": "מבצעים",
+    "dealCheckTool": "Deal Check"
   },
   "common": {
     "viewAll": "הצג הכל",
@@ -702,7 +703,8 @@
       "developers": "יזמים",
       "team": "הצוות שלנו",
       "offers": "מבצעים ותוכניות תשלום",
-      "foreignBuyers": "רכישה לפי אזרחות"
+      "foreignBuyers": "רכישה לפי אזרחות",
+      "dealCheck": "Deal Check"
     },
     "phoneNumber": "+971 55 509 9157",
     "email": "info@binayah.com",

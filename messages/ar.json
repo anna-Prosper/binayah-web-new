@@ -95,7 +95,8 @@
     "sell": "بيع",
     "megaOffPlanAreas": "المناطق الشائعة",
     "ourTeam": "فريقنا",
-    "offers": "العروض"
+    "offers": "العروض",
+    "dealCheckTool": "فحص الصفقة"
   },
   "common": {
     "viewAll": "عرض الكل",
@@ -702,7 +703,8 @@
       "developers": "المطورون",
       "team": "فريقنا",
       "offers": "العروض وخطط السداد",
-      "foreignBuyers": "الشراء حسب الجنسية"
+      "foreignBuyers": "الشراء حسب الجنسية",
+      "dealCheck": "فحص الصفقة"
     },
     "phoneNumber": "+971 55 509 9157",
     "email": "info@binayah.com",
