@@ -176,115 +176,128 @@ export default async function DealCheckPage({ params }: Props) {
 
       <main className="bg-background">
         {/* ── Hero ──────────────────────────────────────────────────────────
-            The thesis of the page is the comparison itself, so the hero shows
-            a real one rather than describing it: the deep-green panel is the
-            product's actual output, in miniature. Figures are from a genuine
-            Business Bay check and labelled as an example, so nobody mistakes
-            it for their own result. */}
-        <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-16">
+            The hero sits on the house gradient (#0B3D2E → #1A7A5A) and carries
+            a real check as a white card, so the page opens by demonstrating
+            the product rather than describing it. The tool card below overlaps
+            the gradient's bottom edge, pulling the form into the hero instead
+            of stranding it on the page beneath. */}
+        <section className="relative">
           <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10"
-            style={{
-              background:
-                "radial-gradient(70% 55% at 50% -5%, rgba(212,168,71,0.13) 0%, rgba(212,168,71,0) 72%)",
-            }}
-          />
-          <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center">
-              {/* Left — the claim */}
-              <div className="text-center lg:text-start">
-                <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                  {t("eyebrow")}
-                </p>
-                <h1 className="mt-5 text-[30px] leading-[1.12] sm:text-[42px] lg:text-[52px] font-bold text-foreground text-balance">
-                  {t("heroTitle")}{" "}
-                  <span className="font-light italic text-[#1A7A5A]">{t("heroTitleLight")}</span>
-                </h1>
-                <p className="mt-5 text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  {t("heroSubtitle")}
-                </p>
+            className="relative overflow-hidden pt-24 pb-64 sm:pt-32 sm:pb-72"
+            style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #14543D 55%, #1A7A5A 100%)" }}
+          >
+            {/* Ambient warmth, top-right — keeps the flat gradient from reading
+                as a solid block without competing with the card. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(46% 58% at 82% 8%, rgba(212,168,71,0.16) 0%, rgba(212,168,71,0) 68%)",
+              }}
+            />
 
-                <ul className="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-2">
-                  {[
-                    { icon: Zap, label: t("trustFree") },
-                    { icon: ShieldCheck, label: t("trustNoSignup") },
-                    { icon: BadgeCheck, label: t("trustDld") },
-                    { icon: Sparkles, label: t("trustAnyAgency") },
-                  ].map(({ icon: Icon, label }) => (
-                    <li
-                      key={label}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs text-muted-foreground"
-                    >
-                      <Icon className="w-3.5 h-3.5 text-accent shrink-0" aria-hidden />
-                      {label}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Right — a real result, in miniature */}
-              <figure className="relative">
-                <div
-                  aria-hidden
-                  className="absolute -inset-3 -z-10 rounded-[28px] opacity-60 blur-2xl"
-                  style={{ background: "radial-gradient(60% 60% at 50% 40%, rgba(11,61,46,0.20), transparent 70%)" }}
-                />
-                <div className="rounded-3xl bg-[#0B3D2E] p-5 sm:p-6 shadow-xl ring-1 ring-black/5">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="text-[11px] uppercase tracking-[0.16em] text-white/45">
-                      {t("sampleLabel")}
-                    </span>
-                    <span className="rounded-full bg-emerald-400/15 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
-                      {t("vBelow")}
-                    </span>
-                  </div>
-
-                  <p className="mt-4 text-white/90 text-sm">{t("sampleProperty")}</p>
-
-                  {/* The comparison — the one number the page exists to produce */}
-                  <div className="mt-5 grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl bg-white/[0.06] px-4 py-3">
-                      <p className="text-[11px] text-white/50">{t("priceThis")}</p>
-                      <p className="mt-1 text-xl sm:text-2xl font-semibold text-white tabular-nums">2,298</p>
-                      <p className="text-[11px] text-white/40">{t("perSqft")}</p>
-                    </div>
-                    <div className="rounded-2xl bg-white/[0.06] px-4 py-3">
-                      <p className="text-[11px] text-white/50">{t("priceComparable")}</p>
-                      <p className="mt-1 text-xl sm:text-2xl font-semibold text-white tabular-nums">2,419</p>
-                      <p className="text-[11px] text-white/40">{t("perSqft")}</p>
-                    </div>
-                  </div>
-
-                  {/* Scale bar: both marks sit on one axis, so the gap is visible
-                      rather than merely stated. */}
-                  <div className="mt-5">
-                    <div className="relative h-1.5 rounded-full bg-white/10">
-                      <div className="absolute inset-y-0 left-0 rounded-full bg-emerald-400/70" style={{ width: "95%" }} />
-                      <div className="absolute -top-1 h-3.5 w-0.5 rounded bg-white" style={{ left: "95%" }} />
-                    </div>
-                    <div className="mt-2 flex justify-between text-[11px] text-white/45">
-                      <span>{t("sampleCheaper")}</span>
-                      <span className="tabular-nums text-emerald-300 font-medium">−5.0%</span>
-                    </div>
-                  </div>
-
-                  <p className="mt-5 border-t border-white/10 pt-4 text-[11px] leading-relaxed text-white/45">
-                    {t("sampleBasis")}
+            <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="grid lg:grid-cols-[1fr_1.02fr] gap-10 lg:gap-16 items-center">
+                {/* Left — the claim */}
+                <div>
+                  <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-6" />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#D4A847]">
+                    {t("eyebrow")}
                   </p>
+                  <h1 className="mt-5 text-[34px] leading-[1.08] sm:text-[46px] lg:text-[56px] font-bold text-white text-balance">
+                    {t("heroTitle")} {t("heroTitleLight")}
+                  </h1>
+                  <p className="mt-6 text-[15px] sm:text-base leading-relaxed text-white/70 max-w-xl">
+                    {t("heroSubtitle")}
+                  </p>
+
+                  <ul className="mt-8 flex flex-wrap gap-2">
+                    {[t("trustFree"), t("trustNoSignup"), t("trustDld"), t("trustAnyAgency")].map((label) => (
+                      <li
+                        key={label}
+                        className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 text-xs font-medium text-white/80"
+                      >
+                        {label}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <figcaption className="mt-3 text-center lg:text-start text-[11px] text-muted-foreground/70">
-                  {t("sampleCaption")}
-                </figcaption>
-              </figure>
+
+                {/* Right — a real check, as a white card on the gradient */}
+                <figure className="relative">
+                  <div className="rounded-[20px] bg-white p-5 sm:p-7 shadow-2xl shadow-black/25">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
+                        {t("sampleLabel")}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        {t("vBelow")}
+                      </span>
+                    </div>
+
+                    <p className="mt-4 text-sm font-medium text-foreground">{t("sampleProperty")}</p>
+
+                    <div className="my-5 h-px bg-border/60" />
+
+                    {/* Stacked bars on one shared scale — two lengths you can
+                        compare at a glance, which two side-by-side numbers
+                        never let you do. */}
+                    <div className="space-y-5">
+                      <div>
+                        <div className="flex items-end justify-between gap-3">
+                          <span className="text-sm text-muted-foreground">{t("priceThis")}</span>
+                          <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
+                            2,298
+                            <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
+                              {t("perSqft")}
+                            </span>
+                          </span>
+                        </div>
+                        <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
+                          <div className="h-full rounded-full bg-[#1A7A5A]" style={{ width: "95%" }} />
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex items-end justify-between gap-3">
+                          <span className="text-sm text-muted-foreground">{t("priceComparable")}</span>
+                          <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
+                            2,419
+                            <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
+                              {t("perSqft")}
+                            </span>
+                          </span>
+                        </div>
+                        <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
+                          <div className="h-full rounded-full bg-[#D4A847]" style={{ width: "100%" }} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl bg-emerald-50/70 px-4 py-3.5">
+                      <span className="text-sm text-emerald-900">{t("sampleCheaper")}</span>
+                      <span className="text-lg font-semibold tabular-nums text-emerald-700">−5.0%</span>
+                    </div>
+
+                    <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
+                      {t("sampleBasis")}
+                    </p>
+                    <figcaption className="mt-1.5 text-[11px] italic leading-relaxed text-muted-foreground/70">
+                      {t("sampleCaption")}
+                    </figcaption>
+                  </div>
+                </figure>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* Tool */}
-        <section className="pb-14 sm:pb-16">
-          <div className="max-w-2xl lg:max-w-3xl mx-auto px-4 sm:px-6">
-            <DealCheckClient />
+          {/* Tool — lifted over the gradient's edge */}
+          <div className="relative -mt-52 sm:-mt-60 pb-14 sm:pb-16">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6">
+              <DealCheckClient />
+            </div>
           </div>
         </section>
 

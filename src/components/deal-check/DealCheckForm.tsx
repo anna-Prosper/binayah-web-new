@@ -22,6 +22,10 @@ interface Props {
 
 const MAX_IMAGE_MB = 6;
 
+/** A URL scheme, not copy — identical in every language, so it is not a
+ *  translation key. */
+const URL_SCHEME = "https://";
+
 export default function DealCheckForm({ onSubmit, busy }: Props) {
   const t = useTranslations("dealCheck");
   const tabs: { id: SubmitMode; label: string; icon: typeof Link2 }[] = [
@@ -65,9 +69,13 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
     setError(null);
 
     if (mode === "url") {
-      const trimmed = url.trim();
-      if (!trimmed) return setError(t("errNoLink"));
-      if (!/^https?:\/\//i.test(trimmed)) {
+      const raw = url.trim();
+      if (!raw) return setError(t("errNoLink"));
+      // The field shows "https://" as a fixed affix, so most people will type
+      // a bare domain — accept that, and still accept a full URL pasted over
+      // the top rather than doubling the scheme.
+      const trimmed = /^https?:\/\//i.test(raw) ? raw : `https://${raw.replace(/^\/+/, "")}`;
+      if (!/^https?:\/\/[^\s.]+\.[^\s]{2,}/i.test(trimmed)) {
         return setError(t("errBadLink"));
       }
       return onSubmit({ url: trimmed, mortgage, downPaymentPct: mortgage ? depositPct / 100 : null });
@@ -86,36 +94,36 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
   };
 
   return (
-    <div className="rounded-2xl bg-card border border-border/50 shadow-sm overflow-hidden">
-      {/* Tabs */}
-      <div className="flex border-b border-border/50" role="tablist">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const active = mode === tab.id;
-          return (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={active}
-              // The label is visually hidden on small screens to fit three
-              // tabs, so name the control explicitly — otherwise the tab has
-              // no accessible name at all on mobile.
-              aria-label={tab.label}
-              onClick={() => {
-                setMode(tab.id);
-                setError(null);
-              }}
-              className={`flex-1 flex items-center justify-center gap-2 px-3 py-4 text-sm font-medium transition-colors ${
-                active
-                  ? "text-accent border-b-2 border-accent bg-accent/5"
-                  : "text-muted-foreground hover:text-foreground border-b-2 border-transparent"
-              }`}
-            >
-              <Icon className="w-4 h-4 shrink-0" aria-hidden />
-              <span className="hidden sm:inline">{tab.label}</span>
-            </button>
-          );
-        })}
+    <div className="rounded-[20px] bg-card border border-border/50 shadow-xl shadow-black/[0.06] overflow-hidden">
+      {/* Tabs — pills, so they read as a segmented control rather than
+          document navigation. */}
+      <div className="px-5 pt-5 sm:px-7 sm:pt-7">
+        <div className="inline-flex flex-wrap gap-1 rounded-full bg-muted/70 p-1" role="tablist">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const active = mode === tab.id;
+            return (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={active}
+                aria-label={tab.label}
+                onClick={() => {
+                  setMode(tab.id);
+                  setError(null);
+                }}
+                className={`inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] font-medium transition-all ${
+                  active
+                    ? "bg-[#0B3D2E] text-white shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                <span className="hidden xs:inline sm:inline">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="p-5 sm:p-7 space-y-5">
@@ -124,15 +132,25 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
             <label htmlFor="dc-url" className="block text-sm font-medium text-foreground mb-2">
               {t("linkLabel")}
             </label>
-            <input
-              id="dc-url"
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !busy && submit()}
-              placeholder="https://..."
-              className="w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all"
-            />
+            {/* The scheme is shown as a fixed affix rather than left in the
+                placeholder, so the field reads as "you type the rest". */}
+            <div className="flex items-stretch rounded-xl border border-border/80 bg-background focus-within:ring-2 focus-within:ring-accent/30 focus-within:border-accent/40 transition-all overflow-hidden">
+              <span
+                aria-hidden
+                className="flex items-center ps-4 pe-2 font-mono text-sm text-muted-foreground/70 select-none"
+              >
+                {URL_SCHEME}
+              </span>
+              <input
+                id="dc-url"
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && !busy && submit()}
+                placeholder={t("linkPlaceholder")}
+                className="flex-1 min-w-0 bg-transparent py-3.5 pe-4 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
+              />
+            </div>
             <p className="mt-2 text-xs text-muted-foreground">
               {t("linkHint")}
             </p>
@@ -255,28 +273,27 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
           </p>
         )}
 
-        <button
-          onClick={submit}
-          disabled={busy}
-          className="w-full flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-sm font-semibold text-white shadow-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-md"
-          style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }}
-        >
-          {busy ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
-              {t("submitBusy")}
-            </>
-          ) : (
-            <>
-              {t("submit")}
-              <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden />
-            </>
-          )}
-        </button>
-
-        <p className="text-xs text-center text-muted-foreground">
-          {t("formFooter")}
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 pt-1">
+          <button
+            onClick={submit}
+            disabled={busy}
+            className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-md shrink-0"
+            style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+          >
+            {busy ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
+                {t("submitBusy")}
+              </>
+            ) : (
+              <>
+                {t("submit")}
+                <ArrowRight className="w-4 h-4 rtl:rotate-180" aria-hidden />
+              </>
+            )}
+          </button>
+          <p className="text-xs leading-relaxed text-muted-foreground">{t("formFooter")}</p>
+        </div>
       </div>
     </div>
   );

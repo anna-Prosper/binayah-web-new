@@ -3474,6 +3474,7 @@
     "perSqft": "每平方英尺",
     "sampleCheaper": "比附近同类房子便宜",
     "sampleBasis": "基于同一区域两居室公寓近期的 917 笔成交。",
-    "sampleCaption": "这是一次真实检查的示例——你的结果会基于你自己的房产。"
+    "sampleCaption": "这是一次真实检查的示例——你的结果会基于你自己的房产。",
+    "linkPlaceholder": "在此粘贴房源链接"
   }
 }

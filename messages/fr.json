@@ -3468,6 +3468,7 @@
     "perSqft": "le pi²",
     "sampleCheaper": "Moins cher que des logements similaires à côté",
     "sampleBasis": "D'après 917 ventes récentes d'appartements 2 chambres dans le même quartier.",
-    "sampleCaption": "Une vérification réelle, montrée en exemple — la vôtre portera sur votre bien."
+    "sampleCaption": "Une vérification réelle, montrée en exemple — la vôtre portera sur votre bien.",
+    "linkPlaceholder": "collez le lien de l'annonce ici"
   }
 }

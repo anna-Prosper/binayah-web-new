@@ -3468,6 +3468,7 @@
     "perSqft": "mỗi ft²",
     "sampleCheaper": "Rẻ hơn những căn tương tự gần đó",
     "sampleBasis": "Dựa trên 917 giao dịch gần đây của căn 2 phòng ngủ trong cùng khu vực.",
-    "sampleCaption": "Một lần kiểm tra thật, hiển thị làm ví dụ — của bạn sẽ dùng bất động sản của bạn."
+    "sampleCaption": "Một lần kiểm tra thật, hiển thị làm ví dụ — của bạn sẽ dùng bất động sản của bạn.",
+    "linkPlaceholder": "dán liên kết tin đăng vào đây"
   }
 }

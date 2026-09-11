@@ -3468,6 +3468,7 @@
     "perSqft": "per sqft",
     "sampleCheaper": "Cheaper than similar homes nearby",
     "sampleBasis": "Based on 917 recent sales of 2-bed apartments in the same area.",
-    "sampleCaption": "A real check, shown as an example — yours will use your own property."
+    "sampleCaption": "A real check, shown as an example — yours will use your own property.",
+    "linkPlaceholder": "paste the listing URL here"
   }
 }
