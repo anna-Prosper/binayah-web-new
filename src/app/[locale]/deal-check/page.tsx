@@ -37,24 +37,16 @@ const descriptions: Record<string, string> = {
   he: "שלחו כל נכס בדובאי — קישור, צילום מסך או חוברת מכל סוכנות. נשווה את המחיר למה שדירות דומות באזור באמת נמכרו בו לאחרונה, נחשב כמה מזומן תצטרכו בפועל, ונגיד לכם מה לשאול. חינם.",
 };
 
-/** Supporting guides. Kept here so the tool page and the guides cross-link. */
-const RELATED_GUIDES = [
-  {
-    slug: "true-cost-buying-property-dubai",
-    en: "The True Cost of Buying Property in Dubai",
-    blurb: "Every fee, with real figures — and the 2025 rule that stopped buyers financing them.",
-  },
-  {
-    slug: "how-to-tell-if-dubai-property-overpriced",
-    en: "How to Tell If a Dubai Property Is Overpriced",
-    blurb: "The method we use: price per square foot against what places actually sold for, not asking prices.",
-  },
-  {
-    slug: "questions-to-ask-before-buying-dubai-property",
-    en: "17 Questions to Ask Before You Buy",
-    blurb: "What listings leave out — service charges, tenancy, escrow and handover terms.",
-  },
-];
+/**
+ * Supporting guides — slugs only. Titles and blurbs come from the message
+ * catalogue so they translate; hardcoding English here left the Arabic and
+ * Chinese pages showing English cards.
+ */
+const RELATED_GUIDE_SLUGS = [
+  "true-cost-buying-property-dubai",
+  "how-to-tell-if-dubai-property-overpriced",
+  "questions-to-ask-before-buying-dubai-property",
+] as const;
 
 const FAQS: Record<string, { question: string; answer: string }[]> = {
   en: [
@@ -301,58 +293,80 @@ export default async function DealCheckPage({ params }: Props) {
           </div>
         </section>
 
-        {/* What you get */}
-        <section className="py-14 sm:py-16 border-t border-border/40">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-10 text-balance">
-              {t("whatYouGet")}
-            </h2>
-            {/* Numbered because these genuinely are the four sections of the
-                report, in the order they appear — not decorative sequence. */}
-            <ol className="grid sm:grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border/50 bg-border/50">
-              {[
-                { t: t("wyg1Title"), d: t("wyg1Desc") },
-                { t: t("wyg2Title"), d: t("wyg2Desc") },
-                { t: t("wyg3Title"), d: t("wyg3Desc") },
-                { t: t("wyg4Title"), d: t("wyg4Desc") },
-              ].map((f, i) => (
-                <li key={f.t} className="flex gap-4 bg-card p-5 sm:p-6">
-                  <span
-                    aria-hidden
-                    className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#0B3D2E]/[0.07] text-xs font-semibold tabular-nums text-[#0B3D2E]"
+        {/* ── What you get back ─────────────────────────────────────────────
+            Asymmetric: the heading holds its own column so the four cards read
+            as one set rather than a centred grid under a banner. The 01-04
+            numerals are real sequence — these are the report's four sections
+            in the order they appear — set in mono so they read as indices, not
+            decoration. */}
+        <section className="py-16 sm:py-24">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)] gap-10 lg:gap-16">
+              <div className="lg:pt-2">
+                <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#D4A847]">
+                  {t("wygEyebrow")}
+                </p>
+                <h2 className="mt-4 text-[28px] sm:text-[34px] leading-[1.12] font-bold text-foreground text-balance">
+                  {t("whatYouGet")}
+                </h2>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xs">
+                  {t("wygIntro")}
+                </p>
+              </div>
+
+              <ol className="grid sm:grid-cols-2 gap-4 sm:gap-5">
+                {[
+                  { t: t("wyg1Title"), d: t("wyg1Desc") },
+                  { t: t("wyg2Title"), d: t("wyg2Desc") },
+                  { t: t("wyg3Title"), d: t("wyg3Desc") },
+                  { t: t("wyg4Title"), d: t("wyg4Desc") },
+                ].map((f, i) => (
+                  <li
+                    key={f.t}
+                    className="rounded-2xl border border-border/50 bg-card p-5 sm:p-6 shadow-sm transition-colors hover:border-accent/40"
                   >
-                    {i + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-[15px] sm:text-base font-semibold text-foreground mb-1.5">{f.t}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{f.d}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+                    <span className="block font-mono text-xs tabular-nums text-[#D4A847]">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="mt-3.5 text-[17px] font-semibold text-foreground text-balance">{f.t}</h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{f.d}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </section>
 
-        {/* Related guides — internal links both ways */}
-        <section className="py-14 sm:py-16 border-t border-border/40">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-10">
+        {/* ── Read next ─────────────────────────────────────────────────────
+            Inverted to the dark ground so the guides read as a separate
+            destination rather than more of the tool page. */}
+        <section className="py-16 sm:py-24 bg-[#0B2018]">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-white text-balance">
               {t("relatedTitle")}
             </h2>
-            <ul className="grid sm:grid-cols-3 gap-3 sm:gap-4">
-              {RELATED_GUIDES.map((g) => (
-                <li key={g.slug}>
+
+            <ul className="mt-8 sm:mt-10 grid sm:grid-cols-3 gap-4 sm:gap-5">
+              {RELATED_GUIDE_SLUGS.map((slug, i) => (
+                <li key={slug}>
                   <Link
-                    href={`/pulse/guides/${g.slug}`}
-                    className="group flex h-full flex-col p-4 sm:p-5 rounded-2xl bg-card border border-border/50 shadow-sm hover:border-accent/40 transition-colors"
+                    href={`/pulse/guides/${slug}`}
+                    className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6 transition-colors hover:border-[#D4A847]/40 hover:bg-white/[0.05]"
                   >
-                    <h3 className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
-                      {g.en}
+                    <h3 className="text-[17px] font-semibold leading-snug text-white text-balance">
+                      {t(`guide${i + 1}Title`)}
                     </h3>
-                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed flex-1">{g.blurb}</p>
-                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-accent">
-                      Read
-                      <ArrowRight className="w-3 h-3 rtl:rotate-180" aria-hidden />
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">
+                      {t(`guide${i + 1}Blurb`)}
+                    </p>
+                    <span className="mt-5 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D4A847]">
+                      {t("readLink")}
+                      <ArrowRight
+                        className="w-3 h-3 rtl:rotate-180 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+                        aria-hidden
+                      />
                     </span>
                   </Link>
                 </li>
@@ -361,10 +375,12 @@ export default async function DealCheckPage({ params }: Props) {
           </div>
         </section>
 
-        {/* FAQ */}
-        <section className="py-14 sm:py-16 border-t border-border/40">
+        {/* FAQ — no top rule: it follows the dark section, which already
+            separates it. */}
+        <section className="py-16 sm:py-24">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-10">
+            <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-foreground mb-8 sm:mb-10 text-balance">
               {t("faqTitle")}
             </h2>
             <div className="space-y-2.5 sm:space-y-3">
