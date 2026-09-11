@@ -421,7 +421,7 @@ export default function GuideDetailClient({
               </span>
               <span className="flex items-center gap-1.5 text-xs text-white/70"><Clock className="h-3.5 w-3.5" /> {guide.readTime}</span>
               {publishedLabel && <span className="flex items-center gap-1.5 text-xs text-white/70"><Calendar className="h-3.5 w-3.5" /> {publishedLabel}</span>}
-              <span className="flex items-center gap-1.5 text-xs text-white/70"><Eye className="h-3.5 w-3.5" /> {guide.views.toLocaleString()} {t("views")}</span>
+              {guide.views > 0 && <span className="flex items-center gap-1.5 text-xs text-white/70"><Eye className="h-3.5 w-3.5" /> {guide.views.toLocaleString()} {t("views")}</span>}
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight max-w-3xl">{title}</h1>
             <p className="text-base sm:text-lg text-white/80 mt-3 max-w-2xl leading-relaxed">{description}</p>
