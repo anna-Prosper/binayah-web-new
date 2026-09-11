@@ -28,13 +28,13 @@ const titles: Record<string, string> = {
 };
 
 const descriptions: Record<string, string> = {
-  en: "Send any Dubai property — a link, screenshot or brochure, from any agency. Get the price checked against DLD-registered sales, the real cash required, and the questions to ask. Free.",
-  ru: "Отправьте любой объект в Дубае — ссылку, скриншот или брошюру от любого агентства. Проверим цену по зарегистрированным сделкам DLD, посчитаем реальные затраты и подскажем вопросы. Бесплатно.",
-  ar: "أرسل أي عقار في دبي — رابط أو لقطة شاشة أو كتيب من أي وكالة. نقارن السعر بصفقات دائرة الأراضي المسجلة، ونحسب النقد المطلوب فعلياً، ونحدد الأسئلة المهمة. مجاناً.",
-  zh: "发送任何迪拜房产——链接、截图或任何中介的宣传册。我们对照迪拜土地局登记交易核查价格、计算实际所需现金，并列出应问的问题。免费。",
-  fr: "Envoyez n'importe quel bien à Dubaï — lien, capture ou brochure, de n'importe quelle agence. Prix vérifié face aux ventes enregistrées au DLD, trésorerie réelle nécessaire et questions à poser. Gratuit.",
-  vi: "Gửi bất kỳ bất động sản Dubai nào — liên kết, ảnh chụp hoặc tài liệu từ bất kỳ đại lý nào. Kiểm tra giá so với giao dịch đã đăng ký DLD, tiền mặt thực tế cần có và câu hỏi nên hỏi. Miễn phí.",
-  he: "שלחו כל נכס בדובאי — קישור, צילום מסך או חוברת מכל סוכנות. נבדוק את המחיר מול עסקאות רשומות ב-DLD, נחשב את המזומן הנדרש באמת ונציע שאלות לשאול. חינם.",
+  en: "Send any Dubai property — a link, screenshot or brochure, from any agency. We'll check the price against what similar homes nearby actually sold for, work out what you really need in cash, and tell you what to ask. Free.",
+  ru: "Отправьте любой объект в Дубае — ссылку, скриншот или брошюру от любого агентства. Сравним цену с тем, за сколько недавно продавались похожие квартиры рядом, посчитаем реальные расходы и подскажем, о чём спросить. Бесплатно.",
+  ar: "أرسل أي عقار في دبي — رابط أو لقطة شاشة أو كتيب من أي وكالة. نقارن السعر بما بيعت به فعلاً منازل مشابهة قريبة، ونحسب ما تحتاجه نقداً بالضبط، ونخبرك بما يجب أن تسأل عنه. مجاناً.",
+  zh: "发送任何迪拜房产——链接、截图或任何中介的宣传册。我们会把价格和附近同类房子最近的真实成交价作比较，算出你实际需要准备多少现金，并告诉你该问些什么。免费。",
+  fr: "Envoyez n'importe quel bien à Dubaï — lien, capture ou brochure, de n'importe quelle agence. On compare le prix à ce que des logements similaires se sont réellement vendus juste à côté, on calcule ce qu'il vous faut vraiment en liquide, et on vous dit quoi demander. Gratuit.",
+  vi: "Gửi bất kỳ bất động sản Dubai nào — liên kết, ảnh chụp hoặc tài liệu từ bất kỳ đại lý nào. Chúng tôi so giá với mức mà những căn tương tự gần đó đã thực sự bán được, tính ra số tiền mặt bạn thật sự cần, và mách bạn nên hỏi gì. Miễn phí.",
+  he: "שלחו כל נכס בדובאי — קישור, צילום מסך או חוברת מכל סוכנות. נשווה את המחיר למה שדירות דומות באזור באמת נמכרו בו לאחרונה, נחשב כמה מזומן תצטרכו בפועל, ונגיד לכם מה לשאול. חינם.",
 };
 
 /** Supporting guides. Kept here so the tool page and the guides cross-link. */
@@ -47,7 +47,7 @@ const RELATED_GUIDES = [
   {
     slug: "how-to-tell-if-dubai-property-overpriced",
     en: "How to Tell If a Dubai Property Is Overpriced",
-    blurb: "The method we use: price per square foot against registered sales, not asking prices.",
+    blurb: "The method we use: price per square foot against what places actually sold for, not asking prices.",
   },
   {
     slug: "questions-to-ask-before-buying-dubai-property",
@@ -61,47 +61,47 @@ const FAQS: Record<string, { question: string; answer: string }[]> = {
     {
       question: "Does the property have to be a Binayah listing?",
       answer:
-        "No. Deal Check works on any Dubai property from any source — another agency's listing, a portal link, a developer brochure, or a screenshot someone sent you on WhatsApp. That is the point of it: you should be able to get a straight answer about a property regardless of who is selling it.",
+        "No. Send us anything — another agency's listing, a portal link, a developer's brochure, even a screenshot someone forwarded you on WhatsApp. That's rather the point: you should be able to get a straight answer about a place no matter who happens to be selling it.",
     },
     {
       question: "Where do the price comparisons come from?",
       answer:
-        "From sale transactions registered with the Dubai Land Department — actual recorded sales, not asking prices. We match your property to the same community, property type and bedroom count, and show you the sample size so you can judge how much weight the comparison carries. Where the sample is small, we say so rather than presenting a confident-looking number.",
+        "From what homes actually sold for — real recorded sale prices, not what other sellers are asking. Asking prices drift upward together and tell you very little. We line your property up against ones in the same area, the same type and the same number of bedrooms, and tell you how many sales we found. If it's only a handful, we say so instead of dressing a guess up as a verdict.",
     },
     {
       question: "Can I check a rental listing too?",
       answer:
-        "Yes. If you send a rental, Deal Check compares the asking rent against the median of tenancy contracts registered with Ejari for that area, per square foot, and shows the sample size. It also estimates what buying the same unit would cost and the gross yield that implies, so you can weigh renting against buying.",
+        "Yes. Send a rental and we'll compare what they're asking against what people nearby are actually paying — from real signed tenancy contracts, worked out per square foot so size doesn't skew it. We'll also show roughly what it would cost to buy the same place, in case you're weighing renting against buying.",
     },
     {
-      question: "How accurate are the service charge figures?",
+      question: "How accurate are the service charge estimates?",
       answer:
-        "They are estimates, and we label them as such. Dubai publishes service charges per building through the DLD Mollak index, not per community, so there is no feed we can query for your specific tower. We use a community-level planning figure and tell you to check your actual building on the DLD service charge index. Service charges are the single biggest drag on net yield, so this is a number worth verifying rather than assuming.",
+        "They're estimates, and we say so on the page. Service charges are set building by building, not area by area, so there's no way for us to look up your exact tower. We use a sensible figure for the area and point you at the official index to check yours. It's worth doing — the service charge is the single biggest thing eating into what you actually keep from rent.",
     },
     {
       question: "What does it cost, and what do you need from me?",
       answer:
-        "The check is free. You see the verdict, the price against comparable registered sales, and the total cash required without giving us anything. The full cost breakdown, the rental economics, the questions to ask and the comparable properties need a name and a phone number, because an agent may follow up about the property.",
+        "The check is free. You get the verdict, how the price compares, and the total cash figure without giving us anything at all. For the rest — the full cost breakdown, what it earns as a rental, the questions to ask and places worth comparing — we ask for a name and a number, because one of our agents may call you about it.",
     },
     {
       question: "How do I know if a Dubai asking price is fair, and is there room to negotiate?",
       answer:
-        "Compare the price per square foot against what comparable units in the same community actually sold for, not against other asking prices — asking prices anchor to each other and drift above the market together. Deal Check does that comparison for you and shows the sample size. A property more than 10% above comparable registered sales needs a concrete justification, such as a high floor, an unobstructed view or a recent full renovation. Without one, that gap is your negotiating room.",
+        "Work out the price per square foot and compare it with what similar homes in the same area actually sold for — not with what other sellers are asking, since those drift upward together. We do that for you. If a place is more than 10% above what comparable homes went for, there should be a concrete reason: a high floor, a proper view, a recent renovation. If nobody can point to one, that gap is your room to negotiate.",
     },
     {
       question: "What rental yield should I expect in Dubai?",
       answer:
-        "Gross rental yields in Dubai typically run from around 4% in prime waterfront communities to 7-8% in higher-yielding areas like Jumeirah Village Circle. Net yield is the figure that matters, and it lands well below the gross once the service charge, vacancy, management, maintenance and the 5% municipality housing fee come out. Deal Check models the net figure and shows every deduction, so you can see where the gap goes.",
+        "Rents in Dubai tend to work out at roughly 4% of a property's value a year in the prime waterfront spots, and 7-8% in cheaper areas like Jumeirah Village Circle. But that's before costs. What you actually keep is a good deal less once the service charge, empty months, management and the municipality fee come out — and that's the number worth caring about. We show you both, and every deduction in between.",
     },
     {
       question: "Can I use this instead of a valuation?",
       answer:
-        "No. This is market information to help you ask better questions and spot things worth checking. It is not a valuation and not financial advice. Banks require a RICS-certified or bank-approved valuer for mortgage purposes, and anything with legal consequences needs a professional appraisal.",
+        "No — and we'd rather be straight about that. This is here to help you ask sharper questions and notice things worth checking. It isn't a formal valuation and it isn't financial advice. If you need one for a mortgage or anything legal, banks will want a certified valuer.",
     },
     {
-      question: "What does 'total cash required' include?",
+      question: "What's actually included in the cash figure?",
       answer:
-        "The purchase price or deposit, the 4% DLD transfer fee, DLD admin and title deed charges, the trustee office fee, agency commission where it applies, the developer NOC, and — if you're financing — mortgage registration, the bank's arrangement fee and its valuation. Since February 2025 the DLD fee and agency commission can no longer be added to a mortgage, so those must be paid in cash. On a ready purchase the total typically lands around 7% of the price.",
+        "The price or your deposit, the 4% government transfer fee, the registration and title paperwork, the trustee office fee, the agent's commission where it applies, the developer's clearance certificate, and if you're borrowing, the bank's arrangement fee, its valuation and the mortgage registration. One thing worth knowing: since February 2025 the transfer fee and commission can't be added to your loan, so you need them in cash. On a finished home it usually comes to about 7% on top of the price.",
     },
   ],
 };
@@ -117,7 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: [
       "Dubai property price check",
       "is this Dubai property overpriced",
-      "DLD transaction data",
+      "Dubai property sold prices",
       "Dubai property purchase costs",
       "Dubai rental yield calculator",
       "Dubai service charges",
@@ -162,7 +162,7 @@ export default async function DealCheckPage({ params }: Props) {
     offers: { "@type": "Offer", price: "0", priceCurrency: "AED" },
     provider: { "@type": "RealEstateAgent", name: "Binayah Properties", url: SITE_URL },
     featureList: [
-      "Price against DLD-registered comparable sales",
+      "Price compared with what similar homes actually sold for",
       "Total cash required including all purchase costs",
       "Rental economics with assumptions shown",
       "Diligence questions specific to the property",
@@ -175,49 +175,115 @@ export default async function DealCheckPage({ params }: Props) {
       <Navbar />
 
       <main className="bg-background">
-        {/* Hero */}
-        <section className="relative overflow-hidden pt-24 pb-10 sm:pt-32 sm:pb-14">
-          {/* Soft brand wash — subtle, doesn't compete with the tool */}
+        {/* ── Hero ──────────────────────────────────────────────────────────
+            The thesis of the page is the comparison itself, so the hero shows
+            a real one rather than describing it: the deep-green panel is the
+            product's actual output, in miniature. Figures are from a genuine
+            Business Bay check and labelled as an example, so nobody mistakes
+            it for their own result. */}
+        <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-16">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 -z-10"
             style={{
               background:
-                "radial-gradient(60% 50% at 50% 0%, rgba(212,168,71,0.10) 0%, rgba(212,168,71,0) 70%)",
+                "radial-gradient(70% 55% at 50% -5%, rgba(212,168,71,0.13) 0%, rgba(212,168,71,0) 72%)",
             }}
           />
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-            <div className="h-[2px] w-12 bg-accent mx-auto mb-5 sm:mb-6" />
-            <p className="text-accent font-semibold tracking-[0.35em] sm:tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-3 sm:mb-4">
-              {t("eyebrow")}
-            </p>
-            <h1 className="text-[28px] leading-tight sm:text-4xl lg:text-5xl font-bold text-foreground">
-              {t("heroTitle")} <span className="font-light">{t("heroTitleLight")}</span>
-            </h1>
-            <p className="mt-4 sm:mt-5 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              {t("heroSubtitle")}
-            </p>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center">
+              {/* Left — the claim */}
+              <div className="text-center lg:text-start">
+                <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+                  {t("eyebrow")}
+                </p>
+                <h1 className="mt-5 text-[30px] leading-[1.12] sm:text-[42px] lg:text-[52px] font-bold text-foreground text-balance">
+                  {t("heroTitle")}{" "}
+                  <span className="font-light italic text-[#1A7A5A]">{t("heroTitleLight")}</span>
+                </h1>
+                <p className="mt-5 text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
+                  {t("heroSubtitle")}
+                </p>
 
-            {/* Trust row */}
-            <ul className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
-              {[
-                { icon: Zap, label: t("trustFree") },
-                { icon: ShieldCheck, label: t("trustNoSignup") },
-                { icon: BadgeCheck, label: t("trustDld") },
-                { icon: Sparkles, label: t("trustAnyAgency") },
-              ].map(({ icon: Icon, label }) => (
-                <li key={label} className="inline-flex items-center gap-1.5">
-                  <Icon className="w-3.5 h-3.5 text-accent" aria-hidden />
-                  {label}
-                </li>
-              ))}
-            </ul>
+                <ul className="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-2">
+                  {[
+                    { icon: Zap, label: t("trustFree") },
+                    { icon: ShieldCheck, label: t("trustNoSignup") },
+                    { icon: BadgeCheck, label: t("trustDld") },
+                    { icon: Sparkles, label: t("trustAnyAgency") },
+                  ].map(({ icon: Icon, label }) => (
+                    <li
+                      key={label}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs text-muted-foreground"
+                    >
+                      <Icon className="w-3.5 h-3.5 text-accent shrink-0" aria-hidden />
+                      {label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Right — a real result, in miniature */}
+              <figure className="relative">
+                <div
+                  aria-hidden
+                  className="absolute -inset-3 -z-10 rounded-[28px] opacity-60 blur-2xl"
+                  style={{ background: "radial-gradient(60% 60% at 50% 40%, rgba(11,61,46,0.20), transparent 70%)" }}
+                />
+                <div className="rounded-3xl bg-[#0B3D2E] p-5 sm:p-6 shadow-xl ring-1 ring-black/5">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[11px] uppercase tracking-[0.16em] text-white/45">
+                      {t("sampleLabel")}
+                    </span>
+                    <span className="rounded-full bg-emerald-400/15 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
+                      {t("vBelow")}
+                    </span>
+                  </div>
+
+                  <p className="mt-4 text-white/90 text-sm">{t("sampleProperty")}</p>
+
+                  {/* The comparison — the one number the page exists to produce */}
+                  <div className="mt-5 grid grid-cols-2 gap-3">
+                    <div className="rounded-2xl bg-white/[0.06] px-4 py-3">
+                      <p className="text-[11px] text-white/50">{t("priceThis")}</p>
+                      <p className="mt-1 text-xl sm:text-2xl font-semibold text-white tabular-nums">2,298</p>
+                      <p className="text-[11px] text-white/40">{t("perSqft")}</p>
+                    </div>
+                    <div className="rounded-2xl bg-white/[0.06] px-4 py-3">
+                      <p className="text-[11px] text-white/50">{t("priceComparable")}</p>
+                      <p className="mt-1 text-xl sm:text-2xl font-semibold text-white tabular-nums">2,419</p>
+                      <p className="text-[11px] text-white/40">{t("perSqft")}</p>
+                    </div>
+                  </div>
+
+                  {/* Scale bar: both marks sit on one axis, so the gap is visible
+                      rather than merely stated. */}
+                  <div className="mt-5">
+                    <div className="relative h-1.5 rounded-full bg-white/10">
+                      <div className="absolute inset-y-0 left-0 rounded-full bg-emerald-400/70" style={{ width: "95%" }} />
+                      <div className="absolute -top-1 h-3.5 w-0.5 rounded bg-white" style={{ left: "95%" }} />
+                    </div>
+                    <div className="mt-2 flex justify-between text-[11px] text-white/45">
+                      <span>{t("sampleCheaper")}</span>
+                      <span className="tabular-nums text-emerald-300 font-medium">−5.0%</span>
+                    </div>
+                  </div>
+
+                  <p className="mt-5 border-t border-white/10 pt-4 text-[11px] leading-relaxed text-white/45">
+                    {t("sampleBasis")}
+                  </p>
+                </div>
+                <figcaption className="mt-3 text-center lg:text-start text-[11px] text-muted-foreground/70">
+                  {t("sampleCaption")}
+                </figcaption>
+              </figure>
+            </div>
           </div>
         </section>
 
         {/* Tool */}
         <section className="pb-14 sm:pb-16">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <div className="max-w-2xl lg:max-w-3xl mx-auto px-4 sm:px-6">
             <DealCheckClient />
           </div>
         </section>
@@ -225,22 +291,32 @@ export default async function DealCheckPage({ params }: Props) {
         {/* What you get */}
         <section className="py-14 sm:py-16 border-t border-border/40">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-8 sm:mb-10 text-balance">
               {t("whatYouGet")}
             </h2>
-            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+            {/* Numbered because these genuinely are the four sections of the
+                report, in the order they appear — not decorative sequence. */}
+            <ol className="grid sm:grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border/50 bg-border/50">
               {[
                 { t: t("wyg1Title"), d: t("wyg1Desc") },
                 { t: t("wyg2Title"), d: t("wyg2Desc") },
                 { t: t("wyg3Title"), d: t("wyg3Desc") },
                 { t: t("wyg4Title"), d: t("wyg4Desc") },
-              ].map((f) => (
-                <div key={f.t} className="p-4 sm:p-5 rounded-2xl bg-card border border-border/50 shadow-sm">
-                  <h3 className="text-sm sm:text-base font-semibold text-foreground mb-1.5 sm:mb-2">{f.t}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.d}</p>
-                </div>
+              ].map((f, i) => (
+                <li key={f.t} className="flex gap-4 bg-card p-5 sm:p-6">
+                  <span
+                    aria-hidden
+                    className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#0B3D2E]/[0.07] text-xs font-semibold tabular-nums text-[#0B3D2E]"
+                  >
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-[15px] sm:text-base font-semibold text-foreground mb-1.5">{f.t}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{f.d}</p>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
