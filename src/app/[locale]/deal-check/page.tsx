@@ -339,10 +339,23 @@ export default async function DealCheckPage({ params }: Props) {
         </section>
 
         {/* ── Read next ─────────────────────────────────────────────────────
-            Inverted to the dark ground so the guides read as a separate
-            destination rather than more of the tool page. */}
-        <section className="py-16 sm:py-24 bg-[#0B2018]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            Near-black ink rather than a green tint: the guides are a different
+            destination from the tool, and the deeper ground says so while
+            letting the gold do the only talking. Surfaces are hairline-bordered
+            translucent white over the ink, so the cards read as panels lit from
+            within rather than boxes drawn on top. */}
+        <section className="relative overflow-hidden py-16 sm:py-24 bg-[#0A0E0D]">
+          {/* Ambient cast — keeps a large flat black from reading as dead space. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(58% 46% at 76% 6%, rgba(26,122,90,0.20) 0%, rgba(26,122,90,0) 66%), radial-gradient(42% 40% at 10% 96%, rgba(212,168,71,0.09) 0%, rgba(212,168,71,0) 70%)",
+            }}
+          />
+
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
             <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
             <h2 className="text-[28px] sm:text-[34px] font-bold text-white text-balance">
               {t("relatedTitle")}
@@ -353,18 +366,25 @@ export default async function DealCheckPage({ params }: Props) {
                 <li key={slug}>
                   <Link
                     href={`/pulse/guides/${slug}`}
-                    className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6 transition-colors hover:border-[#D4A847]/40 hover:bg-white/[0.05]"
+                    className="group relative flex h-full flex-col rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6 transition-all duration-300 hover:border-[#D4A847]/35 hover:bg-white/[0.05]"
                   >
-                    <h3 className="text-[17px] font-semibold leading-snug text-white text-balance">
+                    {/* Index — the guides are a reading order, not a ranking,
+                        but the numeral still tells you how many there are. */}
+                    <span className="font-mono text-[11px] tabular-nums tracking-wider text-white/40">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+
+                    <h3 className="mt-4 text-[17px] font-semibold leading-snug text-white text-balance">
                       {t(`guide${i + 1}Title`)}
                     </h3>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-white/50">
                       {t(`guide${i + 1}Blurb`)}
                     </p>
-                    <span className="mt-5 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D4A847]">
+
+                    <span className="mt-6 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4A847]">
                       {t("readLink")}
                       <ArrowRight
-                        className="w-3 h-3 rtl:rotate-180 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+                        className="w-3 h-3 rtl:rotate-180 transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
                         aria-hidden
                       />
                     </span>
