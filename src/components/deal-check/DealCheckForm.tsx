@@ -28,10 +28,14 @@ const URL_SCHEME = "https://";
 
 export default function DealCheckForm({ onSubmit, busy }: Props) {
   const t = useTranslations("dealCheck");
-  const tabs: { id: SubmitMode; label: string; icon: typeof Link2 }[] = [
-    { id: "url", label: t("tabLink"), icon: Link2 },
-    { id: "image", label: t("tabUpload"), icon: Upload },
-    { id: "text", label: t("tabText"), icon: Type },
+  // Two labels per tab: the full one on desktop, a short one on mobile. The
+  // tabs previously collapsed to bare icons under sm — a chain link, an arrow
+  // and a "T" — which is a guessing game, and they measured 42x30, well under
+  // the 44px minimum tap target.
+  const tabs: { id: SubmitMode; label: string; short: string; icon: typeof Link2 }[] = [
+    { id: "url", label: t("tabLink"), short: t("tabLinkShort"), icon: Link2 },
+    { id: "image", label: t("tabUpload"), short: t("tabUploadShort"), icon: Upload },
+    { id: "text", label: t("tabText"), short: t("tabTextShort"), icon: Type },
   ];
 
   const [mode, setMode] = useState<SubmitMode>("url");
@@ -98,7 +102,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
       {/* Tabs — pills, so they read as a segmented control rather than
           document navigation. */}
       <div className="px-5 pt-5 sm:px-7 sm:pt-7">
-        <div className="inline-flex flex-wrap gap-1 rounded-full bg-muted/70 p-1" role="tablist">
+        <div className="flex w-full gap-1 rounded-full bg-muted/70 p-1 sm:inline-flex sm:w-auto" role="tablist">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const active = mode === tab.id;
@@ -112,14 +116,15 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
                   setMode(tab.id);
                   setError(null);
                 }}
-                className={`inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] font-medium transition-all ${
+                className={`inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full px-3 py-2.5 text-[13px] font-medium transition-all sm:flex-none sm:px-3.5 ${
                   active
                     ? "bg-[#0B3D2E] text-white shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden />
-                <span className="hidden xs:inline sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.short}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
               </button>
             );
           })}
@@ -151,7 +156,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
                 className="flex-1 min-w-0 bg-transparent py-3.5 pe-4 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
               />
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">
+            <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-xs">
               {t("linkHint")}
             </p>
           </div>
@@ -231,12 +236,13 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
 
         {/* Financing — changes the cash figures materially, so we ask up front */}
         <div className="rounded-xl border border-border/60 bg-background/60 p-4">
-          <label className="flex items-center gap-3 cursor-pointer">
+          {/* The whole row is the tap target, not just the 16px box. */}
+          <label className="flex min-h-[44px] cursor-pointer items-center gap-3 py-1">
             <input
               type="checkbox"
               checked={mortgage}
               onChange={(e) => setMortgage(e.target.checked)}
-              className="w-4 h-4 rounded border-border text-accent focus:ring-accent/30"
+              className="h-5 w-5 shrink-0 rounded border-border text-accent focus:ring-accent/30"
             />
             <span className="text-sm text-foreground">{t("mortgageToggle")}</span>
           </label>
@@ -292,7 +298,7 @@ export default function DealCheckForm({ onSubmit, busy }: Props) {
               </>
             )}
           </button>
-          <p className="text-xs leading-relaxed text-muted-foreground">{t("formFooter")}</p>
+          <p className="text-[13px] leading-relaxed text-muted-foreground sm:text-xs">{t("formFooter")}</p>
         </div>
       </div>
     </div>

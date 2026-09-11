@@ -3485,6 +3485,9 @@
     "whatsappUs": "WhatsApp us",
     "ctaBandTitle": "Send us the property.",
     "ctaBandTitle2": "We'll do the maths.",
-    "waPrefill": "Hi Binayah! I'd like a Deal Check on a property I've found."
+    "waPrefill": "Hi Binayah! I'd like a Deal Check on a property I've found.",
+    "tabLinkShort": "Link",
+    "tabUploadShort": "Photo",
+    "tabTextShort": "Text"
   }
 }

@@ -3485,6 +3485,9 @@
     "whatsappUs": "Nous écrire sur WhatsApp",
     "ctaBandTitle": "Envoyez-nous le bien.",
     "ctaBandTitle2": "On fait les calculs.",
-    "waPrefill": "Bonjour Binayah ! Je voudrais un Deal Check sur un bien que j'ai trouvé."
+    "waPrefill": "Bonjour Binayah ! Je voudrais un Deal Check sur un bien que j'ai trouvé.",
+    "tabLinkShort": "Lien",
+    "tabUploadShort": "Photo",
+    "tabTextShort": "Texte"
   }
 }

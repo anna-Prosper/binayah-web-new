@@ -176,7 +176,7 @@ export default function DealCheckClient() {
           <div className="flex justify-end">
             <button
               onClick={reset}
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-1"
+              className="inline-flex min-h-[44px] items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" aria-hidden />
               {t("checkAnother")}
@@ -369,13 +369,13 @@ function UnlockGate({
           <button
             type="submit"
             disabled={sending}
-            className="w-full flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-white disabled:opacity-60"
+            className="w-full flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-white disabled:opacity-60"
             style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }}
           >
             {sending && <Loader2 className="w-4 h-4 animate-spin" aria-hidden />}
             {sending ? t("leadSending") : t("unlockButton")}
           </button>
-          <p className="text-xs text-center text-muted-foreground">{t("unlockNote")}</p>
+          <p className="text-[13px] leading-relaxed text-center text-muted-foreground sm:text-xs">{t("unlockNote")}</p>
         </form>
       </motion.div>
     </motion.div>

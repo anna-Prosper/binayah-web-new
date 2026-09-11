@@ -461,7 +461,7 @@ export default async function DealCheckPage({ params }: Props) {
             of stranding it on the page beneath. */}
         <section className="relative">
           <div
-            className="relative overflow-hidden pt-24 pb-64 sm:pt-32 sm:pb-72"
+            className="relative overflow-hidden pt-20 pb-44 sm:pt-32 sm:pb-72"
             style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #14543D 55%, #1A7A5A 100%)" }}
           >
             {/* Ambient warmth, top-right — keeps the flat gradient from reading
@@ -476,25 +476,25 @@ export default async function DealCheckPage({ params }: Props) {
             />
 
             <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-              <div className="grid lg:grid-cols-[1fr_1.02fr] gap-10 lg:gap-16 items-center">
+              <div className="grid lg:grid-cols-[1fr_1.02fr] gap-8 lg:gap-16 items-center">
                 {/* Left — the claim */}
                 <div>
                   <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-6" />
                   <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#D4A847]">
                     {t("eyebrow")}
                   </p>
-                  <h1 className="mt-5 text-[34px] leading-[1.08] sm:text-[46px] lg:text-[56px] font-bold text-white text-balance">
+                  <h1 className="mt-4 sm:mt-5 text-[32px] leading-[1.1] sm:text-[46px] lg:text-[56px] font-bold text-white text-balance">
                     {t("heroTitle")} {t("heroTitleLight")}
                   </h1>
-                  <p className="mt-6 text-[15px] sm:text-base leading-relaxed text-white/70 max-w-xl">
+                  <p className="mt-4 sm:mt-6 text-[15px] sm:text-base leading-relaxed text-white/70 max-w-xl">
                     {t("heroSubtitle")}
                   </p>
 
-                  <ul className="mt-8 flex flex-wrap gap-2">
+                  <ul className="mt-6 sm:mt-8 flex flex-wrap gap-2">
                     {[t("trustFree"), t("trustNoSignup"), t("trustDld"), t("trustAnyAgency")].map((label) => (
                       <li
                         key={label}
-                        className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 text-xs font-medium text-white/80"
+                        className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-[13px] font-medium text-white/80 sm:py-1.5 sm:text-xs"
                       >
                         {label}
                       </li>
@@ -502,11 +502,15 @@ export default async function DealCheckPage({ params }: Props) {
                   </ul>
                 </div>
 
-                {/* Right — a real check, as a white card on the gradient */}
-                <figure className="relative">
+                {/* Right — a real check, as a white card on the gradient.
+                    Desktop only: stacked on a phone this card sat between the
+                    headline and the tool, pushing the actual product to ~1100px
+                    — a screen and a half of scrolling before you could do
+                    anything. The mobile copy renders after the tool instead. */}
+                <figure className="relative hidden lg:block">
                   <div className="rounded-[20px] bg-white p-5 sm:p-7 shadow-2xl shadow-black/25">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
                         {t("sampleLabel")}
                       </span>
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
@@ -559,10 +563,10 @@ export default async function DealCheckPage({ params }: Props) {
                       <span className="text-lg font-semibold tabular-nums text-emerald-700">−5.0%</span>
                     </div>
 
-                    <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
+                    <p className="mt-4 text-xs leading-relaxed text-muted-foreground sm:text-[11px]">
                       {t("sampleBasis")}
                     </p>
-                    <figcaption className="mt-1.5 text-[11px] italic leading-relaxed text-muted-foreground/70">
+                    <figcaption className="mt-1.5 text-xs italic leading-relaxed text-muted-foreground/70 sm:text-[11px]">
                       {t("sampleCaption")}
                     </figcaption>
                   </div>
@@ -573,9 +577,74 @@ export default async function DealCheckPage({ params }: Props) {
 
           {/* Tool — lifted over the gradient's edge. The id is the target of
               the closing band's CTA; scroll-mt keeps it clear of the navbar. */}
-          <div id="dc-tool" className="relative -mt-52 sm:-mt-60 pb-14 sm:pb-16 scroll-mt-24">
+          <div id="dc-tool" className="relative -mt-32 sm:-mt-60 pb-14 sm:pb-16 scroll-mt-20 sm:scroll-mt-24">
             <div className="max-w-3xl mx-auto px-4 sm:px-6">
               <DealCheckClient />
+              {/* Same example, below the tool on mobile. */}
+              <figure className="relative mt-8 lg:hidden">
+                <div className="rounded-[20px] bg-white p-5 sm:p-7 shadow-2xl shadow-black/25">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
+                      {t("sampleLabel")}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      {t("vBelow")}
+                    </span>
+                  </div>
+
+                  <p className="mt-4 text-sm font-medium text-foreground">{t("sampleProperty")}</p>
+
+                  <div className="my-5 h-px bg-border/60" />
+
+                  {/* Stacked bars on one shared scale — two lengths you can
+                      compare at a glance, which two side-by-side numbers
+                      never let you do. */}
+                  <div className="space-y-5">
+                    <div>
+                      <div className="flex items-end justify-between gap-3">
+                        <span className="text-sm text-muted-foreground">{t("priceThis")}</span>
+                        <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
+                          2,298
+                          <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
+                            {t("perSqft")}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full bg-[#1A7A5A]" style={{ width: "95%" }} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-end justify-between gap-3">
+                        <span className="text-sm text-muted-foreground">{t("priceComparable")}</span>
+                        <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
+                          2,419
+                          <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
+                            {t("perSqft")}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full bg-[#D4A847]" style={{ width: "100%" }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl bg-emerald-50/70 px-4 py-3.5">
+                    <span className="text-sm text-emerald-900">{t("sampleCheaper")}</span>
+                    <span className="text-lg font-semibold tabular-nums text-emerald-700">−5.0%</span>
+                  </div>
+
+                  <p className="mt-4 text-xs leading-relaxed text-muted-foreground sm:text-[11px]">
+                    {t("sampleBasis")}
+                  </p>
+                  <figcaption className="mt-1.5 text-xs italic leading-relaxed text-muted-foreground/70 sm:text-[11px]">
+                    {t("sampleCaption")}
+                  </figcaption>
+                </div>
+              </figure>
             </div>
           </div>
         </section>
@@ -713,13 +782,13 @@ export default async function DealCheckPage({ params }: Props) {
                       href={waHref(t("waPrefill"), `${lp}${PATH}`)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center rounded-xl bg-[#0B3D2E] px-3.5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#14543D]"
+                      className="inline-flex min-h-[44px] items-center rounded-xl bg-[#0B3D2E] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#14543D]"
                     >
                       {t("whatsappUs")}
                     </a>
                     <a
                       href={`tel:+${WHATSAPP_NUMBER}`}
-                      className="inline-flex items-center whitespace-nowrap rounded-xl border border-[#0B3D2E]/25 px-3.5 py-2.5 text-[13px] font-semibold text-[#0B3D2E] transition-colors hover:bg-[#0B3D2E]/5"
+                      className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-xl border border-[#0B3D2E]/25 px-4 py-2.5 text-[13px] font-semibold text-[#0B3D2E] transition-colors hover:bg-[#0B3D2E]/5"
                     >
                       {PHONE_DISPLAY}
                     </a>
@@ -730,7 +799,7 @@ export default async function DealCheckPage({ params }: Props) {
               <div className="divide-y divide-border/50 overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm">
                 {faqs.map((f, i) => (
                   <details key={f.question} className="group" open={i === 0}>
-                    <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 sm:px-6 text-[15px] font-semibold text-foreground transition-colors hover:text-[#0B3D2E]">
+                    <summary className="flex min-h-[44px] cursor-pointer list-none items-start justify-between gap-4 p-5 sm:px-6 text-[15px] font-semibold text-foreground transition-colors hover:text-[#0B3D2E]">
                       {f.question}
                       <span
                         aria-hidden

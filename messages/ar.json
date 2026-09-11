@@ -3485,6 +3485,9 @@
     "whatsappUs": "راسلنا على واتساب",
     "ctaBandTitle": "أرسل لنا العقار.",
     "ctaBandTitle2": "ونحن نتولى الحساب.",
-    "waPrefill": "مرحباً بناية! أريد فحص صفقة لعقار وجدته."
+    "waPrefill": "مرحباً بناية! أريد فحص صفقة لعقار وجدته.",
+    "tabLinkShort": "رابط",
+    "tabUploadShort": "صورة",
+    "tabTextShort": "نص"
   }
 }

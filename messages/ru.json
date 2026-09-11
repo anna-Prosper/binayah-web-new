@@ -3485,6 +3485,9 @@
     "whatsappUs": "Написать в WhatsApp",
     "ctaBandTitle": "Пришлите объект.",
     "ctaBandTitle2": "Посчитаем за вас.",
-    "waPrefill": "Здравствуйте, Binayah! Хочу проверить объект через Deal Check."
+    "waPrefill": "Здравствуйте, Binayah! Хочу проверить объект через Deal Check.",
+    "tabLinkShort": "Ссылка",
+    "tabUploadShort": "Фото",
+    "tabTextShort": "Текст"
   }
 }

@@ -91,7 +91,7 @@ function Stat({
     tone === "good" ? "text-emerald-700" : tone === "warn" ? "text-amber-700" : "text-foreground";
   return (
     <div className="rounded-xl bg-background/70 border border-border/50 px-3 py-2.5 sm:px-4 sm:py-3">
-      <p className="text-[11px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">{label}</p>
+      <p className="text-xs sm:text-[11px] text-muted-foreground mb-1">{label}</p>
       <p className={`text-base sm:text-lg font-semibold tabular-nums ${color}`}>{value}</p>
     </div>
   );
@@ -198,7 +198,7 @@ export default function DealCheckReportView({
           {input.areaSqft && <span>{t("unitSqft", { n: input.areaSqft.toLocaleString() })}</span>}
           {input.price && <span className="text-foreground font-medium">{aed(input.price)}</span>}
         </div>
-        <p className="mt-2 text-xs text-muted-foreground/80">{t("readBack")}</p>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground/80 sm:text-xs">{t("readBack")}</p>
       </div>
 
       {/* Verdict */}
@@ -219,7 +219,7 @@ export default function DealCheckReportView({
         title={t("priceTitle")}
         icon={TrendingUp}
         aside={
-          <span className={`text-[11px] sm:text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${v.bg} ${v.fg}`}>
+          <span className={`text-xs font-semibold px-2.5 py-1.5 sm:py-1 rounded-full whitespace-nowrap ${v.bg} ${v.fg}`}>
             {v.label}
           </span>
         }
@@ -476,13 +476,13 @@ export default function DealCheckReportView({
 
       {/* Disclosure */}
       <div className="rounded-2xl border border-border/50 bg-background/40 px-4 py-3.5 sm:px-5 sm:py-4">
-        <p className="text-xs leading-relaxed text-muted-foreground">
+        <p className="text-[13px] leading-relaxed text-muted-foreground sm:text-xs">
           <span className="font-medium text-foreground">{t("disclosureLead")}</span> {t("disclosureBody")}{" "}
           <a
             href="https://dubailand.gov.ae/en/eservices/service-charge-index-overview/service-charge-index"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent hover:underline"
+            className="text-accent underline underline-offset-2 hover:no-underline"
           >
             {t("disclosureLink")}
           </a>
@@ -532,7 +532,7 @@ function LockedCard({
       </ul>
       <button
         onClick={onUnlock}
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:shadow-md"
+        className="w-full sm:w-auto inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:shadow-md"
         style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }}
       >
         <Lock className="w-3.5 h-3.5" aria-hidden />
@@ -557,7 +557,7 @@ function LockedStrip({ items, onUnlock }: { items: string[]; onUnlock: () => voi
       </ul>
       <button
         onClick={onUnlock}
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition-all hover:shadow-md"
+        className="w-full sm:w-auto inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:shadow-md"
         style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }}
       >
         {t("unlockCta")}
