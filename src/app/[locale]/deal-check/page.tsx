@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DealCheckClient from "@/components/deal-check/DealCheckClient";
 import { ArrowRight, BadgeCheck, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { waHref, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 export const revalidate = 86400;
 
@@ -16,6 +17,9 @@ interface Props {
 }
 
 const PATH = "/deal-check";
+
+/** Display form of the company number; waHref/tel: use the digits-only const. */
+const PHONE_DISPLAY = "+971 55 509 9157";
 
 const titles: Record<string, string> = {
   en: "Deal Check — Is That Dubai Property Priced Right? | Binayah",
@@ -567,8 +571,9 @@ export default async function DealCheckPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Tool — lifted over the gradient's edge */}
-          <div className="relative -mt-52 sm:-mt-60 pb-14 sm:pb-16">
+          {/* Tool — lifted over the gradient's edge. The id is the target of
+              the closing band's CTA; scroll-mt keeps it clear of the navbar. */}
+          <div id="dc-tool" className="relative -mt-52 sm:-mt-60 pb-14 sm:pb-16 scroll-mt-24">
             <div className="max-w-3xl mx-auto px-4 sm:px-6">
               <DealCheckClient />
             </div>
@@ -677,29 +682,122 @@ export default async function DealCheckPage({ params }: Props) {
           </div>
         </section>
 
-        {/* FAQ — no top rule: it follows the dark section, which already
-            separates it. */}
+        {/* ── FAQ ───────────────────────────────────────────────────────────
+            Asymmetric, like the section above it: the heading holds its own
+            column with the escape hatch for anyone the answers don't cover,
+            and the accordion is a single bordered panel rather than nine
+            floating cards. First item open so the section shows its shape at
+            rest instead of reading as a stack of closed bars. */}
         <section className="py-16 sm:py-24">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
-            <h2 className="text-[28px] sm:text-[34px] font-bold text-foreground mb-8 sm:mb-10 text-balance">
-              {t("faqTitle")}
-            </h2>
-            <div className="space-y-2.5 sm:space-y-3">
-              {faqs.map((f) => (
-                <details key={f.question} className="group rounded-2xl bg-card border border-border/50 p-4 sm:p-5 shadow-sm">
-                  <summary className="flex items-start justify-between gap-4 cursor-pointer list-none text-sm font-medium text-foreground">
-                    {f.question}
-                    <span className="text-accent shrink-0 transition-transform group-open:rotate-45 text-lg leading-none">
-                      +
-                    </span>
-                  </summary>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.answer}</p>
-                </details>
-              ))}
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,2fr)] gap-10 lg:gap-14">
+              <div className="lg:pt-1">
+                <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
+                <h2 className="text-[28px] sm:text-[34px] leading-[1.12] font-bold text-foreground text-balance">
+                  {t("faqTitle")}
+                </h2>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xs">
+                  {t("faqIntro")}
+                </p>
+
+                {/* Escape hatch — a generic FAQ can't answer "is THIS one a
+                    good deal", which is the question people actually arrive
+                    with. */}
+                <div className="mt-8 rounded-2xl border border-[#D4A847]/25 bg-[#D4A847]/[0.07] p-5">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B8922F]">
+                    {t("faqStillUnsure")}
+                  </p>
+                  <p className="mt-2.5 text-sm leading-relaxed text-foreground/80">{t("faqAskUs")}</p>
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <a
+                      href={waHref(t("waPrefill"), `${lp}${PATH}`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center rounded-xl bg-[#0B3D2E] px-3.5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#14543D]"
+                    >
+                      {t("whatsappUs")}
+                    </a>
+                    <a
+                      href={`tel:+${WHATSAPP_NUMBER}`}
+                      className="inline-flex items-center whitespace-nowrap rounded-xl border border-[#0B3D2E]/25 px-3.5 py-2.5 text-[13px] font-semibold text-[#0B3D2E] transition-colors hover:bg-[#0B3D2E]/5"
+                    >
+                      {PHONE_DISPLAY}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="divide-y divide-border/50 overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm">
+                {faqs.map((f, i) => (
+                  <details key={f.question} className="group" open={i === 0}>
+                    <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 sm:px-6 text-[15px] font-semibold text-foreground transition-colors hover:text-[#0B3D2E]">
+                      {f.question}
+                      <span
+                        aria-hidden
+                        className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#D4A847] text-base leading-none text-white transition-transform duration-200 group-open:rotate-45"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <p className="px-5 pb-5 sm:px-6 -mt-1 pe-12 text-sm leading-relaxed text-muted-foreground">
+                      {f.answer}
+                    </p>
+                  </details>
+                ))}
+              </div>
             </div>
           </div>
         </section>
+
+        {/* ── Closing band ──────────────────────────────────────────────────
+            One last ask, on the brand gradient. The page has spent its length
+            explaining the method; this is the sentence that says what to do. */}
+        <section className="pb-16 sm:pb-24">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div
+              className="relative overflow-hidden rounded-3xl px-6 py-10 sm:px-12 sm:py-14"
+              style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #14543D 60%, #1A7A5A 100%)" }}
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(50% 70% at 88% 20%, rgba(212,168,71,0.18) 0%, rgba(212,168,71,0) 70%)",
+                }}
+              />
+              <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
+                <div>
+                  <p className="text-[26px] sm:text-[32px] font-bold leading-[1.15] text-white text-balance">
+                    {t("ctaBandTitle")}
+                    <br className="hidden sm:block" /> {t("ctaBandTitle2")}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-white/65 max-w-sm">
+                    {t("formFooter")}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3 shrink-0">
+                  <a
+                    href="#dc-tool"
+                    className="inline-flex items-center rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:shadow-md"
+                    style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+                  >
+                    {t("submit")}
+                  </a>
+                  <a
+                    href={waHref(t("waPrefill"), `${lp}${PATH}`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/[0.18]"
+                  >
+                    {t("whatsappUs")}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
 
       <Footer />
