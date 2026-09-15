@@ -9,7 +9,7 @@ import { getCommunityStats } from "@/lib/market";
 import { commIn, byDev, floorPlansMeta, crumbParents, leafLabel } from "@/lib/project-subpage-i18n";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 
-export const revalidate = 1800;
+export const revalidate = 86400; // was 1800 — see api/revalidate/route.ts
 
 // Opt into ISR. Without generateStaticParams a [slug] route is fully dynamic
 // (private, no-store) regardless of `revalidate` — so every crawl hit was a

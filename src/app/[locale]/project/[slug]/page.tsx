@@ -7,7 +7,7 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
 import { sanitizeDescriptions } from "@/lib/sanitize";
 
-export const revalidate = 1800;
+export const revalidate = 86400; // was 1800 — see api/revalidate/route.ts
 
 // Opt into ISR. Without generateStaticParams a [slug] route is fully dynamic
 // (private, no-store) regardless of `revalidate`. Returning [] prerenders

@@ -31,6 +31,17 @@ const DEFAULT_TARGETS: { path: string; type: "page" | "layout" }[] = [
   { path: "/[locale]/offers/[slug]", type: "page" },
   { path: "/[locale]/pulse/guides", type: "page" },
   { path: "/[locale]/pulse/guides/[slug]", type: "page" },
+  // Projects and properties. Added when their `revalidate` was raised from 30
+  // minutes to 24 hours: at 3,083 projects x 4 sub-routes x 7 locales, a
+  // 30-minute timer was regenerating 86k pages around the clock and ISR
+  // writes alone came to 63% of the hosting bill. A day-long window is only
+  // safe because an edit can be published immediately from here — without
+  // these entries a corrected price would have sat stale for 24 hours.
+  { path: "/[locale]/project/[slug]", type: "page" },
+  { path: "/[locale]/project/[slug]/floor-plans", type: "page" },
+  { path: "/[locale]/project/[slug]/payment-plan", type: "page" },
+  { path: "/[locale]/project/[slug]/location", type: "page" },
+  { path: "/[locale]/property/[slug]", type: "page" },
 ];
 
 export async function POST(req: NextRequest) {
