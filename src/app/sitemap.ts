@@ -5,6 +5,8 @@ import { PULSE_GUIDES } from "@/lib/pulse-guides";
 import { OFFERS, isExpired } from "@/lib/offers";
 import { BUY_COMMUNITIES, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
+import { SOURCE_CITIES } from "@/lib/source-cities";
+import { GOLDEN_VISA_NATIONALITIES } from "@/lib/golden-visa-nationalities";
 import { CRYPTO_SLUGS } from "@/lib/crypto-pages";
 import { getAgents, isPublishableAgent } from "@/lib/agents";
 import { isIndexableNewsArticle } from "@/lib/news-topicality";
@@ -578,6 +580,12 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
     // orphaned: the profile pages carry no inbound internal links at all.
     withAlternates("/buying-property-in-dubai-as", 0.7, "monthly", now),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
+    // Source-city guides: the logistics of buying at a distance, as opposed to
+    // the nationality guides' legal and tax position.
+    ...SOURCE_CITIES.map((c) => withAlternates(`/buying-property-in-dubai-from/${c.slug}`, 0.7, "monthly", now)),
+    // Golden Visa per nationality. The generic /golden-visa page is already a
+    // static entry; these only cover what differs by passport.
+    ...GOLDEN_VISA_NATIONALITIES.map((g) => withAlternates(`/golden-visa/${g.slug}`, 0.7, "monthly", now)),
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];
 

@@ -8,6 +8,8 @@ import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { FOREIGN_BUYERS, findForeignBuyer, localizeBuyerText, relatedForeignBuyers } from "@/lib/foreign-buyers";
 import { findBuyCommunity } from "@/lib/buy-communities";
+import { SOURCE_CITIES } from "@/lib/source-cities";
+import { GOLDEN_VISA_NATIONALITIES } from "@/lib/golden-visa-nationalities";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
 export const revalidate = 86400;
@@ -104,6 +106,7 @@ const CONTENT = {
     "areasCta": "רכשו נכס ב-",
     "faqHeading": "שאלות נפוצות",
     "relatedHeading": "מדריכים לפי אזרחות",
+    "deeperEyebrow": "מדריך מעמיק",
     "relatedIntro": "רוכשים בשווקים אלה מתמודדים עם שאלות מטבע ומס דומות:",
     "faqs": [
       {
@@ -178,6 +181,7 @@ const CONTENT = {
 
     faqHeading: "Frequently Asked Questions",
     relatedHeading: "Guides for other nationalities",
+    deeperEyebrow: "In-depth guide",
     relatedIntro: "Buyers in these markets face comparable currency and tax questions:",
     faqs: [
       {
@@ -255,6 +259,7 @@ const CONTENT = {
 
     faqHeading: "Questions fréquentes",
     relatedHeading: "Guides pour d'autres nationalités",
+    deeperEyebrow: "Guide approfondi",
     relatedIntro: "Les acheteurs de ces marchés rencontrent des questions de change et de fiscalité comparables :",
     faqs: [
       {
@@ -332,6 +337,7 @@ const CONTENT = {
 
     faqHeading: "Часто задаваемые вопросы",
     relatedHeading: "Гиды для других гражданств",
+    deeperEyebrow: "Подробный гид",
     relatedIntro: "Покупатели на этих рынках сталкиваются со схожими валютными и налоговыми вопросами:",
     faqs: [
       {
@@ -409,6 +415,7 @@ const CONTENT = {
 
     faqHeading: "الأسئلة الشائعة",
     relatedHeading: "أدلة لجنسيات أخرى",
+    deeperEyebrow: "دليل متعمّق",
     relatedIntro: "يواجه المشترون في هذه الأسواق أسئلة مشابهة بشأن العملة والضرائب:",
     faqs: [
       {
@@ -486,6 +493,7 @@ const CONTENT = {
 
     faqHeading: "常见问题",
     relatedHeading: "其他国籍的指南",
+    deeperEyebrow: "深度指南",
     relatedIntro: "这些市场的买家面临相似的货币与税务问题：",
     faqs: [
       {
@@ -563,6 +571,7 @@ const CONTENT = {
 
     faqHeading: "Câu hỏi thường gặp",
     relatedHeading: "Hướng dẫn cho các quốc tịch khác",
+    deeperEyebrow: "Hướng dẫn chuyên sâu",
     relatedIntro: "Người mua ở những thị trường này gặp các câu hỏi tương tự về tiền tệ và thuế:",
     faqs: [
       {
@@ -711,6 +720,13 @@ export default async function ForeignBuyerPage({
   // Sibling profiles for cross-linking: the cluster previously dead-ended on
   // every profile page, so link equity never flowed between the 23 pages.
   const related = relatedForeignBuyers(b.slug, 4);
+
+  // Deeper guides for this same market, where they exist: the source-city page
+  // (logistics of buying at a distance) and the Golden Visa page for this
+  // passport. Both are rendered only when the data exists, so the other
+  // profiles are unaffected.
+  const cityGuide = SOURCE_CITIES.find((sc) => sc.citizenSlug === b.slug);
+  const visaGuide = GOLDEN_VISA_NATIONALITIES.find((g) => g.citizenSlug === b.slug);
 
   const faqs = b.faqs?.length
     ? b.faqs.map((f) => ({
@@ -910,6 +926,38 @@ export default async function ForeignBuyerPage({
             ))}
           </div>
         </section>
+
+        {/* Deeper guides for this market */}
+        {(cityGuide || visaGuide) && (
+          <section className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            {cityGuide && (
+              <Link
+                href={`${lp}/buying-property-in-dubai-from/${cityGuide.slug}`}
+                className="group rounded-2xl border border-border/60 bg-card p-5 sm:p-6 hover:border-accent/60 transition-colors"
+              >
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-bold mb-2">
+                  {c.deeperEyebrow}
+                </p>
+                <p className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">
+                  {localizeBuyerText(cityGuide.h1, locale)}
+                </p>
+              </Link>
+            )}
+            {visaGuide && (
+              <Link
+                href={`${lp}/golden-visa/${visaGuide.slug}`}
+                className="group rounded-2xl border border-border/60 bg-card p-5 sm:p-6 hover:border-accent/60 transition-colors"
+              >
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-bold mb-2">
+                  {c.deeperEyebrow}
+                </p>
+                <p className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">
+                  {localizeBuyerText(visaGuide.h1, locale)}
+                </p>
+              </Link>
+            )}
+          </section>
+        )}
 
         {/* Related nationalities */}
         {related.length > 0 && (
