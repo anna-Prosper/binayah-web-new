@@ -16,7 +16,35 @@ concurrency:
 # So we build on a GitHub-hosted runner (plenty of disk/RAM) and ship only the
 # built artifact to the box, which just runs `next start` — no build footprint.
 jobs:
+  # Quality gate. Runs before the build so a type error or lint failure stops
+  # the deploy instead of shipping. Playwright is deliberately NOT here: the
+  # e2e suite needs a running server plus real secrets, so wiring it into the
+  # push-to-main path would make deploys flaky for reasons unrelated to the
+  # change. It stays a local/manual `npm run test:e2e`.
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
   build:
+    needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
