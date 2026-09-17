@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
-import { FOREIGN_BUYERS, findForeignBuyer, localizeBuyerText } from "@/lib/foreign-buyers";
+import { FOREIGN_BUYERS, findForeignBuyer, localizeBuyerText, relatedForeignBuyers } from "@/lib/foreign-buyers";
 import { findBuyCommunity } from "@/lib/buy-communities";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
@@ -103,6 +103,8 @@ const CONTENT = {
     "areasOutro": "הן:",
     "areasCta": "רכשו נכס ב-",
     "faqHeading": "שאלות נפוצות",
+    "relatedHeading": "מדריכים לפי אזרחות",
+    "relatedIntro": "רוכשים בשווקים אלה מתמודדים עם שאלות מטבע ומס דומות:",
     "faqs": [
       {
         "question": "האם כל לאום יכול לרכוש נכס בבעלות מלאה (Freehold) בדובאי?",
@@ -175,6 +177,8 @@ const CONTENT = {
     areasCta: "Buy property in",
 
     faqHeading: "Frequently Asked Questions",
+    relatedHeading: "Guides for other nationalities",
+    relatedIntro: "Buyers in these markets face comparable currency and tax questions:",
     faqs: [
       {
         question: "Can any nationality buy freehold property in Dubai?",
@@ -250,6 +254,8 @@ const CONTENT = {
     areasCta: "Acheter un bien à",
 
     faqHeading: "Questions fréquentes",
+    relatedHeading: "Guides pour d'autres nationalités",
+    relatedIntro: "Les acheteurs de ces marchés rencontrent des questions de change et de fiscalité comparables :",
     faqs: [
       {
         question: "Toute nationalité peut-elle acheter un bien en pleine propriété à Dubaï ?",
@@ -325,6 +331,8 @@ const CONTENT = {
     areasCta: "Купить недвижимость в",
 
     faqHeading: "Часто задаваемые вопросы",
+    relatedHeading: "Гиды для других гражданств",
+    relatedIntro: "Покупатели на этих рынках сталкиваются со схожими валютными и налоговыми вопросами:",
     faqs: [
       {
         question: "Могут ли иностранцы любой национальности купить фрихолд-недвижимость в Дубае?",
@@ -400,6 +408,8 @@ const CONTENT = {
     areasCta: "شراء عقار في",
 
     faqHeading: "الأسئلة الشائعة",
+    relatedHeading: "أدلة لجنسيات أخرى",
+    relatedIntro: "يواجه المشترون في هذه الأسواق أسئلة مشابهة بشأن العملة والضرائب:",
     faqs: [
       {
         question: "هل يمكن لأي جنسية شراء عقار تملّك حر في دبي؟",
@@ -475,6 +485,8 @@ const CONTENT = {
     areasCta: "购买房产, ",
 
     faqHeading: "常见问题",
+    relatedHeading: "其他国籍的指南",
+    relatedIntro: "这些市场的买家面临相似的货币与税务问题：",
     faqs: [
       {
         question: "任何国籍都可以在迪拜购买自由持有房产吗？",
@@ -550,6 +562,8 @@ const CONTENT = {
     areasCta: "Mua bất động sản tại",
 
     faqHeading: "Câu hỏi thường gặp",
+    relatedHeading: "Hướng dẫn cho các quốc tịch khác",
+    relatedIntro: "Người mua ở những thị trường này gặp các câu hỏi tương tự về tiền tệ và thuế:",
     faqs: [
       {
         question: "Bất kỳ quốc tịch nào cũng có thể mua bất động sản sở hữu vĩnh viễn tại Dubai không?",
@@ -691,9 +705,23 @@ export default async function ForeignBuyerPage({
     { name: `${b.citizen} ${c.guideSuffix}`, href: `${lp}/buying-property-in-dubai-as/${b.slug}` },
   ];
 
+  // Market-specific FAQs when the profile carries them, else the generic
+  // per-locale set. Before this, all 23 profiles emitted byte-identical
+  // FAQPage JSON-LD, which is duplicate structured data across the cluster.
+  // Sibling profiles for cross-linking: the cluster previously dead-ended on
+  // every profile page, so link equity never flowed between the 23 pages.
+  const related = relatedForeignBuyers(b.slug, 4);
+
+  const faqs = b.faqs?.length
+    ? b.faqs.map((f) => ({
+        question: localizeBuyerText(f.question, locale),
+        answer: localizeBuyerText(f.answer, locale),
+      }))
+    : [...c.faqs];
+
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      <FAQJsonLd faqs={[...c.faqs]} />
+      <FAQJsonLd faqs={faqs} />
       <BreadcrumbJsonLd items={breadcrumbs} />
       <Navbar />
 
@@ -861,7 +889,7 @@ export default async function ForeignBuyerPage({
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">{c.faqHeading}</h2>
           <div className="space-y-2 sm:space-y-3">
-            {c.faqs.map((faq, i) => (
+            {faqs.map((faq, i) => (
               <details
                 key={i}
                 className="group bg-card border border-border/50 rounded-2xl overflow-hidden"
@@ -882,6 +910,33 @@ export default async function ForeignBuyerPage({
             ))}
           </div>
         </section>
+
+        {/* Related nationalities */}
+        {related.length > 0 && (
+          <section>
+            <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">
+              {c.breadcrumbs.guides}
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+              {c.relatedHeading}
+            </h2>
+            <p className="text-sm text-foreground/70 mb-6">{c.relatedIntro}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              {related.map((r) => (
+                <Link
+                  key={r.slug}
+                  href={`${lp}/buying-property-in-dubai-as/${r.slug}`}
+                  className="group flex items-center gap-3 bg-card border border-border/50 rounded-2xl px-4 py-4 hover:border-accent/60 transition-colors"
+                >
+                  <span className="text-2xl leading-none" aria-hidden="true">{r.flag}</span>
+                  <span className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
+                    {r.country}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* CTA */}
         <section

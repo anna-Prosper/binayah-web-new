@@ -5,6 +5,12 @@
 
 export type LocalizedText = { en: string; fr: string; ru: string; ar: string; zh: string; vi: string; he: string };
 
+/** One FAQ, localized. Both question and answer carry all seven locales. */
+export interface LocalizedFaq {
+  question: LocalizedText;
+  answer: LocalizedText;
+}
+
 export interface ForeignBuyerProfile {
   slug: string;
   country: string;
@@ -17,6 +23,11 @@ export interface ForeignBuyerProfile {
   taxImplications: LocalizedText;
   repatriation: LocalizedText;
   preferredAreas: string[];
+  /** Market-specific FAQs. Optional: a profile without them falls back to the
+   *  generic per-locale set in the page template. Every profile that HAS them
+   *  emits unique FAQPage JSON-LD instead of the duplicate generic block that
+   *  all 23 pages previously shared. */
+  faqs?: LocalizedFaq[];
 }
 
 export function localizeBuyerText(t: LocalizedText, locale: string): string {
@@ -749,6 +760,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "DIFC",
       "JVC"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Does buying in Dubai trigger ABSD in Singapore?",
+          "fr": "Un achat à Dubaï déclenche-t-il l'ABSD à Singapour ?",
+          "ru": "Возникает ли ABSD в Сингапуре при покупке в Дубае?",
+          "ar": "هل يؤدي الشراء في دبي إلى فرض ضريبة ABSD في سنغافورة؟",
+          "zh": "在迪拜购房会触发新加坡的额外买方印花税（ABSD）吗？",
+          "vi": "Mua ở Dubai có làm phát sinh ABSD tại Singapore không?",
+          "he": "האם רכישה בדובאי מפעילה ABSD בסינגפור?"
+        },
+        "answer": {
+          "en": "No. Additional Buyer's Stamp Duty is a Singapore stamp duty charged on the acquisition of Singapore residential property, so a Dubai purchase falls outside it entirely. The point most Singaporean buyers actually care about is the second one: property held outside Singapore does not count towards your ABSD property count, so buying in Dubai does not push a later Singapore purchase into a higher ABSD tier. Confirm your own position with a Singapore adviser before you rely on it.",
+          "fr": "Non. L'Additional Buyer's Stamp Duty est un droit de timbre singapourien perçu sur l'acquisition d'un bien résidentiel à Singapour : un achat à Dubaï en est donc entièrement hors champ. Le point qui intéresse réellement la plupart des acheteurs singapouriens est le second : un bien détenu hors de Singapour n'entre pas dans le décompte de vos biens au titre de l'ABSD, si bien qu'acheter à Dubaï ne fait pas basculer un achat singapourien ultérieur dans une tranche d'ABSD supérieure. Faites confirmer votre situation par un conseil singapourien avant de vous y fier.",
+          "ru": "Нет. Additional Buyer's Stamp Duty — это сингапурский гербовый сбор при приобретении жилой недвижимости в Сингапуре, поэтому покупка в Дубае под него не подпадает вовсе. Но сингапурских покупателей обычно волнует второй момент: недвижимость за пределами Сингапура не учитывается в подсчёте объектов для ABSD, поэтому покупка в Дубае не переводит последующую сингапурскую покупку в более высокую ставку ABSD. Подтвердите свою ситуацию у сингапурского консультанта, прежде чем на это полагаться.",
+          "ar": "لا. فضريبة الدمغة الإضافية على المشتري (ABSD) هي رسم دمغة سنغافوري يُفرض عند اقتناء عقار سكني في سنغافورة، ومن ثمّ يقع الشراء في دبي خارج نطاقها تماماً. والنقطة التي تهمّ معظم المشترين السنغافوريين فعلاً هي الثانية: فالعقار المملوك خارج سنغافورة لا يُحتسب ضمن عدد عقاراتك لأغراض ABSD، وبالتالي لا يدفع الشراء في دبي عملية شراء سنغافورية لاحقة إلى شريحة ABSD أعلى. تحقّق من وضعك مع مستشار سنغافوري قبل الاعتماد على ذلك.",
+          "zh": "不会。额外买方印花税是新加坡对购置新加坡住宅物业课征的印花税，因此在迪拜购房完全不在其范围内。多数新加坡买家真正关心的是第二点：在新加坡境外持有的房产不计入您的 ABSD 房产数量，因此在迪拜购房不会把您日后在新加坡的购置推入更高的 ABSD 税档。在依赖这一点之前，请向新加坡顾问确认您的具体情况。",
+          "vi": "Không. Thuế trước bạ bổ sung dành cho người mua (ABSD) là loại thuế trước bạ của Singapore đánh khi mua bất động sản nhà ở tại Singapore, nên giao dịch ở Dubai hoàn toàn nằm ngoài phạm vi đó. Điều mà phần lớn người mua Singapore thực sự quan tâm là điểm thứ hai: bất động sản nắm giữ ngoài Singapore không được tính vào số lượng bất động sản cho mục đích ABSD, nên mua ở Dubai không đẩy một giao dịch Singapore sau này lên bậc ABSD cao hơn. Hãy xác nhận tình huống của bạn với một cố vấn Singapore trước khi dựa vào đó.",
+          "he": "לא. Additional Buyer's Stamp Duty היא אגרת בולים סינגפורית הנגבית על רכישת נכס מגורים בסינגפור, ולכן רכישה בדובאי נמצאת מחוץ לתחולתה לחלוטין. הנקודה שמעניינת את רוב הרוכשים הסינגפורים בפועל היא השנייה: נכס המוחזק מחוץ לסינגפור אינו נספר במניין הנכסים לצורכי ABSD, ולכן רכישה בדובאי אינה דוחפת רכישה סינגפורית עתידית למדרגת ABSD גבוהה יותר. אשרו את מצבכם מול יועץ סינגפורי לפני שאתם מסתמכים על כך."
+        }
+      },
+      {
+        "question": {
+          "en": "How do Dubai's purchase costs compare with Singapore's stamp duties?",
+          "fr": "Comment les coûts d'acquisition à Dubaï se comparent-ils aux droits de timbre singapouriens ?",
+          "ru": "Как расходы на покупку в Дубае соотносятся с гербовыми сборами Сингапура?",
+          "ar": "كيف تُقارن تكاليف الشراء في دبي برسوم الدمغة في سنغافورة؟",
+          "zh": "迪拜的购房成本与新加坡的印花税相比如何？",
+          "vi": "Chi phí mua ở Dubai so với thuế trước bạ Singapore thế nào?",
+          "he": "כיצד עלויות הרכישה בדובאי מושוות לאגרות הבולים בסינגפור?"
+        },
+        "answer": {
+          "en": "This is where the arithmetic decides it. In Singapore, a citizen buying a second residential property pays 20% ABSD and 30% on a third, a permanent resident 30%, and a foreigner 60% — all on top of Buyer's Stamp Duty that reaches 6%. Dubai charges a 4% Dubai Land Department transfer fee, with agency and registration costs taking the all-in figure to roughly 6-7% of the price. These rates were verified against IRAS and secondary sources rather than written from memory, but they do change: confirm the current figures for your own status before you commit.",
+          "fr": "C'est là que l'arithmétique tranche. À Singapour, un citoyen qui acquiert un deuxième bien résidentiel acquitte 20% d'ABSD et 30% pour un troisième, un résident permanent 30%, un étranger 60% — le tout s'ajoutant à un Buyer's Stamp Duty qui atteint 6%. Dubaï prélève 4% de frais de transfert du Dubai Land Department, les frais d'agence et d'enregistrement portant le total à environ 6-7% du prix. Ces taux ont été vérifiés auprès de l'IRAS et de sources secondaires plutôt qu'écrits de mémoire, mais ils évoluent : confirmez les chiffres en vigueur pour votre statut avant de vous engager.",
+          "ru": "Именно здесь всё решает арифметика. В Сингапуре гражданин при покупке второго жилого объекта платит 20% ABSD и 30% при третьем, постоянный резидент — 30%, иностранец — 60%, и всё это сверх Buyer's Stamp Duty, доходящего до 6%. Дубай берёт 4% сбора Dubai Land Department за переход права, а с агентскими и регистрационными расходами итог составляет примерно 6-7% от цены. Эти ставки сверялись с IRAS и вторичными источниками, а не писались по памяти, но они меняются: уточните актуальные цифры для вашего статуса до принятия решения.",
+          "ar": "هنا يحسم الحساب الأمر. ففي سنغافورة يدفع المواطن عند شراء عقار سكني ثانٍ ضريبة ABSD بنسبة 20% و30% عند الثالث، ويدفع المقيم الدائم 30%، والأجنبي 60% — وكل ذلك فوق ضريبة الدمغة على المشتري التي تصل إلى 6%. أما دبي فتفرض رسم نقل ملكية بنسبة 4% لدائرة الأراضي والأملاك، وبإضافة أتعاب الوساطة والتسجيل يبلغ الإجمالي نحو 6-7% من السعر. وقد جرى التحقق من هذه النسب لدى IRAS ومصادر ثانوية لا من الذاكرة، لكنها تتغيّر: تأكّد من الأرقام الحالية المنطبقة على وضعك قبل الالتزام.",
+          "zh": "这正是由算术决定的地方。在新加坡，公民购买第二套住宅须缴 20% 的 ABSD，第三套为 30%；永久居民为 30%；外国人为 60%——且这些都在最高达 6% 的买方印花税之上。迪拜征收 4% 的迪拜土地局过户费，加上中介与登记费用，全包成本约为房价的 6-7%。这些税率已对照 IRAS 及二手资料核实，而非凭记忆写就，但它们会变动：请在决定之前确认适用于您身份的现行数字。",
+          "vi": "Đây chính là chỗ phép tính quyết định. Tại Singapore, một công dân mua bất động sản nhà ở thứ hai chịu ABSD 20% và 30% với căn thứ ba, thường trú nhân chịu 30%, người nước ngoài chịu 60% — tất cả đều cộng thêm lên Thuế trước bạ người mua lên tới 6%. Dubai thu phí sang tên 4% của Cục Đất đai Dubai, cộng phí môi giới và đăng ký đưa tổng chi phí lên khoảng 6-7% giá mua. Các mức thuế này đã được đối chiếu với IRAS và nguồn thứ cấp chứ không viết theo trí nhớ, nhưng chúng có thay đổi: hãy xác nhận con số hiện hành cho tình trạng của bạn trước khi quyết định.",
+          "he": "כאן החשבון מכריע. בסינגפור, אזרח הרוכש נכס מגורים שני משלם 20% ABSD ו-30% על השלישי, תושב קבע משלם 30%, וזר משלם 60% — והכול מעל אגרת הבולים לרוכש שמגיעה ל-6%. דובאי גובה אגרת העברה של 4% ל-Dubai Land Department, ועם עמלות תיווך ורישום הסכום הכולל מגיע לכ-6-7% מהמחיר. השיעורים האלה אומתו מול IRAS ומקורות משניים ולא נכתבו מהזיכרון, אך הם משתנים: אשרו את המספרים העדכניים למעמדכם לפני שאתם מתחייבים."
+        }
+      },
+      {
+        "question": {
+          "en": "Is my Dubai rental income taxable in Singapore?",
+          "fr": "Mes loyers dubaïotes sont-ils imposables à Singapour ?",
+          "ru": "Облагается ли мой доход от аренды в Дубае налогом в Сингапуре?",
+          "ar": "هل يخضع دخل الإيجار من دبي للضريبة في سنغافورة؟",
+          "zh": "我的迪拜租金收入需要在新加坡纳税吗？",
+          "vi": "Thu nhập cho thuê ở Dubai của tôi có chịu thuế tại Singapore không?",
+          "he": "האם הכנסות השכירות שלי מדובאי חייבות במס בסינגפור?"
+        },
+        "answer": {
+          "en": "Generally not, and this is the second reason Singaporean buyers repeat. Foreign-sourced income received in Singapore by a resident individual is generally exempt, unless it is received through a partnership. Dubai charges nothing at source either — no income tax, no capital gains tax, no annual property tax — so for many Singaporean individuals the yield arrives close to untaxed on both sides. The partnership exception is real, though, and holding structures change the answer, so check your own facts with a Singapore tax adviser rather than assuming the general rule applies to you.",
+          "fr": "En général non, et c'est la seconde raison que répètent les acheteurs singapouriens. Les revenus de source étrangère perçus à Singapour par une personne physique résidente sont généralement exonérés, sauf s'ils sont perçus via une société de personnes. Dubaï ne prélève rien non plus à la source — ni impôt sur le revenu, ni impôt sur les plus-values, ni taxe foncière annuelle — de sorte que pour bien des particuliers singapouriens le rendement arrive quasiment non imposé des deux côtés. L'exception relative aux sociétés de personnes est toutefois réelle, et les structures de détention changent la réponse : vérifiez vos propres faits auprès d'un fiscaliste singapourien plutôt que de présumer que la règle générale vous est applicable.",
+          "ru": "Как правило нет, и это вторая причина, которую называют сингапурские покупатели. Доход из иностранных источников, полученный в Сингапуре физическим лицом-резидентом, обычно освобождён от налога, кроме случаев получения через партнёрство. Дубай также не удерживает ничего у источника — ни подоходного налога, ни налога на прирост капитала, ни ежегодного налога на недвижимость, — поэтому для многих сингапурских физических лиц доходность приходит практически без налога с обеих сторон. Однако исключение для партнёрств реально, а структуры владения меняют ответ, поэтому проверьте свои обстоятельства у сингапурского налогового консультанта, а не исходите из общего правила.",
+          "ar": "بوجه عام لا، وهذا هو السبب الثاني الذي يردده المشترون السنغافوريون. فالدخل ذو المصدر الأجنبي الذي يتلقّاه في سنغافورة فردٌ مقيم يكون معفياً عموماً، ما لم يُتلقَّ عبر شراكة. ودبي لا تقتطع شيئاً عند المصدر أيضاً — لا ضريبة دخل، ولا ضريبة أرباح رأسمالية، ولا ضريبة عقارية سنوية — ومن ثمّ يصل العائد لكثير من الأفراد السنغافوريين شبه معفى من الضريبة في الجهتين. غير أن استثناء الشراكة حقيقي، وهياكل التملّك تغيّر الإجابة، فتحقّق من وقائع حالتك مع مستشار ضريبي سنغافوري بدل افتراض انطباق القاعدة العامة عليك.",
+          "zh": "通常不需要，这也是新加坡买家反复提到的第二个理由。居民个人在新加坡收到的境外来源收入一般可获豁免，除非是通过合伙形式取得。迪拜在来源地同样分文不取——没有所得税、没有资本利得税、没有年度房产税——因此对许多新加坡个人而言，收益在两端都接近免税到账。不过合伙例外确实存在，且持有架构会改变答案，因此请就您自身的事实咨询新加坡税务顾问，而不要假定一般规则适用于您。",
+          "vi": "Nhìn chung là không, và đây là lý do thứ hai mà người mua Singapore hay nhắc lại. Thu nhập có nguồn nước ngoài mà một cá nhân cư trú nhận tại Singapore nhìn chung được miễn thuế, trừ khi nhận thông qua một công ty hợp danh. Dubai cũng không thu gì tại nguồn — không thuế thu nhập, không thuế lãi vốn, không thuế bất động sản hằng năm — nên với nhiều cá nhân Singapore, lợi suất về tay gần như không bị đánh thuế ở cả hai đầu. Tuy vậy ngoại lệ hợp danh là có thật, và cấu trúc sở hữu làm thay đổi câu trả lời, nên hãy kiểm tra thực tế của bạn với một cố vấn thuế Singapore thay vì mặc định quy tắc chung áp dụng cho mình.",
+          "he": "בדרך כלל לא, וזו הסיבה השנייה שרוכשים סינגפורים חוזרים עליה. הכנסה ממקור זר שמקבל בסינגפור יחיד תושב פטורה בדרך כלל, אלא אם התקבלה דרך שותפות. גם דובאי אינה גובה דבר במקור — אין מס הכנסה, אין מס רווחי הון, אין מס רכוש שנתי — ולכן עבור יחידים סינגפורים רבים התשואה מגיעה כמעט ללא מס בשני הצדדים. עם זאת, החריג של שותפות אמיתי, ומבני החזקה משנים את התשובה, אז בדקו את העובדות שלכם מול יועץ מס סינגפורי במקום להניח שהכלל הכללי חל עליכם."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I pay for a Dubai property in Singapore dollars?",
+          "fr": "Puis-je payer un bien à Dubaï en dollars singapouriens ?",
+          "ru": "Могу ли я оплатить недвижимость в Дубае сингапурскими долларами?",
+          "ar": "هل يمكنني دفع ثمن عقار في دبي بالدولار السنغافوري؟",
+          "zh": "我可以用新加坡元支付迪拜的房产款吗？",
+          "vi": "Tôi có thể thanh toán bất động sản Dubai bằng đô la Singapore không?",
+          "he": "האם אפשר לשלם על נכס בדובאי בדולר סינגפורי?"
+        },
+        "answer": {
+          "en": "Prices are set and settled in dirhams, and the dirham is pegged to the US dollar, so the Singapore dollar leg is a conversion your bank handles rather than something the seller accepts directly. Singapore has no exchange control and the SGD is fully convertible, so there is no approval to obtain and no transfer limit to work around — this is a banking step, not a regulatory one. Ask your bank for the all-in rate including spread rather than the headline rate: on a property-sized transfer the spread is real money. Our site can display prices in SGD so you can read them natively.",
+          "fr": "Les prix sont fixés et réglés en dirhams, et le dirham est arrimé au dollar américain : la jambe en dollars singapouriens est donc une conversion que votre banque assure, non une devise que le vendeur accepte directement. Singapour n'a pas de contrôle des changes et le SGD est pleinement convertible : il n'y a donc aucune autorisation à obtenir ni plafond de transfert à contourner — c'est une étape bancaire, pas réglementaire. Demandez à votre banque le taux tout compris, spread inclus, plutôt que le taux affiché : sur un virement de la taille d'un achat immobilier, le spread représente de l'argent réel. Notre site peut afficher les prix en SGD pour que vous les lisiez dans votre monnaie.",
+          "ru": "Цены устанавливаются и оплачиваются в дирхамах, а дирхам привязан к доллару США, поэтому сингапурский доллар — это конвертация, которую проводит ваш банк, а не валюта, принимаемая продавцом напрямую. В Сингапуре нет валютного контроля, а SGD полностью конвертируем, поэтому получать разрешение и обходить лимиты переводов не нужно: это банковский шаг, а не регуляторный. Запрашивайте у банка итоговый курс со спредом, а не заявленный: на переводе размером с покупку недвижимости спред — это реальные деньги. Наш сайт может показывать цены в SGD, чтобы вы читали их в родной валюте.",
+          "ar": "تُحدَّد الأسعار وتُسوَّى بالدرهم، والدرهم مربوط بالدولار الأمريكي، ومن ثمّ فإن الشقّ المتعلق بالدولار السنغافوري هو عملية تحويل يتولاها مصرفك لا عملة يقبلها البائع مباشرةً. وسنغافورة بلا رقابة صرف، والدولار السنغافوري قابل للتحويل بالكامل، فلا إذن يجب الحصول عليه ولا حدّ تحويل يجب الالتفاف حوله — إنها خطوة مصرفية لا تنظيمية. واطلب من مصرفك السعر الشامل متضمناً الفارق لا السعر المعلن: ففي تحويل بحجم شراء عقار يكون الفارق مالاً حقيقياً. ويستطيع موقعنا عرض الأسعار بالدولار السنغافوري لتقرأها بعملتك.",
+          "zh": "价格以迪拉姆计价并结算，而迪拉姆与美元挂钩，因此新加坡元这一环节是由您的银行完成的兑换，而非卖方直接接受的货币。新加坡没有外汇管制，新元完全可自由兑换，因此无需取得批准，也没有需要绕开的汇款限额——这是一道银行手续，而非监管手续。请向银行索取含点差的全包汇率，而非名义汇率：在一笔房产规模的汇款上，点差是实打实的钱。我们的网站可以用新元显示价格，方便您以本币阅读。",
+          "vi": "Giá được niêm yết và thanh toán bằng dirham, và dirham neo theo đô la Mỹ, nên phần đô la Singapore là một bước quy đổi do ngân hàng của bạn thực hiện chứ không phải đồng tiền bên bán nhận trực tiếp. Singapore không có kiểm soát ngoại hối và SGD hoàn toàn chuyển đổi được, nên không cần xin phép và không có hạn mức chuyển tiền phải lách — đây là bước ngân hàng, không phải bước pháp lý. Hãy hỏi ngân hàng tỷ giá trọn gói đã gồm chênh lệch thay vì tỷ giá niêm yết: với khoản chuyển cỡ mua nhà, chênh lệch là tiền thật. Trang của chúng tôi có thể hiển thị giá bằng SGD để bạn đọc theo đồng tiền quen thuộc.",
+          "he": "המחירים נקבעים ומשולמים בדירהם, והדירהם צמוד לדולר האמריקאי, ולכן הרגל של הדולר הסינגפורי היא המרה שהבנק שלכם מבצע ולא מטבע שהמוכר מקבל ישירות. בסינגפור אין פיקוח על מטבע חוץ וה-SGD ניתן להמרה מלאה, כך שאין אישור שיש להשיג ואין מגבלת העברה לעקוף — זהו צעד בנקאי ולא רגולטורי. בקשו מהבנק את השער הכולל כולל המרווח ולא את השער המוצג: בהעברה בסדר גודל של רכישת נכס המרווח הוא כסף אמיתי. האתר שלנו יכול להציג מחירים ב-SGD כדי שתקראו אותם במטבע שלכם."
+        }
+      },
+      {
+        "question": {
+          "en": "Is a Dubai yield actually better than a Singapore condo?",
+          "fr": "Le rendement dubaïote est-il réellement meilleur qu'un condo singapourien ?",
+          "ru": "Действительно ли доходность в Дубае выше, чем у кондо в Сингапуре?",
+          "ar": "هل عائد دبي أفضل فعلاً من شقة سنغافورية؟",
+          "zh": "迪拜的收益率真的比新加坡公寓更好吗？",
+          "vi": "Lợi suất ở Dubai có thực sự tốt hơn một căn condo Singapore không?",
+          "he": "האם תשואה בדובאי באמת עדיפה על דירת קונדו בסינגפור?"
+        },
+        "answer": {
+          "en": "Gross yields in Dubai's mainstream freehold communities run roughly 5-8%, typically settled monthly, which is ahead of what a comparable Singapore condominium usually produces. But compare net, not gross: in Dubai the standing costs are service charges plus a municipality housing fee on rented homes, with no annual property tax and no tax at source on rent, so the gap between gross and net is narrower than in most markets. The larger difference is entry cost — a 60% ABSD charge on a foreigner, or 20-30% on a citizen's second or third Singapore property, changes the comparison before any rent is collected.",
+          "fr": "Les rendements bruts dans les communautés en pleine propriété grand public de Dubaï se situent autour de 5-8%, réglés le plus souvent au mois, au-dessus de ce que produit habituellement un condominium singapourien comparable. Mais comparez le net, pas le brut : à Dubaï les coûts permanents sont les charges plus une redevance municipale de logement sur les biens loués, sans taxe foncière annuelle ni impôt à la source sur les loyers, de sorte que l'écart brut-net est plus étroit que dans la plupart des marchés. La différence majeure tient au coût d'entrée : 60% d'ABSD pour un étranger, ou 20-30% sur un deuxième ou troisième bien singapourien d'un citoyen, modifie la comparaison avant même le premier loyer encaissé.",
+          "ru": "Валовая доходность в основных freehold-районах Дубая составляет примерно 5-8%, обычно с ежемесячными расчётами, что выше того, что обычно приносит сопоставимый сингапурский кондоминиум. Но сравнивайте чистую, а не валовую: в Дубае постоянные расходы — это сервисные сборы плюс муниципальный жилищный сбор на сдаваемое жильё, без ежегодного налога на недвижимость и без налога с аренды у источника, поэтому разрыв между валовой и чистой доходностью уже, чем на большинстве рынков. Но большее различие — во входных затратах: 60% ABSD для иностранца или 20-30% на второй и третий объект гражданина в Сингапуре меняют сравнение ещё до получения первой арендной платы.",
+          "ar": "تتراوح العوائد الإجمالية في مجتمعات التملك الحر الرئيسية بدبي بين 5-8% تقريباً، وتُسوَّى شهرياً في الغالب، وهو ما يفوق ما تدرّه عادةً شقة سنغافورية مماثلة. لكن قارن الصافي لا الإجمالي: ففي دبي تكون التكاليف الثابتة رسوم الخدمات إضافةً إلى رسم إسكان بلدي على المساكن المؤجَّرة، دون ضريبة عقارية سنوية ودون ضريبة على الإيجار عند المصدر، فتضيق الفجوة بين الإجمالي والصافي مقارنةً بمعظم الأسواق. غير أن الفارق الأكبر هو كلفة الدخول: فرسم ABSD بنسبة 60% على أجنبي، أو 20-30% على العقار السنغافوري الثاني أو الثالث لمواطن، يغيّر المقارنة قبل تحصيل أي إيجار.",
+          "zh": "迪拜主流永久产权社区的毛回报率约为 5-8%，通常按月结算，高于同类新加坡共管公寓通常的表现。但请比较净值而非毛值：在迪拜，固定支出是物业费加上出租房屋的市政住房费，没有年度房产税，租金在来源地也不课税，因此毛净之间的差距比多数市场更小。更大的差别在于入场成本——外国人 60% 的 ABSD，或公民第二、第三套新加坡房产的 20-30%，在收到任何租金之前就已改变了这项比较。",
+          "vi": "Lợi suất gộp tại các cộng đồng freehold phổ thông của Dubai vào khoảng 5-8%, thường thanh toán theo tháng, cao hơn mức một căn condo Singapore tương đương thường mang lại. Nhưng hãy so sánh ròng chứ không phải gộp: ở Dubai chi phí thường xuyên là phí dịch vụ cộng phí nhà ở của thành phố với nhà cho thuê, không có thuế bất động sản hằng năm và không đánh thuế tại nguồn với tiền thuê, nên khoảng cách gộp-ròng hẹp hơn phần lớn các thị trường. Khác biệt lớn hơn nằm ở chi phí đầu vào — ABSD 60% với người nước ngoài, hay 20-30% với căn thứ hai, thứ ba của một công dân tại Singapore, đã làm thay đổi phép so sánh trước khi thu được đồng tiền thuê nào.",
+          "he": "תשואות גולמיות בשכונות ה-freehold המרכזיות של דובאי נעות סביב 5-8%, ומשולמות בדרך כלל חודשית, מעל מה שדירת קונדו סינגפורית מקבילה בדרך כלל מניבה. אבל השוו נטו ולא ברוטו: בדובאי ההוצאות הקבועות הן דמי ניהול בתוספת אגרת דיור עירונית על דירות מושכרות, ללא מס רכוש שנתי וללא מס על שכר דירה במקור, כך שהפער בין ברוטו לנטו צר יותר מאשר ברוב השווקים. ההבדל הגדול יותר הוא עלות הכניסה — חיוב ABSD של 60% על זר, או 20-30% על נכס סינגפורי שני או שלישי של אזרח, משנה את ההשוואה עוד לפני שנגבה שכר דירה כלשהו."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I need to move to Dubai to keep the property or the visa?",
+          "fr": "Dois-je m'installer à Dubaï pour conserver le bien ou le visa ?",
+          "ru": "Нужно ли переезжать в Дубай, чтобы сохранить недвижимость или визу?",
+          "ar": "هل يجب أن أنتقل إلى دبي للاحتفاظ بالعقار أو بالتأشيرة؟",
+          "zh": "我需要搬到迪拜才能保住房产或签证吗？",
+          "vi": "Tôi có phải chuyển đến Dubai để giữ bất động sản hay thị thực không?",
+          "he": "האם עליי לעבור לדובאי כדי לשמור על הנכס או על האשרה?"
+        },
+        "answer": {
+          "en": "No. Non-residents can buy, hold and rent out Dubai property without any UAE visa, and ownership is not conditional on living there. An AED 2M purchase qualifies you for the ten-year Golden Visa, which is a renewable residence permit for you and your dependants tied to continuing to hold the property — not a route to Emirati citizenship, since the UAE does not offer naturalisation by investment. Many Singaporean owners never relocate and run the asset remotely; property management handles tenancy, Ejari registration and service charges on your behalf.",
+          "fr": "Non. Les non-résidents peuvent acheter, détenir et louer un bien à Dubaï sans aucun visa émirien, et la propriété n'est pas conditionnée à une installation sur place. Un achat de 2 M AED vous ouvre droit au Golden Visa de dix ans, un titre de séjour renouvelable pour vous et vos ayants droit, conditionné à la conservation du bien — et non une voie vers la nationalité émirienne, les Émirats n'offrant pas de naturalisation par investissement. Beaucoup de propriétaires singapouriens ne s'installent jamais et gèrent l'actif à distance ; la gestion locative prend en charge le bail, l'enregistrement Ejari et les charges pour votre compte.",
+          "ru": "Нет. Нерезиденты могут покупать, владеть и сдавать недвижимость в Дубае без какой-либо визы UAE, и владение не обусловлено проживанием там. Покупка от AED 2M даёт право на десятилетнюю Golden Visa — возобновляемое разрешение на проживание для вас и ваших иждивенцев, привязанное к сохранению собственности, а не путь к гражданству UAE, поскольку натурализации за инвестиции в UAE нет. Многие сингапурские собственники никогда не переезжают и управляют активом удалённо: управляющая компания ведёт аренду, регистрацию Ejari и сервисные сборы от вашего имени.",
+          "ar": "لا. يمكن لغير المقيمين شراء عقار في دبي وحيازته وتأجيره دون أي تأشيرة إماراتية، والملكية غير مشروطة بالإقامة هناك. وشراء بقيمة AED 2M يؤهلك لـ Golden Visa لعشر سنوات، وهي تصريح إقامة قابل للتجديد لك ولمُعاليك مرتبط باستمرار حيازة العقار — وليست طريقاً للجنسية الإماراتية، إذ لا تمنح الإمارات التجنيس مقابل الاستثمار. وكثير من المُلّاك السنغافوريين لا ينتقلون أبداً ويديرون الأصل عن بُعد؛ إذ تتولى إدارة الأملاك شؤون الإيجار وتسجيل Ejari ورسوم الخدمات نيابةً عنك.",
+          "zh": "不需要。非居民无需任何阿联酋签证即可购买、持有并出租迪拜房产，所有权也不以在当地居住为条件。购买 AED 2M 以上可取得十年黄金签证，它是覆盖您本人及受养人的可续期居留许可，以持续持有该房产为条件——而非通往阿联酋国籍的途径，因为阿联酋不提供投资入籍。许多新加坡业主从未迁居，而是远程持有该资产；物业管理方会代您处理租赁、Ejari 登记与物业费。",
+          "vi": "Không. Người không cư trú có thể mua, nắm giữ và cho thuê bất động sản Dubai mà không cần bất kỳ thị thực UAE nào, và quyền sở hữu không phụ thuộc vào việc sống ở đó. Một giao dịch từ AED 2M giúp bạn đủ điều kiện nhận Golden Visa mười năm — một giấy phép cư trú có thể gia hạn cho bạn và người phụ thuộc, gắn với việc tiếp tục nắm giữ bất động sản, chứ không phải con đường tới quốc tịch UAE, vì UAE không cấp quốc tịch theo diện đầu tư. Nhiều chủ sở hữu Singapore không bao giờ chuyển đến và vận hành tài sản từ xa; đơn vị quản lý bất động sản lo việc cho thuê, đăng ký Ejari và phí dịch vụ thay bạn.",
+          "he": "לא. תושבי חוץ יכולים לרכוש, להחזיק ולהשכיר נכס בדובאי ללא כל אשרה אמירתית, והבעלות אינה מותנית במגורים שם. רכישה של AED 2M מזכה אתכם ב-Golden Visa לעשר שנים, שהיא אשרת תושבות מתחדשת עבורכם ועבור התלויים בכם הקשורה להמשך החזקת הנכס — ולא מסלול לאזרחות אמירתית, שכן האיחוד אינו מציע התאזרחות בתמורה להשקעה. בעלים סינגפורים רבים אינם עוברים כלל ומנהלים את הנכס מרחוק; חברת ניהול נכסים מטפלת בשכירות, ברישום Ejari ובדמי הניהול בשמכם."
+        }
+      }
     ]
   },
   {
@@ -816,6 +949,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "Downtown Dubai",
       "Dubai Hills Estate"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Can I legally send money from Zimbabwe to buy property in Dubai?",
+          "fr": "Puis-je légalement envoyer des fonds du Zimbabwe pour acheter à Dubaï ?",
+          "ru": "Могу ли я легально отправить деньги из Зимбабве на покупку недвижимости в Дубае?",
+          "ar": "هل يمكنني قانونياً تحويل أموال من زيمبابوي لشراء عقار في دبي؟",
+          "zh": "我可以合法地从津巴布韦汇款到迪拜购房吗？",
+          "vi": "Tôi có thể hợp pháp chuyển tiền từ Zimbabwe để mua bất động sản ở Dubai không?",
+          "he": "האם אפשר להעביר כספים כחוק מזימבבואה כדי לרכוש נכס בדובאי?"
+        },
+        "answer": {
+          "en": "Remitting capital out of Zimbabwe requires Reserve Bank approval under exchange control, so this is not a routine transfer and you should not plan as though it is. In practice most Zimbabwean purchases in Dubai are funded from income already held offshore — in foreign currency or nostro accounts — rather than converted and remitted at the point of sale. Clear the route and the amount with your bank's exchange-control desk before you commit to anything with an instalment schedule attached, because a missed payment on a developer plan is expensive. We will not advise on working around those controls, and a RERA-registered brokerage has to run KYC on you regardless.",
+          "fr": "Sortir des capitaux du Zimbabwe requiert l'accord de la Banque de réserve au titre du contrôle des changes : ce n'est donc pas un virement de routine et il ne faut pas planifier comme si c'en était un. En pratique, la plupart des acquisitions zimbabwéennes à Dubaï sont financées par des revenus déjà détenus à l'étranger — sur des comptes en devises ou nostro — plutôt que convertis et transférés au moment de la vente. Validez le circuit et le montant auprès du service contrôle des changes de votre banque avant de vous engager sur quoi que ce soit assorti d'un échéancier, car un défaut de paiement sur un plan promoteur coûte cher. Nous ne conseillons pas sur les moyens de contourner ces contrôles, et une agence enregistrée à la RERA doit de toute façon mener son KYC sur vous.",
+          "ru": "Вывод капитала из Зимбабве требует одобрения Резервного банка в рамках валютного контроля, поэтому это не рутинный перевод, и планировать так не стоит. На практике большинство зимбабвийских покупок в Дубае финансируется из дохода, уже находящегося за рубежом — на валютных или ностро-счетах, — а не конвертируется и переводится в момент сделки. Согласуйте маршрут и сумму с отделом валютного контроля вашего банка до того, как примете на себя обязательства с графиком платежей, потому что просрочка по плану застройщика обходится дорого. Мы не консультируем по обходу этих ограничений, и брокер с лицензией RERA обязан провести KYC в любом случае.",
+          "ar": "يتطلب تحويل رأس المال إلى خارج زيمبابوي موافقة المصرف المركزي بموجب رقابة الصرف، فهذا ليس تحويلاً روتينياً ولا ينبغي التخطيط على أنه كذلك. وعملياً تُموَّل معظم المشتريات الزيمبابوية في دبي من دخل محتفظ به خارجياً أصلاً — في حسابات بالعملة الأجنبية أو حسابات نوسترو — لا عبر التحويل والإرسال عند الشراء. فاستوضح المسار والمبلغ مع قسم رقابة الصرف في مصرفك قبل أن تلتزم بأي شيء مرتبط بجدول أقساط، لأن التخلّف عن دفعة في خطة المطوّر مكلف. ونحن لا نقدّم مشورة بشأن الالتفاف على تلك الضوابط، وأي وساطة مسجَّلة لدى RERA ملزَمة بإجراء إجراءات «اعرف عميلك» عليك على أي حال.",
+          "zh": "根据外汇管制，将资本汇出津巴布韦需要储备银行批准，因此这不是一笔常规转账，您也不应按常规来规划。实务上，津巴布韦人在迪拜的多数购房资金来自本已存放在境外的收入——外汇账户或往来账户——而非在成交时兑换并汇出。在承诺任何附带分期时间表的事项之前，请先与您银行的外汇管制部门确认路径与金额，因为开发商付款计划一旦逾期代价高昂。我们不会就规避这些管制提供建议，而持有 RERA 牌照的中介无论如何都必须对您执行 KYC。",
+          "vi": "Việc chuyển vốn ra khỏi Zimbabwe cần Ngân hàng Dự trữ phê duyệt theo chế độ kiểm soát ngoại hối, nên đây không phải giao dịch thông thường và bạn không nên lập kế hoạch như thể nó là vậy. Trên thực tế, phần lớn giao dịch của người Zimbabwe tại Dubai được tài trợ từ thu nhập đã có sẵn ở nước ngoài — trong tài khoản ngoại tệ hoặc tài khoản nostro — chứ không quy đổi và chuyển đi tại thời điểm mua. Hãy xác nhận lộ trình và số tiền với bộ phận kiểm soát ngoại hối của ngân hàng bạn trước khi cam kết bất cứ điều gì kèm lịch trả góp, vì trễ một kỳ trong kế hoạch của chủ đầu tư rất tốn kém. Chúng tôi sẽ không tư vấn cách lách các quy định đó, và một sàn có giấy phép RERA dù sao cũng phải thực hiện KYC với bạn.",
+          "he": "הוצאת הון מזימבבואה מחייבת אישור הבנק המרכזי במסגרת הפיקוח על מטבע חוץ, ולכן זו אינה העברה שגרתית ואין לתכנן כאילו היא כזו. בפועל, רוב הרכישות הזימבבואיות בדובאי ממומנות מהכנסה המוחזקת ממילא בחו\"ל — בחשבונות מט\"ח או נוסטרו — ולא מהמרה והעברה במועד העסקה. בררו את המסלול ואת הסכום מול מחלקת הפיקוח על מטבע חוץ בבנק שלכם לפני שאתם מתחייבים למשהו עם לוח תשלומים, כי פיגור בתשלום בתוכנית של יזם יקר. איננו מייעצים כיצד לעקוף את הבקרות הללו, ותיווך רשום ב-RERA חייב לבצע עליכם KYC בכל מקרה."
+        }
+      },
+      {
+        "question": {
+          "en": "Will a UAE bank give me a mortgage on ZiG income?",
+          "fr": "Une banque émirienne m'accordera-t-elle un crédit sur des revenus en ZiG ?",
+          "ru": "Даст ли банк UAE ипотеку при доходе в ZiG?",
+          "ar": "هل يمنحني مصرف إماراتي تمويلاً عقارياً بدخل بعملة ZiG؟",
+          "zh": "阿联酋银行会以 ZiG 收入为依据给我按揭吗？",
+          "vi": "Ngân hàng UAE có cho tôi vay thế chấp dựa trên thu nhập bằng ZiG không?",
+          "he": "האם בנק באיחוד ייתן לי משכנתה על הכנסה ב-ZiG?"
+        },
+        "answer": {
+          "en": "Generally no. UAE lenders underwrite documented income in a currency they recognise and can assess, and ZiG-denominated salary or business income is usually declined on that basis. Zimbabweans who do obtain UAE mortgages typically show US dollar income, an offshore employer, or a foreign-currency account with a real history. For everyone else the realistic route is a developer payment plan on an off-plan unit: 10-20% on booking, instalments through construction, and the balance at handover — all in dirhams, with no credit assessment. Budget the 4% DLD transfer fee plus roughly 2% in agency and registration costs on top of the price.",
+          "fr": "En général non. Les prêteurs émiriens analysent des revenus documentés dans une devise qu'ils reconnaissent et savent apprécier, et un salaire ou des revenus d'entreprise libellés en ZiG sont habituellement refusés sur ce fondement. Les Zimbabwéens qui obtiennent effectivement un crédit aux Émirats présentent en général des revenus en dollars américains, un employeur offshore, ou un compte en devises avec un historique réel. Pour les autres, la voie réaliste est l'échéancier promoteur sur un bien sur plan : 10-20% à la réservation, des échéances pendant la construction et un solde à la livraison — le tout en dirhams, sans examen de solvabilité. Prévoyez les 4% de frais de transfert du DLD plus environ 2% de frais d'agence et d'enregistrement au-dessus du prix.",
+          "ru": "Как правило нет. Кредиторы UAE оценивают подтверждённый доход в валюте, которую они признают и могут оценить, и зарплата или доход от бизнеса в ZiG обычно на этом основании отклоняются. Зимбабвийцы, которые всё же получают ипотеку в UAE, как правило показывают доход в долларах США, зарубежного работодателя или валютный счёт с реальной историей. Для остальных реалистичный путь — рассрочка от застройщика на строящийся объект: 10-20% при бронировании, платежи в ходе строительства и остаток при передаче — всё в дирхамах и без кредитной проверки. Заложите 4% сбора DLD плюс примерно 2% на агентские и регистрационные расходы сверх цены.",
+          "ar": "بوجه عام لا. فجهات الإقراض في الإمارات تدرس الدخل الموثّق بعملة تعترف بها وتستطيع تقييمها، والراتب أو دخل الأعمال المقوَّم بـ ZiG يُرفض عادةً على هذا الأساس. والزيمبابويون الذين يحصلون فعلاً على تمويل إماراتي يُظهرون عادةً دخلاً بالدولار الأمريكي، أو جهة عمل خارجية، أو حساباً بالعملة الأجنبية له سجل حقيقي. أما للبقية فالمسار الواقعي هو خطة سداد من المطوّر على وحدة على الخارطة: 10-20% عند الحجز، وأقساط خلال البناء، والرصيد عند التسليم — كلها بالدرهم ودون تقييم ائتماني. واحسب رسم نقل الملكية لدى DLD بنسبة 4% إضافةً إلى نحو 2% أتعاب وساطة وتسجيل فوق السعر.",
+          "zh": "通常不会。阿联酋放贷方审核的是以其认可并能评估的货币计价的有据可查的收入，而以 ZiG 计价的工资或经营收入通常据此被拒。确实取得阿联酋按揭的津巴布韦人，一般会出示美元收入、境外雇主，或一个有真实流水记录的外汇账户。对其他人而言，现实的路径是期房的开发商付款计划：预订时 10-20%，施工期间分期，交房时结清尾款——全部以迪拉姆计价，且无需信用评估。请在房价之外预留 4% 的迪拜土地局过户费和约 2% 的中介与登记费用。",
+          "vi": "Nhìn chung là không. Bên cho vay UAE thẩm định thu nhập có chứng từ bằng đồng tiền họ công nhận và đánh giá được, và lương hay thu nhập kinh doanh bằng ZiG thường bị từ chối trên cơ sở đó. Những người Zimbabwe thực sự vay được ở UAE thường chứng minh thu nhập bằng đô la Mỹ, một chủ lao động ở nước ngoài, hoặc một tài khoản ngoại tệ có lịch sử thực. Với những người còn lại, lối đi thực tế là kế hoạch thanh toán của chủ đầu tư cho căn hộ hình thành trong tương lai: 10-20% khi đặt chỗ, trả góp trong quá trình xây dựng, phần còn lại khi bàn giao — tất cả bằng dirham và không cần thẩm định tín dụng. Hãy dự trù phí sang tên DLD 4% cộng khoảng 2% phí môi giới và đăng ký trên giá mua.",
+          "he": "בדרך כלל לא. מלווים באיחוד בוחנים הכנסה מתועדת במטבע שהם מכירים ויכולים להעריך, והכנסה משכר או מעסק הנקובה ב-ZiG נדחית בדרך כלל על בסיס זה. זימבבואים שכן מקבלים משכנתה באיחוד מציגים בדרך כלל הכנסה בדולר אמריקאי, מעסיק זר, או חשבון מט\"ח עם היסטוריה אמיתית. לכל השאר, המסלול הריאלי הוא תוכנית תשלומים של יזם על יחידה על הנייר: 10-20% בהזמנה, תשלומים לאורך הבנייה, ויתרה במסירה — הכול בדירהם וללא בדיקת אשראי. תקצבו 4% אגרת העברה ל-DLD בתוספת כ-2% עמלות תיווך ורישום מעל המחיר."
+        }
+      },
+      {
+        "question": {
+          "en": "What source-of-funds documents will I be asked for?",
+          "fr": "Quels justificatifs d'origine des fonds me seront demandés ?",
+          "ru": "Какие документы о происхождении средств у меня запросят?",
+          "ar": "ما مستندات مصدر الأموال التي سيُطلب مني تقديمها؟",
+          "zh": "我会被要求提供哪些资金来源文件？",
+          "vi": "Tôi sẽ được yêu cầu những giấy tờ chứng minh nguồn tiền nào?",
+          "he": "אילו מסמכי מקור כספים יתבקשו ממני?"
+        },
+        "answer": {
+          "en": "Expect a full documented trail, and expect to be asked early. UAE anti-money-laundering rules require the brokerage and the developer or seller to establish where the money came from before completion: audited company accounts, dividend records, contracts of sale for a previously disposed asset, or bank statements showing the funds accumulating offshore. A RERA-registered brokerage has to run this check on every buyer regardless of nationality, so it is not a judgement about you. The practical advice is to assemble the file at the start rather than when a payment has already been queried — a stalled transfer mid-payment-plan is the expensive failure mode.",
+          "fr": "Attendez-vous à une traçabilité documentaire complète, et à ce qu'elle vous soit demandée tôt. Les règles émiriennes de lutte anti-blanchiment imposent à l'agence et au promoteur ou vendeur d'établir l'origine des fonds avant la finalisation : comptes de société audités, justificatifs de dividendes, actes de cession d'un actif précédemment vendu, ou relevés bancaires montrant l'accumulation des fonds à l'étranger. Une agence enregistrée à la RERA doit mener ce contrôle sur chaque acquéreur quelle que soit sa nationalité : ce n'est donc pas un jugement à votre égard. Le conseil pratique est de réunir le dossier dès le départ plutôt qu'au moment où un paiement a déjà été questionné — un virement bloqué en plein échéancier est le scénario d'échec coûteux.",
+          "ru": "Ожидайте полного документального следа и того, что его запросят рано. Правила UAE по противодействию отмыванию требуют, чтобы брокер и застройщик или продавец установили происхождение средств до завершения сделки: аудированная отчётность компании, документы о дивидендах, договоры продажи ранее отчуждённого актива или банковские выписки, показывающие накопление средств за рубежом. Брокер с лицензией RERA обязан проводить эту проверку по каждому покупателю независимо от гражданства, поэтому это не суждение о вас. Практический совет: собирайте досье в начале, а не тогда, когда платёж уже поставили под вопрос — застопорившийся перевод в середине рассрочки и есть дорогой сценарий отказа.",
+          "ar": "توقّع مساراً موثّقاً بالكامل، وتوقّع أن يُطلب منك مبكراً. فقواعد مكافحة غسل الأموال في الإمارات تُلزم الوساطة والمطوّر أو البائع بإثبات مصدر الأموال قبل الإتمام: حسابات شركة مدققة، وسجلات أرباح موزعة، وعقود بيع لأصل سبق التصرّف فيه، أو كشوف مصرفية تُظهر تراكم الأموال في الخارج. وأي وساطة مسجَّلة لدى RERA ملزَمة بإجراء هذا الفحص على كل مشترٍ أياً كانت جنسيته، فليس الأمر حكماً عليك. والنصيحة العملية هي تجهيز الملف في البداية لا حين يكون قد جرى الاستفسار عن دفعة — فالتحويل المتعثّر في منتصف خطة السداد هو نمط الإخفاق المكلف.",
+          "zh": "请预期需要完整的书面链条，并预期会被较早要求提供。阿联酋反洗钱规则要求中介以及开发商或卖方在成交前确认资金来源：经审计的公司账目、股息记录、此前处置资产的买卖合同，或显示资金在境外积累的银行对账单。持有 RERA 牌照的中介必须对每一位买家执行该项审查，无论其国籍，因此这并非针对您个人的判断。实务建议是：请在一开始就备齐材料，而不是等到某笔付款已被质询之时——分期计划进行到一半时汇款受阻，才是代价高昂的失败情形。",
+          "vi": "Hãy chuẩn bị cho một chuỗi chứng từ đầy đủ, và chuẩn bị bị hỏi từ sớm. Quy định phòng chống rửa tiền của UAE buộc sàn môi giới và chủ đầu tư hoặc bên bán phải xác định nguồn gốc dòng tiền trước khi hoàn tất: báo cáo công ty đã kiểm toán, hồ sơ cổ tức, hợp đồng bán một tài sản đã chuyển nhượng trước đó, hoặc sao kê ngân hàng cho thấy tiền tích lũy ở nước ngoài. Sàn có giấy phép RERA phải thực hiện kiểm tra này với mọi người mua bất kể quốc tịch, nên đó không phải một phán xét về bạn. Lời khuyên thực tế là hãy tập hợp hồ sơ ngay từ đầu thay vì khi một khoản thanh toán đã bị chất vấn — một lệnh chuyển bị đình lại giữa chừng kế hoạch trả góp mới là kiểu thất bại tốn kém.",
+          "he": "צפו לשובל מתועד מלא, וצפו שתישאלו מוקדם. כללי איסור הלבנת ההון באיחוד מחייבים את התיווך ואת היזם או המוכר לקבוע מהיכן הגיע הכסף לפני ההשלמה: דוחות חברה מבוקרים, רישומי דיבידנד, חוזי מכר של נכס שנמכר קודם, או דפי בנק המראים את הצטברות הכספים בחו\"ל. תיווך רשום ב-RERA חייב לבצע בדיקה זו על כל רוכש ללא קשר ללאום, ולכן אין בכך שיפוט לגביכם. העצה המעשית היא להרכיב את התיק בהתחלה ולא כשתשלום כבר תויג לבירור — העברה שנתקעה באמצע תוכנית תשלומים היא תרחיש הכישלון היקר."
+        }
+      },
+      {
+        "question": {
+          "en": "Why buy in Dubai rather than Harare or Johannesburg?",
+          "fr": "Pourquoi acheter à Dubaï plutôt qu'à Harare ou Johannesburg ?",
+          "ru": "Почему покупать в Дубае, а не в Хараре или Йоханнесбурге?",
+          "ar": "لماذا الشراء في دبي بدلاً من هراري أو جوهانسبرغ؟",
+          "zh": "为什么在迪拜购房，而不是哈拉雷或约翰内斯堡？",
+          "vi": "Tại sao mua ở Dubai thay vì Harare hay Johannesburg?",
+          "he": "מדוע לרכוש בדובאי ולא בהרארה או ביוהנסבורג?"
+        },
+        "answer": {
+          "en": "The honest answer is currency and mobility rather than yield alone. A Dubai title is priced in dirhams, which are pegged to the US dollar, and the rent arrives in the same currency — so neither the asset nor its income sits in a currency that has repeatedly repriced. Ownership is registered with the Dubai Land Department in your own name with full freehold title, there is no restriction by nationality, and an AED 2M purchase carries a renewable ten-year residence visa for you and your dependants. Gross yields in the mainstream freehold communities run roughly 5-8%. Set against that, the funding route is the hard part, which is why the exchange-control question above matters more here than on most of our country pages.",
+          "fr": "La réponse honnête tient à la monnaie et à la mobilité plus qu'au seul rendement. Un titre dubaïote est libellé en dirhams, arrimés au dollar américain, et le loyer arrive dans cette même monnaie : ni l'actif ni ses revenus ne se situent donc dans une devise qui a été repricée à répétition. La propriété est enregistrée au Dubai Land Department à votre nom en pleine propriété, sans restriction de nationalité, et un achat de 2 M AED ouvre droit à un visa de résidence renouvelable de dix ans pour vous et vos ayants droit. Les rendements bruts dans les communautés en pleine propriété grand public se situent autour de 5-8%. En contrepartie, le montage du financement est la partie difficile, ce qui explique que la question du contrôle des changes ci-dessus compte davantage ici que sur la plupart de nos pages pays.",
+          "ru": "Честный ответ — валюта и мобильность, а не одна лишь доходность. Право собственности в Дубае оценивается в дирхамах, привязанных к доллару США, и аренда приходит в той же валюте, поэтому ни актив, ни его доход не находятся в валюте, которая неоднократно переоценивалась. Собственность регистрируется в Dubai Land Department на ваше имя с полным правом freehold, ограничений по гражданству нет, а покупка от AED 2M даёт возобновляемую десятилетнюю резидентскую визу для вас и ваших иждивенцев. Валовая доходность в основных freehold-районах — примерно 5-8%. При этом сложная часть — маршрут финансирования, и именно поэтому вопрос валютного контроля выше здесь важнее, чем на большинстве наших страновых страниц.",
+          "ar": "الإجابة الصادقة هي العملة والحركية لا العائد وحده. فسند الملكية في دبي مقوَّم بالدرهم المربوط بالدولار الأمريكي، ويصل الإيجار بالعملة نفسها — فلا الأصل ولا دخله يقع في عملة أُعيد تسعيرها مراراً. وتُسجَّل الملكية لدى دائرة الأراضي والأملاك باسمك بملكية حرة كاملة، ولا قيود بحسب الجنسية، وشراء بقيمة AED 2M يحمل تأشيرة إقامة قابلة للتجديد لعشر سنوات لك ولمُعاليك. وتتراوح العوائد الإجمالية في مجتمعات التملك الحر الرئيسية بين 5-8% تقريباً. وفي المقابل، فإن مسار التمويل هو الجزء الصعب، ولهذا تكون مسألة رقابة الصرف أعلاه أهمّ هنا منها في معظم صفحات الدول لدينا.",
+          "zh": "诚实的答案是货币与流动性，而不仅仅是收益率。迪拜的产权以迪拉姆计价，而迪拉姆与美元挂钩，租金也以同一货币到账——因此无论资产还是其收入，都不处于一种反复被重新定价的货币之中。所有权以您本人名义在迪拜土地局登记，享有完整的永久产权，没有基于国籍的限制，而 AED 2M 以上的购房可带来覆盖您本人及受养人的可续期十年居留签证。主流永久产权社区的毛回报率约为 5-8%。与此相对，融资路径才是难点，这也是为什么上面那个外汇管制问题在这里比在我们大多数国家页面上更为重要。",
+          "vi": "Câu trả lời trung thực là đồng tiền và khả năng dịch chuyển, chứ không chỉ là lợi suất. Giấy tờ sở hữu ở Dubai được định giá bằng dirham, vốn neo theo đô la Mỹ, và tiền thuê về bằng chính đồng tiền đó — nên cả tài sản lẫn thu nhập của nó đều không nằm trong một đồng tiền đã nhiều lần bị định giá lại. Quyền sở hữu được đăng ký tại Dubai Land Department dưới tên bạn với quyền freehold đầy đủ, không có hạn chế theo quốc tịch, và một giao dịch từ AED 2M đi kèm thị thực cư trú mười năm có thể gia hạn cho bạn và người phụ thuộc. Lợi suất gộp tại các cộng đồng freehold phổ thông vào khoảng 5-8%. Đối lại, lộ trình tài trợ mới là phần khó, và đó là lý do câu hỏi về kiểm soát ngoại hối ở trên quan trọng ở đây hơn so với hầu hết các trang quốc gia khác của chúng tôi.",
+          "he": "התשובה הכנה היא מטבע וניידות ולא תשואה בלבד. שטר בעלות בדובאי מתומחר בדירהם, הצמוד לדולר האמריקאי, ושכר הדירה מגיע באותו מטבע — כך שלא הנכס ולא ההכנסה שלו נמצאים במטבע שתומחר מחדש שוב ושוב. הבעלות נרשמת ב-Dubai Land Department על שמכם בבעלות מלאה, אין הגבלה לפי לאום, ורכישה של AED 2M נושאת אשרת תושבות מתחדשת לעשר שנים עבורכם ועבור התלויים בכם. תשואות גולמיות בשכונות ה-freehold המרכזיות נעות סביב 5-8%. מנגד, מסלול המימון הוא החלק הקשה, ולכן שאלת הפיקוח על מטבע חוץ שלמעלה חשובה כאן יותר מאשר ברוב עמודי המדינות שלנו."
+        }
+      },
+      {
+        "question": {
+          "en": "Is my Dubai rental income taxable in Zimbabwe?",
+          "fr": "Mes loyers dubaïotes sont-ils imposables au Zimbabwe ?",
+          "ru": "Облагается ли мой доход от аренды в Дубае налогом в Зимбабве?",
+          "ar": "هل يخضع دخل الإيجار من دبي للضريبة في زيمبابوي؟",
+          "zh": "我的迪拜租金收入需要在津巴布韦纳税吗？",
+          "vi": "Thu nhập cho thuê ở Dubai của tôi có chịu thuế tại Zimbabwe không?",
+          "he": "האם הכנסות השכירות שלי מדובאי חייבות במס בזימבבואה?"
+        },
+        "answer": {
+          "en": "The UAE takes nothing — no income tax, no capital gains tax, no annual property tax on residential property — so the only question is what Zimbabwe charges, and that depends on your residence status and how the income is received. Zimbabwe's treatment of foreign income is not something to assume from a general rule, and there is no UAE tax to credit against any Zimbabwean charge because the UAE levies none. Have a Zimbabwean tax adviser confirm your position in writing before you model a net yield, and keep the purchase contract, the DLD title and your transfer records from the start so the position is documented if it is ever queried.",
+          "fr": "Les Émirats ne prélèvent rien — ni impôt sur le revenu, ni impôt sur les plus-values, ni taxe foncière annuelle sur le résidentiel — la seule question est donc ce que prélève le Zimbabwe, et cela dépend de votre statut de résidence et de la façon dont les revenus sont perçus. Le traitement zimbabwéen des revenus étrangers ne se présume pas à partir d'une règle générale, et il n'y a aucun impôt émirien à imputer sur une charge zimbabwéenne puisque les Émirats n'en prélèvent aucun. Faites confirmer votre situation par écrit par un fiscaliste zimbabwéen avant de modéliser un rendement net, et conservez dès le départ le compromis, le titre DLD et vos justificatifs de virement afin que la position soit documentée si elle venait à être questionnée.",
+          "ru": "UAE не берёт ничего — ни подоходного налога, ни налога на прирост капитала, ни ежегодного налога на жилую недвижимость, — поэтому единственный вопрос в том, что взимает Зимбабве, а это зависит от вашего статуса резидентства и способа получения дохода. Режим налогообложения иностранного дохода в Зимбабве не стоит выводить из общего правила, и зачесть против зимбабвийского налога нечего, поскольку UAE не взимает ничего. Получите письменное подтверждение вашей позиции у зимбабвийского налогового консультанта, прежде чем моделировать чистую доходность, и храните договор купли-продажи, title от DLD и подтверждения переводов с самого начала, чтобы позиция была документально подтверждена, если её когда-либо поставят под вопрос.",
+          "ar": "لا تقتطع الإمارات شيئاً — لا ضريبة دخل، ولا ضريبة أرباح رأسمالية، ولا ضريبة عقارية سنوية على العقار السكني — ومن ثمّ يبقى السؤال الوحيد عمّا تفرضه زيمبابوي، وذلك يتوقف على وضعك كمقيم وعلى كيفية تلقّي الدخل. ومعاملة زيمبابوي للدخل الأجنبي ليست أمراً يُفترض من قاعدة عامة، ولا توجد ضريبة إماراتية تُخصم مقابل أي عبء زيمبابوي لأن الإمارات لا تفرض شيئاً. فاطلب من مستشار ضريبي زيمبابوي تأكيد وضعك كتابةً قبل أن تحتسب عائداً صافياً، واحتفظ بعقد الشراء وسند ملكية DLD وسجلات تحويلاتك منذ البداية ليكون الوضع موثّقاً إن جرى الاستفسار عنه يوماً.",
+          "zh": "阿联酋分文不取——没有所得税、没有资本利得税、住宅物业也没有年度房产税——因此唯一的问题是津巴布韦如何课征，而这取决于您的居民身份以及收入的取得方式。津巴布韦对境外收入的处理不应从一般规则推定，且由于阿联酋不征税，也没有可用于抵免任何津巴布韦税负的阿联酋税款。在测算净收益之前，请让津巴布韦税务顾问以书面形式确认您的情况，并从一开始就保存买卖合同、迪拜土地局产权证与汇款记录，以便日后若被质询时该立场有据可循。",
+          "vi": "UAE không thu gì — không thuế thu nhập, không thuế lãi vốn, không thuế bất động sản hằng năm với nhà ở — nên câu hỏi duy nhất là Zimbabwe thu gì, và điều đó phụ thuộc vào tình trạng cư trú của bạn cũng như cách thu nhập được nhận. Cách Zimbabwe xử lý thu nhập nước ngoài không phải điều nên suy ra từ một quy tắc chung, và không có thuế UAE nào để khấu trừ vào nghĩa vụ thuế Zimbabwe vì UAE không thu gì cả. Hãy nhờ một cố vấn thuế Zimbabwe xác nhận bằng văn bản trước khi tính lợi suất ròng, và giữ hợp đồng mua bán, sổ đỏ DLD cùng chứng từ chuyển tiền ngay từ đầu để có căn cứ nếu sau này bị hỏi đến.",
+          "he": "האיחוד אינו גובה דבר — אין מס הכנסה, אין מס רווחי הון, אין מס רכוש שנתי על נכס מגורים — ולכן השאלה היחידה היא מה זימבבואה גובה, וזה תלוי במעמד התושבות שלכם ובאופן שבו ההכנסה מתקבלת. היחס של זימבבואה להכנסה מחו\"ל אינו דבר שיש להניח מתוך כלל כללי, ואין מס אמירתי לזכות מול חבות זימבבואית כלשהי משום שהאיחוד אינו גובה דבר. בקשו מיועץ מס זימבבואי לאשר את מצבכם בכתב לפני שאתם מחשבים תשואה נטו, ושמרו את חוזה הרכישה, שטר הבעלות מ-DLD ואסמכתאות ההעברה מההתחלה כדי שהעמדה תהיה מתועדת אם אי פעם תיבדק."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I buy off-plan and pay in instalments from abroad?",
+          "fr": "Puis-je acheter sur plan et payer en plusieurs fois depuis l'étranger ?",
+          "ru": "Можно ли купить на этапе строительства и платить в рассрочку из-за рубежа?",
+          "ar": "هل يمكنني الشراء على الخارطة والدفع بالتقسيط من الخارج؟",
+          "zh": "我可以购买期房并从境外分期付款吗？",
+          "vi": "Tôi có thể mua nhà hình thành trong tương lai và trả góp từ nước ngoài không?",
+          "he": "האם אפשר לרכוש על הנייר ולשלם בתשלומים מחו\"ל?"
+        },
+        "answer": {
+          "en": "Yes, and for most Zimbabwean buyers this is the route that actually works, because it needs no credit assessment and no UAE bank relationship. A typical plan is 10-20% on booking, instalments through construction, and a balance at handover, all denominated in dirhams. The caution is that a payment plan assumes you can move money on fixed dates. Given Zimbabwe's exchange-control position, confirm with your bank that each scheduled transfer is achievable before you sign, and prefer a plan whose dates you can meet from funds already held offshore. Off-plan purchases are registered with the Dubai Land Department and developer payments go into a project escrow account.",
+          "fr": "Oui, et pour la plupart des acheteurs zimbabwéens c'est la voie qui fonctionne réellement, car elle n'exige ni examen de solvabilité ni relation avec une banque émirienne. Un échéancier type prévoit 10-20% à la réservation, des versements pendant la construction et un solde à la livraison, le tout libellé en dirhams. La réserve est qu'un échéancier suppose que vous puissiez transférer des fonds à dates fixes. Compte tenu du contrôle des changes zimbabwéen, faites confirmer par votre banque que chaque virement programmé est réalisable avant de signer, et privilégiez un plan dont vous pouvez honorer les échéances à partir de fonds déjà détenus à l'étranger. Les acquisitions sur plan sont enregistrées auprès du Dubai Land Department et les versements au promoteur alimentent un compte séquestre dédié au projet.",
+          "ru": "Да, и для большинства зимбабвийских покупателей это и есть работающий маршрут, потому что он не требует ни кредитной проверки, ни отношений с банком UAE. Типичная схема: 10-20% при бронировании, платежи в ходе строительства и остаток при передаче — всё в дирхамах. Оговорка в том, что рассрочка предполагает возможность переводить деньги в фиксированные даты. Учитывая ситуацию с валютным контролем в Зимбабве, подтвердите с банком выполнимость каждого планового перевода до подписания и предпочитайте план, даты которого вы можете закрыть из средств, уже находящихся за рубежом. Покупки на этапе строительства регистрируются в Dubai Land Department, а платежи застройщику поступают на эскроу-счёт проекта.",
+          "ar": "نعم، ولمعظم المشترين الزيمبابويين هذا هو المسار الذي ينجح فعلاً، لأنه لا يحتاج تقييماً ائتمانياً ولا علاقة بمصرف إماراتي. والخطة النموذجية هي 10-20% عند الحجز، وأقساط خلال البناء، ورصيد عند التسليم، وكلها مقوَّمة بالدرهم. والتحذير هو أن خطة السداد تفترض قدرتك على تحريك الأموال في تواريخ محددة. وبالنظر إلى وضع رقابة الصرف في زيمبابوي، أكّد مع مصرفك إمكانية تنفيذ كل تحويل مجدول قبل التوقيع، وفضّل خطةً يمكنك الوفاء بتواريخها من أموال محتفظ بها خارجياً أصلاً. وتُسجَّل مشتريات الخارطة لدى دائرة الأراضي والأملاك، وتذهب دفعات المطوّر إلى حساب ضمان للمشروع.",
+          "zh": "可以，而且对多数津巴布韦买家来说，这才是真正可行的路径，因为它既不需要信用评估，也不需要与阿联酋银行建立关系。典型方案是预订时 10-20%，施工期间分期，交房时结清尾款，全部以迪拉姆计价。需要注意的是，付款计划的前提是您能在固定日期调动资金。鉴于津巴布韦的外汇管制状况，请在签约前与银行确认每一期计划中的汇款都可实现，并优先选择那些您能用已在境外持有的资金按期履约的方案。期房购置会在迪拜土地局登记，开发商款项进入项目托管账户。",
+          "vi": "Có, và với phần lớn người mua Zimbabwe đây mới là lối đi thực sự khả thi, vì nó không cần thẩm định tín dụng và không cần quan hệ với ngân hàng UAE. Một kế hoạch điển hình là 10-20% khi đặt chỗ, trả góp trong quá trình xây dựng, và phần còn lại khi bàn giao, tất cả định giá bằng dirham. Điều cần lưu ý là kế hoạch thanh toán mặc định rằng bạn có thể chuyển tiền vào các ngày cố định. Với tình hình kiểm soát ngoại hối của Zimbabwe, hãy xác nhận với ngân hàng rằng mỗi lần chuyển theo lịch đều thực hiện được trước khi ký, và ưu tiên kế hoạch mà bạn có thể đáp ứng bằng tiền đã có sẵn ở nước ngoài. Giao dịch hình thành trong tương lai được đăng ký tại Dubai Land Department và tiền trả chủ đầu tư đi vào tài khoản ký quỹ của dự án.",
+          "he": "כן, ולרוב הרוכשים הזימבבואים זה המסלול שבאמת עובד, כי הוא אינו דורש בדיקת אשראי ולא קשר עם בנק באיחוד. תוכנית טיפוסית היא 10-20% בהזמנה, תשלומים לאורך הבנייה, ויתרה במסירה, כולם נקובים בדירהם. האזהרה היא שתוכנית תשלומים מניחה שתוכלו להעביר כספים בתאריכים קבועים. לאור מצב הפיקוח על מטבע חוץ בזימבבואה, אשרו מול הבנק שכל העברה מתוזמנת ניתנת לביצוע לפני החתימה, והעדיפו תוכנית שאת מועדיה תוכלו לעמוד מכספים המוחזקים כבר בחו\"ל. רכישות על הנייר נרשמות ב-Dubai Land Department ותשלומי היזם נכנסים לחשבון נאמנות של הפרויקט."
+        }
+      }
     ]
   },
   {
@@ -1556,6 +1811,47 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
     ]
   }
 ];
+
+/** Regional / thematic clusters used to pick "related nationality" links.
+ *  Grouped by how the markets actually behave rather than by continent: the
+ *  exchange-control group and the worldwide-income group are each other's
+ *  most useful comparison, which is what a reader on one page wants next. */
+const BUYER_CLUSTERS: string[][] = [
+  // Exchange-control / offshore-funded markets.
+  ["zimbabwean-citizen", "nigerian-citizen", "south-african-citizen", "kenyan-citizen"],
+  // Asian tax-arbitrage and high-net-worth hubs.
+  ["singaporean-citizen", "chinese-citizen", "indian-citizen", "vietnamese-citizen"],
+  // South Asia / Gulf corridor.
+  ["indian-citizen", "pakistani-citizen", "saudi-citizen", "egyptian-citizen"],
+  // Western worldwide-income systems.
+  ["uk-citizen", "american-citizen", "canadian-citizen", "australian-citizen"],
+  // EU / European.
+  ["german-citizen", "french-citizen", "italian-citizen", "polish-citizen"],
+  // CIS, Turkey and Israel — currency-hedge and mobility buyers.
+  ["russian-citizen", "kazakh-citizen", "turkish-citizen", "israeli-citizen"],
+];
+
+/** Up to `limit` sibling profiles related to `slug`, for cross-linking.
+ *  Falls back to filling from the rest of the list so every page gets links
+ *  even if its slug is not in a cluster. */
+export function relatedForeignBuyers(slug: string, limit = 4): ForeignBuyerProfile[] {
+  const seen = new Set<string>([slug]);
+  const picked: string[] = [];
+  for (const cluster of BUYER_CLUSTERS) {
+    if (!cluster.includes(slug)) continue;
+    for (const s of cluster) {
+      if (!seen.has(s)) { seen.add(s); picked.push(s); }
+    }
+  }
+  for (const b of FOREIGN_BUYERS) {
+    if (picked.length >= limit) break;
+    if (!seen.has(b.slug)) { seen.add(b.slug); picked.push(b.slug); }
+  }
+  return picked
+    .slice(0, limit)
+    .map((s) => FOREIGN_BUYERS.find((b) => b.slug === s))
+    .filter((b): b is ForeignBuyerProfile => Boolean(b));
+}
 
 export function findForeignBuyer(slug: string): ForeignBuyerProfile | undefined {
   return FOREIGN_BUYERS.find((b) => b.slug === slug);
