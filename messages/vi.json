@@ -2307,7 +2307,7 @@
     "heroTitle": "Chính sách",
     "heroTitleItalic": "Bảo mật",
     "heroSubtitle": "Cách chúng tôi thu thập, sử dụng và bảo vệ thông tin cá nhân của bạn.",
-    "lastUpdated": "Cập nhật lần cuối: Tháng 1 năm 2026",
+    "lastUpdated": "Cập nhật lần cuối: Tháng 9 năm 2026",
     "sections": {
       "introduction": {
         "title": "Giới thiệu",
@@ -2320,6 +2320,10 @@
       "dataUse": {
         "title": "Cách chúng tôi sử dụng thông tin của bạn",
         "body": "Chúng tôi sử dụng thông tin thu thập để cung cấp, duy trì và cải thiện dịch vụ; gửi cho bạn các tin đăng bất động sản, cập nhật thị trường và tài liệu khuyến mãi bạn đã chọn nhận; phản hồi yêu cầu của bạn và hỗ trợ khách hàng; tuân thủ nghĩa vụ pháp lý tại UAE, bao gồm quy định RERA; và phát hiện, ngăn chặn gian lận hoặc hoạt động trái phép trên nền tảng của chúng tôi."
+      },
+      "dataRetention": {
+        "title": "Lưu giữ dữ liệu",
+        "body": "Chúng tôi lưu giữ thông tin cá nhân bạn cung cấp trong thời gian cần thiết cho các mục đích nêu trên — chủ yếu là để phản hồi yêu cầu của bạn, cung cấp dịch vụ bạn đã yêu cầu và duy trì quan hệ với bạn với tư cách khách hàng. Hồ sơ được rà soát định kỳ và xóa bỏ khi không còn cần cho những mục đích đó hoặc để đáp ứng nghĩa vụ pháp lý, quản lý tại UAE. Bạn có thể yêu cầu chúng tôi xóa thông tin của mình bất cứ lúc nào qua privacy@binayah.com, và chúng tôi sẽ thực hiện trừ khi pháp luật buộc phải lưu giữ."
       },
       "yourRights": {
         "title": "Quyền của bạn",

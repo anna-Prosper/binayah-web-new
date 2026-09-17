@@ -2307,7 +2307,7 @@
     "heroTitle": "Privacy",
     "heroTitleItalic": "Policy",
     "heroSubtitle": "How we collect, use, and protect your personal information.",
-    "lastUpdated": "Last updated: January 2026",
+    "lastUpdated": "Last updated: September 2026",
     "sections": {
       "introduction": {
         "title": "Introduction",
@@ -2320,6 +2320,10 @@
       "dataUse": {
         "title": "How We Use Your Information",
         "body": "We use the information we collect to provide, maintain, and improve our services; to send you property listings, market updates, and promotional materials you have opted into; to respond to your inquiries and provide customer support; to comply with legal obligations in the UAE, including RERA regulations; and to detect and prevent fraud or unauthorized activity on our platform."
+      },
+      "dataRetention": {
+        "title": "Data Retention",
+        "body": "We keep the personal information you provide for as long as it is needed for the purposes described above — principally to respond to your enquiry, to provide the services you asked for, and to maintain our relationship with you as a client. Records are reviewed periodically and removed when they are no longer needed for those purposes or to meet a legal or regulatory obligation in the UAE. You can ask us to delete your information at any time by contacting privacy@binayah.com, and we will do so unless we are required to retain it by law."
       },
       "yourRights": {
         "title": "Your Rights",

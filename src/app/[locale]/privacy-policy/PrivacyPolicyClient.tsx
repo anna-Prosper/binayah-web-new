@@ -13,6 +13,7 @@ export default function PrivacyPolicyClient() {
     "introduction",
     "dataCollected",
     "dataUse",
+    "dataRetention",
     "yourRights",
     "contact",
   ] as const;

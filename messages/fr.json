@@ -2307,7 +2307,7 @@
     "heroTitle": "Confidentialité",
     "heroTitleItalic": "Politique",
     "heroSubtitle": "Comment nous collectons, utilisons et protégeons vos informations personnelles.",
-    "lastUpdated": "Dernière mise à jour : janvier 2026",
+    "lastUpdated": "Dernière mise à jour : septembre 2026",
     "sections": {
       "introduction": {
         "title": "Introduction",
@@ -2320,6 +2320,10 @@
       "dataUse": {
         "title": "Comment nous utilisons vos informations",
         "body": "Nous utilisons les informations que nous collectons pour fournir, maintenir et améliorer nos services ; pour vous envoyer des listes de biens, des mises à jour du marché et des documents promotionnels auxquels vous avez souscrit ; pour répondre à vos demandes et fournir un support client ; pour nous conformer aux obligations légales aux Émirats Arabes Unis, y compris les réglementations RERA ; et pour détecter et prévenir la fraude ou les activités non autorisées sur notre plateforme."
+      },
+      "dataRetention": {
+        "title": "Conservation des données",
+        "body": "Nous conservons les informations personnelles que vous nous communiquez aussi longtemps qu'elles sont nécessaires aux finalités décrites ci-dessus — principalement pour répondre à votre demande, fournir les services sollicités et entretenir notre relation avec vous en tant que client. Les dossiers sont revus périodiquement et supprimés lorsqu'ils ne sont plus nécessaires à ces finalités ni à une obligation légale ou réglementaire aux Émirats arabes unis. Vous pouvez à tout moment demander la suppression de vos informations en écrivant à privacy@binayah.com, et nous y procéderons sauf si la loi nous impose de les conserver."
       },
       "yourRights": {
         "title": "Vos droits",
