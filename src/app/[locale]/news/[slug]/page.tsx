@@ -8,6 +8,7 @@ import { getNonce } from "@/lib/nonce";
 import { sanitizeArticleHtml } from "@/lib/sanitize";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { isIndexableNewsArticle } from "@/lib/news-topicality";
+import { newsAuthorOrDefault } from "@/lib/news-author";
 
 export const revalidate = 3600;
 // Pre-render the most recent articles (the hot pages) at build so they never hit
@@ -112,7 +113,9 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
             image: article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`,
             datePublished: article.publishedAt,
             ...(article.updatedAt ? { dateModified: article.updatedAt } : {}),
-            author: { "@type": "Person", name: article.author || "Binayah Editorial" },
+            // Was `article.author || "..."`, which published the raw WordPress user id
+            // (an integer) as the author's NAME in structured data for 762 articles.
+            author: { "@type": "Person", name: newsAuthorOrDefault(article.author) },
             publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: `${AE_URL}/assets/binayah-logo.webp` } },
             url: canonical(locale, `/news/${slug}`),
           }).replace(/</g, "\\u003c"),

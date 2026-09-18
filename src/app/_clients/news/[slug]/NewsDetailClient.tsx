@@ -3,6 +3,7 @@
 // Locale-aware Link: plain next/link emitted bare "/news/<slug>" hrefs, so the
 // related-article links dropped the reader back into English.
 import { Link } from "@/navigation";
+import { newsAuthorName, newsAuthorOrDefault } from "@/lib/news-author";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -176,7 +177,7 @@ function NewsDetailInner({
                   {article.readTime && (
                     <span className="flex items-center gap-1.5 whitespace-nowrap"><Clock className="h-3.5 w-3.5 flex-shrink-0" /> {article.readTime}</span>
                   )}
-                  {article.author && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {article.author}</span>}
+                  {newsAuthorName(article.author) && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {newsAuthorName(article.author)}</span>}
                 </div>
               </motion.div>
             </div>
@@ -204,7 +205,7 @@ function NewsDetailInner({
             {article.readTime && (
               <span className="flex items-center gap-1.5 whitespace-nowrap"><Clock className="h-3.5 w-3.5 flex-shrink-0" /> {article.readTime}</span>
             )}
-            {article.author && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {article.author}</span>}
+            {newsAuthorName(article.author) && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {newsAuthorName(article.author)}</span>}
           </div>
           <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-2">
             <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill sizes="100vw" className="object-cover transition-none" priority />
@@ -242,7 +243,7 @@ function NewsDetailInner({
                 {article.readTime && (
                   <span className="flex items-center gap-1.5 whitespace-nowrap"><Clock className="h-3.5 w-3.5 flex-shrink-0" /> {article.readTime}</span>
                 )}
-                {article.author && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {article.author}</span>}
+                {newsAuthorName(article.author) && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {newsAuthorName(article.author)}</span>}
               </div>
             </motion.div>
           </div>
@@ -303,7 +304,7 @@ function NewsDetailInner({
 
               {/* Author bio card */}
               {(() => {
-                const authorName = article.author || 'Binayah Editorial';
+                const authorName = newsAuthorOrDefault(article.author);
                 const initials = authorName.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase();
                 return (
                   <div className="mt-10 p-5 rounded-2xl border border-border bg-card flex items-start gap-4">
