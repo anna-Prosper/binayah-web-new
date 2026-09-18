@@ -24,7 +24,11 @@ export const dynamic = "force-dynamic";
  * only because nothing was cached there yet. If an edit is not showing up on
  * production and this endpoint said "revalidated", this is why.
  */
-const DEFAULT_TARGETS: { path: string; type: "page" | "layout" }[] = [
+// `type` is optional: revalidatePath's second argument is for ROUTE PATTERNS
+// containing dynamic segments. A literal path like /sitemap.xml takes the
+// one-argument form, and that is the call shape verified to actually refresh
+// it — passing a type alongside a non-dynamic path is not the same request.
+const DEFAULT_TARGETS: { path: string; type?: "page" | "layout" }[] = [
   // Route-pattern form revalidates every dynamic instance — all locales, all
   // slugs — which is what "an offer/guide changed" almost always means.
   { path: "/[locale]/offers", type: "page" },
@@ -42,6 +46,13 @@ const DEFAULT_TARGETS: { path: string; type: "page" | "layout" }[] = [
   { path: "/[locale]/project/[slug]/payment-plan", type: "page" },
   { path: "/[locale]/project/[slug]/location", type: "page" },
   { path: "/[locale]/property/[slug]", type: "page" },
+  // The sitemap reads news, offers and projects straight from the API and the
+  // DB, so its contents drift the moment any of those change — but it was not
+  // in this list, so the no-body form never refreshed it. After the news feed
+  // stopped listing 31 contentless articles, the live sitemap went on
+  // submitting 28 URLs that return 404 until /sitemap.xml was revalidated by
+  // hand. No `type`: it is a literal path, not a route pattern.
+  { path: "/sitemap.xml" },
 ];
 
 export async function POST(req: NextRequest) {
@@ -70,8 +81,9 @@ export async function POST(req: NextRequest) {
     }
   } else {
     for (const t of DEFAULT_TARGETS) {
-      revalidatePath(t.path, t.type);
-      revalidated.push(`${t.path} (${t.type})`);
+      if (t.type) revalidatePath(t.path, t.type);
+      else revalidatePath(t.path);
+      revalidated.push(t.type ? `${t.path} (${t.type})` : t.path);
     }
   }
 
