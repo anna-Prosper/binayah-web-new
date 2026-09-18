@@ -324,25 +324,73 @@ function plainEntry(path: string, priority: number, changeFrequency: MetadataRou
 // isIndexableNewsArticle() predicate rather than a second copy of the rules
 // here: off-topic scraped articles (restaurant round-ups, concerts, chip fabs)
 // are noindex,follow, so submitting them would be a straight contradiction.
+type SitemapNewsItem = {
+  slug?: string; title?: string; excerpt?: string; metaDescription?: string;
+  category?: string | string[]; tags?: string[];
+  updatedAt?: string; modifiedAt?: string; publishedAt?: string;
+};
+
+/**
+ * Classify one article without letting it take the others down.
+ *
+ * isIndexableNewsArticle reads fields straight off a scraped feed, and that
+ * feed is not type-stable: `category` arrives as a string on 502 articles and
+ * an array on 762. When the array case threw, the whole function's catch
+ * swallowed it and the sitemap silently shipped with ZERO news URLs — no
+ * error, no partial result, nothing to alert on. It only escaped notice
+ * because the API caps this list at 100 and those happened to be the
+ * string-typed ones.
+ *
+ * So a bad article is now skipped and counted, never fatal.
+ */
+function classifyForSitemap(d: SitemapNewsItem, failures: string[]): boolean {
+  try {
+    return isIndexableNewsArticle(d);
+  } catch (err) {
+    failures.push(`${d.slug ?? "(no slug)"}: ${err instanceof Error ? err.message : String(err)}`);
+    return false;
+  }
+}
+
 async function fetchIndexableNewsForSitemap(): Promise<{ slug: string; lastmod?: Date }[]> {
   try {
-    // The API caps `limit` at 100 and ignores field projection, so this returns
-    // the whole feed with the title/excerpt/category the classifier needs.
-    const res = await serverFetch(serverApiUrl("/api/news?limit=1000&excludeCategory=Weekly%20Report"), 10_000);
-    if (!res.ok) return [];
+    // /api/news/index-feed, not /api/news. The list route caps limit at 100 with
+    // no pagination, so this was classifying 100 of 1,254 articles and
+    // submitting 56 — about 1,200 were missing from the sitemap. Its select
+    // also omits metaDescription and tags, which the classifier reads as part
+    // of its signal haystack, so even those 100 were judged on partial data.
+    //
+    // 30s rather than 10s: one ~790KB response, and Render cold-starts.
+    const res = await serverFetch(
+      serverApiUrl("/api/news/index-feed?excludeCategory=Weekly%20Report"),
+      30_000
+    );
+    if (!res.ok) {
+      // Loud, because the failure mode is invisible: the sitemap still builds
+      // and still validates, just with every news URL missing.
+      console.error(`[sitemap] news fetch failed: HTTP ${res.status} — news URLs omitted from this build`);
+      return [];
+    }
     const data = await res.json();
-    const items: {
-      slug?: string; title?: string; excerpt?: string; metaDescription?: string;
-      category?: string; tags?: string[]; updatedAt?: string; modifiedAt?: string; publishedAt?: string;
-    }[] = Array.isArray(data) ? data : [];
-    return items
-      .filter((d) => d.slug && isIndexableNewsArticle(d))
+    const items: SitemapNewsItem[] = Array.isArray(data) ? data : [];
+    const failures: string[] = [];
+    const out = items
+      .filter((d) => d.slug && classifyForSitemap(d, failures))
       .map((d) => {
         const raw = d.updatedAt || d.modifiedAt || d.publishedAt;
         const t = raw ? new Date(raw) : null;
         return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
       });
-  } catch {
+    if (failures.length) {
+      console.error(`[sitemap] ${failures.length} of ${items.length} article(s) failed classification and were omitted:`);
+      failures.slice(0, 5).forEach((f) => console.error(`[sitemap]   ${f}`));
+    }
+    if (items.length && !out.length) {
+      console.error(`[sitemap] ${items.length} article(s) fetched but NONE were indexable — check the classifier, this is rarely legitimate`);
+    }
+    return out;
+  } catch (err) {
+    console.error("[sitemap] news section failed entirely — news URLs omitted from this build:", err);
     return [];
   }
 }
