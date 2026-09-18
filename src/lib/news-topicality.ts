@@ -26,7 +26,14 @@ export type NewsTopicalityInput = {
   title?: string | null;
   excerpt?: string | null;
   metaDescription?: string | null;
-  category?: string | null;
+  /**
+   * The scraped feed stores this BOTH ways: 502 articles carry a plain string,
+   * 762 carry an array of them. Typing it as `string` was not a simplification,
+   * it was wrong, and it took every one of those 762 article pages down with a
+   * 500 — `(article.category || "").trim()` throws on an array, and the throw
+   * happened inside generateMetadata, so the page never rendered at all.
+   */
+  category?: string | string[] | null;
   tags?: string[] | null;
 };
 
@@ -120,8 +127,15 @@ function haystackHasSignal(haystack: string, signal: string): boolean {
  * touches either cluster.
  */
 export function isIndexableNewsArticle(article: NewsTopicalityInput): boolean {
-  const category = (article.category || "").trim().toLowerCase();
-  if (ALWAYS_INDEXABLE_CATEGORIES.has(category)) return true;
+  // Normalised to a list so both shapes behave the same. Joining an array into
+  // one string would be worse than the crash it replaces: "market report" would
+  // stop matching the moment it shared a field with a second category, and the
+  // article would quietly drop out of the index instead of failing loudly.
+  const categories = (Array.isArray(article.category) ? article.category : [article.category])
+    .filter((c): c is string => typeof c === "string")
+    .map((c) => c.trim().toLowerCase())
+    .filter(Boolean);
+  if (categories.some((c) => ALWAYS_INDEXABLE_CATEGORIES.has(c))) return true;
 
   const haystack = [
     article.title || "",
