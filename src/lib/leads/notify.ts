@@ -85,11 +85,29 @@ const SOURCE_LABEL: Record<string, string> = {
   valuation: "Property Valuation",
 };
 
+/**
+ * Mask the middle 5 digits of a phone number for the alert, keeping the country
+ * code and last 3 digits recognisable — e.g. "+971501234567" -> "+9715*****567".
+ * The full number lives in the CRM; the group alert shows only enough to
+ * recognise it, not enough to use it.
+ */
+function maskPhone(raw: string): string {
+  const hasPlus = raw.trim().startsWith("+");
+  const digits = raw.replace(/\D/g, "");
+  const MASK = 5;
+  if (digits.length < MASK + 2) {
+    const keep = Math.max(0, digits.length - 2);
+    return (hasPlus ? "+" : "") + "*".repeat(digits.length - keep) + digits.slice(digits.length - keep);
+  }
+  const start = Math.max(1, digits.length - MASK - 3);
+  return (hasPlus ? "+" : "") + digits.slice(0, start) + "*".repeat(MASK) + digits.slice(start + MASK);
+}
+
 function buildLeadMessage(p: NewLeadWebhookPayload): string {
   const lines: string[] = ["🔔 *New Lead, Binayah*", "", `Type: ${SOURCE_LABEL[p.source] ?? p.source}`];
   if (p.name) lines.push(`Name: ${p.name}`);
   if (p.email) lines.push(`Email: ${p.email}`);
-  if (p.phone) lines.push(`Phone: ${p.phone}`);
+  if (p.phone) lines.push(`Phone: ${maskPhone(p.phone)}`);
   if (p.community) lines.push(`Area: ${p.community}`);
   if (p.intent?.length) lines.push(`Intent: ${p.intent.join(", ")}`);
   if (p.property?.title) lines.push(`Property: ${p.property.title}`);
