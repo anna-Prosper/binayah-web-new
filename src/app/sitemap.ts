@@ -495,19 +495,34 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
       fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gte: 3 }, avgPrice: { $gt: 0 } }),
     ]);
 
-  // Populated bedroom × type × community combos (all types) — data-driven.
-  const offers = await fetchOffersForSitemap();
-  const guides = await fetchGuidesForSitemap();
-  const matrixCombos = await fetchMatrixCombos();
-  const dldMatrixCombos = await fetchDldMatrixCombos();
+  /**
+   * The remaining sources, in parallel. They used to run as seven sequential
+   * awaits despite none depending on another, which mattered more than the
+   * usual latency argument: five of them open their OWN MongoClient, so a
+   * serial chain paid five separate Atlas connects — TLS handshake and replica
+   * set discovery each time — end to end rather than overlapped.
+   *
+   * matrix and dldMatrix are merged afterwards; they are independent of each
+   * other, only their union is used.
+   */
+  const [
+    offers, guides, matrixCombos, dldMatrixCombos,
+    devCommunityCombos, superlativeCombos, agents,
+  ] = await Promise.all([
+    fetchOffersForSitemap(),
+    fetchGuidesForSitemap(),
+    // Populated bedroom × type × community combos (all types) — data-driven.
+    fetchMatrixCombos(),
+    fetchDldMatrixCombos(),
+    // Developer × community combos (≥2 projects) — data-driven.
+    fetchDevCommunityCombos(),
+    // Superlative (cheapest) combos — data-driven.
+    fetchSuperlativeCombos(),
+    // Agent profiles substantive enough to index (real bio + RERA BRN).
+    getAgents(),
+  ]);
   const allMatrixCombos = [...new Set([...matrixCombos, ...dldMatrixCombos])];
-  // Developer × community combos (≥2 projects) — data-driven.
-  const devCommunityCombos = await fetchDevCommunityCombos();
-  // Superlative (cheapest) combos — data-driven.
-  const superlativeCombos = await fetchSuperlativeCombos();
-
-  // Agent profiles substantive enough to index (real bio + RERA BRN).
-  const publishableAgents = (await getAgents()).filter(isPublishableAgent);
+  const publishableAgents = agents.filter(isPublishableAgent);
 
   const staticPages: MetadataRoute.Sitemap = [
     withAlternates("/", 1.0, "daily", now),
