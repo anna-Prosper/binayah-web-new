@@ -2865,7 +2865,12 @@
       "notFoundEyebrow": "KHÔNG TÌM THẤY LIÊN KẾT",
       "notFoundHeading": "Liên kết hủy đăng ký này không hợp lệ",
       "notFoundBody": "Có thể nó đã được sử dụng. Bạn có thể quản lý đăng ký từ tài khoản của mình.",
-      "backToPulse": "Quay lại Pulse"
+      "backToPulse": "Quay lại Pulse",
+      "confirmEyebrow": "BƯỚC CUỐI CÙNG",
+      "confirmHeading": "Hủy đăng ký Binayah Weekly?",
+      "confirmBody": "Xác nhận bên dưới để ngừng nhận bản tin thị trường Dubai hàng tuần.",
+      "confirmCta": "Hủy đăng ký",
+      "keepCta": "Giữ đăng ký của tôi"
     },
     "account": {
       "pageTitle": "Báo cáo thị trường",

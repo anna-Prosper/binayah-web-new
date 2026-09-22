@@ -2865,7 +2865,12 @@
       "notFoundEyebrow": "LINK NOT FOUND",
       "notFoundHeading": "This unsubscribe link is invalid",
       "notFoundBody": "It may have already been used. You can manage your subscription from your account.",
-      "backToPulse": "Back to Pulse"
+      "backToPulse": "Back to Pulse",
+      "confirmEyebrow": "ONE LAST STEP",
+      "confirmHeading": "Unsubscribe from Binayah Weekly?",
+      "confirmBody": "Confirm below and you'll stop receiving the weekly Dubai market brief.",
+      "confirmCta": "Unsubscribe",
+      "keepCta": "Keep my subscription"
     },
     "account": {
       "pageTitle": "Market reports",

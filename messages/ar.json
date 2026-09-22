@@ -2865,7 +2865,12 @@
       "notFoundEyebrow": "الرابط غير موجود",
       "notFoundHeading": "رابط إلغاء الاشتراك هذا غير صالح",
       "notFoundBody": "ربما تم استخدامه بالفعل. يمكنك إدارة اشتراكك من حسابك.",
-      "backToPulse": "العودة إلى Pulse"
+      "backToPulse": "العودة إلى Pulse",
+      "confirmEyebrow": "خطوة أخيرة",
+      "confirmHeading": "إلغاء الاشتراك في نشرة بناية الأسبوعية؟",
+      "confirmBody": "أكّد أدناه وسيتوقف وصول التقرير الأسبوعي لسوق دبي إليك.",
+      "confirmCta": "إلغاء الاشتراك",
+      "keepCta": "الإبقاء على اشتراكي"
     },
     "account": {
       "pageTitle": "تقارير السوق",

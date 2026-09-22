@@ -2865,7 +2865,12 @@
       "notFoundEyebrow": "LIEN NON TROUVÉ",
       "notFoundHeading": "Ce lien de désabonnement est invalide",
       "notFoundBody": "Il a peut-être déjà été utilisé. Vous pouvez gérer votre abonnement depuis votre compte.",
-      "backToPulse": "Retour à Pulse"
+      "backToPulse": "Retour à Pulse",
+      "confirmEyebrow": "DERNIÈRE ÉTAPE",
+      "confirmHeading": "Se désabonner de Binayah Weekly ?",
+      "confirmBody": "Confirmez ci-dessous pour ne plus recevoir le point hebdomadaire sur le marché de Dubaï.",
+      "confirmCta": "Se désabonner",
+      "keepCta": "Conserver mon abonnement"
     },
     "account": {
       "pageTitle": "Rapports de marché",

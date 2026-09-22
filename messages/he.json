@@ -2865,7 +2865,12 @@
       "notFoundEyebrow": "קישור לא נמצא",
       "notFoundHeading": "קישור ההסרה הזה אינו תקף",
       "notFoundBody": "ייתכן שכבר נעשה בו שימוש. תוכל לנהל את המנוי שלך מחשבונך.",
-      "backToPulse": "חזרה ל-Pulse"
+      "backToPulse": "חזרה ל-Pulse",
+      "confirmEyebrow": "שלב אחרון",
+      "confirmHeading": "לבטל את המנוי ל-Binayah Weekly?",
+      "confirmBody": "אשרו למטה ותפסיקו לקבל את סקירת שוק דובאי השבועית.",
+      "confirmCta": "ביטול מנוי",
+      "keepCta": "להשאיר את המנוי"
     },
     "account": {
       "pageTitle": "דוחות שוק",

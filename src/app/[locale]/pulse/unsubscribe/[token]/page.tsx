@@ -2,36 +2,27 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { serverApiUrl, serverFetch } from "@/lib/api";
 import FeedbackChips from "./FeedbackChips";
+import { unsubscribeAction } from "./actions";
 
 interface Props {
   params: Promise<{ token: string; locale: string }>;
+  searchParams: Promise<{ state?: string }>;
 }
 
 export const dynamic = "force-dynamic";
 
-async function unsubscribeToken(token: string): Promise<{
-  ok: boolean;
-  status?: string;
-  email?: string;
-  error?: string;
-}> {
-  try {
-    const res = await serverFetch(serverApiUrl(`/api/market-report/unsubscribe/${token}`), 8000);
-    if (!res.ok) return { ok: false, error: "not-found" };
-    return res.json();
-  } catch {
-    return { ok: false, error: "network" };
-  }
-}
-
-export default async function PulseUnsubscribePage({ params }: Props) {
-  const { token } = await params;
+export default async function PulseUnsubscribePage({ params, searchParams }: Props) {
+  const { token, locale } = await params;
+  const { state } = await searchParams;
   const t = await getTranslations("weeklyReport");
 
-  const result = await unsubscribeToken(token);
-  const isSuccess = result.ok || result.status === "already-unsubscribed";
+  // Rendering this page does NOT unsubscribe anyone. It used to, which meant
+  // every link scanner that fetched the URL unsubscribed the reader before
+  // they opened the email. The state is now driven by the result of an actual
+  // form submission (see actions.ts).
+  const isSuccess = state === "done";
+  const isNotFound = state === "notfound" || state === "error";
 
   return (
     <div className="min-h-screen bg-background">
@@ -77,6 +68,41 @@ export default async function PulseUnsubscribePage({ params }: Props) {
                 className="flex items-center justify-center w-full py-3 rounded-xl text-sm font-semibold text-primary border border-primary hover:bg-primary/5 transition-colors"
               >
                 {t("unsub.resubscribeCta")}
+              </Link>
+            </div>
+          ) : !isNotFound ? (
+            /* ── Confirm state — the default. Nothing has happened yet. ── */
+            <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 space-y-6">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] font-semibold text-muted-foreground mb-3">
+                  {t("unsub.confirmEyebrow")}
+                </p>
+                <h1 className="text-2xl font-bold text-foreground mb-3">
+                  {t("unsub.confirmHeading")}
+                </h1>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {t("unsub.confirmBody")}
+                </p>
+              </div>
+
+              {/* A real POST, so a link prefetch or security scan cannot trigger it. */}
+              <form action={unsubscribeAction} className="space-y-3">
+                <input type="hidden" name="token" value={token} />
+                <input type="hidden" name="locale" value={locale} />
+                <button
+                  type="submit"
+                  className="flex items-center justify-center w-full py-3 rounded-xl text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
+                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                >
+                  {t("unsub.confirmCta")}
+                </button>
+              </form>
+
+              <Link
+                href="/pulse"
+                className="flex items-center justify-center w-full py-3 rounded-xl text-sm font-semibold text-primary border border-primary hover:bg-primary/5 transition-colors"
+              >
+                {t("unsub.keepCta")}
               </Link>
             </div>
           ) : (

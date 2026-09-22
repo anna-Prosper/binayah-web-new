@@ -2871,7 +2871,12 @@
       "notFoundEyebrow": "链接无效",
       "notFoundHeading": "此退订链接无效",
       "notFoundBody": "该链接可能已被使用。您可以在账户中管理订阅。",
-      "backToPulse": "返回 Pulse"
+      "backToPulse": "返回 Pulse",
+      "confirmEyebrow": "最后一步",
+      "confirmHeading": "取消订阅 Binayah Weekly？",
+      "confirmBody": "点击下方确认，您将不再收到每周迪拜楼市简报。",
+      "confirmCta": "取消订阅",
+      "keepCta": "保留订阅"
     },
     "account": {
       "pageTitle": "市场报告",

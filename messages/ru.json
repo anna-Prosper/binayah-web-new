@@ -2865,7 +2865,12 @@
       "notFoundEyebrow": "ССЫЛКА НЕ НАЙДЕНА",
       "notFoundHeading": "Эта ссылка для отписки недействительна",
       "notFoundBody": "Возможно, она уже была использована. Управляйте подпиской в личном кабинете.",
-      "backToPulse": "Вернуться к Pulse"
+      "backToPulse": "Вернуться к Pulse",
+      "confirmEyebrow": "ПОСЛЕДНИЙ ШАГ",
+      "confirmHeading": "Отписаться от Binayah Weekly?",
+      "confirmBody": "Подтвердите ниже, и вы перестанете получать еженедельный обзор рынка Дубая.",
+      "confirmCta": "Отписаться",
+      "keepCta": "Оставить подписку"
     },
     "account": {
       "pageTitle": "Рыночные отчёты",
