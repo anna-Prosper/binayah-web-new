@@ -99,6 +99,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Downtown Dubai",
       "Dubai Hills Estate",
       "Palm Jumeirah"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Do I still pay UK tax on Dubai rental income?",
+          "fr": "Dois-je toujours payer l'impôt britannique sur mes revenus locatifs à Dubaï ?",
+          "ru": "Придётся ли мне по-прежнему платить британский налог с арендного дохода в Dubai?",
+          "ar": "هل أظل ملزماً بدفع الضريبة البريطانية على دخل الإيجار من Dubai؟",
+          "zh": "迪拜的租金收入还需要在英国缴税吗？",
+          "vi": "Tôi có còn phải nộp thuế tại Anh đối với thu nhập cho thuê ở Dubai không?",
+          "he": "האם אני עדיין משלם מס בריטי על הכנסות שכירות מ-Dubai?"
+        },
+        "answer": {
+          "en": "If you remain UK tax resident, yes. Worldwide rental income is taxable at your marginal rate, up to 45%, and a later disposal attracts 20% capital gains tax. Dubai charges nothing at source, so there is no foreign tax to credit against the UK bill — the relief mechanism exists but has nothing to relieve. If you have genuinely left and broken UK tax residency, Dubai rent and gains fall outside the UK net, but breaking residency has strict statutory tests and assuming it rather than establishing it is the expensive mistake. Get the position confirmed before you rely on it.",
+          "fr": "Si vous restez résident fiscal britannique, oui. Les revenus locatifs mondiaux sont imposables à votre taux marginal, jusqu'à 45%, et une cession ultérieure est soumise à l'impôt sur les plus-values de 20%. Dubaï ne prélève rien à la source : il n'y a donc aucun impôt étranger à imputer sur la note britannique — le mécanisme d'élimination de la double imposition existe, mais n'a rien à éliminer. Si vous êtes réellement parti et avez rompu votre résidence fiscale britannique, les loyers et plus-values de Dubaï échappent au filet britannique, mais la rupture de résidence obéit à des tests légaux stricts, et la présumer plutôt que l'établir est l'erreur coûteuse. Faites confirmer votre situation avant de vous y fier.",
+          "ru": "Если вы остаётесь налоговым резидентом Великобритании — да. Арендный доход по всему миру облагается по вашей предельной ставке, вплоть до 45%, а последующая продажа попадает под налог на прирост капитала в 20%. В Dubai у источника не удерживается ничего, поэтому и зачитывать против британского счёта нечего — механизм зачёта существует, но зачитывать нечего. Если вы действительно уехали и прервали британское налоговое резидентство, доход от аренды и прирост в Dubai выходят за рамки британского налогообложения, но прекращение резидентства проверяется строгими законодательными тестами, и дорогая ошибка — считать его состоявшимся, вместо того чтобы его подтвердить. Зафиксируйте свой статус документально, прежде чем на него полагаться.",
+          "ar": "إذا بقيت مقيماً ضريبياً في المملكة المتحدة، فنعم. يخضع دخل الإيجار العالمي للضريبة بمعدلك الحدي الذي يصل إلى 45%، ويستوجب البيع لاحقاً ضريبة أرباح رأسمالية بنسبة 20%. لا تفرض Dubai أي اقتطاع من المنبع، وبالتالي لا توجد ضريبة أجنبية تُخصم من الفاتورة البريطانية — فآلية الإعفاء قائمة لكن لا شيء لديها لتعفيه. أما إذا كنت قد غادرت فعلياً وأنهيت إقامتك الضريبية البريطانية، فإن إيجارات Dubai وأرباحها تخرج من النطاق الضريبي البريطاني، غير أن إنهاء الإقامة يخضع لاختبارات قانونية صارمة، وافتراض تحققها بدل إثباتها هو الخطأ الأكثر كلفة. احصل على تأكيد لوضعك قبل أن تبني عليه.",
+          "zh": "如果您仍是英国税务居民，那么需要。全球租金收入按您的边际税率计税，最高可达 45%，日后出售还会产生 20% 的资本利得税。迪拜在来源地不征收任何税款，因此没有外国税额可用于抵免英国税单——抵免机制虽然存在，却无税可抵。如果您确实已经离开并切断了英国税务居民身份，迪拜的租金与增值就不在英国税网之内，但切断居民身份须通过严格的法定测试，想当然地认为已经切断而非切实确立，正是代价高昂的错误。在依赖这一立场之前，请先获得确认。",
+          "vi": "Nếu bạn vẫn là đối tượng cư trú thuế tại Anh thì có. Thu nhập cho thuê trên toàn cầu bị đánh thuế theo thuế suất biên của bạn, lên tới 45%, và khi bán tài sản sau này sẽ phát sinh thuế lãi vốn 20%. Dubai không khấu trừ bất kỳ khoản nào tại nguồn, nên không có thuế nước ngoài nào để khấu trừ vào hoá đơn thuế tại Anh — cơ chế miễn giảm vẫn tồn tại nhưng không có gì để miễn giảm. Nếu bạn đã thực sự rời đi và chấm dứt tình trạng cư trú thuế tại Anh, tiền thuê và lãi vốn từ Dubai nằm ngoài phạm vi thuế của Anh, nhưng việc chấm dứt cư trú có những tiêu chí luật định nghiêm ngặt, và mặc định cho rằng mình đã chấm dứt thay vì chứng minh được điều đó là sai lầm rất tốn kém. Hãy xác nhận vị thế của mình trước khi dựa vào nó.",
+          "he": "אם אתם נשארים תושבי מס בבריטניה — כן. הכנסות שכירות מכל העולם חייבות במס בשיעור השולי שלכם, עד 45%, ומכירה מאוחרת יותר חייבת במס רווחי הון של 20%. Dubai אינה גובה דבר במקור, ולכן אין מס זר שניתן לזכות כנגד החיוב הבריטי — מנגנון ההקלה קיים, אך אין לו מה להקל. אם עזבתם באמת וניתקתם תושבות מס בריטית, דמי שכירות ורווחים מ-Dubai נמצאים מחוץ לרשת הבריטית, אך לניתוק תושבות יש מבחנים סטטוטוריים נוקשים, וההנחה שהיא התקיימה — במקום לבסס אותה — היא הטעות היקרה. ודאו את מעמדכם לפני שאתם מסתמכים עליו."
+        }
+      },
+      {
+        "question": {
+          "en": "Is my Dubai property inside my UK inheritance tax estate?",
+          "fr": "Mon bien à Dubaï entre-t-il dans mon patrimoine soumis aux droits de succession britanniques ?",
+          "ru": "Входит ли моя недвижимость в Dubai в британскую наследственную массу для налога на наследство?",
+          "ar": "هل يدخل عقاري في Dubai ضمن تركتي الخاضعة لضريبة الميراث البريطانية؟",
+          "zh": "我的迪拜房产会被计入英国遗产税的遗产范围吗？",
+          "vi": "Bất động sản Dubai của tôi có nằm trong khối di sản chịu thuế thừa kế của Anh không?",
+          "he": "האם הנכס שלי ב-Dubai נכלל בעיזבון לצורכי מס ירושה בבריטניה?"
+        },
+        "answer": {
+          "en": "If you are UK-domiciled, yes. Inheritance tax applies to worldwide assets including Dubai property at 40% above the nil-rate band, and the property being outside the UK changes nothing about that. Claiming a domicile of choice elsewhere is possible but demands careful, evidenced planning over years rather than a declaration — domicile is notoriously difficult to shed. This is the single most overlooked cost in a British purchase, because buyers model the yield and never model the estate.",
+          "fr": "Si vous êtes domicilié au Royaume-Uni, oui. Les droits de succession s'appliquent aux actifs mondiaux, y compris un bien à Dubaï, au taux de 40% au-delà de l'abattement, et le fait que le bien soit situé hors du Royaume-Uni n'y change rien. Revendiquer un domicile de choix ailleurs est possible, mais exige une planification soigneuse et documentée sur plusieurs années plutôt qu'une simple déclaration — le domicile est notoirement difficile à abandonner. C'est le coût le plus souvent négligé dans un achat britannique, car les acquéreurs modélisent le rendement et jamais la succession.",
+          "ru": "Если ваш домициль — британский, то да. Налог на наследство распространяется на активы по всему миру, включая недвижимость в Dubai, по ставке 40% сверх необлагаемого порога, и то, что объект находится за пределами Великобритании, ничего здесь не меняет. Заявить домициль по выбору в другой юрисдикции возможно, но это требует тщательного, документально подкреплённого планирования на протяжении лет, а не простого заявления — от домициля, как известно, крайне трудно избавиться. Это самая часто упускаемая статья расходов при покупке британцами, потому что покупатели просчитывают доходность и никогда не просчитывают наследственную массу.",
+          "ar": "إذا كان موطنك الأصلي في المملكة المتحدة، فنعم. تُطبَّق ضريبة الميراث على الأصول العالمية بما فيها العقار في Dubai بنسبة 40% فوق الشريحة المعفاة، ووجود العقار خارج المملكة المتحدة لا يغيّر ذلك في شيء. ويمكن المطالبة باكتساب موطن اختياري في بلد آخر، لكن ذلك يتطلب تخطيطاً دقيقاً وموثقاً على مدى سنوات لا مجرد إقرار — فالتخلي عن الموطن الأصلي صعب للغاية. وهذه هي الكلفة الأكثر إغفالاً في الشراء البريطاني، لأن المشترين يحسبون العائد ولا يحسبون التركة أبداً.",
+          "zh": "如果您的永久住所（domicile）在英国，会的。遗产税适用于包括迪拜房产在内的全球资产，超过免税额部分按 40% 征收，房产位于英国境外并不改变这一点。主张在他处取得选择性永久住所是可能的，但需要多年细致且有证据支撑的规划，而不是一纸声明——永久住所出了名地难以摆脱。这是英国买家购房中最容易被忽视的一项成本，因为买家会测算收益率，却从不测算遗产。",
+          "vi": "Nếu bạn có nơi cư trú gốc (domicile) tại Anh thì có. Thuế thừa kế áp dụng cho tài sản toàn cầu, bao gồm bất động sản tại Dubai, với mức 40% trên phần vượt ngưỡng miễn thuế, và việc tài sản nằm ngoài lãnh thổ Anh không thay đổi điều đó. Có thể xác lập một domicile tự chọn ở nơi khác, nhưng điều này đòi hỏi kế hoạch cẩn trọng, có bằng chứng, kéo dài nhiều năm chứ không phải một lời tuyên bố — domicile nổi tiếng là rất khó từ bỏ. Đây là chi phí bị bỏ sót nhiều nhất trong một giao dịch của người Anh, bởi người mua tính toán tỷ suất lợi nhuận nhưng không bao giờ tính đến khối di sản.",
+          "he": "אם מקום המושב (domicile) שלכם הוא בבריטניה — כן. מס ירושה חל על נכסים בכל העולם, לרבות נכס ב-Dubai, בשיעור 40% מעל מדרגת הפטור, והעובדה שהנכס מחוץ לבריטניה אינה משנה זאת כלל. ניתן לטעון למקום מושב נבחר במדינה אחרת, אך הדבר מחייב תכנון זהיר ומגובה בראיות לאורך שנים ולא הצהרה בלבד — מקום מושב ידוע לשמצה כקשה לניתוק. זו העלות הנעלמת ביותר ברכישה בריטית, משום שרוכשים בונים מודל לתשואה ולעולם לא לעיזבון."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a UAE mortgage on UK income?",
+          "fr": "Puis-je obtenir un prêt immobilier aux Émirats sur la base de revenus britanniques ?",
+          "ru": "Могу ли я получить ипотеку в UAE под британский доход?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري إماراتي بالاعتماد على دخلي البريطاني؟",
+          "zh": "我能凭英国收入申请阿联酋按揭吗？",
+          "vi": "Tôi có thể vay thế chấp tại UAE dựa trên thu nhập ở Anh không?",
+          "he": "האם אוכל לקבל משכנתה ב-UAE על בסיס הכנסה בריטית?"
+        },
+        "answer": {
+          "en": "Yes, and British buyers have an easier time than most. UK income and credit history are acceptable to the majority of UAE lenders, and HSBC and Standard Chartered run dedicated international mortgage products for the UK expat segment. Typical non-resident terms are 50% loan-to-value, rates in the 4.5-6.5% range and a 25-year term, with pre-approval taking roughly 14-21 working days. Some British buyers instead release equity against UK property at lower sterling rates — worth pricing both routes before committing.",
+          "fr": "Oui, et les acheteurs britanniques s'en sortent plus facilement que la plupart. Les revenus et l'historique de crédit britanniques sont acceptés par la majorité des prêteurs émiriens, et HSBC comme Standard Chartered proposent des produits hypothécaires internationaux dédiés au segment des expatriés britanniques. Les conditions typiques pour un non-résident sont une quotité de financement de 50%, des taux dans la fourchette 4.5-6.5% et une durée de 25-year, avec un accord de principe en 14-21 jours ouvrés environ. Certains acheteurs britanniques préfèrent dégager des fonds propres sur un bien au Royaume-Uni à des taux en livres plus bas — cela vaut la peine de chiffrer les deux voies avant de s'engager.",
+          "ru": "Да, и британским покупателям это даётся легче, чем большинству. Британский доход и кредитная история приемлемы для большинства кредиторов UAE, а HSBC и Standard Chartered ведут отдельные международные ипотечные продукты для сегмента британских экспатов. Типичные условия для нерезидентов — 50% от стоимости, ставки в диапазоне 4.5-6.5% и срок 25-year, при этом предварительное одобрение занимает примерно 14-21 рабочих дней. Некоторые британские покупатели вместо этого высвобождают капитал под залог британской недвижимости по более низким ставкам в фунтах — стоит просчитать оба варианта, прежде чем принимать решение.",
+          "ar": "نعم، والمشترون البريطانيون في وضع أيسر من معظم الجنسيات. فالدخل والسجل الائتماني البريطاني مقبولان لدى غالبية المقرضين في UAE، ويقدّم كل من HSBC وStandard Chartered منتجات تمويل عقاري دولية مخصّصة لشريحة المغتربين البريطانيين. والشروط المعتادة لغير المقيمين هي تمويل بنسبة 50% من قيمة العقار، بأسعار فائدة ضمن نطاق 4.5-6.5% ومدة 25-year، مع موافقة مبدئية تستغرق نحو 14-21 يوم عمل. ويفضّل بعض المشترين البريطانيين بدلاً من ذلك تسييل قيمة عقار لديهم في المملكة المتحدة بأسعار أقل بالجنيه الإسترليني — ويستحق الأمر تسعير المسارين قبل الالتزام بأحدهما.",
+          "zh": "可以，而且英国买家比多数国籍的买家更为顺利。大多数阿联酋放贷机构接受英国收入与信用记录，HSBC 与 Standard Chartered 还针对英国外派人群提供专门的国际按揭产品。非居民的典型条件为 50% 的贷款成数、4.5-6.5% 的利率区间和 25-year 贷款期限，预审批大约需要 14-21 个工作日。也有一些英国买家选择以英国房产套现，享受更低的英镑利率——在决定之前，值得把两条路径都算一遍。",
+          "vi": "Có, và người mua Anh còn thuận lợi hơn hầu hết các quốc tịch khác. Thu nhập và lịch sử tín dụng tại Anh được phần lớn ngân hàng UAE chấp nhận, đồng thời HSBC và Standard Chartered có những sản phẩm vay mua nhà quốc tế dành riêng cho nhóm người Anh xa xứ. Điều kiện điển hình cho người không cư trú là tỷ lệ vay trên giá trị 50%, lãi suất trong khoảng 4.5-6.5% và thời hạn 25-year, với thời gian phê duyệt sơ bộ khoảng 14-21 ngày làm việc. Một số người mua Anh thay vào đó rút vốn từ bất động sản tại Anh với lãi suất bảng Anh thấp hơn — nên so sánh chi phí cả hai phương án trước khi quyết định.",
+          "he": "כן, ולרוכשים בריטים קל יותר מאשר לרובם. הכנסה והיסטוריית אשראי בריטיות מקובלות על רוב המלווים ב-UAE, ו-HSBC ו-Standard Chartered מפעילים מוצרי משכנתה בינלאומיים ייעודיים למגזר הגולים הבריטים. התנאים האופייניים ללא-תושבים הם 50% מימון מול שווי, ריביות בטווח של 4.5-6.5% ותקופה של 25-year, כאשר אישור עקרוני נמשך כ-14-21 ימי עסקים. חלק מהרוכשים הבריטים מעדיפים במקום זאת לשחרר הון עצמי כנגד נכס בבריטניה בריביות שטרלינג נמוכות יותר — כדאי לתמחר את שני המסלולים לפני ההתחייבות."
+        }
+      },
+      {
+        "question": {
+          "en": "How do I move the money, and will my UK bank query it?",
+          "fr": "Comment transférer les fonds, et ma banque britannique va-t-elle poser des questions ?",
+          "ru": "Как перевести деньги и будет ли мой британский банк задавать вопросы?",
+          "ar": "كيف أحوّل المبلغ، وهل سيستفسر مصرفي البريطاني عنه؟",
+          "zh": "我如何汇出资金，英国银行会不会对此提出询问？",
+          "vi": "Tôi chuyển tiền bằng cách nào, và ngân hàng Anh của tôi có chất vấn không?",
+          "he": "כיצד אעביר את הכסף, והאם הבנק הבריטי שלי יברר על כך?"
+        },
+        "answer": {
+          "en": "There are no UAE exchange controls, so funds move in any amount at any time in either direction. Expect your UK bank to flag large inbound transfers under anti-money-laundering rules — that is routine, not an obstacle, provided you can evidence it. Keep the purchase contract, the DLD title deed, mortgage statements and original source-of-funds documentation from the start. Many British owners find HSBC Premier or Lloyds International accounts convenient for AED-GBP movement.",
+          "fr": "Il n'existe aucun contrôle des changes aux Émirats : les fonds circulent librement, en tout montant, à tout moment et dans les deux sens. Attendez-vous à ce que votre banque britannique signale les virements entrants importants au titre de la lutte anti-blanchiment — c'est une routine, pas un obstacle, dès lors que vous pouvez les justifier. Conservez dès le départ le contrat d'achat, le titre de propriété du Dubai Land Department, les relevés de prêt et les justificatifs d'origine des fonds. De nombreux propriétaires britanniques trouvent les comptes HSBC Premier ou Lloyds International pratiques pour les mouvements AED-GBP.",
+          "ru": "В UAE нет валютного контроля, поэтому средства перемещаются в любой сумме, в любое время и в обоих направлениях. Ожидайте, что ваш британский банк отметит крупные входящие переводы в рамках правил по противодействию отмыванию денег — это рутина, а не препятствие, при условии что вы можете всё подтвердить документами. С самого начала сохраняйте договор купли-продажи, свидетельство о праве собственности DLD, ипотечные выписки и оригинальные документы о происхождении средств. Многим британским владельцам удобны счета HSBC Premier или Lloyds International для операций AED-GBP.",
+          "ar": "لا توجد قيود على الصرف في UAE، فتنتقل الأموال بأي مبلغ وفي أي وقت وفي كلا الاتجاهين. وتوقّع أن يضع مصرفك البريطاني إشارة على التحويلات الواردة الكبيرة بموجب قواعد مكافحة غسل الأموال — وهذا إجراء روتيني لا عقبة، ما دام بوسعك إثبات المصدر. احتفظ منذ البداية بعقد الشراء وسند الملكية الصادر عن DLD وكشوف التمويل العقاري ووثائق مصدر الأموال الأصلية. ويجد كثير من الملاك البريطانيين أن حسابات HSBC Premier أو Lloyds International مريحة لتحريك الأموال بين الدرهم والجنيه الإسترليني.",
+          "zh": "阿联酋没有外汇管制，因此资金可以在任何时间、以任意金额双向流动。请预期英国银行会依据反洗钱规则对大额入账转账作出标记——只要您能提供证明，这属于例行程序而非障碍。从一开始就保留购房合同、DLD 产权证、按揭对账单以及原始资金来源文件。许多英国业主认为 HSBC Premier 或 Lloyds International 账户便于 AED 与 GBP 之间的资金调动。",
+          "vi": "UAE không có kiểm soát ngoại hối, nên tiền có thể chuyển với bất kỳ số lượng nào, vào bất kỳ lúc nào, theo cả hai chiều. Hãy lường trước rằng ngân hàng Anh của bạn sẽ đánh dấu các khoản tiền lớn chuyển vào theo quy định phòng chống rửa tiền — đó là thủ tục thường lệ, không phải trở ngại, miễn là bạn chứng minh được nguồn gốc. Hãy lưu giữ hợp đồng mua bán, sổ đỏ do DLD cấp, sao kê khoản vay và hồ sơ gốc chứng minh nguồn tiền ngay từ đầu. Nhiều chủ sở hữu người Anh thấy tài khoản HSBC Premier hoặc Lloyds International tiện lợi cho việc luân chuyển AED-GBP.",
+          "he": "אין ב-UAE פיקוח על מטבע חוץ, ולכן כספים נעים בכל סכום, בכל עת ובשני הכיוונים. צפו לכך שהבנק הבריטי שלכם יסמן העברות נכנסות גדולות מכוח כללי איסור הלבנת הון — זה שגרתי ואינו מכשול, כל עוד תוכלו להציג אסמכתאות. שמרו מתחילת הדרך את חוזה הרכישה, שטר הבעלות של ה-DLD, דוחות משכנתה ותיעוד מקורי של מקור הכספים. בעלי נכסים בריטים רבים מוצאים שחשבונות HSBC Premier או Lloyds International נוחים לתנועת AED-GBP."
+        }
+      },
+      {
+        "question": {
+          "en": "What are the total costs on top of the price?",
+          "fr": "Quels sont les coûts totaux à ajouter au prix ?",
+          "ru": "Каковы общие расходы сверх цены?",
+          "ar": "ما إجمالي التكاليف فوق سعر العقار؟",
+          "zh": "除房价之外的总成本有哪些？",
+          "vi": "Tổng chi phí ngoài giá mua là bao nhiêu?",
+          "he": "מהן העלויות הכוללות מעבר למחיר?"
+        },
+        "answer": {
+          "en": "Budget the 4% Dubai Land Department transfer fee, roughly 2% agency commission, and registration charges, which brings the all-in figure to about 6-7% of the purchase price. If you are borrowing, add a mortgage registration fee of 0.25% of the loan. None of these are recoverable, so model them into your entry price rather than treating the headline figure as what you pay.",
+          "fr": "Prévoyez les frais de transfert de 4% du Dubai Land Department, environ 2% de commission d'agence et les frais d'enregistrement, ce qui porte le total à environ 6-7% du prix d'achat. Si vous empruntez, ajoutez des frais d'enregistrement hypothécaire de 0.25% du montant du prêt. Aucun de ces frais n'est récupérable : intégrez-les à votre prix d'entrée plutôt que de considérer le prix affiché comme ce que vous payez réellement.",
+          "ru": "Заложите 4% сбор за передачу права Dubai Land Department, примерно 2% комиссии агентства и регистрационные сборы — в сумме это даёт около 6-7% от цены покупки. Если вы берёте кредит, добавьте сбор за регистрацию ипотеки в размере 0.25% от суммы займа. Ничто из этого не возвращается, поэтому закладывайте эти суммы в свою входную цену, а не считайте заявленную стоимость тем, что вы фактически заплатите.",
+          "ar": "احسب رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، وعمولة الوساطة بنحو 2%، ورسوم التسجيل، ليصل الإجمالي إلى نحو 6-7% من سعر الشراء. وإذا كنت تقترض، أضف رسم تسجيل الرهن البالغ 0.25% من قيمة القرض. ولا يمكن استرداد أي من هذه المبالغ، لذا أدرجها في سعر دخولك بدل التعامل مع السعر المعلن على أنه ما ستدفعه فعلاً.",
+          "zh": "请预留 4% 的迪拜土地局过户费、约 2% 的中介佣金以及登记费用，合计约为购房价的 6-7%。如果您使用贷款，还需加上相当于贷款额 0.25% 的按揭登记费。这些费用均不可收回，因此应将其计入您的入场价格，而不要把标价当作实际支出。",
+          "vi": "Hãy dự trù phí chuyển nhượng 4% của Dubai Land Department, khoảng 2% hoa hồng môi giới, cùng các khoản phí đăng ký, đưa tổng chi phí lên khoảng 6-7% giá mua. Nếu bạn vay, cộng thêm phí đăng ký thế chấp bằng 0.25% khoản vay. Không khoản nào trong số này thu hồi được, vì vậy hãy đưa chúng vào giá vào của bạn thay vì xem con số niêm yết là tất cả những gì bạn phải trả.",
+          "he": "תקצבו את אגרת ההעברה של Dubai Land Department בשיעור 4%, עמלת תיווך של כ-2%, ואגרות רישום — מה שמביא את הסכום הכולל לכ-6-7% ממחיר הרכישה. אם אתם נוטלים הלוואה, הוסיפו אגרת רישום משכנתה בשיעור 0.25% מסכום ההלוואה. אף אחת מהעלויות הללו אינה ניתנת להשבה, ולכן שלבו אותן במחיר הכניסה שלכם במקום להתייחס למחיר המפורסם כאל מה שתשלמו בפועל."
+        }
+      },
+      {
+        "question": {
+          "en": "Is a Dubai yield actually better than a UK buy-to-let?",
+          "fr": "Le rendement à Dubaï est-il réellement meilleur qu'un buy-to-let britannique ?",
+          "ru": "Действительно ли доходность в Dubai выше, чем у британской buy-to-let?",
+          "ar": "هل العائد في Dubai أفضل فعلاً من عقار التأجير في المملكة المتحدة؟",
+          "zh": "迪拜的收益率真的优于英国的买房出租吗？",
+          "vi": "Tỷ suất lợi nhuận ở Dubai có thực sự tốt hơn buy-to-let tại Anh không?",
+          "he": "האם התשואה ב-Dubai באמת עדיפה על buy-to-let בבריטניה?"
+        },
+        "answer": {
+          "en": "Gross yields in Dubai's mainstream freehold communities run roughly 5-8%, ahead of most UK regional buy-to-let and well ahead of London. But compare net honestly. Dubai has no annual property tax and no tax at source on rent, so the standing costs are service charges plus a municipality housing fee on let homes — a narrower gross-to-net gap than the UK, where mortgage interest relief restrictions and the 3% stamp duty surcharge on additional property bite hard. The offsetting factor is your own UK tax position if you remain resident.",
+          "fr": "Les rendements bruts dans les communautés freehold grand public de Dubaï se situent autour de 5-8%, au-dessus de la plupart des marchés régionaux britanniques du buy-to-let et bien au-dessus de Londres. Mais comparez honnêtement le net. Dubaï n'a ni taxe foncière annuelle ni prélèvement à la source sur les loyers : les charges courantes se limitent aux charges de copropriété et à une taxe municipale d'habitation sur les biens loués — un écart brut-net plus étroit qu'au Royaume-Uni, où les restrictions sur la déductibilité des intérêts d'emprunt et la surtaxe de droits de mutation de 3% sur les biens supplémentaires pèsent lourd. Le facteur compensateur reste votre propre situation fiscale britannique si vous demeurez résident.",
+          "ru": "Валовая доходность в основных freehold-районах Dubai составляет примерно 5-8%, что выше большинства региональных британских buy-to-let и заметно выше Лондона. Но сравнивать нужно честно — по чистой доходности. В Dubai нет ежегодного налога на недвижимость и нет налога у источника на аренду, поэтому постоянные расходы — это сервисные сборы плюс муниципальный жилищный сбор для сдаваемых объектов; разрыв между валовой и чистой доходностью здесь уже, чем в Великобритании, где ограничения на вычет ипотечных процентов и надбавка 3% к гербовому сбору на дополнительное жильё бьют ощутимо. Уравновешивающий фактор — ваша собственная британская налоговая позиция, если вы остаётесь резидентом.",
+          "ar": "تتراوح العوائد الإجمالية في مجتمعات freehold الرئيسية في Dubai بين 5-8% تقريباً، وهي تتقدم على معظم عقارات التأجير في الأقاليم البريطانية وتتقدم بفارق واسع على لندن. لكن قارن الصافي بأمانة. فـ Dubai لا تفرض ضريبة عقارية سنوية ولا اقتطاعاً من المنبع على الإيجار، وبالتالي تنحصر التكاليف الجارية في رسوم الخدمات ورسم السكن البلدي على الوحدات المؤجرة — وهي فجوة أضيق بين الإجمالي والصافي مقارنة بالمملكة المتحدة، حيث تضغط قيود خصم فوائد الرهن ورسم الدمغة الإضافي بنسبة 3% على العقار الثاني بشدة. والعامل المقابل هو وضعك الضريبي البريطاني نفسه إن بقيت مقيماً.",
+          "zh": "迪拜主流 freehold 社区的毛收益率大致为 5-8%，高于英国大部分地区的买房出租，更远高于伦敦。但要诚实地比较净收益。迪拜没有年度房产税，租金在来源地也不征税，因此持有成本只有物业费加上出租住宅的市政住房费——毛净差距比英国更小，而英国的按揭利息抵扣限制和额外房产 3% 的印花税附加费则影响颇大。抵消这一优势的因素，是您若仍为英国居民时自身的英国税务状况。",
+          "vi": "Tỷ suất gộp tại các cộng đồng freehold phổ thông của Dubai vào khoảng 5-8%, cao hơn hầu hết thị trường buy-to-let ở các vùng của Anh và vượt xa London. Nhưng hãy so sánh con số ròng một cách trung thực. Dubai không có thuế bất động sản hằng năm và không khấu trừ thuế tại nguồn trên tiền thuê, nên chi phí thường xuyên chỉ gồm phí dịch vụ cộng với phí nhà ở đô thị đối với căn cho thuê — khoảng cách giữa gộp và ròng hẹp hơn so với Anh, nơi các hạn chế khấu trừ lãi vay thế chấp và mức phụ thu thuế trước bạ 3% cho bất động sản thứ hai gây ảnh hưởng nặng. Yếu tố bù trừ chính là vị thế thuế của chính bạn tại Anh nếu bạn vẫn là đối tượng cư trú.",
+          "he": "תשואות ברוטו בקהילות ה-freehold המרכזיות של Dubai נעות בסביבות 5-8%, מעל רוב אזורי ה-buy-to-let בפריפריה הבריטית והרבה מעל לונדון. אבל השוו נטו בכנות. ב-Dubai אין מס רכוש שנתי ואין ניכוי מס במקור על שכר דירה, כך שהעלויות השוטפות הן דמי ניהול בתוספת אגרת דיור עירונית על דירות מושכרות — פער קטן יותר בין ברוטו לנטו מאשר בבריטניה, שם ההגבלות על ניכוי ריבית משכנתה ותוספת מס הבולים של 3% על נכס נוסף נושכות חזק. הגורם המקזז הוא מעמד המס הבריטי שלכם עצמכם, אם אתם נותרים תושבים."
+        }
+      }
     ]
   },
   {
@@ -165,6 +287,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "JBR",
       "Business Bay"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Am I still taxed in Russia on Dubai rental income?",
+          "fr": "Suis-je toujours imposé en Russie sur les revenus locatifs de Dubaï ?",
+          "ru": "Облагается ли арендный доход из Dubai налогом в России?",
+          "ar": "هل ما زلت أخضع للضريبة في روسيا على دخل الإيجار من Dubai؟",
+          "zh": "迪拜的租金收入我在俄罗斯还要缴税吗？",
+          "vi": "Tôi có còn bị đánh thuế tại Nga trên thu nhập cho thuê ở Dubai không?",
+          "he": "האם אני עדיין ממוסה ברוסיה על הכנסות שכירות מ-Dubai?"
+        },
+        "answer": {
+          "en": "It turns on residence. If you spend 183 days or more in Russia in a year you are a Russian tax resident and remain liable to declare Dubai rental income and disposal gains, taxed at 13-15%. Russians who genuinely relocate and become UAE tax residents — residence visa, UAE primary home, actual physical presence — generally fall outside Russian taxation on Dubai-source income. Russia's residence tests are specific and fact-driven, so establish the position with an adviser rather than assuming it follows from holding a visa.",
+          "fr": "Tout dépend de la résidence. Si vous passez 183 jours ou plus en Russie dans l'année, vous êtes résident fiscal russe et restez tenu de déclarer les revenus locatifs et les plus-values de cession de Dubaï, imposés à 13-15%. Les Russes qui s'installent réellement et deviennent résidents fiscaux des Émirats — visa de résidence, résidence principale aux Émirats, présence physique effective — échappent en général à l'imposition russe sur les revenus de source dubaïote. Les critères de résidence russes sont précis et tributaires des faits : établissez votre position avec un conseil plutôt que de la présumer acquise du seul fait de détenir un visa.",
+          "ru": "Всё зависит от резидентства. Если вы проводите в России 183 дня или больше в году, вы российский налоговый резидент и обязаны декларировать арендный доход и прибыль от продажи в Dubai с налогом по ставке 13-15%. Россияне, которые действительно переезжают и становятся налоговыми резидентами UAE — резидентская виза, основное жильё в UAE, фактическое физическое присутствие, — как правило, выпадают из российского налогообложения дохода из источников в Dubai. Российские тесты резидентства конкретны и основаны на фактах, поэтому зафиксируйте свою позицию с консультантом, а не исходите из того, что она автоматически следует из наличия визы.",
+          "ar": "الأمر يتوقف على الإقامة. فإذا أمضيت 183 يوماً أو أكثر في روسيا خلال السنة كنت مقيماً ضريبياً روسياً وبقيت ملزماً بالإفصاح عن دخل الإيجار من Dubai وأرباح البيع، بمعدل ضريبة 13-15%. أما الروس الذين ينتقلون فعلياً ويصبحون مقيمين ضريبيين في UAE — تأشيرة إقامة، ومسكن رئيسي في UAE، وحضور فعلي — فيخرجون عموماً من نطاق الضريبة الروسية على الدخل الناشئ في Dubai. واختبارات الإقامة الروسية محددة وقائمة على الوقائع، فأثبت وضعك مع مستشار بدل افتراض أنه ينشأ تلقائياً عن حيازة تأشيرة.",
+          "zh": "关键在于居民身份。如果您一年内在俄罗斯停留 183 天或以上，即为俄罗斯税务居民，仍须申报迪拜租金收入与处置收益，税率为 13-15%。真正迁居并成为阿联酋税务居民的俄罗斯人——持居留签证、以阿联酋为主要住所、有实际居住事实——通常不再就迪拜来源收入承担俄罗斯税负。俄罗斯的居民身份测试具体且依事实判断，因此请与顾问一同确立您的立场，而不要想当然地认为持有签证即可。",
+          "vi": "Điều đó phụ thuộc vào tình trạng cư trú. Nếu bạn ở Nga từ 183 ngày trở lên trong một năm, bạn là đối tượng cư trú thuế của Nga và vẫn có nghĩa vụ kê khai thu nhập cho thuê cũng như lãi chuyển nhượng tại Dubai, chịu thuế 13-15%. Những người Nga thực sự chuyển nơi ở và trở thành đối tượng cư trú thuế tại UAE — có visa cư trú, nhà chính tại UAE, hiện diện thực tế — nhìn chung nằm ngoài phạm vi thuế của Nga đối với thu nhập có nguồn từ Dubai. Các tiêu chí cư trú của Nga rất cụ thể và dựa trên thực tế, nên hãy xác lập vị thế cùng một cố vấn thay vì mặc định rằng chỉ cần có visa là đủ.",
+          "he": "הכול תלוי בתושבות. אם אתם שוהים 183 ימים או יותר ברוסיה בשנה, אתם תושבי מס רוסים ונותרים חייבים להצהיר על הכנסות שכירות ורווחי מימוש מ-Dubai, הממוסים בשיעור 13-15%. רוסים שעוברים באמת ונעשים תושבי מס ב-UAE — ויזת תושבות, בית ראשי ב-UAE, נוכחות פיזית ממשית — נמצאים בדרך כלל מחוץ למיסוי הרוסי על הכנסה שמקורה ב-Dubai. מבחני התושבות של רוסיה ספציפיים ומבוססי עובדות, ולכן בססו את מעמדכם עם יועץ במקום להניח שהוא נובע מעצם החזקת ויזה."
+        }
+      },
+      {
+        "question": {
+          "en": "Does the UAE tax the property at all?",
+          "fr": "Les Émirats taxent-ils le bien d'une manière ou d'une autre ?",
+          "ru": "Облагает ли UAE эту недвижимость хоть каким-то налогом?",
+          "ar": "هل تفرض UAE أي ضريبة على العقار؟",
+          "zh": "阿联酋会对该房产征税吗？",
+          "vi": "UAE có đánh thuế bất động sản này không?",
+          "he": "האם ה-UAE ממסה את הנכס בכלל?"
+        },
+        "answer": {
+          "en": "No. There is no UAE income tax on rent, no capital gains tax on disposal and no inheritance tax on Dubai property. The recurring costs are service charges and, on let homes, a municipality housing fee — neither is a tax on the asset. Because the UAE levies nothing, there is also no UAE tax to credit against a Russian charge if you remain Russian tax resident, so model the Russian rate applying in full.",
+          "fr": "Non. Il n'y a aux Émirats ni impôt sur les revenus locatifs, ni impôt sur les plus-values de cession, ni droits de succession sur un bien à Dubaï. Les coûts récurrents sont les charges de copropriété et, pour les biens loués, une taxe municipale d'habitation — ni l'une ni l'autre n'est un impôt sur l'actif. Comme les Émirats ne prélèvent rien, il n'existe pas non plus d'impôt émirien à imputer sur une charge russe si vous restez résident fiscal russe : modélisez donc le taux russe s'appliquant en totalité.",
+          "ru": "Нет. В UAE нет подоходного налога с аренды, нет налога на прирост капитала при продаже и нет налога на наследство в отношении недвижимости в Dubai. Регулярные расходы — это сервисные сборы и, для сдаваемых объектов, муниципальный жилищный сбор; ни то, ни другое не является налогом на актив. Поскольку UAE не взимает ничего, нет и налога UAE, который можно было бы зачесть против российского, если вы остаётесь российским налоговым резидентом, — поэтому считайте, что российская ставка применится в полном объёме.",
+          "ar": "لا. فلا توجد ضريبة دخل إماراتية على الإيجار، ولا ضريبة أرباح رأسمالية عند البيع، ولا ضريبة ميراث على العقار في Dubai. والتكاليف المتكررة هي رسوم الخدمات، ورسم السكن البلدي على الوحدات المؤجرة — وليس أي منهما ضريبة على الأصل. وبما أن UAE لا تفرض شيئاً، فلا توجد كذلك ضريبة إماراتية تُخصم من العبء الروسي إن بقيت مقيماً ضريبياً في روسيا، فاحسب المعدل الروسي مطبّقاً بالكامل.",
+          "zh": "不会。阿联酋对租金不征所得税，对处置不征资本利得税，对迪拜房产也不征遗产税。经常性支出是物业费，以及出租住宅的市政住房费——两者都不是对资产征收的税。由于阿联酋分文不征，如果您仍是俄罗斯税务居民，也没有阿联酋税额可抵免俄罗斯税负，因此请按俄罗斯税率全额适用来测算。",
+          "vi": "Không. Không có thuế thu nhập UAE trên tiền thuê, không có thuế lãi vốn khi chuyển nhượng và không có thuế thừa kế đối với bất động sản tại Dubai. Các chi phí định kỳ là phí dịch vụ và, với căn cho thuê, phí nhà ở đô thị — cả hai đều không phải là thuế đánh vào tài sản. Vì UAE không thu gì, nên cũng không có thuế UAE để khấu trừ vào nghĩa vụ thuế tại Nga nếu bạn vẫn là đối tượng cư trú thuế Nga, do đó hãy tính mức thuế Nga áp dụng đầy đủ.",
+          "he": "לא. אין ב-UAE מס הכנסה על שכר דירה, אין מס רווחי הון במימוש ואין מס ירושה על נכס ב-Dubai. העלויות השוטפות הן דמי ניהול, ועל דירות מושכרות גם אגרת דיור עירונית — אף אחת מהן אינה מס על הנכס. מכיוון שה-UAE אינה גובה דבר, אין גם מס UAE לזיכוי כנגד חיוב רוסי אם אתם נותרים תושבי מס ברוסיה, ולכן הניחו במודל שהשיעור הרוסי חל במלואו."
+        }
+      },
+      {
+        "question": {
+          "en": "How do payments actually settle given banking restrictions?",
+          "fr": "Comment les paiements se règlent-ils concrètement compte tenu des restrictions bancaires ?",
+          "ru": "Как на практике проходят платежи с учётом банковских ограничений?",
+          "ar": "كيف تتم تسوية المدفوعات فعلياً في ظل القيود المصرفية؟",
+          "zh": "在银行业限制之下，款项实际如何结算？",
+          "vi": "Thanh toán thực tế được xử lý thế nào trong bối cảnh hạn chế ngân hàng?",
+          "he": "כיצד התשלומים מסולקים בפועל לנוכח המגבלות הבנקאיות?"
+        },
+        "answer": {
+          "en": "Honestly, this is the hardest part of a Russian purchase and it is an operational question rather than a legal one. SWIFT restrictions affecting Russian banks have made direct wires from Russian accounts complex or impossible depending on the institution, and the practical consequence is that most Russian buyers fund from money already held outside Russia. What we will not do is advise you on routing designed to evade sanctions. A RERA-registered brokerage must complete KYC and source-of-funds checks on every buyer, and we apply the same standard here as anywhere.",
+          "fr": "Honnêtement, c'est la partie la plus difficile d'un achat russe, et il s'agit d'une question opérationnelle plutôt que juridique. Les restrictions SWIFT touchant les banques russes ont rendu les virements directs depuis des comptes russes complexes voire impossibles selon l'établissement, et la conséquence pratique est que la plupart des acheteurs russes financent leur achat avec des fonds déjà détenus hors de Russie. Ce que nous ne ferons pas, c'est vous conseiller sur des circuits conçus pour contourner les sanctions. Une agence enregistrée RERA doit effectuer les vérifications KYC et d'origine des fonds sur chaque acquéreur, et nous appliquons ici la même norme que partout ailleurs.",
+          "ru": "Честно говоря, это самая сложная часть покупки для россиян, и вопрос здесь операционный, а не юридический. Ограничения SWIFT, затрагивающие российские банки, сделали прямые переводы с российских счетов сложными или невозможными в зависимости от организации, и практическое следствие — большинство российских покупателей финансируют покупку из средств, уже находящихся за пределами России. Чего мы делать не будем — так это консультировать вас по маршрутам, задуманным для обхода санкций. Брокерская компания с регистрацией RERA обязана проводить KYC и проверку источника средств по каждому покупателю, и здесь мы применяем тот же стандарт, что и везде.",
+          "ar": "بصراحة، هذا أصعب جوانب الشراء الروسي، وهو سؤال تشغيلي لا قانوني. فقيود SWIFT المفروضة على المصارف الروسية جعلت التحويلات المباشرة من الحسابات الروسية معقّدة أو متعذرة بحسب المؤسسة، والنتيجة العملية أن معظم المشترين الروس يموّلون من أموال محتفظ بها أصلاً خارج روسيا. وما لن نفعله هو أن ننصحك بمسارات مصممة للتحايل على العقوبات. فالوساطة المسجلة لدى RERA ملزمة بإتمام فحوص اعرف عميلك ومصدر الأموال لكل مشترٍ، ونحن نطبّق المعيار ذاته هنا كما في أي مكان آخر.",
+          "zh": "坦率地说，这是俄罗斯买家购房中最困难的部分，而且这是一个操作问题而非法律问题。影响俄罗斯银行的 SWIFT 限制使得从俄罗斯账户直接电汇变得复杂甚至不可能，具体取决于机构，实际结果是多数俄罗斯买家使用已经存放在俄罗斯境外的资金来付款。我们不会做的，是就旨在规避制裁的资金路径向您提供建议。RERA 注册的经纪机构必须对每一位买家完成 KYC 与资金来源核查，我们在此适用与任何其他情形相同的标准。",
+          "vi": "Nói thẳng, đây là phần khó nhất của một giao dịch do người Nga thực hiện, và đó là vấn đề vận hành chứ không phải pháp lý. Các hạn chế SWIFT đối với ngân hàng Nga khiến việc chuyển tiền trực tiếp từ tài khoản tại Nga trở nên phức tạp hoặc bất khả thi tuỳ theo tổ chức, và hệ quả thực tế là phần lớn người mua Nga sử dụng nguồn tiền đã nắm giữ sẵn ở ngoài nước Nga. Điều chúng tôi sẽ không làm là tư vấn cho bạn về các kênh chuyển tiền nhằm né tránh lệnh trừng phạt. Một sàn môi giới đăng ký RERA bắt buộc phải hoàn tất kiểm tra KYC và nguồn gốc tiền với mọi người mua, và chúng tôi áp dụng chuẩn mực đó ở đây như ở bất kỳ đâu.",
+          "he": "בכנות, זהו החלק הקשה ביותר ברכישה רוסית, וזו שאלה תפעולית ולא משפטית. מגבלות SWIFT החלות על בנקים רוסיים הפכו העברות ישירות מחשבונות ברוסיה למורכבות או לבלתי אפשריות, בהתאם למוסד, והתוצאה המעשית היא שרוב הרוכשים הרוסים מממנים מכספים המוחזקים כבר מחוץ לרוסיה. מה שלא נעשה הוא לייעץ לכם על ניתוב שנועד לעקוף סנקציות. תיווך רשום ב-RERA חייב להשלים בדיקות KYC ומקור כספים על כל רוכש, ואנחנו מיישמים כאן את אותו סטנדרט כמו בכל מקום אחר."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I buy Dubai property with cryptocurrency?",
+          "fr": "Puis-je acheter un bien à Dubaï en cryptomonnaie ?",
+          "ru": "Можно ли купить недвижимость в Dubai за криптовалюту?",
+          "ar": "هل يمكنني شراء عقار في Dubai بالعملات المشفّرة؟",
+          "zh": "我可以用加密货币购买迪拜房产吗？",
+          "vi": "Tôi có thể mua bất động sản Dubai bằng tiền mã hoá không?",
+          "he": "האם אוכל לרכוש נכס ב-Dubai באמצעות מטבעות קריפטו?"
+        },
+        "answer": {
+          "en": "Crypto-settled purchases do happen in Dubai, and the emirate has regulated exchanges operating under VARA. In practice the developer or seller is almost always paid in dirhams, so crypto is converted before it reaches the transaction rather than transferred directly. That conversion is where compliance sits: the exchange and the brokerage both need documented source of funds, and an unexplained crypto balance is harder to evidence than a salary. Treat it as a settlement route with its own paperwork, not as a way around the paperwork.",
+          "fr": "Des transactions réglées en crypto ont bien lieu à Dubaï, et l'émirat compte des plateformes d'échange régulées opérant sous l'autorité de VARA. En pratique, le promoteur ou le vendeur est presque toujours payé en dirhams : la crypto est donc convertie avant d'atteindre la transaction plutôt que transférée directement. C'est dans cette conversion que se situe la conformité : la plateforme et l'agence exigent toutes deux une origine des fonds documentée, et un solde crypto inexpliqué est plus difficile à justifier qu'un salaire. Considérez-le comme un mode de règlement avec ses propres formalités, et non comme un moyen de les éviter.",
+          "ru": "Сделки с расчётом в криптовалюте в Dubai действительно происходят, и в эмирате работают регулируемые биржи под надзором VARA. На практике застройщик или продавец почти всегда получает оплату в дирхамах, поэтому крипта конвертируется до того, как попадает в сделку, а не переводится напрямую. Именно в этой конвертации и сосредоточен комплаенс: и бирже, и брокеру нужен документально подтверждённый источник средств, а необъяснённый крипто-баланс подтвердить сложнее, чем зарплату. Относитесь к этому как к способу расчёта со своим собственным пакетом документов, а не как к способу обойти документы.",
+          "ar": "تحدث عمليات شراء مسوّاة بالعملات المشفّرة في Dubai بالفعل، وللإمارة منصات تداول منظمة تعمل تحت إشراف VARA. وعملياً يُدفع للمطوّر أو البائع بالدرهم في الغالب الأعم، فتُحوَّل العملة المشفّرة قبل أن تصل إلى الصفقة لا أن تُنقل مباشرة. وعند هذا التحويل يقع عبء الامتثال: إذ تحتاج المنصة والوساطة معاً إلى مصدر أموال موثّق، ورصيد مشفّر غير مبرَّر أصعب إثباتاً من راتب. تعامل معها كمسار تسوية له أوراقه الخاصة، لا كوسيلة للالتفاف على الأوراق.",
+          "zh": "以加密货币结算的交易在迪拜确实存在，该酋长国也有在 VARA 监管下运营的持牌交易所。实际操作中，开发商或卖方几乎总是以迪拉姆收款，因此加密货币会在进入交易之前被兑换，而非直接转让。合规的关键正在这一兑换环节：交易所与经纪机构都需要有据可查的资金来源，而一笔无法解释的加密货币余额比工资更难提供证明。请把它视为一条自带文件要求的结算路径，而不是绕开文件要求的途径。",
+          "vi": "Các giao dịch thanh toán bằng tiền mã hoá có diễn ra tại Dubai, và tiểu vương quốc này có các sàn giao dịch được quản lý theo VARA. Trên thực tế, chủ đầu tư hoặc bên bán gần như luôn được trả bằng dirham, nên tiền mã hoá được quy đổi trước khi đi vào giao dịch chứ không chuyển trực tiếp. Chính khâu quy đổi đó là nơi vấn đề tuân thủ nằm ở: cả sàn giao dịch lẫn sàn môi giới đều cần hồ sơ chứng minh nguồn tiền, và một số dư tiền mã hoá không giải thích được thì khó chứng minh hơn nhiều so với tiền lương. Hãy xem đó là một kênh thanh toán có bộ hồ sơ riêng, chứ không phải cách để né tránh hồ sơ.",
+          "he": "רכישות המסולקות בקריפטו אכן מתרחשות ב-Dubai, ובאמירות פועלות בורסות מפוקחות תחת VARA. בפועל, היזם או המוכר מקבלים כמעט תמיד תשלום בדירהם, ולכן הקריפטו מומר לפני שהוא מגיע לעסקה ולא מועבר ישירות. ההמרה היא המקום שבו יושב הציות: הבורסה והתיווך זקוקים שניהם לתיעוד מקור הכספים, ויתרת קריפטו בלתי מוסברת קשה יותר להוכחה ממשכורת. התייחסו לכך כאל מסלול סילוק עם ניירת משלו, לא כאל דרך לעקוף את הניירת."
+        }
+      },
+      {
+        "question": {
+          "en": "What does an AED 2M purchase get me beyond the asset?",
+          "fr": "Qu'apporte un achat à AED 2M au-delà de l'actif lui-même ?",
+          "ru": "Что, помимо самого актива, даёт покупка на AED 2M?",
+          "ar": "ماذا يمنحني شراء بقيمة AED 2M إلى جانب الأصل نفسه؟",
+          "zh": "除资产本身外，AED 2M 的购房还能带来什么？",
+          "vi": "Ngoài tài sản, giao dịch AED 2M mang lại cho tôi điều gì?",
+          "he": "מה נותנת לי רכישה של AED 2M מעבר לנכס עצמו?"
+        },
+        "answer": {
+          "en": "A ten-year renewable UAE residence visa for you and your dependants, self-sponsored rather than employer-tied, with no minimum stay requirement. It is a residence permit and not a passport — the UAE offers no naturalisation by investment — and it lapses if you stop holding the qualifying property. For buyers whose priority is a stable base with functioning international banking and schooling, that is usually the point of the purchase rather than the yield.",
+          "fr": "Un visa de résidence émirien de dix ans renouvelable pour vous et vos ayants droit, auto-parrainé plutôt que lié à un employeur, sans durée de séjour minimale. Il s'agit d'un titre de séjour et non d'un passeport — les Émirats n'offrent aucune naturalisation par investissement — et il devient caduc si vous cessez de détenir le bien éligible. Pour les acheteurs dont la priorité est une base stable avec des services bancaires internationaux et une scolarité qui fonctionnent, c'est généralement là l'objet de l'achat, plus que le rendement.",
+          "ru": "Десятилетнюю возобновляемую резидентскую визу UAE для вас и ваших иждивенцев, с самостоятельным спонсорством, не привязанную к работодателю и без требования минимального пребывания. Это вид на жительство, а не паспорт — UAE не предоставляет натурализацию за инвестиции, — и он прекращается, если вы перестаёте владеть квалифицирующим объектом. Для покупателей, чей приоритет — стабильная база с работающим международным банкингом и школами, обычно именно в этом смысл покупки, а не в доходности.",
+          "ar": "تأشيرة إقامة إماراتية لعشر سنوات قابلة للتجديد لك ولمن تعولهم، بكفالة ذاتية لا مرتبطة بصاحب عمل، ودون شرط حد أدنى للإقامة. وهي تصريح إقامة لا جواز سفر — فـ UAE لا تمنح التجنّس بالاستثمار — وتسقط إذا توقفت عن حيازة العقار المؤهِّل. وبالنسبة إلى المشترين الذين تتمثل أولويتهم في قاعدة مستقرة بخدمات مصرفية دولية فاعلة وتعليم جيد، فهذا عادة هو المقصد من الشراء أكثر من العائد.",
+          "zh": "为您及家属带来十年期可续签的阿联酋居留签证，由本人自担保而非与雇主绑定，且无最低居住时间要求。它是居留许可而非护照——阿联酋不提供投资入籍——并且在您不再持有符合条件的房产时失效。对于首要诉求是拥有一个稳定基地、配以可正常运作的国际银行与教育资源的买家而言，这通常才是购房的意义所在，而非收益率。",
+          "vi": "Một visa cư trú UAE mười năm có thể gia hạn cho bạn và người phụ thuộc, tự bảo lãnh chứ không gắn với chủ lao động, và không yêu cầu thời gian lưu trú tối thiểu. Đó là giấy phép cư trú chứ không phải hộ chiếu — UAE không có chương trình nhập tịch theo diện đầu tư — và nó mất hiệu lực nếu bạn không còn nắm giữ bất động sản đủ điều kiện. Với những người mua ưu tiên một nơi ở ổn định cùng hệ thống ngân hàng quốc tế và trường học vận hành tốt, đó thường mới là mục đích chính của giao dịch, chứ không phải tỷ suất lợi nhuận.",
+          "he": "ויזת תושבות ב-UAE לעשר שנים הניתנת לחידוש, עבורכם ועבור בני משפחתכם התלויים בכם, בחסות עצמית ולא קשורה למעסיק, ללא דרישת שהייה מינימלית. זהו היתר תושבות ולא דרכון — ה-UAE אינה מציעה התאזרחות בדרך של השקעה — והוא פוקע אם תחדלו להחזיק בנכס המזכה. עבור רוכשים שהעדיפות שלהם היא בסיס יציב עם בנקאות בינלאומית מתפקדת ומערכת חינוך, זו בדרך כלל מטרת הרכישה ולא התשואה."
+        }
+      },
+      {
+        "question": {
+          "en": "Is the dirham a safer place to hold value than the rouble?",
+          "fr": "Le dirham est-il un support de valeur plus sûr que le rouble ?",
+          "ru": "Надёжнее ли хранить стоимость в дирхаме, чем в рубле?",
+          "ar": "هل الدرهم مكان أكثر أماناً لحفظ القيمة من الروبل؟",
+          "zh": "迪拉姆是比卢布更安全的价值存储方式吗？",
+          "vi": "Dirham có phải là nơi giữ giá trị an toàn hơn rúp không?",
+          "he": "האם הדירהם הוא מקום בטוח יותר לשמירת ערך מאשר הרובל?"
+        },
+        "answer": {
+          "en": "That is the reason most Russian buyers give. The dirham is pegged to the US dollar, so a Dubai property and the rent it produces both sit in hard currency rather than in a currency that has repriced sharply more than once. Gross yields in the mainstream freehold communities run roughly 5-8%, paid in dirhams with nothing withheld at source. The asset is registered in your own name at the Dubai Land Department with full freehold title and no restriction by nationality.",
+          "fr": "C'est la raison qu'avancent la plupart des acheteurs russes. Le dirham est arrimé au dollar américain : un bien à Dubaï et le loyer qu'il produit sont donc tous deux libellés en devise forte plutôt que dans une monnaie qui a été fortement revalorisée à la baisse à plus d'une reprise. Les rendements bruts dans les communautés freehold grand public se situent autour de 5-8%, versés en dirhams sans aucune retenue à la source. L'actif est enregistré à votre nom auprès du Dubai Land Department, en pleine propriété freehold et sans restriction de nationalité.",
+          "ru": "Именно этот довод приводит большинство российских покупателей. Дирхам привязан к доллару США, поэтому и недвижимость в Dubai, и арендный доход от неё находятся в твёрдой валюте, а не в валюте, которая не раз резко переоценивалась. Валовая доходность в основных freehold-районах составляет примерно 5-8%, выплачивается в дирхамах и без удержаний у источника. Актив регистрируется на ваше собственное имя в Dubai Land Department с полным правом freehold и без ограничений по гражданству.",
+          "ar": "هذا هو السبب الذي يذكره معظم المشترين الروس. فالدرهم مربوط بالدولار الأمريكي، ومن ثم يستقر العقار في Dubai والإيجار الذي يدرّه معاً بعملة صعبة بدل عملة أُعيد تسعيرها بحدة أكثر من مرة. وتتراوح العوائد الإجمالية في مجتمعات freehold الرئيسية بين 5-8% تقريباً، تُدفع بالدرهم دون أي اقتطاع من المنبع. ويُسجَّل الأصل باسمك لدى Dubai Land Department بملكية freehold كاملة ودون أي قيد بسبب الجنسية.",
+          "zh": "这正是多数俄罗斯买家给出的理由。迪拉姆与美元挂钩，因此迪拜房产及其产生的租金都以硬通货计价，而不是以一种已不止一次大幅重新定价的货币计价。主流 freehold 社区的毛收益率大致为 5-8%，以迪拉姆支付且在来源地不代扣任何税款。该资产以您本人名义在迪拜土地局登记，拥有完整的 freehold 产权，且不受国籍限制。",
+          "vi": "Đó là lý do mà hầu hết người mua Nga đưa ra. Dirham được neo vào đô la Mỹ, nên cả bất động sản Dubai lẫn tiền thuê mà nó sinh ra đều nằm trong đồng tiền mạnh thay vì một đồng tiền đã định giá lại mạnh hơn một lần. Tỷ suất gộp tại các cộng đồng freehold phổ thông vào khoảng 5-8%, trả bằng dirham và không khấu trừ gì tại nguồn. Tài sản được đăng ký dưới chính tên bạn tại Dubai Land Department với quyền sở hữu freehold đầy đủ và không hạn chế theo quốc tịch.",
+          "he": "זו הסיבה שרוב הרוכשים הרוסים מציינים. הדירהם צמוד לדולר האמריקאי, ולכן גם נכס ב-Dubai וגם שכר הדירה שהוא מניב יושבים במטבע קשה ולא במטבע שתומחר מחדש בחדות יותר מפעם אחת. תשואות ברוטו בקהילות ה-freehold המרכזיות נעות בסביבות 5-8%, משולמות בדירהם ללא ניכוי במקור. הנכס רשום על שמכם ב-Dubai Land Department בבעלות freehold מלאה וללא הגבלה לפי לאום."
+        }
+      }
     ]
   },
   {
@@ -231,6 +475,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Business Bay",
       "Dubai Marina",
       "Dubai Hills Estate"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "How does China's $50,000 FX quota affect a purchase?",
+          "fr": "Comment le quota de change chinois de $50,000 affecte-t-il un achat ?",
+          "ru": "Как валютная квота Китая в $50,000 влияет на покупку?",
+          "ar": "كيف تؤثر حصة الصرف الصينية البالغة $50,000 على الشراء؟",
+          "zh": "中国 $50,000 的购汇额度会如何影响购房？",
+          "vi": "Hạn mức ngoại hối $50,000 của Trung Quốc ảnh hưởng thế nào tới giao dịch?",
+          "he": "כיצד מכסת מטבע החוץ של $50,000 בסין משפיעה על רכישה?"
+        },
+        "answer": {
+          "en": "It is the practical bottleneck. China's annual personal foreign-exchange limit is USD 50,000 per person, which is far below a typical Dubai purchase price, so a single individual converting within their own quota cannot fund a property outright in one year. Most Chinese purchases are therefore funded from money already held offshore rather than converted at the point of sale. We will not advise on structuring conversions to circumvent the quota; the brokerage has to complete source-of-funds checks under UAE anti-money-laundering rules regardless of nationality.",
+          "fr": "C'est le goulot d'étranglement pratique. Le plafond annuel chinois de change pour les particuliers est de USD 50,000 par personne, très en deçà du prix d'achat typique à Dubaï : une personne seule convertissant dans son propre quota ne peut donc pas financer un bien en une seule année. La plupart des achats chinois sont par conséquent financés avec des fonds déjà détenus à l'étranger plutôt que convertis au moment de la vente. Nous ne conseillerons pas de structuration des conversions visant à contourner le quota ; l'agence doit de toute façon effectuer les vérifications d'origine des fonds au titre de la réglementation anti-blanchiment des Émirats, quelle que soit la nationalité.",
+          "ru": "Это главное практическое ограничение. Годовой лимит личного обмена валюты в Китае составляет USD 50,000 на человека, что значительно ниже типичной цены объекта в Dubai, поэтому один человек, конвертируя в пределах собственной квоты, не может полностью оплатить недвижимость за один год. Поэтому большинство китайских покупок финансируется из средств, уже находящихся за рубежом, а не конвертируемых в момент сделки. Мы не будем консультировать по структурированию конвертаций в обход квоты; брокерская компания обязана провести проверку источника средств по правилам UAE о противодействии отмыванию денег независимо от гражданства.",
+          "ar": "إنها عنق الزجاجة عملياً. فالحد الشخصي السنوي للصرف الأجنبي في الصين هو USD 50,000 للفرد، وهو أدنى بكثير من سعر شراء نموذجي في Dubai، ومن ثم لا يستطيع فرد واحد يحوّل ضمن حصته الخاصة تمويل عقار بالكامل في سنة واحدة. ولذلك تُموَّل معظم عمليات الشراء الصينية من أموال محتفظ بها أصلاً في الخارج لا من تحويل عند نقطة البيع. ولن نقدّم نصيحة بشأن هيكلة التحويلات للالتفاف على الحصة؛ فالوساطة ملزمة بإتمام فحوص مصدر الأموال بموجب قواعد مكافحة غسل الأموال في UAE بصرف النظر عن الجنسية.",
+          "zh": "这是实际操作中的瓶颈。中国个人年度购汇额度为每人 USD 50,000，远低于迪拜的典型购房价，因此仅凭个人在自身额度内换汇，无法在一年内全额支付一套房产。因此，多数中国买家的购房资金来自已经存放在境外的款项，而非在成交时兑换。我们不会就如何安排购汇以规避额度提供建议；无论买家国籍如何，经纪机构都必须依据阿联酋反洗钱规则完成资金来源核查。",
+          "vi": "Đó là nút thắt thực tế. Hạn mức ngoại hối cá nhân hằng năm của Trung Quốc là USD 50,000 mỗi người, thấp hơn rất nhiều so với giá một bất động sản Dubai thông thường, nên một cá nhân quy đổi trong hạn mức của riêng mình không thể mua đứt một căn nhà trong một năm. Vì vậy, phần lớn các giao dịch của người Trung Quốc được tài trợ bằng tiền đã nắm giữ sẵn ở nước ngoài thay vì quy đổi tại thời điểm mua. Chúng tôi sẽ không tư vấn về cách sắp xếp quy đổi nhằm lách hạn mức; sàn môi giới vẫn phải hoàn tất kiểm tra nguồn gốc tiền theo quy định phòng chống rửa tiền của UAE, bất kể quốc tịch.",
+          "he": "זהו צוואר הבקבוק המעשי. מגבלת מטבע החוץ האישית השנתית בסין היא USD 50,000 לאדם, הרבה מתחת למחיר רכישה טיפוסי ב-Dubai, ולכן יחיד הממיר במסגרת המכסה שלו אינו יכול לממן נכס במלואו בשנה אחת. לפיכך, רוב הרכישות הסיניות ממומנות מכספים המוחזקים כבר בחו\"ל ולא מהמרה בנקודת המכירה. לא נייעץ על בניית המרות כדי לעקוף את המכסה; התיווך חייב להשלים בדיקות מקור כספים לפי כללי איסור הלבנת הון ב-UAE, ללא קשר ללאום."
+        }
+      },
+      {
+        "question": {
+          "en": "Am I required to declare Dubai property to Chinese tax authorities?",
+          "fr": "Suis-je tenu de déclarer un bien à Dubaï à l'administration fiscale chinoise ?",
+          "ru": "Обязан ли я декларировать недвижимость в Dubai перед китайскими налоговыми органами?",
+          "ar": "هل يُطلب مني الإفصاح عن عقاري في Dubai للسلطات الضريبية الصينية؟",
+          "zh": "我必须向中国税务机关申报迪拜房产吗？",
+          "vi": "Tôi có bắt buộc phải khai báo bất động sản Dubai với cơ quan thuế Trung Quốc không?",
+          "he": "האם אני חייב להצהיר על נכס ב-Dubai בפני רשויות המס בסין?"
+        },
+        "answer": {
+          "en": "China taxes residents on worldwide income at progressive rates up to 45%, and Chinese tax residents are technically required to declare Dubai rental income and any disposal gains. Because the UAE levies no income or capital gains tax, there is no foreign tax to credit against the Chinese charge. Enforcement practice and your own residence status both matter here, and neither is something to guess at — confirm your filing position with a Chinese tax adviser rather than relying on what other buyers say they do.",
+          "fr": "La Chine impose ses résidents sur leurs revenus mondiaux à des taux progressifs pouvant atteindre 45%, et les résidents fiscaux chinois sont en principe tenus de déclarer les revenus locatifs de Dubaï ainsi que toute plus-value de cession. Comme les Émirats ne prélèvent ni impôt sur le revenu ni impôt sur les plus-values, il n'y a aucun impôt étranger à imputer sur la charge chinoise. La pratique en matière de contrôle et votre propre statut de résidence comptent tous deux ici, et ni l'un ni l'autre ne se devine — faites confirmer votre situation déclarative par un conseil fiscal chinois plutôt que de vous fier à ce que d'autres acheteurs disent faire.",
+          "ru": "Китай облагает резидентов по всемирному доходу по прогрессивным ставкам до 45%, и китайские налоговые резиденты формально обязаны декларировать арендный доход из Dubai и любую прибыль от продажи. Поскольку UAE не взимает ни подоходного налога, ни налога на прирост капитала, иностранного налога к зачёту против китайского начисления нет. Здесь важны и правоприменительная практика, и ваш собственный статус резидентства, и ни то, ни другое не стоит угадывать — подтвердите свою позицию по декларированию у китайского налогового консультанта, а не полагайтесь на рассказы других покупателей о том, как поступают они.",
+          "ar": "تفرض الصين الضريبة على المقيمين بشأن دخلهم العالمي بمعدلات تصاعدية تصل إلى 45%، والمقيمون ضريبياً في الصين مطالَبون من الناحية القانونية بالإفصاح عن دخل الإيجار من Dubai وأي أرباح بيع. وبما أن UAE لا تفرض ضريبة دخل أو أرباح رأسمالية، فلا توجد ضريبة أجنبية تُخصم من العبء الصيني. وممارسات الإنفاذ ووضعك من حيث الإقامة كلاهما مهم هنا، وليس أي منهما مما يُخمَّن — فأكّد وضعك الإقراري مع مستشار ضريبي صيني بدل الاعتماد على ما يقول مشترون آخرون إنهم يفعلونه.",
+          "zh": "中国对居民的全球收入按累进税率征税，最高至 45%，中国税务居民在技术上须申报迪拜租金收入及任何处置收益。由于阿联酋不征收所得税或资本利得税，没有外国税额可抵免中国税负。执法实践与您自身的居民身份在这里都很重要，两者都不应靠猜测——请向中国税务顾问确认您的申报立场，而不是依赖其他买家自述的做法。",
+          "vi": "Trung Quốc đánh thuế người cư trú trên thu nhập toàn cầu theo biểu thuế luỹ tiến lên tới 45%, và về mặt kỹ thuật, đối tượng cư trú thuế Trung Quốc phải kê khai thu nhập cho thuê tại Dubai cùng bất kỳ khoản lãi chuyển nhượng nào. Vì UAE không thu thuế thu nhập hay thuế lãi vốn, nên không có thuế nước ngoài nào để khấu trừ vào nghĩa vụ thuế tại Trung Quốc. Thực tiễn thực thi và tình trạng cư trú của chính bạn đều quan trọng ở đây, và cả hai đều không phải thứ để phỏng đoán — hãy xác nhận vị thế kê khai của bạn với một cố vấn thuế Trung Quốc thay vì dựa vào lời kể của những người mua khác.",
+          "he": "סין ממסה תושבים על הכנסה עולמית בשיעורים פרוגרסיביים של עד 45%, ותושבי מס סינים נדרשים טכנית להצהיר על הכנסות שכירות מ-Dubai ועל כל רווח מימוש. מכיוון שה-UAE אינה גובה מס הכנסה או מס רווחי הון, אין מס זר לזיכוי כנגד החיוב הסיני. גם פרקטיקת האכיפה וגם מעמד התושבות שלכם משמעותיים כאן, ואין לנחש באף אחד מהם — ודאו את עמדת הדיווח שלכם עם יועץ מס סיני במקום להסתמך על מה שרוכשים אחרים מספרים שהם עושים."
+        }
+      },
+      {
+        "question": {
+          "en": "Should I hold the property through a Hong Kong or offshore company?",
+          "fr": "Dois-je détenir le bien via une société hongkongaise ou offshore ?",
+          "ru": "Стоит ли владеть объектом через гонконгскую или офшорную компанию?",
+          "ar": "هل ينبغي أن أملك العقار عبر شركة في هونغ كونغ أو شركة أوفشور؟",
+          "zh": "我应该通过香港公司或离岸公司持有该房产吗？",
+          "vi": "Tôi có nên nắm giữ bất động sản thông qua công ty tại Hồng Kông hoặc offshore không?",
+          "he": "האם כדאי להחזיק בנכס דרך חברה בהונג קונג או חברת חוץ?"
+        },
+        "answer": {
+          "en": "Some Chinese investors do, and it can serve genuine purposes — succession planning, holding with partners, or separating assets. It is not a free option. A corporate structure carries formation and annual costs that only start to make sense across a portfolio rather than a single apartment, UAE free-zone ownership has its own requirements, and a company controlled from the mainland may have Chinese tax consequences of its own. Price the structure against simple personal ownership before assuming it is the sophisticated choice.",
+          "fr": "Certains investisseurs chinois le font, et cela peut répondre à des objectifs réels — planification successorale, détention à plusieurs, ou cloisonnement d'actifs. Ce n'est pas une option gratuite. Une structure sociétaire entraîne des coûts de constitution et des frais annuels qui ne commencent à se justifier qu'à l'échelle d'un portefeuille plutôt que d'un appartement unique, la détention en zone franche émirienne a ses propres exigences, et une société contrôlée depuis la Chine continentale peut emporter ses propres conséquences fiscales chinoises. Chiffrez la structure face à une simple détention en nom propre avant de supposer que c'est le choix le plus avisé.",
+          "ru": "Некоторые китайские инвесторы так делают, и это может служить реальным целям — планированию наследования, совместному владению с партнёрами или обособлению активов. Но это не бесплатно. Корпоративная структура несёт расходы на создание и ежегодное обслуживание, которые начинают оправдываться на уровне портфеля, а не одной квартиры; владение через свободную зону UAE имеет собственные требования, а компания, контролируемая с материкового Китая, может иметь собственные китайские налоговые последствия. Просчитайте стоимость структуры в сравнении с простым личным владением, прежде чем считать её более продвинутым выбором.",
+          "ar": "يفعل ذلك بعض المستثمرين الصينيين، وقد يخدم أغراضاً حقيقية — تخطيط الخلافة، أو التملّك مع شركاء، أو فصل الأصول. لكنه ليس خياراً مجانياً. فالهيكل المؤسسي يحمل تكاليف تأسيس وتكاليف سنوية لا يبدأ معناها إلا عبر محفظة كاملة لا شقة واحدة، وللتملّك عبر المناطق الحرة في UAE متطلباته الخاصة، وقد تترتب على شركة تُدار من البر الرئيسي آثار ضريبية صينية خاصة بها. فسعّر الهيكل مقابل التملّك الشخصي البسيط قبل أن تفترض أنه الخيار الأكثر احترافية.",
+          "zh": "有些中国投资者确实这样做，而且它可以服务于真实目的——传承规划、与合伙人共同持有，或隔离资产。但这并非没有代价。公司架构会产生设立与年度维护成本，只有在持有组合资产而非单套公寓时才开始变得划算；阿联酋自由区的持有方式有其自身要求；而由内地控制的公司本身还可能产生中国的税务后果。在认定这是更成熟的选择之前，请先把架构成本与直接以个人名义持有作比较。",
+          "vi": "Một số nhà đầu tư Trung Quốc làm vậy, và điều đó có thể phục vụ những mục đích chính đáng — hoạch định thừa kế, đồng sở hữu với đối tác, hoặc tách bạch tài sản. Đây không phải lựa chọn miễn phí. Một cấu trúc pháp nhân kéo theo chi phí thành lập và duy trì hằng năm chỉ thực sự hợp lý với cả một danh mục chứ không phải một căn hộ đơn lẻ, sở hữu qua khu tự do của UAE có những yêu cầu riêng, và một công ty được kiểm soát từ đại lục có thể phát sinh hệ quả thuế riêng tại Trung Quốc. Hãy tính chi phí của cấu trúc so với việc sở hữu cá nhân đơn giản trước khi mặc định rằng đó là lựa chọn tinh vi hơn.",
+          "he": "חלק מהמשקיעים הסינים עושים זאת, וזה יכול לשרת מטרות אמיתיות — תכנון ירושה, החזקה עם שותפים, או הפרדת נכסים. זו אינה אפשרות ללא עלות. מבנה תאגידי כרוך בעלויות הקמה ועלויות שנתיות שמתחילות להיות הגיוניות רק על פני תיק נכסים ולא דירה בודדת, לבעלות דרך אזור סחר חופשי ב-UAE יש דרישות משלה, ולחברה הנשלטת מהיבשת עשויות להיות השלכות מס סיניות משלה. תמחרו את המבנה מול בעלות אישית פשוטה לפני שאתם מניחים שזו הבחירה המתוחכמת."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I buy freehold in Dubai as a Chinese national?",
+          "fr": "Puis-je acheter en freehold à Dubaï en tant que ressortissant chinois ?",
+          "ru": "Может ли гражданин Китая купить freehold в Dubai?",
+          "ar": "هل يمكنني التملّك freehold في Dubai كمواطن صيني؟",
+          "zh": "作为中国公民，我可以在迪拜购买 freehold 产权吗？",
+          "vi": "Là công dân Trung Quốc, tôi có thể mua freehold ở Dubai không?",
+          "he": "האם אוכל לרכוש נכס freehold ב-Dubai כאזרח סיני?"
+        },
+        "answer": {
+          "en": "Yes, on exactly the same terms as any other foreign national. Dubai's designated freehold zones are open to all nationalities with no restriction by citizenship, religion or residence status, and the title is registered at the Dubai Land Department in your own name. There is no minimum investment beyond the AED 2M threshold if you want the ten-year Golden Visa, and no requirement to live in the UAE or hold a visa in order to own.",
+          "fr": "Oui, exactement aux mêmes conditions que tout autre ressortissant étranger. Les zones freehold désignées de Dubaï sont ouvertes à toutes les nationalités, sans restriction de citoyenneté, de religion ou de statut de résidence, et le titre est enregistré à votre nom auprès du Dubai Land Department. Il n'y a aucun investissement minimum, hormis le seuil de AED 2M si vous souhaitez le Golden Visa de dix ans, ni obligation de vivre aux Émirats ou d'y détenir un visa pour être propriétaire.",
+          "ru": "Да, ровно на тех же условиях, что и любой другой иностранец. Обозначенные freehold-зоны Dubai открыты для всех национальностей без ограничений по гражданству, вероисповеданию или статусу резидентства, а право собственности регистрируется в Dubai Land Department на ваше собственное имя. Минимального объёма инвестиций нет — за исключением порога AED 2M, если вы хотите получить десятилетнюю Golden Visa, — и нет требования проживать в UAE или иметь визу, чтобы владеть.",
+          "ar": "نعم، بالشروط ذاتها المطبّقة على أي أجنبي آخر تماماً. فمناطق التملّك الحر المعتمدة في Dubai مفتوحة لجميع الجنسيات دون قيد بسبب المواطنة أو الديانة أو وضع الإقامة، ويُسجَّل سند الملكية لدى Dubai Land Department باسمك. ولا يوجد حد أدنى للاستثمار باستثناء عتبة AED 2M إن أردت Golden Visa لعشر سنوات، ولا اشتراط للعيش في UAE أو حيازة تأشيرة من أجل التملّك.",
+          "zh": "可以，条件与任何其他外籍人士完全相同。迪拜的指定 freehold 区域对所有国籍开放，不因公民身份、宗教或居留状况而受限，产权以您本人名义在迪拜土地局登记。除非您希望取得十年期黄金签证需达到 AED 2M 的门槛，否则没有最低投资额要求，也不要求您在阿联酋居住或持有签证才能拥有房产。",
+          "vi": "Có, với đúng những điều kiện như mọi công dân nước ngoài khác. Các khu freehold được quy hoạch của Dubai mở cho mọi quốc tịch, không hạn chế theo quốc tịch, tôn giáo hay tình trạng cư trú, và quyền sở hữu được đăng ký tại Dubai Land Department dưới chính tên bạn. Không có mức đầu tư tối thiểu, ngoại trừ ngưỡng AED 2M nếu bạn muốn có Golden Visa mười năm, và không có yêu cầu phải sống tại UAE hay có visa để được sở hữu.",
+          "he": "כן, בדיוק באותם תנאים כמו כל אזרח זר אחר. אזורי ה-freehold המוגדרים של Dubai פתוחים לכל הלאומים ללא הגבלה לפי אזרחות, דת או מעמד תושבות, והבעלות נרשמת ב-Dubai Land Department על שמכם. אין השקעה מינימלית מעבר לסף של AED 2M אם ברצונכם ב-Golden Visa לעשר שנים, ואין דרישה להתגורר ב-UAE או להחזיק בוויזה כדי להיות בעלים."
+        }
+      },
+      {
+        "question": {
+          "en": "What are the all-in purchase costs?",
+          "fr": "Quels sont les coûts d'acquisition tout compris ?",
+          "ru": "Каковы совокупные расходы на покупку?",
+          "ar": "ما إجمالي تكاليف الشراء؟",
+          "zh": "购房的全部成本是多少？",
+          "vi": "Tổng chi phí mua là bao nhiêu?",
+          "he": "מהן עלויות הרכישה הכוללות?"
+        },
+        "answer": {
+          "en": "The 4% Dubai Land Department transfer fee is the main one, with roughly 2% agency commission and registration and trustee charges of about AED 4,200 on top, bringing the total to approximately 6-7% of the purchase price. If you borrow, add a mortgage registration fee of 0.25% of the loan amount. There is no annual property tax afterwards — the recurring costs are service charges and, on let homes, a municipality housing fee.",
+          "fr": "Les frais de transfert de 4% du Dubai Land Department sont le poste principal, auxquels s'ajoutent environ 2% de commission d'agence ainsi que des frais d'enregistrement et de mandataire d'environ AED 4,200, portant le total à environ 6-7% du prix d'achat. Si vous empruntez, ajoutez des frais d'enregistrement hypothécaire de 0.25% du montant du prêt. Il n'y a ensuite aucune taxe foncière annuelle — les coûts récurrents sont les charges de copropriété et, pour les biens loués, une taxe municipale d'habitation.",
+          "ru": "Основной — сбор за передачу права Dubai Land Department в размере 4%, плюс примерно 2% комиссии агентства и регистрационные и трастовые сборы около AED 4,200 сверху, что в сумме даёт приблизительно 6-7% от цены покупки. Если вы берёте кредит, добавьте сбор за регистрацию ипотеки в 0.25% от суммы займа. Ежегодного налога на недвижимость затем нет — регулярные расходы это сервисные сборы и, для сдаваемых объектов, муниципальный жилищный сбор.",
+          "ar": "رسم نقل الملكية لدى Dubai Land Department بنسبة 4% هو الأبرز، يضاف إليه نحو 2% عمولة وساطة ورسوم تسجيل وأمانة تبلغ نحو AED 4,200، ليصل الإجمالي إلى ما يقارب 6-7% من سعر الشراء. وإذا اقترضت، أضف رسم تسجيل الرهن البالغ 0.25% من قيمة القرض. ولا توجد ضريبة عقارية سنوية بعد ذلك — فالتكاليف المتكررة هي رسوم الخدمات ورسم السكن البلدي على الوحدات المؤجرة.",
+          "zh": "主要是 4% 的迪拜土地局过户费，另加约 2% 的中介佣金以及约 AED 4,200 的登记与受托人费用，合计约为购房价的 6-7%。如果您使用贷款，还需加上相当于贷款额 0.25% 的按揭登记费。此后没有年度房产税——经常性支出是物业费，以及出租住宅的市政住房费。",
+          "vi": "Phí chuyển nhượng 4% của Dubai Land Department là khoản chính, cùng khoảng 2% hoa hồng môi giới và các khoản phí đăng ký, phí uỷ thác khoảng AED 4,200, đưa tổng chi phí lên xấp xỉ 6-7% giá mua. Nếu bạn vay, cộng thêm phí đăng ký thế chấp bằng 0.25% số tiền vay. Sau đó không có thuế bất động sản hằng năm — các chi phí định kỳ là phí dịch vụ và, với căn cho thuê, phí nhà ở đô thị.",
+          "he": "אגרת ההעברה של Dubai Land Department בשיעור 4% היא המרכזית, עם עמלת תיווך של כ-2% ואגרות רישום ונאמן של כ-AED 4,200 בנוסף, המביאות את הסך הכולל לכ-6-7% ממחיר הרכישה. אם אתם נוטלים הלוואה, הוסיפו אגרת רישום משכנתה בשיעור 0.25% מסכום ההלוואה. אין מס רכוש שנתי לאחר מכן — העלויות השוטפות הן דמי ניהול, ועל דירות מושכרות גם אגרת דיור עירונית."
+        }
+      },
+      {
+        "question": {
+          "en": "How do I get rental income and sale proceeds out of Dubai?",
+          "fr": "Comment faire sortir de Dubaï les loyers et le produit d'une vente ?",
+          "ru": "Как вывести арендный доход и средства от продажи из Dubai?",
+          "ar": "كيف أُخرج دخل الإيجار وحصيلة البيع من Dubai؟",
+          "zh": "我如何把租金收入和售房款转出迪拜？",
+          "vi": "Làm sao để chuyển thu nhập cho thuê và tiền bán ra khỏi Dubai?",
+          "he": "כיצד אוציא מ-Dubai הכנסות שכירות ותמורת מכירה?"
+        },
+        "answer": {
+          "en": "The Dubai side is unrestricted: there are no UAE exchange controls, nothing is withheld on rental income or sale proceeds leaving the country, and the dirham's dollar peg means the value holds while funds sit. The constraint is entirely on the receiving side, and where those funds can go depends on the rules applying to your accounts in China or elsewhere. Many Chinese owners hold the income offshore rather than repatriating it, which is a decision to take with an adviser familiar with your own position.",
+          "fr": "Du côté de Dubaï, rien n'est restreint : il n'existe aucun contrôle des changes aux Émirats, rien n'est retenu sur les loyers ou le produit de vente quittant le pays, et l'arrimage du dirham au dollar fait que la valeur se maintient pendant que les fonds stationnent. La contrainte se situe entièrement du côté réceptionnaire, et la destination possible de ces fonds dépend des règles applicables à vos comptes en Chine ou ailleurs. De nombreux propriétaires chinois conservent les revenus à l'étranger plutôt que de les rapatrier, ce qui est une décision à prendre avec un conseil connaissant votre propre situation.",
+          "ru": "Со стороны Dubai ограничений нет: в UAE отсутствует валютный контроль, с арендного дохода и средств от продажи, покидающих страну, ничего не удерживается, а привязка дирхама к доллару означает, что стоимость сохраняется, пока средства лежат на счету. Ограничение целиком на принимающей стороне, и то, куда эти средства могут поступить, зависит от правил, применимых к вашим счетам в Китае или другой стране. Многие китайские владельцы держат доход за рубежом, а не репатриируют его, — и это решение стоит принимать с консультантом, знакомым с вашей конкретной ситуацией.",
+          "ar": "الجانب المتعلق بـ Dubai غير مقيّد: فلا توجد قيود صرف في UAE، ولا يُقتطع شيء من دخل الإيجار أو حصيلة البيع الخارجة من البلاد، وربط الدرهم بالدولار يعني أن القيمة تظل محفوظة ما دامت الأموال قائمة. أما القيد فيقع بالكامل على الجانب المستلم، ووجهة تلك الأموال تتوقف على القواعد السارية على حساباتك في الصين أو غيرها. ويحتفظ كثير من الملاك الصينيين بالدخل في الخارج بدل إعادته، وهو قرار يُتخذ مع مستشار ملمّ بوضعك الخاص.",
+          "zh": "迪拜一侧不设限制：阿联酋没有外汇管制，租金收入或售房款离境不代扣任何税款，而迪拉姆与美元挂钩意味着资金停留期间价值保持稳定。限制完全在收款一侧，这些资金能去往何处，取决于适用于您在中国或其他地方账户的规则。许多中国业主选择将收入留在境外而不汇回，这一决定应与熟悉您自身情况的顾问共同作出。",
+          "vi": "Phía Dubai hoàn toàn không hạn chế: UAE không có kiểm soát ngoại hối, không khấu trừ gì đối với thu nhập cho thuê hay tiền bán chuyển ra khỏi nước này, và việc dirham neo vào đô la nghĩa là giá trị được giữ vững trong thời gian tiền còn nằm đó. Ràng buộc nằm hoàn toàn ở phía nhận tiền, và nơi dòng tiền đó có thể đi đến phụ thuộc vào các quy định áp dụng cho tài khoản của bạn tại Trung Quốc hay nơi khác. Nhiều chủ sở hữu Trung Quốc giữ thu nhập ở nước ngoài thay vì chuyển về nước, và đó là quyết định nên bàn với một cố vấn am hiểu hoàn cảnh riêng của bạn.",
+          "he": "הצד של Dubai אינו מוגבל: אין ב-UAE פיקוח על מטבע חוץ, דבר אינו מנוכה במקור מהכנסות שכירות או מתמורת מכירה היוצאות מהמדינה, והצמדת הדירהם לדולר פירושה שהערך נשמר בזמן שהכספים יושבים. המגבלה היא כולה בצד המקבל, ולאן יכולים אותם כספים להגיע תלוי בכללים החלים על חשבונותיכם בסין או במקום אחר. בעלי נכסים סינים רבים מחזיקים את ההכנסה בחו\"ל במקום להחזירה, וזו החלטה שיש לקבל עם יועץ המכיר את מצבכם."
+        }
+      }
     ]
   },
   {
@@ -297,6 +663,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "Palm Jumeirah",
       "DIFC"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Do I have to report Dubai property to the IRS?",
+          "fr": "Dois-je déclarer un bien à Dubaï à l'IRS ?",
+          "ru": "Обязан ли я сообщать в IRS о недвижимости в Dubai?",
+          "ar": "هل يتعيّن عليّ الإفصاح عن عقاري في Dubai لمصلحة الضرائب الأمريكية؟",
+          "zh": "我必须向美国国税局申报迪拜房产吗？",
+          "vi": "Tôi có phải khai báo bất động sản Dubai với IRS không?",
+          "he": "האם עליי לדווח ל-IRS על נכס ב-Dubai?"
+        },
+        "answer": {
+          "en": "The property itself is not a reportable financial account, but almost everything around it is. The US taxes citizens on worldwide income regardless of where you live, so Dubai rental income goes on Form 1040 as foreign-source income. If your offshore financial accounts exceed $10,000 in aggregate you have an FBAR (FinCEN 114) obligation, and FATCA Form 8938 kicks in above $50,000 depending on filing status and residence. These are information filings with severe penalties for omission and no tax cost for compliance, so there is no upside to silence.",
+          "fr": "Le bien lui-même n'est pas un compte financier à déclarer, mais presque tout ce qui l'entoure l'est. Les États-Unis imposent leurs citoyens sur leurs revenus mondiaux, où qu'ils vivent : les revenus locatifs de Dubaï figurent donc sur le formulaire 1040 en tant que revenus de source étrangère. Si vos comptes financiers à l'étranger dépassent $10,000 au total, vous avez une obligation FBAR (FinCEN 114), et le formulaire FATCA 8938 s'applique au-delà de $50,000 selon votre statut de déclaration et votre résidence. Ce sont des déclarations d'information, assorties de lourdes pénalités en cas d'omission et sans coût fiscal en cas de conformité : le silence n'apporte donc aucun avantage.",
+          "ru": "Сама недвижимость не является отчётным финансовым счётом, но почти всё вокруг неё — является. США облагают налогом своих граждан по всемирному доходу независимо от места проживания, поэтому арендный доход из Dubai отражается в форме 1040 как доход из иностранного источника. Если совокупный остаток на ваших зарубежных финансовых счетах превышает $10,000, возникает обязанность подавать FBAR (FinCEN 114), а FATCA Form 8938 подключается при превышении $50,000 в зависимости от статуса подачи и места проживания. Это информационные формы с суровыми штрафами за неподачу и без налоговых издержек при соблюдении требований, так что в молчании нет никакой выгоды.",
+          "ar": "العقار نفسه ليس حساباً مالياً واجب الإفصاح، لكن كل ما يحيط به تقريباً كذلك. فالولايات المتحدة تفرض الضريبة على مواطنيها بشأن دخلهم العالمي بغض النظر عن مكان إقامتهم، ومن ثم يُدرج دخل الإيجار من Dubai في النموذج 1040 بوصفه دخلاً أجنبي المصدر. وإذا تجاوز مجموع حساباتك المالية الخارجية $10,000 نشأ عليك التزام FBAR (نموذج FinCEN 114)، بينما يبدأ التزام FATCA عبر النموذج 8938 فوق $50,000 حسب حالة الإقرار ومكان الإقامة. وهذه إقرارات معلوماتية تترتب على إغفالها عقوبات قاسية ولا تكلفة ضريبية على الالتزام بها، فلا فائدة تُرجى من الصمت.",
+          "zh": "房产本身不属于应申报的金融账户，但围绕它的几乎一切都是。美国对公民的全球收入征税，无论您居住在哪里，因此迪拜租金收入需作为境外来源收入填报于 1040 表。如果您的境外金融账户合计超过 $10,000，即产生 FBAR（FinCEN 114）申报义务；而 FATCA 的 8938 表则在超过 $50,000 时启动，具体门槛取决于申报身份与居住地。这些属于信息申报，遗漏将面临严厉罚款，而合规本身并不产生税负，因此保持沉默毫无益处。",
+          "vi": "Bản thân bất động sản không phải là tài khoản tài chính thuộc diện khai báo, nhưng gần như mọi thứ xoay quanh nó thì có. Hoa Kỳ đánh thuế công dân trên thu nhập toàn cầu bất kể bạn sống ở đâu, nên thu nhập cho thuê tại Dubai được kê khai trên Form 1040 dưới dạng thu nhập có nguồn nước ngoài. Nếu tổng số dư các tài khoản tài chính ở nước ngoài của bạn vượt $10,000 thì bạn có nghĩa vụ nộp FBAR (FinCEN 114), và FATCA Form 8938 phát sinh khi vượt $50,000 tuỳ theo tình trạng khai thuế và nơi cư trú. Đây là các hồ sơ khai báo thông tin với mức phạt nặng nếu bỏ sót và không phát sinh chi phí thuế khi tuân thủ, nên việc im lặng chẳng mang lại lợi ích gì.",
+          "he": "הנכס עצמו אינו חשבון פיננסי בר-דיווח, אך כמעט כל מה שסביבו כן. ארה\"ב ממסה את אזרחיה על הכנסה עולמית ללא קשר למקום מגוריהם, ולכן הכנסות שכירות מ-Dubai נכללות בטופס 1040 כהכנסה ממקור זר. אם סך החשבונות הפיננסיים שלכם בחו\"ל עולה על $10,000, חלה עליכם חובת FBAR (FinCEN 114), וטופס FATCA 8938 נכנס לתוקף מעל $50,000 בהתאם לסטטוס ההגשה ולמקום המגורים. אלה דיווחי מידע שהשמטתם גוררת קנסות חמורים, ואין להם עלות מס בציות — כך שאין שום יתרון בשתיקה."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I claim a Foreign Tax Credit on Dubai income?",
+          "fr": "Puis-je demander un crédit d'impôt étranger sur mes revenus de Dubaï ?",
+          "ru": "Могу ли я заявить Foreign Tax Credit по доходу из Dubai?",
+          "ar": "هل يمكنني المطالبة بائتمان ضريبي أجنبي على الدخل من Dubai؟",
+          "zh": "我可以就迪拜收入申请境外税收抵免吗？",
+          "vi": "Tôi có thể xin tín dụng thuế nước ngoài (Foreign Tax Credit) cho thu nhập từ Dubai không?",
+          "he": "האם אוכל לתבוע Foreign Tax Credit על הכנסה מ-Dubai?"
+        },
+        "answer": {
+          "en": "No, and this surprises people. The Foreign Tax Credit relieves double taxation by crediting foreign tax paid — but Dubai levies no income tax, no capital gains tax and no annual property tax, so there is no foreign tax to credit. You pay the full US rate. The Foreign Earned Income Exclusion does not help either, because it applies to earned income and rental income is passive. The genuine benefit is timing and simplicity: the income is never double-taxed, and gains are taxed only on disposal.",
+          "fr": "Non, et cela surprend. Le Foreign Tax Credit élimine la double imposition en imputant l'impôt étranger payé — mais Dubaï ne prélève ni impôt sur le revenu, ni impôt sur les plus-values, ni taxe foncière annuelle : il n'y a donc aucun impôt étranger à imputer. Vous payez le taux américain plein. La Foreign Earned Income Exclusion n'aide pas davantage, car elle vise les revenus d'activité, alors que les revenus locatifs sont passifs. L'avantage réel tient au calendrier et à la simplicité : le revenu n'est jamais doublement imposé, et les plus-values ne sont taxées qu'à la cession.",
+          "ru": "Нет, и это многих удивляет. Foreign Tax Credit устраняет двойное налогообложение, зачитывая уплаченный иностранный налог, — но Dubai не взимает ни подоходного налога, ни налога на прирост капитала, ни ежегодного налога на недвижимость, поэтому зачитывать нечего. Вы платите полную американскую ставку. FEIE тоже не помогает, поскольку применяется к заработанному доходу, а арендный доход пассивен. Реальное преимущество — во времени и простоте: доход никогда не облагается дважды, а прирост облагается только при продаже.",
+          "ar": "لا، وهذا ما يفاجئ الناس. فالائتمان الضريبي الأجنبي يزيل الازدواج الضريبي عبر خصم الضريبة الأجنبية المدفوعة — لكن Dubai لا تفرض ضريبة دخل ولا ضريبة أرباح رأسمالية ولا ضريبة عقارية سنوية، فلا توجد ضريبة أجنبية لخصمها. وستدفع المعدل الأمريكي كاملاً. كما أن FEIE لا يساعد أيضاً، لأنه ينطبق على الدخل المكتسب بينما دخل الإيجار دخل سلبي. والفائدة الحقيقية تكمن في التوقيت والبساطة: فالدخل لا يخضع للضريبة مرتين أبداً، والأرباح لا تُفرض عليها الضريبة إلا عند البيع.",
+          "zh": "不可以，这一点常令人意外。境外税收抵免通过抵免已缴外国税款来消除双重征税——但迪拜不征收所得税、资本利得税和年度房产税，因此没有外国税额可供抵免。您需要按美国全额税率纳税。境外劳务所得豁免（FEIE）同样帮不上忙，因为它适用于劳务所得，而租金收入属于被动收入。真正的好处在于时间与简便性：这笔收入从不会被双重征税，增值也仅在处置时计税。",
+          "vi": "Không, và điều này khiến nhiều người bất ngờ. Foreign Tax Credit giảm nhẹ đánh thuế hai lần bằng cách khấu trừ thuế đã nộp ở nước ngoài — nhưng Dubai không thu thuế thu nhập, thuế lãi vốn hay thuế bất động sản hằng năm, nên không có thuế nước ngoài nào để khấu trừ. Bạn phải nộp đầy đủ mức thuế của Hoa Kỳ. FEIE cũng không giúp được, bởi nó áp dụng cho thu nhập từ lao động, trong khi thu nhập cho thuê là thu nhập thụ động. Lợi ích thực sự nằm ở thời điểm và sự đơn giản: thu nhập không bao giờ bị đánh thuế hai lần, và lãi vốn chỉ bị đánh thuế khi bán.",
+          "he": "לא, וזה מפתיע אנשים. ה-Foreign Tax Credit מקל על כפל מס באמצעות זיכוי בגין מס זר ששולם — אך Dubai אינה גובה מס הכנסה, מס רווחי הון או מס רכוש שנתי, ולכן אין מס זר לזיכוי. אתם משלמים את שיעור המס האמריקאי המלא. גם ה-FEIE אינו מסייע, משום שהוא חל על הכנסה מיגיעה אישית ואילו הכנסה משכירות היא פסיבית. היתרון האמיתי הוא בתזמון ובפשטות: ההכנסה לעולם אינה ממוסה פעמיים, ורווחים ממוסים רק במימוש."
+        }
+      },
+      {
+        "question": {
+          "en": "Does FATCA make it harder to get a UAE mortgage?",
+          "fr": "FATCA complique-t-il l'obtention d'un prêt immobilier aux Émirats ?",
+          "ru": "Усложняет ли FATCA получение ипотеки в UAE?",
+          "ar": "هل يجعل FATCA الحصول على تمويل عقاري إماراتي أصعب؟",
+          "zh": "FATCA 会让申请阿联酋按揭变得更难吗？",
+          "vi": "FATCA có khiến việc vay thế chấp tại UAE khó hơn không?",
+          "he": "האם FATCA מקשה על קבלת משכנתה ב-UAE?"
+        },
+        "answer": {
+          "en": "It adds friction rather than blocking you. Some UAE banks find FATCA compliance burdensome and prefer not to onboard US persons, which narrows your lender list rather than closing it. HSBC UAE, Citibank UAE and the major UAE banks with US correspondent relationships are the most accessible. Typical non-resident terms are 40-50% loan-to-value, rates around 4.5-6.5% and a 25-year term. US income documentation itself is well accepted — it is the account-reporting obligation, not your income, that causes the hesitation.",
+          "fr": "Cela ajoute des frictions plutôt que de vous bloquer. Certaines banques émiriennes jugent la conformité FATCA contraignante et préfèrent ne pas ouvrir de relation avec des personnes américaines, ce qui réduit votre liste de prêteurs sans la refermer. HSBC UAE, Citibank UAE et les grandes banques émiriennes disposant de relations de correspondance américaines sont les plus accessibles. Les conditions typiques pour un non-résident sont une quotité de financement de 40-50%, des taux autour de 4.5-6.5% et une durée de 25-year. La documentation de revenus américaine est en elle-même bien acceptée — c'est l'obligation de déclaration des comptes, et non vos revenus, qui suscite l'hésitation.",
+          "ru": "Она добавляет трения, но не закрывает дорогу. Некоторым банкам UAE соблюдение FATCA кажется обременительным, и они предпочитают не принимать на обслуживание граждан США — это сужает список кредиторов, а не обнуляет его. Наиболее доступны HSBC UAE, Citibank UAE и крупные банки UAE с корреспондентскими отношениями в США. Типичные условия для нерезидентов — 40-50% от стоимости, ставки около 4.5-6.5% и срок 25-year. Сама американская документация о доходах воспринимается хорошо — колебания вызывает обязанность отчитываться по счетам, а не ваш доход.",
+          "ar": "إنه يضيف احتكاكاً لا أن يمنعك. فبعض المصارف في UAE ترى الامتثال لـ FATCA مرهقاً وتفضّل عدم استقبال الأشخاص الأمريكيين، ما يضيّق قائمة المقرضين المتاحة لك دون أن يغلقها. وأكثر الخيارات إتاحة هي HSBC UAE وCitibank UAE والمصارف الإماراتية الكبرى ذات العلاقات المراسلة مع الولايات المتحدة. والشروط المعتادة لغير المقيمين هي تمويل بنسبة 40-50% من قيمة العقار، بأسعار فائدة حول 4.5-6.5% ومدة 25-year. أما وثائق الدخل الأمريكية فمقبولة جيداً — فالتردد سببه التزام الإفصاح عن الحسابات، لا دخلك.",
+          "zh": "它增加的是摩擦，而非阻断。部分阿联酋银行认为 FATCA 合规负担较重，倾向于不接纳美国税务居民，这会缩窄您的放贷机构名单，但不会将其关闭。HSBC UAE、Citibank UAE 以及与美国有代理行关系的主要阿联酋银行最容易接洽。非居民的典型条件为 40-50% 的贷款成数、约 4.5-6.5% 的利率和 25-year 期限。美国的收入证明文件本身接受度很高——引发犹豫的是账户申报义务，而不是您的收入。",
+          "vi": "Nó tạo thêm ma sát chứ không chặn bạn lại. Một số ngân hàng UAE thấy việc tuân thủ FATCA phiền phức và không muốn tiếp nhận khách hàng là người Mỹ, điều này thu hẹp danh sách ngân hàng cho vay chứ không đóng lại. HSBC UAE, Citibank UAE và các ngân hàng lớn của UAE có quan hệ đại lý với Hoa Kỳ là những lựa chọn dễ tiếp cận nhất. Điều kiện điển hình cho người không cư trú là tỷ lệ vay trên giá trị 40-50%, lãi suất quanh mức 4.5-6.5% và thời hạn 25-year. Bản thân hồ sơ chứng minh thu nhập tại Hoa Kỳ được chấp nhận rộng rãi — chính nghĩa vụ báo cáo tài khoản, chứ không phải thu nhập của bạn, mới là nguyên nhân khiến ngân hàng ngần ngại.",
+          "he": "הוא מוסיף חיכוך אך אינו חוסם אתכם. חלק מהבנקים ב-UAE רואים בציות ל-FATCA נטל ומעדיפים שלא לקלוט אזרחי ארה\"ב, מה שמצמצם את רשימת המלווים שלכם אך אינו סוגר אותה. HSBC UAE, Citibank UAE והבנקים הגדולים ב-UAE בעלי קשרי בנקאות מתכתבת בארה\"ב הם הנגישים ביותר. התנאים האופייניים ללא-תושבים הם 40-50% מימון מול שווי, ריביות סביב 4.5-6.5% ותקופה של 25-year. תיעוד הכנסה אמריקאי עצמו מתקבל היטב — החשש נובע מחובת דיווח החשבונות, לא מההכנסה שלכם."
+        }
+      },
+      {
+        "question": {
+          "en": "What US capital gains tax applies when I sell?",
+          "fr": "Quel impôt américain sur les plus-values s'applique à la revente ?",
+          "ru": "Какой американский налог на прирост капитала возникнет при продаже?",
+          "ar": "ما ضريبة الأرباح الرأسمالية الأمريكية المطبّقة عند البيع؟",
+          "zh": "我出售时需缴纳哪些美国资本利得税？",
+          "vi": "Thuế lãi vốn của Hoa Kỳ áp dụng thế nào khi tôi bán?",
+          "he": "איזה מס רווחי הון אמריקאי יחול כשאמכור?"
+        },
+        "answer": {
+          "en": "Long-term federal capital gains tax at 20% for higher earners, plus state tax depending on your state of residence, and potentially the net investment income tax. Dubai takes nothing on disposal, so there is again no credit to offset the US charge. Model your exit net of that rate rather than gross — a headline gain in dirhams is not what reaches your account.",
+          "fr": "L'impôt fédéral sur les plus-values à long terme de 20% pour les hauts revenus, auquel s'ajoutent l'impôt de votre État de résidence et, le cas échéant, la net investment income tax. Dubaï ne prélève rien à la cession : là encore, aucun crédit ne vient compenser la charge américaine. Modélisez votre sortie nette de ce taux plutôt qu'en brut — une plus-value affichée en dirhams n'est pas ce qui arrive sur votre compte.",
+          "ru": "Федеральный долгосрочный налог на прирост капитала по ставке 20% для лиц с высоким доходом, плюс налог штата в зависимости от штата проживания и, возможно, налог на чистый инвестиционный доход. Dubai при продаже не берёт ничего, поэтому и здесь нет зачёта, который уменьшил бы американский счёт. Моделируйте выход с учётом этой ставки, а не по валовой сумме — заявленная прибыль в дирхамах не равна тому, что дойдёт до вашего счёта.",
+          "ar": "ضريبة أرباح رأسمالية فيدرالية طويلة الأجل بنسبة 20% لأصحاب الدخل المرتفع، إضافة إلى ضريبة الولاية بحسب ولاية إقامتك، وربما ضريبة صافي دخل الاستثمار. ولا تقتطع Dubai شيئاً عند البيع، فلا يوجد مجدداً ائتمان يقابل العبء الأمريكي. احسب خروجك بالصافي بعد هذا المعدل لا بالإجمالي — فالربح المعلن بالدرهم ليس ما يصل إلى حسابك.",
+          "zh": "高收入者适用 20% 的联邦长期资本利得税，另加取决于您居住州的州税，并可能涉及净投资所得税。迪拜在处置环节分文不取，因此同样没有可抵免的税额来冲抵美国税负。请按扣除该税率后的净额、而非毛额来测算您的退出收益——以迪拉姆计的名义收益并不等于最终到账的金额。",
+          "vi": "Thuế lãi vốn liên bang dài hạn ở mức 20% với người thu nhập cao, cộng thuế tiểu bang tuỳ nơi cư trú, và có thể cả thuế thu nhập đầu tư ròng. Dubai không thu gì khi chuyển nhượng, nên một lần nữa không có khoản khấu trừ nào để bù vào nghĩa vụ thuế Hoa Kỳ. Hãy tính toán khoản thoái vốn của bạn sau thuế theo mức đó thay vì trên con số gộp — khoản lãi niêm yết bằng dirham không phải là số tiền thực về tài khoản của bạn.",
+          "he": "מס רווחי הון פדרלי לטווח ארוך בשיעור 20% לבעלי הכנסות גבוהות, בתוספת מס מדינתי בהתאם למדינת מגוריכם, ואפשרות לחבות במס על הכנסות מהשקעות נטו. Dubai אינה גובה דבר במכירה, ולכן שוב אין זיכוי לקיזוז החיוב האמריקאי. בנו את מודל היציאה שלכם נטו לאחר אותו שיעור מס ולא ברוטו — רווח מפורסם בדירהם אינו מה שמגיע לחשבונכם."
+        }
+      },
+      {
+        "question": {
+          "en": "Will large transfers to my US bank cause problems?",
+          "fr": "Des virements importants vers ma banque américaine poseront-ils problème ?",
+          "ru": "Вызовут ли крупные переводы в мой американский банк проблемы?",
+          "ar": "هل ستسبب التحويلات الكبيرة إلى مصرفي الأمريكي مشكلات؟",
+          "zh": "向我的美国银行汇入大额款项会引发问题吗？",
+          "vi": "Chuyển khoản lớn về ngân hàng Hoa Kỳ có gây rắc rối không?",
+          "he": "האם העברות גדולות לבנק שלי בארה\"ב יגרמו לבעיות?"
+        },
+        "answer": {
+          "en": "Not if they are documented. There are no UAE exchange controls, so the money moves freely, but large inbound transfers can trigger FBAR reporting obligations and sometimes a Suspicious Activity Report review at the receiving bank. Chase, Wells Fargo and Bank of America routinely accept large international transfers from the UAE when the paperwork is in order, and Citibank's global platform is convenient for AED-USD movement. Keep purchase contracts, mortgage statements and sale proceeds documentation throughout.",
+          "fr": "Pas s'ils sont documentés. Il n'existe aucun contrôle des changes aux Émirats : l'argent circule librement, mais des virements entrants importants peuvent déclencher des obligations de déclaration FBAR et parfois l'examen d'un Suspicious Activity Report à la banque réceptrice. Chase, Wells Fargo et Bank of America acceptent couramment de gros virements internationaux en provenance des Émirats lorsque les justificatifs sont en ordre, et la plateforme mondiale de Citibank est pratique pour les mouvements AED-USD. Conservez tout au long du processus les contrats d'achat, les relevés de prêt et les justificatifs du produit de la vente.",
+          "ru": "Нет, если они документально подтверждены. В UAE нет валютного контроля, поэтому деньги двигаются свободно, но крупные входящие переводы могут повлечь обязанности по отчётности FBAR, а иногда и проверку с подачей Suspicious Activity Report в принимающем банке. Chase, Wells Fargo и Bank of America регулярно принимают крупные международные переводы из UAE, когда документы в порядке, а глобальная платформа Citibank удобна для операций AED-USD. Всё время храните договоры купли-продажи, ипотечные выписки и документы о поступлении средств от продажи.",
+          "ar": "ليس إذا كانت موثقة. فلا توجد قيود على الصرف في UAE، وتنتقل الأموال بحرية، لكن التحويلات الواردة الكبيرة قد تستدعي التزامات إبلاغ FBAR وأحياناً مراجعة بتقرير نشاط مشبوه لدى المصرف المستلم. وتقبل Chase وWells Fargo وBank of America بصورة اعتيادية التحويلات الدولية الكبيرة من UAE متى كانت الأوراق سليمة، فيما توفّر منصة Citibank العالمية راحة في تحريك الأموال بين الدرهم والدولار. احتفظ بعقود الشراء وكشوف التمويل ووثائق حصيلة البيع طوال الوقت.",
+          "zh": "只要有据可查就不会。阿联酋没有外汇管制，资金可自由流动，但大额入账转账可能触发 FBAR 申报义务，有时还会引发收款银行的可疑活动报告审查。只要文件齐备，Chase、Wells Fargo 和 Bank of America 通常都会接受来自阿联酋的大额国际转账，而 Citibank 的全球平台便于 AED 与 USD 之间的资金调动。请全程保留购房合同、按揭对账单和售房款项的相关文件。",
+          "vi": "Không, nếu có đầy đủ chứng từ. UAE không có kiểm soát ngoại hối nên tiền luân chuyển tự do, nhưng các khoản chuyển vào lớn có thể làm phát sinh nghĩa vụ báo cáo FBAR và đôi khi khiến ngân hàng nhận tiền mở một đợt rà soát Báo cáo Giao dịch Đáng ngờ. Chase, Wells Fargo và Bank of America thường xuyên tiếp nhận các khoản chuyển quốc tế lớn từ UAE khi hồ sơ đầy đủ, và nền tảng toàn cầu của Citibank rất tiện cho việc luân chuyển AED-USD. Hãy lưu giữ hợp đồng mua bán, sao kê khoản vay và chứng từ tiền bán trong suốt quá trình.",
+          "he": "לא, אם הן מתועדות. אין ב-UAE פיקוח על מטבע חוץ, ולכן הכסף נע בחופשיות, אך העברות נכנסות גדולות עשויות להפעיל חובות דיווח FBAR ולעיתים בדיקת Suspicious Activity Report אצל הבנק המקבל. Chase, Wells Fargo ו-Bank of America מקבלים דרך קבע העברות בינלאומיות גדולות מ-UAE כאשר המסמכים מסודרים, והפלטפורמה הגלובלית של Citibank נוחה לתנועת AED-USD. שמרו לאורך כל הדרך את חוזי הרכישה, דוחות המשכנתה ותיעוד תמורת המכירה."
+        }
+      },
+      {
+        "question": {
+          "en": "Is it worth buying in Dubai as an American at all?",
+          "fr": "Cela vaut-il vraiment la peine d'acheter à Dubaï quand on est américain ?",
+          "ru": "Стоит ли вообще американцу покупать в Dubai?",
+          "ar": "هل يستحق الشراء في Dubai العناء بالنسبة إلى أمريكي أصلاً؟",
+          "zh": "作为美国人，在迪拜买房究竟值不值得？",
+          "vi": "Là người Mỹ, mua nhà ở Dubai có đáng không?",
+          "he": "האם בכלל כדאי לאמריקאי לרכוש ב-Dubai?"
+        },
+        "answer": {
+          "en": "It depends on what you want from it. The tax arbitrage that motivates most nationalities is largely unavailable to you, because citizenship-based taxation follows you regardless of residence and there is no foreign tax to credit. What remains is real: gross yields of roughly 5-8%, a dollar-pegged currency so no FX risk against USD, no annual property tax eroding the holding, and residence via the AED 2M Golden Visa. Buy it as an asset that performs, not as a tax plan, and the arithmetic works.",
+          "fr": "Cela dépend de ce que vous en attendez. L'arbitrage fiscal qui motive la plupart des autres nationalités vous est largement inaccessible, car l'imposition fondée sur la citoyenneté vous suit quelle que soit votre résidence et il n'existe aucun impôt étranger à imputer. Ce qui subsiste est bien réel : des rendements bruts d'environ 5-8%, une monnaie arrimée au dollar donc aucun risque de change face à l'USD, aucune taxe foncière annuelle qui érode la détention, et la résidence via le Golden Visa à AED 2M. Achetez-le comme un actif performant, non comme un montage fiscal, et l'arithmétique fonctionne.",
+          "ru": "Зависит от того, чего вы от этого хотите. Налоговый арбитраж, который мотивирует большинство других национальностей, вам по большей части недоступен, поскольку налогообложение по гражданству следует за вами независимо от места проживания, а иностранного налога к зачёту нет. Остаётся то, что вполне реально: валовая доходность около 5-8%, валюта с привязкой к доллару, а значит отсутствие валютного риска против USD, отсутствие ежегодного налога на недвижимость, подтачивающего владение, и резидентство через Golden Visa при покупке от AED 2M. Покупайте это как работающий актив, а не как налоговую схему — и арифметика сойдётся.",
+          "ar": "يعتمد ذلك على ما تريده منه. فالمزايا الضريبية التي تدفع معظم الجنسيات غير متاحة لك إلى حد بعيد، لأن الضريبة القائمة على الجنسية تلاحقك أينما أقمت ولا توجد ضريبة أجنبية لخصمها. أما ما يبقى فحقيقي: عوائد إجمالية تناهز 5-8%، وعملة مربوطة بالدولار فلا مخاطر صرف مقابل الدولار الأمريكي، ولا ضريبة عقارية سنوية تقضم عائد الاحتفاظ، وإقامة عبر Golden Visa عند شراء بقيمة AED 2M. اشترِ العقار بوصفه أصلاً مُدرّاً لا خطة ضريبية، وعندها تستقيم الحسابات.",
+          "zh": "这取决于您想从中获得什么。促使多数其他国籍买家入场的税务套利，对您而言基本无从谈起，因为基于公民身份的征税无论您住在哪里都会跟随您，而且没有外国税额可供抵免。留下来的好处是实实在在的：约 5-8% 的毛收益率、与美元挂钩的货币因而对 USD 没有汇率风险、没有年度房产税侵蚀持有收益，以及通过 AED 2M 黄金签证获得居留身份。把它当作一项能够创造回报的资产来买，而不是当作税务方案，这笔账就算得通。",
+          "vi": "Điều đó tuỳ vào điều bạn mong muốn từ khoản đầu tư. Lợi thế chênh lệch thuế vốn là động lực của hầu hết các quốc tịch khác phần lớn không dành cho bạn, bởi chế độ đánh thuế theo quốc tịch đi theo bạn bất kể nơi cư trú và không có thuế nước ngoài nào để khấu trừ. Những gì còn lại vẫn rất thực chất: tỷ suất gộp khoảng 5-8%, đồng tiền neo theo đô la nên không có rủi ro tỷ giá so với USD, không có thuế bất động sản hằng năm bào mòn khoản nắm giữ, và quyền cư trú qua Golden Visa với ngưỡng AED 2M. Hãy mua nó như một tài sản sinh lợi, chứ không phải như một kế hoạch thuế, khi đó các con số sẽ hợp lý.",
+          "he": "תלוי מה אתם רוצים מזה. ארביטראז' המס שמניע את רוב הלאומים אינו זמין לכם ברובו, משום שמיסוי על בסיס אזרחות נלווה אליכם ללא קשר למקום מגוריכם ואין מס זר לזיכוי. מה שנותר הוא אמיתי: תשואות ברוטו של כ-5-8%, מטבע הצמוד לדולר ולכן ללא סיכון מט\"ח מול USD, היעדר מס רכוש שנתי השוחק את ההחזקה, ותושבות באמצעות Golden Visa ברכישה של AED 2M. קנו זאת כנכס שמניב, לא כתוכנית מס, והחשבון מסתדר."
+        }
+      }
     ]
   },
   {
@@ -363,6 +851,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Downtown Dubai",
       "JVC",
       "Dubai Hills Estate"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Do I pay Canadian tax on Dubai rental income?",
+          "fr": "Dois-je payer l'impôt canadien sur les revenus locatifs de Dubaï ?",
+          "ru": "Плачу ли я канадский налог с арендного дохода в Dubai?",
+          "ar": "هل أدفع ضريبة كندية على دخل الإيجار من Dubai؟",
+          "zh": "我需要就迪拜租金收入向加拿大纳税吗？",
+          "vi": "Tôi có phải nộp thuế Canada cho thu nhập cho thuê tại Dubai không?",
+          "he": "האם אני משלם מס קנדי על הכנסות שכירות מ-Dubai?"
+        },
+        "answer": {
+          "en": "If you are resident in Canada, yes — worldwide rental income is taxable at combined federal-provincial rates reaching about 53.53%, and capital gains on foreign property are 50% included and taxed at your marginal rate. Dubai withholds nothing, so there is no foreign tax credit to offset it. Canadians who have properly broken Canadian tax residency pay no Canadian tax on Dubai rent or gains, which is the major incentive for Canadian expats in the UAE — but 'properly' is doing real work in that sentence.",
+          "fr": "Si vous êtes résident du Canada, oui — les revenus locatifs mondiaux sont imposables à des taux combinés fédéral-provincial atteignant environ 53.53%, et les gains en capital sur un bien étranger sont inclus à 50% puis imposés à votre taux marginal. Dubaï ne retient rien à la source, il n'y a donc aucun crédit pour impôt étranger pour compenser. Les Canadiens qui ont valablement rompu leur résidence fiscale canadienne ne paient aucun impôt canadien sur les loyers ou les plus-values de Dubaï, ce qui constitue la principale incitation pour les expatriés canadiens aux Émirats — mais le mot « valablement » pèse lourd dans cette phrase.",
+          "ru": "Если вы налоговый резидент Канады — да: общемировой арендный доход облагается по совокупным федерально-провинциальным ставкам, достигающим примерно 53.53%, а прирост капитала по зарубежной недвижимости включается в налоговую базу на 50% и облагается по вашей предельной ставке. В Dubai ничего не удерживается у источника, поэтому зачесть иностранный налог не из чего. Канадцы, которые корректно прекратили канадское налоговое резидентство, не платят канадский налог ни с аренды, ни с прироста в Dubai — именно в этом главный стимул для канадских экспатов в UAE, но слово «корректно» здесь несёт основную нагрузку.",
+          "ar": "إذا كنت مقيماً ضريبياً في كندا، فنعم — دخل الإيجار على مستوى العالم خاضع للضريبة بمعدلات اتحادية وإقليمية مجتمعة تصل إلى نحو 53.53%، كما تُدرج 50% من الأرباح الرأسمالية على العقارات الأجنبية وتُفرض عليها الضريبة بمعدلك الحدي. ولا تقتطع Dubai أي ضريبة عند المنبع، لذا لا يوجد ائتمان ضريبي أجنبي يقابل ذلك. أما الكنديون الذين أنهوا إقامتهم الضريبية الكندية على نحو سليم فلا يدفعون ضريبة كندية على إيجار أو أرباح Dubai، وهو الحافز الأكبر للمغتربين الكنديين في UAE — غير أن كلمة «سليم» هنا تحمل وزناً كبيراً.",
+          "zh": "如果您是加拿大税务居民，答案是肯定的——全球租金收入均需纳税，联邦与省级合并税率最高可达约 53.53%，海外房产的资本利得按 50% 计入应税所得，并按您的边际税率征税。迪拜不预扣任何税款，因此没有可用于抵免的外国税额。已经正式解除加拿大税务居民身份的加拿大人，对迪拜租金或增值不需缴纳加拿大税，这正是在阿联酋的加拿大侨民最大的动力所在——但「正式」二字在这句话中分量极重。",
+          "vi": "Nếu bạn là đối tượng cư trú thuế tại Canada thì có — thu nhập cho thuê trên toàn cầu chịu thuế theo mức liên bang cộng tỉnh bang lên tới khoảng 53.53%, còn lãi vốn từ bất động sản nước ngoài được tính 50% vào thu nhập chịu thuế theo thuế suất biên của bạn. Dubai không khấu trừ bất kỳ khoản nào, nên cũng không có tín dụng thuế nước ngoài để bù trừ. Người Canada đã chấm dứt tư cách cư trú thuế Canada một cách đúng quy định thì không phải nộp thuế Canada cho tiền thuê hay lãi vốn tại Dubai — đây chính là động lực lớn với người Canada sống tại UAE, nhưng chữ “đúng quy định” trong câu đó mang trọng lượng rất thật.",
+          "he": "אם אתה תושב קנדה — כן. הכנסות שכירות מכל העולם חייבות במס בשיעורים פדרליים-פרובינציאליים משולבים המגיעים לכ-53.53%, ורווחי הון על נכס זר נכללים בשיעור של 50% וממוסים לפי שיעור המס השולי שלך. Dubai אינה מנכה מס במקור, ולכן אין זיכוי מס זר שיקזז את החבות. קנדים שניתקו כהלכה את תושבותם לצורכי מס בקנדה אינם משלמים מס קנדי על שכר דירה או רווחים מ-Dubai, וזה התמריץ המרכזי לגולים קנדים ב-UAE — אבל המילה \"כהלכה\" עושה כאן עבודה ממשית."
+        }
+      },
+      {
+        "question": {
+          "en": "What is the departure tax if I leave Canada?",
+          "fr": "Quel est l'impôt de départ si je quitte le Canada ?",
+          "ru": "Что такое налог при выезде, если я покидаю Канаду?",
+          "ar": "ما هي ضريبة المغادرة إذا تركت كندا؟",
+          "zh": "如果我离开加拿大，离境税是怎么回事？",
+          "vi": "Thuế xuất cảnh là gì nếu tôi rời Canada?",
+          "he": "מהו מס העזיבה אם אני עוזב את קנדה?"
+        },
+        "answer": {
+          "en": "Canada applies a deemed disposition on emigration: most capital property is treated as sold at fair market value on the day you cease residence, and the resulting gain is taxable even though nothing was actually sold. Timing a Dubai purchase around a departure therefore matters, because assets acquired after you cease residence sit outside that calculation. This is a case where the order of events changes the tax bill materially, so take advice before you move rather than after.",
+          "fr": "Le Canada applique une disposition réputée à l'émigration : la plupart des biens en immobilisation sont considérés comme vendus à leur juste valeur marchande le jour où vous cessez d'être résident, et le gain qui en résulte est imposable même si rien n'a réellement été vendu. Le calendrier d'un achat à Dubaï autour d'un départ compte donc, car les actifs acquis après la cessation de résidence restent en dehors de ce calcul. C'est un cas où l'ordre des événements change sensiblement la facture fiscale : prenez conseil avant de partir plutôt qu'après.",
+          "ru": "Канада применяет правило условного отчуждения при эмиграции: большая часть капитальных активов считается проданной по справедливой рыночной стоимости в день прекращения резидентства, и возникающая прибыль облагается налогом, даже если фактически ничего не продавалось. Поэтому момент покупки в Dubai относительно даты отъезда действительно важен: активы, приобретённые после прекращения резидентства, в этот расчёт не попадают. Это тот случай, когда порядок событий существенно меняет сумму налога, так что консультируйтесь до переезда, а не после.",
+          "ar": "تطبّق كندا مبدأ التصرف الحكمي عند الهجرة: تُعامل معظم الأصول الرأسمالية كما لو بيعت بالقيمة السوقية العادلة في يوم انتهاء إقامتك، ويخضع الربح الناتج للضريبة رغم أنه لم يجرِ بيع فعلي. ولهذا فإن توقيت شراء عقار في Dubai مقارنةً بموعد المغادرة أمر مهم، لأن الأصول المكتسبة بعد انتهاء إقامتك تقع خارج ذلك الحساب. هذه حالة يغيّر فيها ترتيب الأحداث قيمة الفاتورة الضريبية تغييراً جوهرياً، لذا احصل على المشورة قبل الانتقال لا بعده.",
+          "zh": "加拿大对移居境外适用视同处置规则：多数资本性财产在您终止居民身份当日被视为按公允市值出售，由此产生的收益即便实际并未出售也须纳税。因此，迪拜置业的时点安排十分关键，因为在终止居民身份之后取得的资产不纳入该项计算。这是一个事件先后顺序会实质改变税单的情形，所以请在搬迁之前而非之后寻求专业意见。",
+          "vi": "Canada áp dụng cơ chế coi như đã chuyển nhượng khi di cư: phần lớn tài sản vốn được xem như đã bán theo giá thị trường hợp lý vào ngày bạn chấm dứt cư trú, và khoản lãi phát sinh phải chịu thuế dù thực tế không có giao dịch bán nào. Vì vậy thời điểm mua bất động sản tại Dubai so với ngày rời đi rất quan trọng, bởi tài sản mua sau khi bạn chấm dứt cư trú sẽ nằm ngoài phép tính đó. Đây là trường hợp mà thứ tự các sự kiện làm thay đổi đáng kể số thuế phải nộp, nên hãy xin tư vấn trước khi chuyển đi chứ đừng để sau.",
+          "he": "קנדה מחילה \"מכירה רעיונית\" בעת הגירה: מרבית נכסי ההון נחשבים כאילו נמכרו בשווי השוק ההוגן ביום שבו חדלת להיות תושב, והרווח הנובע מכך חייב במס אף שדבר לא נמכר בפועל. לכן לתזמון רכישה ב-Dubai סביב מועד העזיבה יש משמעות, משום שנכסים שנרכשו לאחר שחדלת להיות תושב נמצאים מחוץ לחישוב הזה. זהו מקרה שבו סדר האירועים משנה מהותית את חשבון המס, ולכן כדאי לקבל ייעוץ לפני המעבר ולא אחריו."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I have to report the property to the CRA?",
+          "fr": "Dois-je déclarer le bien à l'CRA ?",
+          "ru": "Обязан ли я сообщать об объекте в CRA?",
+          "ar": "هل يجب أن أبلّغ CRA عن العقار؟",
+          "zh": "我必须向 CRA 申报这处房产吗？",
+          "vi": "Tôi có phải khai báo bất động sản này với CRA không?",
+          "he": "האם עליי לדווח על הנכס ל-CRA?"
+        },
+        "answer": {
+          "en": "Foreign property holdings above the reporting threshold generally require disclosure on Form T1135 while you are a Canadian resident, and the penalties for non-filing are disproportionate to the effort of filing. A Dubai property and any associated offshore accounts are exactly the kind of holding the form exists to capture. Treat the filing as part of owning the asset rather than an optional extra, and keep the DLD title and transfer records from the start.",
+          "fr": "Les biens étrangers détenus au-delà du seuil de déclaration exigent en général une divulgation sur le formulaire T1135 tant que vous êtes résident canadien, et les pénalités en cas de défaut de production sont sans commune mesure avec l'effort que représente la déclaration. Un bien à Dubaï et les comptes offshore qui lui sont associés sont exactement le type de détention que ce formulaire vise à saisir. Considérez cette déclaration comme faisant partie intégrante de la détention de l'actif plutôt que comme une option, et conservez dès le départ le titre DLD et les actes de transfert.",
+          "ru": "Зарубежные активы, превышающие порог отчётности, как правило, подлежат раскрытию в форме T1135, пока вы остаётесь налоговым резидентом Канады, а штрафы за неподачу несоразмерны трудозатратам на подачу. Недвижимость в Dubai и связанные с ней офшорные счета — ровно тот тип активов, ради которых эта форма и существует. Относитесь к подаче как к неотъемлемой части владения активом, а не как к опции, и с самого начала храните титул DLD и документы о передаче права.",
+          "ar": "الحيازات العقارية الأجنبية التي تتجاوز حد الإفصاح تستوجب عموماً الإبلاغ عنها في نموذج T1135 طالما كنت مقيماً كندياً، والغرامات على عدم التقديم غير متناسبة إطلاقاً مع الجهد المطلوب للتقديم. والعقار في Dubai وأي حسابات خارجية مرتبطة به هما بالضبط نوع الحيازات التي وُجد هذا النموذج لرصدها. تعامل مع التقديم كجزء من ملكية الأصل لا كإجراء اختياري، واحتفظ بسند ملكية DLD ووثائق نقل الملكية منذ البداية.",
+          "zh": "在您仍是加拿大税务居民期间，超过申报门槛的境外财产通常须在 T1135 表格上披露，而未申报的罚则与填报所需的工夫完全不成比例。迪拜房产及相关的离岸账户，正是该表格设立时所要涵盖的持有类型。请将申报视为持有该资产的固有环节，而非可有可无的额外事项，并从一开始就保存好 DLD 产权与过户记录。",
+          "vi": "Tài sản ở nước ngoài vượt ngưỡng khai báo nhìn chung phải được kê khai trên mẫu T1135 trong thời gian bạn còn là đối tượng cư trú Canada, và mức phạt khi không nộp là hoàn toàn không tương xứng với công sức nộp tờ khai. Một bất động sản tại Dubai cùng các tài khoản nước ngoài liên quan chính là loại tài sản mà biểu mẫu này được lập ra để ghi nhận. Hãy xem việc kê khai là một phần của việc sở hữu tài sản chứ không phải tùy chọn thêm, và lưu giữ giấy chứng nhận quyền sở hữu do DLD cấp cùng hồ sơ chuyển nhượng ngay từ đầu.",
+          "he": "החזקות בנכסים זרים מעל סף הדיווח מחייבות בדרך כלל גילוי בטופס T1135 כל עוד אתה תושב קנדה, והקנסות על אי-הגשה אינם פרופורציונליים למאמץ הכרוך בהגשה. נכס ב-Dubai וחשבונות זרים הקשורים אליו הם בדיוק סוג ההחזקה שהטופס נועד לתפוס. התייחס לדיווח כחלק מהבעלות על הנכס ולא כתוספת אופציונלית, ושמור מההתחלה את שטר הבעלות של ה-DLD ואת מסמכי ההעברה."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a UAE mortgage on Canadian income?",
+          "fr": "Puis-je obtenir un prêt immobilier aux Émirats sur des revenus canadiens ?",
+          "ru": "Могу ли я получить ипотеку в UAE под канадский доход?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري في UAE بدخل كندي؟",
+          "zh": "我能凭加拿大收入申请阿联酋按揭吗？",
+          "vi": "Tôi có thể vay thế chấp tại UAE dựa trên thu nhập ở Canada không?",
+          "he": "האם אוכל לקבל משכנתה ב-UAE על בסיס הכנסה קנדית?"
+        },
+        "answer": {
+          "en": "Generally yes. Canadian income and credit documentation are acceptable to most UAE lenders for non-resident lending, with typical terms around 50% loan-to-value, rates in the 4.5-6.5% range and a 25-year term. Pre-approval usually takes two to three weeks. Compare it honestly against borrowing in Canada: the loan is serviced in dirhams pegged to the US dollar while your income is in Canadian dollars, which is a real if modest currency exposure.",
+          "fr": "En général oui. Les justificatifs de revenus et de crédit canadiens sont acceptés par la plupart des prêteurs des Émirats pour le financement des non-résidents, avec des conditions types d'environ 50% de quotité de financement, des taux de l'ordre de 4.5-6.5% et une durée de 25-year. L'accord de principe prend habituellement deux à trois semaines. Comparez honnêtement avec un emprunt au Canada : le prêt se rembourse en dirhams arrimés au dollar américain alors que vos revenus sont en dollars canadiens, ce qui représente une exposition de change réelle, quoique modeste.",
+          "ru": "Как правило, да. Канадские документы о доходе и кредитной истории принимаются большинством банков UAE при кредитовании нерезидентов; типичные условия — около 50% кредит к стоимости, ставки в диапазоне 4.5-6.5% и срок 25-year. Предварительное одобрение обычно занимает две-три недели. Сравните это честно с кредитом в Канаде: заём обслуживается в дирхамах, привязанных к доллару США, тогда как ваш доход — в канадских долларах, а это реальная, пусть и умеренная, валютная экспозиция.",
+          "ar": "نعم بصفة عامة. توثيق الدخل والسجل الائتماني الكندي مقبول لدى معظم جهات الإقراض في UAE ضمن تمويل غير المقيمين، بشروط نموذجية تبلغ نحو 50% نسبة تمويل إلى قيمة، ومعدلات في نطاق 4.5-6.5%، ومدة 25-year. وتستغرق الموافقة المبدئية عادةً أسبوعين إلى ثلاثة أسابيع. قارن ذلك بصدق مع الاقتراض داخل كندا: فالقرض يُسدَّد بالدرهم المربوط بالدولار الأمريكي بينما دخلك بالدولار الكندي، وهذا تعرّض فعلي لمخاطر العملة وإن كان متواضعاً.",
+          "zh": "通常可以。多数阿联酋放贷机构在非居民贷款中接受加拿大的收入与信用证明文件，典型条件为贷款价值比约 50%、利率在 4.5-6.5% 区间、期限 25-year。预先批核通常需要两到三周。请与在加拿大借款的方案作客观比较：贷款以与美元挂钩的迪拉姆偿还，而您的收入是加元，这构成一项虽不大但真实存在的汇率敞口。",
+          "vi": "Nhìn chung là có. Hồ sơ thu nhập và tín dụng tại Canada được hầu hết ngân hàng UAE chấp nhận cho khoản vay dành cho người không cư trú, với điều kiện điển hình khoảng 50% tỷ lệ vay trên giá trị, lãi suất trong khoảng 4.5-6.5% và kỳ hạn 25-year. Phê duyệt sơ bộ thường mất hai đến ba tuần. Hãy so sánh thẳng thắn với việc vay tại Canada: khoản vay được trả bằng dirham neo theo đô la Mỹ trong khi thu nhập của bạn bằng đô la Canada, tạo ra rủi ro tỷ giá thực dù ở mức vừa phải.",
+          "he": "בדרך כלל כן. תיעוד הכנסה ואשראי מקנדה מקובל על מרבית המלווים ב-UAE במסלול ללא תושבות, עם תנאים טיפוסיים של כ-50% מימון מול שווי הנכס, ריביות בטווח 4.5-6.5% ותקופה של 25-year. אישור עקרוני נמשך בדרך כלל שבועיים עד שלושה שבועות. השווה זאת בכנות מול נטילת הלוואה בקנדה: ההלוואה נפרעת בדירהם הצמוד לדולר האמריקאי בעוד הכנסתך בדולר קנדי, וזו חשיפה מטבעית אמיתית גם אם מתונה."
+        }
+      },
+      {
+        "question": {
+          "en": "What does the purchase cost in total?",
+          "fr": "Quel est le coût total de l'acquisition ?",
+          "ru": "Сколько стоит покупка в целом?",
+          "ar": "كم تبلغ التكلفة الإجمالية للشراء؟",
+          "zh": "购房总成本是多少？",
+          "vi": "Tổng chi phí mua vào là bao nhiêu?",
+          "he": "מה עלות הרכישה הכוללת?"
+        },
+        "answer": {
+          "en": "Budget roughly 6-7% of the price all in: the 4% Dubai Land Department transfer fee, about 2% agency commission, and registration and trustee charges. If you borrow, add 0.25% of the loan for mortgage registration. After purchase there is no annual property tax — the standing costs are service charges and a municipality housing fee on let homes.",
+          "fr": "Prévoyez environ 6-7% du prix tout compris : les 4% de frais de transfert du Dubai Land Department, environ 2% de commission d'agence, ainsi que les frais d'enregistrement et de fiduciaire. Si vous empruntez, ajoutez 0.25% du montant du prêt pour l'enregistrement de l'hypothèque. Après l'achat, il n'y a aucun impôt foncier annuel — les charges courantes se limitent aux charges de copropriété et à une taxe municipale d'habitation sur les logements mis en location.",
+          "ru": "Закладывайте примерно 6-7% от цены со всеми расходами: 4% сбор за перерегистрацию в Dubai Land Department, около 2% комиссии агентства, а также регистрационные и трастовые сборы. Если берёте кредит, добавьте 0.25% от суммы займа за регистрацию ипотеки. После покупки ежегодного налога на недвижимость нет — текущие расходы сводятся к сервисным сборам и муниципальному жилищному сбору для сдаваемого жилья.",
+          "ar": "خصّص نحو 6-7% من السعر شاملاً كل شيء: رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، ونحو 2% عمولة الوساطة، ورسوم التسجيل وأمين التسجيل. وإذا اقترضت، أضف 0.25% من قيمة القرض لتسجيل الرهن. وبعد الشراء لا توجد ضريبة عقارية سنوية — فالتكاليف الجارية هي رسوم الخدمات ورسم سكن بلدي على الوحدات المؤجَّرة.",
+          "zh": "整体预算约为房价的 6-7%：4% 的迪拜土地局过户费、约 2% 的中介佣金，以及登记和受托机构费用。若使用贷款，另需支付贷款金额的 0.25% 作为按揭登记费。购入之后没有年度房产税——持续性支出为物业服务费，以及出租住宅需缴纳的市政住房费。",
+          "vi": "Hãy dự trù khoảng 6-7% giá trị bất động sản cho toàn bộ: phí chuyển nhượng 4% của Dubai Land Department, khoảng 2% hoa hồng môi giới, cùng các khoản phí đăng ký và phí văn phòng ủy thác. Nếu vay, cộng thêm 0.25% giá trị khoản vay cho việc đăng ký thế chấp. Sau khi mua không có thuế bất động sản hằng năm — chi phí thường xuyên chỉ gồm phí dịch vụ và phí nhà ở đô thị áp dụng với nhà cho thuê.",
+          "he": "תקצב בערך 6-7% מהמחיר הכול כלול: 4% דמי העברה של ה-Dubai Land Department, כ-2% עמלת תיווך, ואגרות רישום ונאמן. אם אתה נוטל הלוואה, הוסף 0.25% מסכום ההלוואה עבור רישום המשכנתה. לאחר הרכישה אין מס רכוש שנתי — העלויות השוטפות הן דמי ניהול ואגרת דיור עירונית על דירות מושכרות."
+        }
+      },
+      {
+        "question": {
+          "en": "Is the yield better than a Canadian rental property?",
+          "fr": "Le rendement est-il meilleur qu'un bien locatif canadien ?",
+          "ru": "Доходность выше, чем у арендной недвижимости в Канаде?",
+          "ar": "هل العائد أفضل من عقار إيجاري في كندا؟",
+          "zh": "收益率会比加拿大的出租房产更好吗？",
+          "vi": "Lợi suất có tốt hơn bất động sản cho thuê tại Canada không?",
+          "he": "האם התשואה טובה יותר מנכס להשכרה בקנדה?"
+        },
+        "answer": {
+          "en": "Gross yields in Dubai's mainstream freehold communities run roughly 5-8%, ahead of most major Canadian metros where prices have outpaced rents. The gross-to-net gap is also narrower: no annual property tax and no tax at source on rent, against Canadian municipal property taxes that run every year regardless of occupancy. The offsetting factor is your own Canadian tax position while you remain resident, which can take more than half the income.",
+          "fr": "Les rendements bruts dans les principales communautés freehold de Dubaï se situent autour de 5-8%, au-dessus de la plupart des grandes métropoles canadiennes où les prix ont dépassé les loyers. L'écart entre brut et net est également plus faible : pas d'impôt foncier annuel ni de retenue à la source sur les loyers, contrairement aux taxes foncières municipales canadiennes dues chaque année, que le bien soit occupé ou non. Le facteur compensateur reste votre propre situation fiscale canadienne tant que vous demeurez résident, qui peut absorber plus de la moitié des revenus.",
+          "ru": "Валовая доходность в основных freehold-сообществах Dubai составляет примерно 5-8%, что выше, чем в большинстве крупных канадских городов, где цены обогнали арендные ставки. Разрыв между валовой и чистой доходностью тоже уже: нет ежегодного налога на недвижимость и нет удержания налога у источника с аренды — в отличие от канадских муниципальных налогов, которые начисляются каждый год независимо от заполняемости. Уравновешивающий фактор — ваша собственная канадская налоговая позиция, пока вы остаётесь резидентом: она может забрать больше половины дохода.",
+          "ar": "تتراوح العوائد الإجمالية في مجتمعات freehold الرئيسية في Dubai بين 5-8% تقريباً، متقدمةً على معظم المدن الكندية الكبرى حيث تجاوزت الأسعار نمو الإيجارات. كما أن الفارق بين الإجمالي والصافي أضيق: لا ضريبة عقارية سنوية ولا اقتطاع ضريبي عند المنبع على الإيجار، مقابل الضرائب العقارية البلدية الكندية التي تُدفع كل عام بغض النظر عن الإشغال. والعامل المقابل هو وضعك الضريبي الكندي ما دمت مقيماً، إذ قد يستهلك أكثر من نصف الدخل.",
+          "zh": "迪拜主流 freehold 社区的毛收益率大致为 5-8%，高于大多数加拿大主要都市圈——那里的房价涨幅已超过租金。毛收益与净收益之间的差距也更小：没有年度房产税，租金也不在源头课税；而加拿大的市政房产税无论是否出租都须年年缴纳。抵消因素在于您仍为加拿大居民期间自身的税务状况，这可能拿走超过一半的收入。",
+          "vi": "Lợi suất gộp tại các cộng đồng freehold phổ thông của Dubai vào khoảng 5-8%, cao hơn phần lớn các đô thị lớn của Canada nơi giá nhà đã tăng nhanh hơn tiền thuê. Khoảng cách giữa gộp và ròng cũng hẹp hơn: không có thuế bất động sản hằng năm và không khấu trừ thuế tại nguồn với tiền thuê, so với thuế bất động sản đô thị tại Canada phải nộp hằng năm bất kể nhà có người thuê hay không. Yếu tố đối trọng chính là tình trạng thuế của bạn tại Canada khi vẫn còn là đối tượng cư trú, vốn có thể lấy đi hơn một nửa thu nhập.",
+          "he": "תשואות ברוטו בקהילות ה-freehold המרכזיות של Dubai נעות בערך בטווח 5-8%, גבוה יותר ממרבית המטרופולינים הקנדיים הגדולים שבהם המחירים עקפו את שכר הדירה. גם הפער בין ברוטו לנטו צר יותר: אין מס רכוש שנתי ואין ניכוי מס במקור על שכר הדירה, לעומת ארנונות עירוניות בקנדה שנגבות מדי שנה ללא קשר לתפוסה. הגורם המקזז הוא מעמדך המיסויי בקנדה כל עוד אתה נותר תושב, שעשוי לקחת יותר ממחצית ההכנסה."
+        }
+      }
     ]
   },
   {
@@ -429,6 +1039,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "JBR",
       "Palm Jumeirah",
       "The Springs"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Is Dubai rental income assessable in Australia?",
+          "fr": "Les revenus locatifs de Dubaï sont-ils imposables en Australie ?",
+          "ru": "Облагается ли арендный доход из Dubai в Австралии?",
+          "ar": "هل دخل الإيجار من Dubai خاضع للتقييم الضريبي في أستراليا؟",
+          "zh": "迪拜租金收入在澳大利亚需要计入应税所得吗？",
+          "vi": "Thu nhập cho thuê tại Dubai có bị tính thuế ở Úc không?",
+          "he": "האם הכנסות שכירות מ-Dubai חייבות במס באוסטרליה?"
+        },
+        "answer": {
+          "en": "If you are an Australian tax resident, yes — Dubai rental income is assessable at marginal rates reaching 47% including the Medicare Levy. Capital gains on foreign property held over twelve months qualify for the 50% discount and are then taxed at marginal rates. Because the UAE levies nothing, there is no foreign income tax offset available, so the Australian charge applies in full. Australians who have genuinely broken Australian tax residency pay no Australian tax on Dubai rent or gains.",
+          "fr": "Si vous êtes résident fiscal australien, oui — les revenus locatifs de Dubaï sont imposables aux taux marginaux atteignant 47%, Medicare Levy comprise. Les plus-values sur un bien étranger détenu plus de douze mois bénéficient de l'abattement de 50% puis sont imposées aux taux marginaux. Comme les Émirats ne prélèvent rien, aucun crédit d'impôt étranger n'est disponible : la charge australienne s'applique donc intégralement. Les Australiens qui ont réellement rompu leur résidence fiscale australienne ne paient aucun impôt australien sur les loyers ou les plus-values de Dubaï.",
+          "ru": "Если вы налоговый резидент Австралии — да: арендный доход из Dubai включается в налоговую базу по предельным ставкам, достигающим 47% с учётом Medicare Levy. Прирост капитала по зарубежной недвижимости, удерживаемой более двенадцати месяцев, даёт право на скидку 50%, а остаток облагается по предельным ставкам. Поскольку UAE не взимает ничего, зачёта иностранного налога нет, и австралийский налог применяется в полном объёме. Австралийцы, действительно прекратившие австралийское налоговое резидентство, не платят австралийский налог ни с аренды, ни с прироста в Dubai.",
+          "ar": "إذا كنت مقيماً ضريبياً أسترالياً، فنعم — دخل الإيجار من Dubai خاضع للتقييم بمعدلات حدية تصل إلى 47% شاملةً رسم الرعاية الصحية Medicare Levy. أما الأرباح الرأسمالية على العقارات الأجنبية المحتفظ بها أكثر من اثني عشر شهراً فتستحق خصم 50% ثم تُفرض عليها الضريبة بالمعدلات الحدية. ولأن UAE لا تفرض شيئاً، لا يتوفر أي خصم لضريبة دخل أجنبية، وبالتالي يُطبَّق العبء الأسترالي بالكامل. أما الأستراليون الذين أنهوا إقامتهم الضريبية الأسترالية فعلياً فلا يدفعون ضريبة أسترالية على إيجار أو أرباح Dubai.",
+          "zh": "如果您是澳大利亚税务居民，是的——迪拜租金收入按边际税率计税，含医疗保险税最高可达 47%。持有超过十二个月的海外房产，其资本利得可享 50% 折让，余额再按边际税率征税。由于阿联酋不征收任何税款，没有可用的外国所得税抵免，因此澳方税负须全额承担。真正解除澳大利亚税务居民身份的澳大利亚人，对迪拜租金或增值不需缴纳澳大利亚税。",
+          "vi": "Nếu bạn là đối tượng cư trú thuế Úc thì có — thu nhập cho thuê tại Dubai chịu thuế theo thuế suất biên lên tới 47% bao gồm cả Medicare Levy. Lãi vốn từ bất động sản nước ngoài nắm giữ trên mười hai tháng được hưởng mức giảm trừ 50% rồi mới chịu thuế theo thuế suất biên. Vì UAE không thu khoản nào, nên không có khoản bù trừ thuế thu nhập nước ngoài, và phần thuế Úc được áp dụng đầy đủ. Người Úc đã thực sự chấm dứt tư cách cư trú thuế Úc thì không phải nộp thuế Úc cho tiền thuê hay lãi vốn tại Dubai.",
+          "he": "אם אתה תושב אוסטרליה לצורכי מס — כן. הכנסות שכירות מ-Dubai חייבות במס בשיעורים שוליים המגיעים ל-47% כולל היטל ה-Medicare. רווחי הון על נכס זר שהוחזק מעל שנים עשר חודשים זכאים להנחה של 50% וממוסים לאחר מכן בשיעורים שוליים. מאחר ש-UAE אינה גובה דבר, אין זיכוי מס זר זמין, ולכן החבות האוסטרלית חלה במלואה. אוסטרלים שניתקו באמת את תושבותם לצורכי מס באוסטרליה אינם משלמים מס אוסטרלי על שכר דירה או רווחים מ-Dubai."
+        }
+      },
+      {
+        "question": {
+          "en": "How hard is it to break Australian tax residency?",
+          "fr": "Est-il difficile de rompre la résidence fiscale australienne ?",
+          "ru": "Насколько сложно прекратить австралийское налоговое резидентство?",
+          "ar": "ما مدى صعوبة إنهاء الإقامة الضريبية الأسترالية؟",
+          "zh": "解除澳大利亚税务居民身份有多难？",
+          "vi": "Chấm dứt tư cách cư trú thuế tại Úc khó đến mức nào?",
+          "he": "כמה קשה לנתק תושבות מס אוסטרלית?"
+        },
+        "answer": {
+          "en": "Harder than most people assume, and it is not achieved by buying a property or spending time abroad. The tests look at domicile, permanent place of abode, and the pattern of your life — maintained homes, family location, assets and intentions all feed in. The ATO scrutinises departures where ties remain. If your plan depends on being non-resident, get it confirmed by an Australian adviser and documented contemporaneously, because reconstructing the position years later under audit is a much weaker place to argue from.",
+          "fr": "Plus difficile que la plupart des gens ne l'imaginent, et cela ne s'obtient ni en achetant un bien ni en passant du temps à l'étranger. Les critères portent sur le domicile, le lieu de résidence permanent et la trame de votre vie — logements conservés, lieu de résidence de la famille, actifs et intentions entrent tous en ligne de compte. L'ATO examine de près les départs lorsque des liens subsistent. Si votre plan repose sur le statut de non-résident, faites-le confirmer par un conseiller australien et documenter au moment même, car reconstituer la situation des années plus tard dans le cadre d'un contrôle est une position nettement plus faible.",
+          "ru": "Сложнее, чем принято думать, и покупкой недвижимости или временем за границей этого не добиться. Тесты смотрят на домициль, постоянное место проживания и на уклад вашей жизни в целом — сохранённое жильё, местонахождение семьи, активы и намерения. ATO внимательно проверяет отъезды, после которых связи остаются. Если ваш план опирается на статус нерезидента, подтвердите его у австралийского консультанта и задокументируйте в момент событий: восстанавливать позицию годы спустя в ходе проверки — заведомо более слабая позиция.",
+          "ar": "أصعب مما يفترض معظم الناس، ولا يتحقق ذلك بشراء عقار أو بقضاء وقت في الخارج. فالاختبارات تنظر في الموطن، ومحل الإقامة الدائم، ونمط حياتك — المساكن المحتفظ بها، ومكان الأسرة، والأصول والنوايا، كلها عناصر مؤثرة. وتدقّق ATO في حالات المغادرة التي تبقى فيها الروابط قائمة. إذا كانت خطتك تعتمد على كونك غير مقيم، فاحصل على تأكيد ذلك من مستشار أسترالي ووثّقه في حينه، لأن إعادة بناء الوضع بعد سنوات أثناء تدقيق ضريبي موقف أضعف بكثير للدفاع عنه.",
+          "zh": "比多数人想象的更难，而且并非买一处房产或在海外待一段时间就能实现。判定标准着眼于户籍、永久居所以及您的生活形态——保留的住所、家人所在地、资产与意图都会被纳入考量。ATO 对仍保留联系的离境情形审查严格。如果您的规划依赖于非居民身份，请由澳大利亚顾问确认并同期留存书面记录，因为若干年后在稽查中回溯重建立场，是远为不利的辩护起点。",
+          "vi": "Khó hơn hầu hết mọi người hình dung, và không thể đạt được chỉ bằng việc mua một bất động sản hay sống ở nước ngoài một thời gian. Các tiêu chí xét đến nơi cư trú gốc, nơi ở thường xuyên và toàn bộ nếp sống của bạn — nhà giữ lại, nơi gia đình sinh sống, tài sản và ý định đều được tính đến. ATO soi rất kỹ những trường hợp rời đi mà vẫn còn ràng buộc. Nếu kế hoạch của bạn phụ thuộc vào việc trở thành người không cư trú, hãy để một chuyên gia tư vấn tại Úc xác nhận và lập hồ sơ ngay tại thời điểm đó, bởi việc dựng lại lập luận nhiều năm sau trong một cuộc thanh tra là vị thế yếu hơn nhiều.",
+          "he": "קשה יותר משרוב האנשים מניחים, וזה לא מושג על ידי רכישת נכס או שהייה בחו\"ל. המבחנים בוחנים דומיציל, מקום מגורים קבוע ואת דפוס החיים שלך — בתים שנשמרו, מיקום המשפחה, נכסים וכוונות, הכול נכנס לחשבון. ה-ATO בוחן בקפדנות עזיבות שבהן נשמרו זיקות. אם התוכנית שלך תלויה בהיותך לא-תושב, ודא זאת מול יועץ אוסטרלי ותעד זאת בזמן אמת, משום ששחזור העמדה שנים מאוחר יותר תחת ביקורת הוא נקודת פתיחה חלשה בהרבה."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I need to report the property to the ATO?",
+          "fr": "Dois-je déclarer le bien à l'ATO ?",
+          "ru": "Нужно ли сообщать об объекте в ATO?",
+          "ar": "هل يجب أن أبلّغ ATO عن العقار؟",
+          "zh": "我需要向 ATO 申报这处房产吗？",
+          "vi": "Tôi có cần khai báo bất động sản này với ATO không?",
+          "he": "האם עליי לדווח על הנכס ל-ATO?"
+        },
+        "answer": {
+          "en": "Australian residents report worldwide income, so rental income goes into your return, and a disposal goes in as a CGT event. Australia participates in the Common Reporting Standard and exchanges financial account information with the UAE, so offshore accounts associated with the property are visible to the ATO independently of what you disclose. Declare it and plan around the charge rather than being surprised by it.",
+          "fr": "Les résidents australiens déclarent leurs revenus mondiaux : les loyers figurent donc dans votre déclaration, et une cession s'y inscrit comme un événement CGT. L'Australie participe au Common Reporting Standard et échange des informations sur les comptes financiers avec les Émirats ; les comptes offshore liés au bien sont donc visibles par l'ATO indépendamment de ce que vous déclarez. Déclarez-le et anticipez la charge plutôt que d'en être surpris.",
+          "ru": "Резиденты Австралии декларируют общемировой доход, поэтому арендные поступления попадают в декларацию, а продажа отражается как событие CGT. Австралия участвует в Common Reporting Standard и обменивается информацией о финансовых счетах с UAE, так что офшорные счета, связанные с объектом, видны ATO независимо от того, что вы раскрыли. Декларируйте и планируйте нагрузку заранее, а не узнавайте о ней постфактум.",
+          "ar": "المقيمون الأستراليون يبلّغون عن دخلهم العالمي، لذا يدخل دخل الإيجار في إقرارك الضريبي، ويدخل التصرف في العقار بوصفه حدثاً خاضعاً لـ CGT. وتشارك أستراليا في معيار الإبلاغ المشترك CRS وتتبادل معلومات الحسابات المالية مع UAE، ما يعني أن الحسابات الخارجية المرتبطة بالعقار مرئية لدى ATO بصرف النظر عما تفصح عنه. أعلن عنه وخطّط حول العبء الضريبي بدل أن تفاجأ به.",
+          "zh": "澳大利亚居民须申报全球收入，因此租金收入要计入申报表，处置则作为 CGT 事件申报。澳大利亚参与共同申报准则（CRS），并与阿联酋交换金融账户信息，因此与该房产相关的离岸账户无论您是否披露，ATO 都能看到。请如实申报并就税负预作规划，而不是事后措手不及。",
+          "vi": "Người cư trú Úc phải khai thu nhập toàn cầu, nên thu nhập cho thuê phải đưa vào tờ khai, và việc bán lại sẽ được ghi nhận như một sự kiện CGT. Úc tham gia Common Reporting Standard và trao đổi thông tin tài khoản tài chính với UAE, nên các tài khoản nước ngoài gắn với bất động sản đều hiển thị với ATO bất kể bạn có khai hay không. Hãy kê khai và lên kế hoạch cho khoản thuế đó thay vì để bị bất ngờ.",
+          "he": "תושבי אוסטרליה מדווחים על הכנסה מכל העולם, ולכן הכנסת השכירות נכנסת לדוח שלך, ומכירה נכנסת כאירוע CGT. אוסטרליה משתתפת ב-Common Reporting Standard ומחליפה מידע על חשבונות פיננסיים עם UAE, כך שחשבונות זרים הקשורים לנכס גלויים ל-ATO ללא תלות במה שאתה מדווח. הצהר על כך ותכנן סביב החבות במקום להיות מופתע ממנה."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I borrow in the UAE on Australian income?",
+          "fr": "Puis-je emprunter aux Émirats sur des revenus australiens ?",
+          "ru": "Могу ли я взять кредит в UAE под австралийский доход?",
+          "ar": "هل يمكنني الاقتراض في UAE بدخل أسترالي؟",
+          "zh": "我能凭澳大利亚收入在阿联酋借款吗？",
+          "vi": "Tôi có thể vay tại UAE dựa trên thu nhập ở Úc không?",
+          "he": "האם אוכל ללוות ב-UAE על בסיס הכנסה אוסטרלית?"
+        },
+        "answer": {
+          "en": "Yes. Australian income documentation is well accepted by UAE lenders for non-resident applications, with typical terms of 50% loan-to-value, rates around 4.5-6.5% and a 25-year term. Worth comparing against an Australian facility secured on existing equity — Australian and UAE rates move independently, and the dirham's dollar peg means a UAE loan serviced from AUD income carries genuine currency exposure.",
+          "fr": "Oui. Les justificatifs de revenus australiens sont bien acceptés par les prêteurs des Émirats pour les dossiers de non-résidents, avec des conditions types de 50% de quotité de financement, des taux autour de 4.5-6.5% et une durée de 25-year. Cela vaut la peine de comparer avec un financement australien adossé à une valeur nette existante — les taux australiens et émiriens évoluent indépendamment, et l'arrimage du dirham au dollar fait qu'un prêt aux Émirats remboursé à partir de revenus en AUD comporte une véritable exposition de change.",
+          "ru": "Да. Австралийские документы о доходе хорошо принимаются банками UAE по заявкам нерезидентов; типичные условия — 50% кредит к стоимости, ставки около 4.5-6.5% и срок 25-year. Стоит сравнить с австралийским кредитом под залог имеющегося капитала: австралийские ставки и ставки UAE движутся независимо, а привязка дирхама к доллару означает, что кредит в UAE, обслуживаемый доходом в AUD, несёт реальную валютную экспозицию.",
+          "ar": "نعم. توثيق الدخل الأسترالي مقبول جيداً لدى جهات الإقراض في UAE لطلبات غير المقيمين، بشروط نموذجية تبلغ 50% نسبة تمويل إلى قيمة، ومعدلات نحو 4.5-6.5%، ومدة 25-year. ويستحق الأمر المقارنة مع تسهيل أسترالي مضمون برأس مال عقاري قائم — فالمعدلات الأسترالية والإماراتية تتحرك باستقلال، وارتباط الدرهم بالدولار يعني أن قرضاً في UAE يُسدَّد من دخل بالدولار الأسترالي ينطوي على تعرّض حقيقي لمخاطر العملة.",
+          "zh": "可以。阿联酋放贷机构对非居民申请普遍认可澳大利亚的收入证明文件，典型条件为贷款价值比 50%、利率约 4.5-6.5%、期限 25-year。值得与以现有权益作抵押的澳大利亚贷款方案比较——澳大利亚与阿联酋的利率走势相互独立，而迪拉姆与美元挂钩意味着以澳元收入偿还的阿联酋贷款存在真实的汇率敞口。",
+          "vi": "Có. Hồ sơ thu nhập tại Úc được các ngân hàng UAE chấp nhận rộng rãi cho hồ sơ vay của người không cư trú, với điều kiện điển hình 50% tỷ lệ vay trên giá trị, lãi suất khoảng 4.5-6.5% và kỳ hạn 25-year. Cũng đáng so sánh với một khoản vay tại Úc được bảo đảm bằng phần vốn chủ sở hữu sẵn có — lãi suất Úc và UAE biến động độc lập, và việc dirham neo theo đô la nghĩa là khoản vay UAE trả bằng thu nhập AUD mang rủi ro tỷ giá thực sự.",
+          "he": "כן. תיעוד הכנסה אוסטרלי מקובל היטב על מלווים ב-UAE בבקשות ללא תושבות, עם תנאים טיפוסיים של 50% מימון מול שווי, ריביות סביב 4.5-6.5% ותקופה של 25-year. שווה להשוות מול מסגרת אוסטרלית המובטחת בהון עצמי קיים — הריביות האוסטרליות וריביות ה-UAE נעות באופן בלתי תלוי, והצמדת הדירהם לדולר פירושה שהלוואה ב-UAE הנפרעת מהכנסה ב-AUD נושאת חשיפה מטבעית ממשית."
+        }
+      },
+      {
+        "question": {
+          "en": "What are the total transaction costs?",
+          "fr": "Quels sont les frais de transaction totaux ?",
+          "ru": "Каковы суммарные транзакционные издержки?",
+          "ar": "ما إجمالي تكاليف الصفقة؟",
+          "zh": "交易总成本是多少？",
+          "vi": "Tổng chi phí giao dịch là bao nhiêu?",
+          "he": "מהן עלויות העסקה הכוללות?"
+        },
+        "answer": {
+          "en": "About 6-7% of the purchase price all in: 4% to the Dubai Land Department, roughly 2% agency commission, plus registration and trustee charges, with 0.25% of the loan added if you take a mortgage. There is no annual property tax in Dubai, so ongoing costs are service charges and a municipality housing fee on let homes — no equivalent of Australian council rates and land tax.",
+          "fr": "Environ 6-7% du prix d'achat tout compris : 4% pour le Dubai Land Department, environ 2% de commission d'agence, plus les frais d'enregistrement et de fiduciaire, auxquels s'ajoutent 0.25% du prêt si vous souscrivez un crédit. Il n'y a pas d'impôt foncier annuel à Dubaï : les coûts récurrents se limitent donc aux charges de copropriété et à une taxe municipale d'habitation sur les logements loués — aucun équivalent des council rates et de la land tax australiennes.",
+          "ru": "Порядка 6-7% от цены покупки со всеми расходами: 4% в Dubai Land Department, примерно 2% комиссии агентства, плюс регистрационные и трастовые сборы, и ещё 0.25% от суммы займа, если берёте ипотеку. Ежегодного налога на недвижимость в Dubai нет, поэтому текущие расходы — это сервисные сборы и муниципальный жилищный сбор для сдаваемого жилья: аналогов австралийских council rates и land tax не существует.",
+          "ar": "نحو 6-7% من سعر الشراء شاملاً كل شيء: 4% لصالح Dubai Land Department، ونحو 2% عمولة الوساطة، إضافةً إلى رسوم التسجيل وأمين التسجيل، مع إضافة 0.25% من قيمة القرض إن حصلت على تمويل عقاري. ولا توجد ضريبة عقارية سنوية في Dubai، لذا فإن التكاليف المستمرة هي رسوم الخدمات ورسم سكن بلدي على الوحدات المؤجَّرة — بلا ما يعادل الرسوم البلدية وضريبة الأراضي الأستراليتين.",
+          "zh": "整体约为房价的 6-7%：4% 缴予迪拜土地局，约 2% 的中介佣金，加上登记与受托机构费用；若办理按揭，再加上贷款金额的 0.25%。迪拜没有年度房产税，因此持续性支出为物业服务费及出租住宅的市政住房费——不存在澳大利亚市政费和土地税的对应项目。",
+          "vi": "Khoảng 6-7% giá mua cho toàn bộ: 4% nộp cho Dubai Land Department, khoảng 2% hoa hồng môi giới, cộng phí đăng ký và phí văn phòng ủy thác, thêm 0.25% giá trị khoản vay nếu bạn vay thế chấp. Dubai không có thuế bất động sản hằng năm, nên chi phí thường xuyên chỉ gồm phí dịch vụ và phí nhà ở đô thị với nhà cho thuê — không có khoản nào tương đương council rates và land tax ở Úc.",
+          "he": "כ-6-7% ממחיר הרכישה הכול כלול: 4% ל-Dubai Land Department, כ-2% עמלת תיווך, בתוספת אגרות רישום ונאמן, עם 0.25% מההלוואה אם אתה נוטל משכנתה. אין מס רכוש שנתי ב-Dubai, ולכן העלויות השוטפות הן דמי ניהול ואגרת דיור עירונית על דירות מושכרות — ללא מקבילה לארנונה העירונית ולמס הקרקע באוסטרליה."
+        }
+      },
+      {
+        "question": {
+          "en": "Is Dubai a better rental investment than an Australian property?",
+          "fr": "Dubaï est-il un meilleur investissement locatif qu'un bien australien ?",
+          "ru": "Dubai — лучшая арендная инвестиция, чем австралийская недвижимость?",
+          "ar": "هل Dubai استثمار إيجاري أفضل من عقار أسترالي؟",
+          "zh": "迪拜作为出租投资比澳大利亚房产更好吗？",
+          "vi": "Dubai có phải khoản đầu tư cho thuê tốt hơn bất động sản tại Úc không?",
+          "he": "האם Dubai היא השקעה טובה יותר להשכרה מנכס אוסטרלי?"
+        },
+        "answer": {
+          "en": "On gross yield, usually — roughly 5-8% in Dubai's mainstream freehold communities against considerably less in Sydney or Melbourne. The structural difference is that Dubai charges no land tax and no tax at source on rent, so more of the gross survives to net. Against that, negative gearing and the CGT discount are Australian-side advantages that a Dubai property does not interact with, and if you remain Australian tax resident the income lands at your marginal rate. Model both net, not gross.",
+          "fr": "En rendement brut, généralement oui — environ 5-8% dans les principales communautés freehold de Dubaï, contre nettement moins à Sydney ou Melbourne. La différence structurelle tient à ce que Dubaï ne prélève ni land tax ni retenue à la source sur les loyers : une plus grande part du brut se retrouve donc en net. En contrepartie, le negative gearing et l'abattement CGT sont des avantages côté australien avec lesquels un bien à Dubaï n'interagit pas, et si vous restez résident fiscal australien les revenus sont imposés à votre taux marginal. Modélisez les deux en net, pas en brut.",
+          "ru": "По валовой доходности — обычно да: примерно 5-8% в основных freehold-сообществах Dubai против заметно меньших значений в Сиднее или Мельбурне. Структурное отличие в том, что Dubai не взимает налог на землю и не удерживает налог с аренды у источника, поэтому до чистой доходности доходит большая часть валовой. С другой стороны, negative gearing и скидка по CGT — это австралийские преимущества, с которыми недвижимость в Dubai никак не взаимодействует, а если вы остаётесь налоговым резидентом Австралии, доход облагается по вашей предельной ставке. Считайте обе опции по чистой, а не по валовой доходности.",
+          "ar": "من حيث العائد الإجمالي، نعم في الغالب — نحو 5-8% في مجتمعات freehold الرئيسية في Dubai مقابل أقل من ذلك بكثير في سيدني أو ملبورن. والفارق البنيوي أن Dubai لا تفرض ضريبة أراضٍ ولا ضريبة عند المنبع على الإيجار، فيبقى قدر أكبر من الإجمالي ليصل إلى الصافي. في المقابل، فإن الرفع المالي السلبي (negative gearing) وخصم CGT ميزتان أستراليتان لا يتفاعل معهما عقار في Dubai، وإذا بقيت مقيماً ضريبياً أسترالياً فسيخضع الدخل لمعدلك الحدي. احسب الصافي في الحالتين، لا الإجمالي.",
+          "zh": "就毛收益率而言通常是——迪拜主流 freehold 社区约为 5-8%，显著高于悉尼或墨尔本。结构性差异在于迪拜不征土地税，租金也不在源头课税，因此毛收益中留存到净额的比例更高。但另一方面，负扣税和 CGT 折让是澳方的优势，而迪拜房产与之并不产生交互；若您仍为澳大利亚税务居民，收入将按您的边际税率计税。请以净额而非毛额建模比较。",
+          "vi": "Xét lợi suất gộp thì thường là vậy — khoảng 5-8% tại các cộng đồng freehold phổ thông của Dubai so với mức thấp hơn đáng kể ở Sydney hay Melbourne. Khác biệt mang tính cấu trúc là Dubai không thu land tax và không khấu trừ thuế tại nguồn với tiền thuê, nên phần lớn hơn của doanh thu gộp còn lại thành ròng. Ở chiều ngược lại, negative gearing và mức giảm trừ CGT là lợi thế phía Úc mà một bất động sản Dubai không tận dụng được, và nếu bạn vẫn là đối tượng cư trú thuế Úc thì thu nhập sẽ chịu thuế suất biên của bạn. Hãy tính toán trên cơ sở ròng, không phải gộp.",
+          "he": "מבחינת תשואת ברוטו — בדרך כלל כן: בערך 5-8% בקהילות ה-freehold המרכזיות של Dubai לעומת הרבה פחות בסידני או במלבורן. ההבדל המבני הוא ש-Dubai אינה גובה מס קרקע ואינה מנכה מס במקור על שכר דירה, ולכן יותר מהברוטו שורד עד הנטו. מנגד, מינוף שלילי (negative gearing) והנחת ה-CGT הם יתרונות בצד האוסטרלי שנכס ב-Dubai אינו מתחבר אליהם, ואם אתה נותר תושב אוסטרליה לצורכי מס ההכנסה ממוסה בשיעור השולי שלך. בנה מודל נטו, לא ברוטו."
+        }
+      }
     ]
   },
   {
@@ -495,6 +1227,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Business Bay",
       "Dubai Hills Estate",
       "The Greens"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Is Dubai rental income taxed in Germany?",
+          "fr": "Les revenus locatifs de Dubaï sont-ils imposés en Allemagne ?",
+          "ru": "Облагается ли арендный доход из Dubai в Германии?",
+          "ar": "هل يخضع دخل الإيجار من Dubai للضريبة في ألمانيا؟",
+          "zh": "迪拜租金收入在德国要缴税吗？",
+          "vi": "Thu nhập cho thuê tại Dubai có bị đánh thuế tại Đức không?",
+          "he": "האם הכנסות שכירות מ-Dubai ממוסות בגרמניה?"
+        },
+        "answer": {
+          "en": "Under Article 6 of the Germany-UAE double tax treaty, income from immovable property is taxable where the property is situated — the UAE, which taxes it at 0%. So the rental income itself is exempt in Germany. The catch is the Progressionsvorbehalt: that exempt income is still counted when determining the rate applied to your other German income, so it can push your remaining income into a higher bracket. The income is not taxed, but it is not invisible either, and it must still be declared on your Einkommensteuererklärung.",
+          "fr": "Aux termes de l'article 6 de la convention fiscale Allemagne-Émirats, les revenus des biens immobiliers sont imposables là où le bien est situé — les Émirats, qui les imposent à 0%. Les revenus locatifs eux-mêmes sont donc exonérés en Allemagne. La subtilité tient au Progressionsvorbehalt : ces revenus exonérés sont tout de même pris en compte pour déterminer le taux appliqué à vos autres revenus allemands, ce qui peut faire basculer le reste de vos revenus dans une tranche supérieure. Le revenu n'est pas imposé, mais il n'est pas invisible pour autant, et il doit figurer dans votre Einkommensteuererklärung.",
+          "ru": "По статье 6 соглашения об избежании двойного налогообложения между Германией и UAE доход от недвижимого имущества облагается там, где расположен объект, — то есть в UAE, где ставка составляет 0%. Сам арендный доход в Германии освобождён. Загвоздка в Progressionsvorbehalt: этот освобождённый доход всё равно учитывается при определении ставки, применяемой к прочим вашим германским доходам, и может поднять их в более высокую налоговую ступень. Доход не облагается, но и невидимым не становится — его всё равно нужно указать в Einkommensteuererklärung.",
+          "ar": "بموجب المادة 6 من اتفاقية تجنب الازدواج الضريبي بين ألمانيا وUAE، يخضع الدخل من العقارات للضريبة حيث يقع العقار — أي UAE، التي تفرض عليه 0%. لذا فإن دخل الإيجار نفسه معفى في ألمانيا. لكن المسألة العالقة هي Progressionsvorbehalt: إذ يظل هذا الدخل المعفى محسوباً عند تحديد المعدل المطبَّق على دخلك الألماني الآخر، فقد يدفع بقية دخلك إلى شريحة أعلى. فالدخل غير خاضع للضريبة، لكنه ليس غير مرئي أيضاً، ولا يزال يجب الإعلان عنه في Einkommensteuererklärung.",
+          "zh": "根据德国与阿联酋税收协定第六条，不动产所得在财产所在地征税——即阿联酋，税率为 0%。因此租金收入本身在德国免税。关键在于 Progressionsvorbehalt：这笔免税收入在确定适用于您其他德国收入的税率时仍会被计入，从而可能把余下的收入推入更高税级。该收入不被征税，但也并非隐形，仍须在您的 Einkommensteuererklärung 中申报。",
+          "vi": "Theo Điều 6 hiệp định tránh đánh thuế hai lần giữa Đức và UAE, thu nhập từ bất động sản chịu thuế tại nơi có bất động sản — tức UAE, nơi áp thuế suất 0%. Vì vậy bản thân thu nhập cho thuê được miễn thuế tại Đức. Điểm cần lưu ý là Progressionsvorbehalt: phần thu nhập được miễn đó vẫn được tính khi xác định thuế suất áp cho các khoản thu nhập khác tại Đức, nên có thể đẩy phần thu nhập còn lại lên bậc thuế cao hơn. Thu nhập không bị đánh thuế, nhưng cũng không vô hình, và vẫn phải được kê khai trên Einkommensteuererklärung của bạn.",
+          "he": "לפי סעיף 6 לאמנת המס הכפול בין גרמניה ל-UAE, הכנסה ממקרקעין ממוסה במקום שבו הנכס נמצא — כלומר UAE, הממסה אותה ב-0%. לכן הכנסת השכירות עצמה פטורה בגרמניה. המלכוד הוא ה-Progressionsvorbehalt: אותה הכנסה פטורה עדיין נספרת בקביעת השיעור שיוחל על שאר הכנסותיך בגרמניה, ולכן היא עשויה לדחוף את יתרת ההכנסה למדרגה גבוהה יותר. ההכנסה אינה ממוסה, אך היא גם אינה בלתי נראית, ויש עדיין לדווח עליה ב-Einkommensteuererklärung שלך."
+        }
+      },
+      {
+        "question": {
+          "en": "What is the Progressionsvorbehalt in practice?",
+          "fr": "Qu'est-ce que le Progressionsvorbehalt en pratique ?",
+          "ru": "Как Progressionsvorbehalt работает на практике?",
+          "ar": "ما هو Progressionsvorbehalt عملياً؟",
+          "zh": "Progressionsvorbehalt 在实务中意味着什么？",
+          "vi": "Progressionsvorbehalt hoạt động ra sao trên thực tế?",
+          "he": "מהו ה-Progressionsvorbehalt הלכה למעשה?"
+        },
+        "answer": {
+          "en": "It means tax-exempt foreign income raises your average tax rate on everything else. If you earn German income and also receive Dubai rent, the German authorities calculate the rate as though the Dubai income were taxable, then apply that higher rate only to the German income. The effect is real but far smaller than being taxed outright, and it is the single most misunderstood point among German buyers — who often either fear full taxation or assume the income need not be declared at all. Neither is right.",
+          "fr": "Cela signifie que des revenus étrangers exonérés relèvent votre taux moyen d'imposition sur tout le reste. Si vous percevez des revenus allemands et également des loyers à Dubaï, l'administration allemande calcule le taux comme si les revenus de Dubaï étaient imposables, puis applique ce taux plus élevé uniquement aux revenus allemands. L'effet est réel mais bien moindre qu'une imposition pleine et entière, et c'est le point le plus mal compris par les acheteurs allemands — qui craignent souvent une imposition intégrale ou supposent au contraire que les revenus n'ont pas à être déclarés. Aucune des deux idées n'est exacte.",
+          "ru": "Это означает, что освобождённый от налога зарубежный доход повышает вашу среднюю налоговую ставку по всему остальному. Если у вас есть германский доход и одновременно аренда из Dubai, налоговые органы рассчитывают ставку так, как если бы доход из Dubai облагался, а затем применяют эту повышенную ставку только к германскому доходу. Эффект реален, но несопоставимо меньше полноценного налогообложения; при этом именно этот пункт немецкие покупатели понимают неверно чаще всего — одни боятся полного налога, другие считают, что декларировать доход вовсе не нужно. Неверно и то, и другое.",
+          "ar": "يعني أن الدخل الأجنبي المعفى من الضريبة يرفع معدل ضريبتك المتوسط على كل ما عداه. فإذا كنت تكسب دخلاً ألمانياً وتتلقى كذلك إيجاراً من Dubai، تحسب السلطات الألمانية المعدل كما لو كان دخل Dubai خاضعاً للضريبة، ثم تطبّق ذلك المعدل الأعلى على الدخل الألماني وحده. والأثر حقيقي لكنه أصغر بكثير من الخضوع الكامل للضريبة، وهو النقطة الأكثر سوء فهم بين المشترين الألمان — الذين إما يخشون الضريبة الكاملة أو يفترضون أن الدخل لا يحتاج إلى إعلان أصلاً. وكلا الافتراضين خاطئ.",
+          "zh": "它意味着免税的境外收入会抬高您其他所得的平均税率。若您既有德国收入又收取迪拜租金，德国税务机关会按照迪拜收入应税的假设计算税率，再将这一更高的税率仅适用于德国收入。其影响真实存在，但远轻于被全额征税；这也是德国买家最常误解的一点——他们要么担心被全额征税，要么以为根本无需申报。两种看法都不正确。",
+          "vi": "Nó có nghĩa là thu nhập nước ngoài được miễn thuế vẫn làm tăng thuế suất bình quân áp cho mọi khoản thu nhập khác. Nếu bạn có thu nhập tại Đức và đồng thời nhận tiền thuê từ Dubai, cơ quan thuế Đức sẽ tính thuế suất như thể thu nhập Dubai chịu thuế, rồi áp thuế suất cao hơn đó chỉ lên phần thu nhập tại Đức. Tác động là có thật nhưng nhỏ hơn nhiều so với bị đánh thuế toàn phần, và đây là điểm bị hiểu sai nhiều nhất trong giới mua nhà người Đức — những người thường hoặc lo bị đánh thuế đầy đủ, hoặc cho rằng không cần kê khai gì cả. Cả hai đều không đúng.",
+          "he": "משמעותו היא שהכנסה זרה הפטורה ממס מעלה את שיעור המס הממוצע שלך על כל השאר. אם יש לך הכנסה גרמנית ואתה גם מקבל שכר דירה מ-Dubai, הרשויות בגרמניה מחשבות את השיעור כאילו ההכנסה מ-Dubai הייתה חייבת במס, ואז מחילות את השיעור הגבוה הזה רק על ההכנסה הגרמנית. ההשפעה אמיתית אך קטנה בהרבה ממיסוי מלא, וזו הנקודה הכי מובנת שלא נכון בקרב רוכשים גרמנים — שלעיתים קרובות או חוששים ממיסוי מלא, או מניחים שאין צורך לדווח על ההכנסה כלל. אף אחת מהעמדות אינה נכונה."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I need to declare the property even if the income is exempt?",
+          "fr": "Dois-je déclarer le bien même si les revenus sont exonérés ?",
+          "ru": "Нужно ли декларировать объект, если доход освобождён?",
+          "ar": "هل يلزمني الإعلان عن العقار حتى لو كان الدخل معفى؟",
+          "zh": "即便收入免税，我也需要申报这处房产吗？",
+          "vi": "Tôi có phải khai báo bất động sản ngay cả khi thu nhập được miễn thuế không?",
+          "he": "האם עליי להצהיר על הנכס גם אם ההכנסה פטורה?"
+        },
+        "answer": {
+          "en": "Yes. Exemption under the treaty is not the same as an exemption from reporting, and the Progressionsvorbehalt only works if the income is declared. Germany also participates in Common Reporting Standard exchanges with the UAE, so financial accounts connected to the property are visible regardless. Keep the purchase contract, the DLD title deed and transfer records and give them to your Steuerberater — this is a routine filing, not a grey area.",
+          "fr": "Oui. L'exonération conventionnelle n'est pas une dispense de déclaration, et le Progressionsvorbehalt ne fonctionne que si les revenus sont déclarés. L'Allemagne participe par ailleurs aux échanges du Common Reporting Standard avec les Émirats : les comptes financiers rattachés au bien sont donc visibles de toute façon. Conservez le contrat d'achat, le titre de propriété DLD et les actes de transfert, et remettez-les à votre Steuerberater — il s'agit d'une déclaration de routine, pas d'une zone grise.",
+          "ru": "Да. Освобождение по соглашению — не то же самое, что освобождение от отчётности, и Progressionsvorbehalt работает только при условии декларирования дохода. Германия также участвует в обмене данными по Common Reporting Standard с UAE, поэтому связанные с объектом финансовые счета видны в любом случае. Сохраняйте договор купли-продажи, титул DLD и документы о передаче права и передайте их вашему Steuerberater — это рутинная отчётность, а не серая зона.",
+          "ar": "نعم. الإعفاء بموجب الاتفاقية ليس إعفاءً من الإبلاغ، كما أن Progressionsvorbehalt لا يعمل إلا إذا جرى الإعلان عن الدخل. وتشارك ألمانيا أيضاً في تبادل معلومات CRS مع UAE، لذا فإن الحسابات المالية المرتبطة بالعقار مرئية على أي حال. احتفظ بعقد الشراء وسند ملكية DLD ووثائق نقل الملكية وسلّمها إلى Steuerberater الخاص بك — فهذا إجراء تقديم روتيني لا منطقة رمادية.",
+          "zh": "需要。协定下的免税与免于申报并非一回事，而且 Progressionsvorbehalt 只有在收入被申报时才能运作。德国也与阿联酋进行共同申报准则（CRS）信息交换，因此与该房产相关的金融账户无论如何都是可见的。请保存购房合同、DLD 产权证书与过户记录，并交给您的 Steuerberater——这是一项例行申报，而非灰色地带。",
+          "vi": "Có. Miễn thuế theo hiệp định không đồng nghĩa với miễn nghĩa vụ kê khai, và Progressionsvorbehalt chỉ vận hành được nếu thu nhập được kê khai. Đức cũng tham gia trao đổi thông tin theo Common Reporting Standard với UAE, nên các tài khoản tài chính gắn với bất động sản đều hiển thị bất kể thế nào. Hãy lưu giữ hợp đồng mua bán, giấy chứng nhận quyền sở hữu do DLD cấp cùng hồ sơ chuyển nhượng và đưa cho Steuerberater của bạn — đây là một thủ tục kê khai thông thường, không phải vùng xám.",
+          "he": "כן. פטור לפי האמנה אינו זהה לפטור מדיווח, וה-Progressionsvorbehalt פועל רק אם ההכנסה מדווחת. גרמניה גם משתתפת בהחלפות מידע במסגרת ה-Common Reporting Standard עם UAE, כך שחשבונות פיננסיים הקשורים לנכס גלויים בכל מקרה. שמור את חוזה הרכישה, את שטר הבעלות של ה-DLD ואת מסמכי ההעברה, ומסור אותם ל-Steuerberater שלך — מדובר בדיווח שגרתי, לא באזור אפור."
+        }
+      },
+      {
+        "question": {
+          "en": "How does a Dubai purchase compare with buying in Germany?",
+          "fr": "Comment un achat à Dubaï se compare-t-il à un achat en Allemagne ?",
+          "ru": "Как покупка в Dubai соотносится с покупкой в Германии?",
+          "ar": "كيف يقارَن الشراء في Dubai بالشراء في ألمانيا؟",
+          "zh": "在迪拜置业与在德国买房相比如何？",
+          "vi": "Mua tại Dubai so với mua tại Đức thì khác nhau thế nào?",
+          "he": "כיצד רכישה ב-Dubai משתווה לרכישה בגרמניה?"
+        },
+        "answer": {
+          "en": "The running costs diverge more than the purchase price. German residential property carries Grundsteuer annually and a rental regime with its own frictions, while Dubai charges no annual property tax and nothing at source on rent — the standing costs are service charges and a municipality housing fee on let homes. Gross yields in Dubai's mainstream freehold communities run roughly 5-8%, well ahead of typical yields in German metros where prices have long outrun rents. Purchase costs are lower too: roughly 6-7% all in against German Grunderwerbsteuer plus notary and agent fees.",
+          "fr": "Les coûts de détention divergent davantage que le prix d'achat. Un bien résidentiel allemand supporte la Grundsteuer chaque année ainsi qu'un régime locatif avec ses propres frictions, tandis que Dubaï ne prélève aucun impôt foncier annuel ni rien à la source sur les loyers — les charges courantes se limitent aux charges de copropriété et à une taxe municipale d'habitation sur les logements loués. Les rendements bruts dans les principales communautés freehold de Dubaï se situent autour de 5-8%, bien au-dessus des rendements typiques des métropoles allemandes où les prix ont depuis longtemps distancé les loyers. Les frais d'acquisition sont eux aussi plus faibles : environ 6-7% tout compris, contre la Grunderwerbsteuer allemande à laquelle s'ajoutent les frais de notaire et d'agence.",
+          "ru": "Текущие расходы расходятся сильнее, чем цена покупки. Германская жилая недвижимость ежегодно облагается Grundsteuer и подчиняется арендному режиму со своими издержками, тогда как Dubai не взимает ни ежегодного налога на недвижимость, ни налога у источника с аренды — текущие расходы сводятся к сервисным сборам и муниципальному жилищному сбору для сдаваемого жилья. Валовая доходность в основных freehold-сообществах Dubai составляет примерно 5-8%, заметно выше типичной доходности в немецких городах, где цены давно обогнали аренду. Расходы на покупку тоже ниже: около 6-7% со всем против германского Grunderwerbsteuer плюс нотариальные и агентские сборы.",
+          "ar": "التكاليف الجارية تتباعد أكثر من سعر الشراء نفسه. فالعقار السكني الألماني يتحمل Grundsteuer سنوياً ونظام تأجير له احتكاكاته الخاصة، بينما لا تفرض Dubai ضريبة عقارية سنوية ولا شيئاً عند المنبع على الإيجار — فالتكاليف الجارية هي رسوم الخدمات ورسم سكن بلدي على الوحدات المؤجَّرة. وتتراوح العوائد الإجمالية في مجتمعات freehold الرئيسية في Dubai بين 5-8% تقريباً، وهو ما يتقدم كثيراً على العوائد المعتادة في المدن الألمانية حيث تجاوزت الأسعار الإيجارات منذ وقت طويل. وتكاليف الشراء أقل أيضاً: نحو 6-7% شاملةً كل شيء مقابل Grunderwerbsteuer الألمانية إضافةً إلى أتعاب التوثيق والوساطة.",
+          "zh": "持有成本的差异比购买价格更大。德国住宅每年须缴 Grundsteuer，且租赁制度自有其摩擦；而迪拜不征年度房产税，租金也不在源头课税——持续性支出为物业服务费及出租住宅的市政住房费。迪拜主流 freehold 社区的毛收益率大致为 5-8%，远高于德国都市圈的典型水平，那里房价早已跑赢租金。购置成本也更低：整体约 6-7%，相较之下德国需缴 Grunderwerbsteuer 并支付公证与中介费用。",
+          "vi": "Chi phí vận hành chênh lệch nhiều hơn cả giá mua. Bất động sản nhà ở tại Đức phải chịu Grundsteuer hằng năm cùng một chế độ cho thuê với nhiều ràng buộc riêng, trong khi Dubai không thu thuế bất động sản hằng năm và không khấu trừ gì tại nguồn với tiền thuê — chi phí thường xuyên chỉ gồm phí dịch vụ và phí nhà ở đô thị với nhà cho thuê. Lợi suất gộp tại các cộng đồng freehold phổ thông của Dubai vào khoảng 5-8%, cao hơn hẳn mức thông thường ở các đô thị Đức nơi giá nhà từ lâu đã vượt xa tiền thuê. Chi phí mua vào cũng thấp hơn: khoảng 6-7% cho toàn bộ so với Grunderwerbsteuer của Đức cộng phí công chứng và phí môi giới.",
+          "he": "העלויות השוטפות נבדלות יותר מאשר מחיר הרכישה. נכס מגורים בגרמניה נושא Grundsteuer מדי שנה ומשטר שכירות עם חיכוכים משלו, בעוד ש-Dubai אינה גובה מס רכוש שנתי ולא מנכה דבר במקור על שכר דירה — העלויות השוטפות הן דמי ניהול ואגרת דיור עירונית על דירות מושכרות. תשואות ברוטו בקהילות ה-freehold המרכזיות של Dubai נעות בערך בטווח 5-8%, הרבה מעל התשואות הטיפוסיות בערים הגרמניות הגדולות שבהן המחירים עקפו מזמן את שכר הדירה. גם עלויות הרכישה נמוכות יותר: בערך 6-7% הכול כלול לעומת Grunderwerbsteuer בגרמניה בתוספת שכר נוטריון ותיווך."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a mortgage as a German non-resident?",
+          "fr": "Puis-je obtenir un prêt en tant que non-résident allemand ?",
+          "ru": "Могу ли я получить ипотеку как немецкий нерезидент?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري بصفتي ألمانياً غير مقيم؟",
+          "zh": "作为德国非居民我能获得按揭吗？",
+          "vi": "Tôi có thể vay thế chấp với tư cách người Đức không cư trú không?",
+          "he": "האם אוכל לקבל משכנתה כגרמני שאינו תושב?"
+        },
+        "answer": {
+          "en": "Yes. Euro-denominated German income is straightforward for UAE lenders to assess, with typical non-resident terms of 50% loan-to-value, rates around 4.5-6.5% and a 25-year term. Compare against a German facility, including releasing equity on an existing property: euro and dirham rates move independently, and because the dirham is pegged to the dollar a UAE loan serviced from euro income carries a real currency exposure worth pricing.",
+          "fr": "Oui. Des revenus allemands libellés en euros sont simples à évaluer pour les prêteurs des Émirats, avec des conditions types pour non-résidents de 50% de quotité de financement, des taux autour de 4.5-6.5% et une durée de 25-year. Comparez avec un financement allemand, y compris un déblocage de valeur nette sur un bien existant : les taux en euros et en dirhams évoluent indépendamment, et comme le dirham est arrimé au dollar, un prêt aux Émirats remboursé à partir de revenus en euros comporte une exposition de change réelle qu'il convient de chiffrer.",
+          "ru": "Да. Германский доход в евро банкам UAE оценивать несложно; типичные условия для нерезидентов — 50% кредит к стоимости, ставки около 4.5-6.5% и срок 25-year. Сравните с германским кредитом, включая высвобождение капитала в имеющемся объекте: ставки в евро и в дирхамах движутся независимо, а поскольку дирхам привязан к доллару, кредит в UAE, обслуживаемый доходом в евро, несёт реальную валютную экспозицию, которую стоит оценить в деньгах.",
+          "ar": "نعم. الدخل الألماني المقوَّم باليورو سهل التقييم بالنسبة لجهات الإقراض في UAE، بشروط نموذجية لغير المقيمين تبلغ 50% نسبة تمويل إلى قيمة، ومعدلات نحو 4.5-6.5%، ومدة 25-year. قارنه بتسهيل ألماني، بما في ذلك تحرير قيمة من عقار قائم: فمعدلات اليورو والدرهم تتحرك باستقلال، ولأن الدرهم مربوط بالدولار فإن قرضاً في UAE يُسدَّد من دخل باليورو ينطوي على تعرّض فعلي لمخاطر العملة يستحق التسعير.",
+          "zh": "可以。以欧元计价的德国收入便于阿联酋放贷机构评估，典型的非居民条件为贷款价值比 50%、利率约 4.5-6.5%、期限 25-year。请与德国的贷款方案比较，包括就现有房产释放权益：欧元与迪拉姆的利率走势相互独立，且由于迪拉姆与美元挂钩，以欧元收入偿还的阿联酋贷款存在真实且值得定价的汇率敞口。",
+          "vi": "Có. Thu nhập bằng euro từ Đức rất dễ để các ngân hàng UAE thẩm định, với điều kiện điển hình dành cho người không cư trú là 50% tỷ lệ vay trên giá trị, lãi suất khoảng 4.5-6.5% và kỳ hạn 25-year. Hãy so sánh với một khoản vay tại Đức, kể cả phương án rút vốn từ bất động sản sẵn có: lãi suất euro và dirham biến động độc lập, và vì dirham neo theo đô la nên khoản vay UAE trả bằng thu nhập euro mang rủi ro tỷ giá thực sự, đáng được định lượng.",
+          "he": "כן. הכנסה גרמנית הנקובה ביורו קלה להערכה עבור מלווים ב-UAE, עם תנאים טיפוסיים ללא תושבות של 50% מימון מול שווי, ריביות סביב 4.5-6.5% ותקופה של 25-year. השווה מול מסגרת גרמנית, כולל שחרור הון עצמי מנכס קיים: ריביות היורו והדירהם נעות באופן בלתי תלוי, ומכיוון שהדירהם צמוד לדולר, הלוואה ב-UAE הנפרעת מהכנסה ביורו נושאת חשיפה מטבעית ממשית שכדאי לתמחר."
+        }
+      },
+      {
+        "question": {
+          "en": "What happens to the property on inheritance?",
+          "fr": "Qu'advient-il du bien en cas de succession ?",
+          "ru": "Что происходит с объектом при наследовании?",
+          "ar": "ماذا يحدث للعقار عند الميراث؟",
+          "zh": "房产在继承时会如何处理？",
+          "vi": "Điều gì xảy ra với bất động sản khi thừa kế?",
+          "he": "מה קורה לנכס בירושה?"
+        },
+        "answer": {
+          "en": "The UAE charges no inheritance tax on Dubai property, but that does not settle the question. German inheritance tax can apply based on the residence of the deceased or the beneficiary, and UAE succession rules may apply to the asset itself unless you have made provision — registering a will with the DIFC Wills Service is the common route for non-Muslim owners to direct the asset under their own choice of law. Handle this at purchase rather than leaving heirs to discover it.",
+          "fr": "Les Émirats ne prélèvent aucun droit de succession sur un bien à Dubaï, mais cela ne règle pas la question. Les droits de succession allemands peuvent s'appliquer selon la résidence du défunt ou du bénéficiaire, et les règles successorales émiriennes peuvent s'appliquer à l'actif lui-même faute de disposition contraire — l'enregistrement d'un testament auprès du DIFC Wills Service est la voie courante pour les propriétaires non musulmans souhaitant transmettre le bien selon la loi de leur choix. Traitez ce point dès l'achat plutôt que de laisser vos héritiers le découvrir.",
+          "ru": "UAE не взимает налог на наследство с недвижимости в Dubai, но вопрос этим не закрывается. Германский налог на наследство может применяться исходя из резидентства наследодателя или наследника, а к самому активу могут применяться нормы наследственного права UAE, если вы не распорядились иначе — регистрация завещания в DIFC Wills Service является обычным путём для владельцев-немусульман, желающих распорядиться активом по выбранному ими праву. Решайте это на этапе покупки, а не оставляйте наследникам выяснять самим.",
+          "ar": "لا تفرض UAE ضريبة ميراث على العقارات في Dubai، لكن ذلك لا يحسم المسألة. فضريبة الميراث الألمانية قد تنطبق استناداً إلى إقامة المتوفى أو المستفيد، كما قد تنطبق قواعد التركات الإماراتية على الأصل نفسه ما لم تتخذ ترتيباً مسبقاً — وتسجيل وصية لدى DIFC Wills Service هو المسار الشائع لدى المالكين غير المسلمين لتوجيه الأصل وفق القانون الذي يختارونه. عالج هذا الأمر عند الشراء بدل أن تترك الورثة يكتشفونه لاحقاً.",
+          "zh": "阿联酋不对迪拜房产征收遗产税，但问题并未就此了结。德国遗产税可能基于被继承人或受益人的居住地而适用，而且除非您事先作出安排，阿联酋的继承规则可能适用于该资产本身——非穆斯林业主通常通过在 DIFC Wills Service 登记遗嘱，按自己选择的法律指定资产归属。请在购房时一并处理，而不要留给继承人日后才发现。",
+          "vi": "UAE không thu thuế thừa kế đối với bất động sản tại Dubai, nhưng điều đó chưa giải quyết được vấn đề. Thuế thừa kế của Đức vẫn có thể áp dụng dựa trên nơi cư trú của người để lại di sản hoặc của người thụ hưởng, và các quy định thừa kế của UAE có thể áp dụng cho chính tài sản đó trừ khi bạn đã có sắp xếp — đăng ký di chúc với DIFC Wills Service là cách phổ biến để chủ sở hữu không theo đạo Hồi định đoạt tài sản theo hệ thống pháp luật mình chọn. Hãy xử lý việc này ngay khi mua thay vì để người thừa kế tự phát hiện sau.",
+          "he": "UAE אינה גובה מס ירושה על נכס ב-Dubai, אך בכך לא תם העניין. מס ירושה גרמני עשוי לחול בהתאם למקום מושבו של המוריש או של היורש, וכללי הירושה של UAE עשויים לחול על הנכס עצמו אלא אם הסדרת זאת מראש — רישום צוואה ב-DIFC Wills Service הוא המסלול המקובל לבעלים שאינם מוסלמים כדי לכוון את הנכס לפי הדין שבחרו. טפל בכך בעת הרכישה ולא תשאיר ליורשים לגלות זאת."
+        }
+      }
     ]
   },
   {
@@ -561,6 +1415,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "JVC",
       "Downtown Dubai"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Does the IFI apply to a Dubai property?",
+          "fr": "L'IFI s'applique-t-il à un bien à Dubaï ?",
+          "ru": "Применяется ли IFI к недвижимости в Dubai?",
+          "ar": "هل ينطبق IFI على عقار في Dubai؟",
+          "zh": "IFI 适用于迪拜房产吗？",
+          "vi": "IFI có áp dụng cho bất động sản tại Dubai không?",
+          "he": "האם ה-IFI חל על נכס ב-Dubai?"
+        },
+        "answer": {
+          "en": "If you are a French tax resident, yes. The impôt sur la fortune immobilière applies to worldwide real estate assets above €1.3M net, and a Dubai property counts towards that threshold like any other. This is the detail most French buyers miss, because they model income tax and stop there. A property that seems to sit comfortably outside French taxation on its rent can still pull your total real-estate holding over the IFI threshold and create an annual charge on the whole portfolio.",
+          "fr": "Si vous êtes résident fiscal français, oui. L'impôt sur la fortune immobilière s'applique aux actifs immobiliers mondiaux au-delà de €1.3M nets, et un bien à Dubaï entre dans ce seuil comme n'importe quel autre. C'est le détail que la plupart des acquéreurs français négligent, car ils modélisent l'impôt sur le revenu et s'arrêtent là. Un bien qui semble échapper confortablement à la fiscalité française sur ses loyers peut néanmoins faire franchir à votre patrimoine immobilier total le seuil de l'IFI et créer une charge annuelle sur l'ensemble du portefeuille.",
+          "ru": "Если вы налоговый резидент Франции — да. Impôt sur la fortune immobilière применяется к общемировым активам в недвижимости при чистой стоимости свыше €1.3M, и объект в Dubai учитывается в этом пороге наравне с любым другим. Именно эту деталь французские покупатели чаще всего упускают, поскольку моделируют подоходный налог и на этом останавливаются. Объект, который по аренде выглядит вполне вне французского налогообложения, всё равно способен вывести совокупный портфель недвижимости за порог IFI и создать ежегодный платёж со всего портфеля.",
+          "ar": "إذا كنت مقيماً ضريبياً فرنسياً، فنعم. ينطبق impôt sur la fortune immobilière على الأصول العقارية حول العالم التي تتجاوز قيمتها الصافية €1.3M، ويُحتسب عقار Dubai ضمن ذلك الحد كأي أصل آخر. وهذه هي التفصيلة التي يغفل عنها معظم المشترين الفرنسيين، لأنهم يحسبون ضريبة الدخل ويتوقفون عند ذلك. فعقار يبدو أنه خارج نطاق الضريبة الفرنسية على إيجاره قد يرفع مع ذلك إجمالي حيازتك العقارية فوق عتبة IFI ويخلق عبئاً سنوياً على المحفظة بأكملها.",
+          "zh": "如果您是法国税务居民，是的。impôt sur la fortune immobilière 适用于全球净值超过 €1.3M 的不动产资产，迪拜房产与其他任何资产一样计入该门槛。这是多数法国买家忽略的细节，因为他们只测算所得税便止步于此。一处看似在租金上安然处于法国税制之外的房产，仍可能把您不动产持有总额推过 IFI 门槛，从而对整个组合产生一项年度税负。",
+          "vi": "Nếu bạn là résidents fiscaux tại Pháp thì có. impôt sur la fortune immobilière áp dụng cho bất động sản trên toàn cầu có giá trị ròng trên €1.3M, và một bất động sản tại Dubai được tính vào ngưỡng đó như mọi tài sản khác. Đây là chi tiết mà phần lớn người mua Pháp bỏ sót, vì họ chỉ tính đến thuế thu nhập rồi dừng lại. Một bất động sản tưởng như nằm ngoài tầm đánh thuế của Pháp đối với tiền thuê vẫn có thể đẩy tổng giá trị bất động sản của bạn vượt ngưỡng IFI và tạo ra khoản thuế hằng năm trên toàn bộ danh mục.",
+          "he": "אם אתה תושב צרפת לצורכי מס — כן. ה-impôt sur la fortune immobilière חל על נכסי נדל\"ן בכל העולם מעל €1.3M נטו, ונכס ב-Dubai נספר לצורך הסף הזה ככל נכס אחר. זהו הפרט שרוב הרוכשים הצרפתים מפספסים, משום שהם בוחנים מס הכנסה ועוצרים שם. נכס שנראה כאילו הוא יושב בנוחות מחוץ למיסוי הצרפתי על שכר הדירה שלו עדיין עלול למשוך את סך אחזקות הנדל\"ן שלך מעבר לסף ה-IFI וליצור חבות שנתית על כל התיק."
+        }
+      },
+      {
+        "question": {
+          "en": "How is Dubai rental income taxed in France?",
+          "fr": "Comment les revenus locatifs de Dubaï sont-ils imposés en France ?",
+          "ru": "Как арендный доход из Dubai облагается во Франции?",
+          "ar": "كيف يخضع دخل الإيجار من Dubai للضريبة في فرنسا؟",
+          "zh": "迪拜租金收入在法国如何征税？",
+          "vi": "Thu nhập cho thuê tại Dubai bị đánh thuế ra sao tại Pháp?",
+          "he": "כיצד ממוסות בצרפת הכנסות שכירות מ-Dubai?"
+        },
+        "answer": {
+          "en": "French residents are taxed on worldwide income including Dubai rent, and prélèvements sociaux at 17.2% apply to investment income on top of income tax. Because the UAE levies nothing, there is no foreign tax to credit. A capital gain on foreign property is taxed at a flat 19% plus the 17.2% social charges, or at the progressive rate if that is higher. Non-residents are taxed only on French-source income, so the position changes entirely if you genuinely leave — but French residence tests are their own subject.",
+          "fr": "Les résidents fiscaux français sont imposés sur leurs revenus mondiaux, loyers de Dubaï compris, et les prélèvements sociaux de 17.2% s'appliquent aux revenus du patrimoine en sus de l'impôt sur le revenu. Comme les Émirats ne prélèvent rien, aucun impôt étranger n'est imputable. Une plus-value sur un bien étranger est imposée au taux forfaitaire de 19% majoré des 17.2% de prélèvements sociaux, ou au barème progressif si celui-ci est plus élevé. Les non-résidents ne sont imposés que sur les revenus de source française : la situation change donc entièrement si vous quittez réellement la France — mais les critères de résidence français sont un sujet à part entière.",
+          "ru": "Французские резиденты облагаются по общемировому доходу, включая аренду из Dubai, а к инвестиционному доходу сверх подоходного налога добавляются prélèvements sociaux по ставке 17.2%. Поскольку UAE ничего не взимает, зачитывать иностранный налог не из чего. Прирост капитала по зарубежной недвижимости облагается по фиксированной ставке 19% плюс 17.2% социальных взносов либо по прогрессивной ставке, если она выше. Нерезиденты облагаются только по доходам французского источника, так что позиция меняется полностью, если вы действительно уезжаете, — но французские тесты резидентства это отдельная тема.",
+          "ar": "يخضع المقيمون الفرنسيون للضريبة على دخلهم العالمي بما في ذلك إيجار Dubai، وتُطبَّق prélèvements sociaux بنسبة 17.2% على دخل الاستثمار فوق ضريبة الدخل. ولأن UAE لا تفرض شيئاً، فلا توجد ضريبة أجنبية يمكن خصمها. أما الربح الرأسمالي على عقار أجنبي فيخضع لمعدل ثابت 19% إضافةً إلى الرسوم الاجتماعية 17.2%، أو للمعدل التصاعدي إن كان أعلى. ولا يخضع غير المقيمين إلا للدخل ذي المصدر الفرنسي، لذا يتغير الوضع كلياً إذا غادرت فعلاً — لكن اختبارات الإقامة الفرنسية موضوع قائم بذاته.",
+          "zh": "法国居民就包括迪拜租金在内的全球收入纳税，投资性收入在所得税之外还须缴纳 17.2% 的 prélèvements sociaux。由于阿联酋不征税，没有可抵免的外国税款。海外房产的资本利得按 19% 的固定税率加 17.2% 的社会摊款征税，若累进税率更高则按累进税率。非居民仅就法国来源收入纳税，因此若您真正离境，情况将完全不同——但法国的居民身份判定标准本身就是另一个课题。",
+          "vi": "Người cư trú Pháp chịu thuế trên thu nhập toàn cầu bao gồm tiền thuê từ Dubai, và prélèvements sociaux ở mức 17.2% áp dụng cho thu nhập đầu tư bên cạnh thuế thu nhập. Vì UAE không thu khoản nào, nên không có thuế nước ngoài để khấu trừ. Lãi vốn từ bất động sản nước ngoài chịu thuế suất cố định 19% cộng 17.2% các khoản đóng góp xã hội, hoặc theo biểu lũy tiến nếu mức đó cao hơn. Người không cư trú chỉ chịu thuế trên thu nhập phát sinh tại Pháp, nên vị thế thay đổi hoàn toàn nếu bạn thực sự rời đi — nhưng các tiêu chí xác định cư trú của Pháp lại là một chủ đề riêng.",
+          "he": "תושבי צרפת ממוסים על הכנסה מכל העולם, כולל שכר דירה מ-Dubai, ו-prélèvements sociaux בשיעור 17.2% חלים על הכנסה מהשקעות בנוסף למס ההכנסה. מאחר ש-UAE אינה גובה דבר, אין מס זר לזיכוי. רווח הון על נכס זר ממוסה בשיעור אחיד של 19% בתוספת היטלים סוציאליים של 17.2%, או בשיעור הפרוגרסיבי אם הוא גבוה יותר. מי שאינם תושבים ממוסים רק על הכנסה ממקור צרפתי, כך שהתמונה משתנה לחלוטין אם עזבת באמת — אך מבחני התושבות הצרפתיים הם נושא בפני עצמו."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I have to declare the property and any UAE accounts?",
+          "fr": "Dois-je déclarer le bien et mes comptes aux Émirats ?",
+          "ru": "Обязан ли я декларировать объект и счета в UAE?",
+          "ar": "هل يجب أن أعلن عن العقار وعن أي حسابات في UAE؟",
+          "zh": "我必须申报该房产及任何阿联酋账户吗？",
+          "vi": "Tôi có phải khai báo bất động sản và các tài khoản tại UAE không?",
+          "he": "האם עליי להצהיר על הנכס ועל חשבונות ב-UAE?"
+        },
+        "answer": {
+          "en": "Yes, and the account declaration is the one that catches people. French residents must declare foreign bank accounts annually, and failure to do so carries fixed penalties per account per year independently of any tax due. The property itself feeds into your income and IFI filings. France and the UAE exchange financial account information automatically, so an undeclared UAE account is visible rather than discreet. Declare it, keep the DLD title and transfer records, and the position stays simple.",
+          "fr": "Oui, et c'est la déclaration de comptes qui piège le plus souvent. Les résidents fiscaux français doivent déclarer chaque année leurs comptes bancaires à l'étranger, et le défaut de déclaration entraîne des amendes forfaitaires par compte et par an, indépendamment de tout impôt dû. Le bien lui-même alimente vos déclarations de revenus et d'IFI. La France et les Émirats échangent automatiquement les informations sur les comptes financiers : un compte émirien non déclaré est donc visible plutôt que discret. Déclarez-le, conservez le titre DLD et les actes de transfert, et la situation reste simple.",
+          "ru": "Да, и именно декларирование счетов чаще всего подводит людей. Французские резиденты обязаны ежегодно декларировать зарубежные банковские счета, а за неподачу предусмотрены фиксированные штрафы за каждый счёт за каждый год независимо от суммы налога. Сам объект попадает в ваши декларации по подоходному налогу и IFI. Франция и UAE автоматически обмениваются информацией о финансовых счетах, поэтому незадекларированный счёт в UAE не является незаметным. Декларируйте, храните титул DLD и документы о передаче права — и позиция останется простой.",
+          "ar": "نعم، وإعلان الحسابات هو ما يوقع الناس في المشكلات. إذ يجب على المقيمين الفرنسيين الإعلان سنوياً عن الحسابات المصرفية الأجنبية، وعدم القيام بذلك يستوجب غرامات ثابتة عن كل حساب وعن كل سنة بصرف النظر عن أي ضريبة مستحقة. أما العقار نفسه فيدخل في إقراراتك للدخل ولـ IFI. وتتبادل فرنسا وUAE معلومات الحسابات المالية تلقائياً، لذا فإن حساباً إماراتياً غير معلَن يكون مرئياً لا متحفظاً. أعلن عنه، واحتفظ بسند ملكية DLD ووثائق نقل الملكية، ويبقى الوضع بسيطاً.",
+          "zh": "必须，而且账户申报才是最容易让人栽跟头的一项。法国居民须每年申报境外银行账户，未申报者无论是否有应纳税款，都会按账户、按年度处以固定罚款。房产本身则计入您的所得税与 IFI 申报。法国与阿联酋自动交换金融账户信息，因此未申报的阿联酋账户是可见的，并不隐蔽。如实申报、保存 DLD 产权与过户记录，情况便会保持简单。",
+          "vi": "Có, và chính phần khai báo tài khoản mới là điều khiến nhiều người vướng. Người cư trú Pháp phải khai báo tài khoản ngân hàng nước ngoài hằng năm, và việc không khai kéo theo mức phạt cố định cho mỗi tài khoản mỗi năm, độc lập với số thuế phải nộp. Bản thân bất động sản thì đi vào tờ khai thu nhập và tờ khai IFI của bạn. Pháp và UAE tự động trao đổi thông tin tài khoản tài chính, nên một tài khoản UAE không khai báo là thứ hiển thị chứ không hề kín đáo. Hãy kê khai, lưu giữ giấy chứng nhận quyền sở hữu do DLD cấp cùng hồ sơ chuyển nhượng, và mọi thứ sẽ đơn giản.",
+          "he": "כן, והצהרת החשבונות היא זו שתופסת אנשים. תושבי צרפת חייבים להצהיר על חשבונות בנק זרים מדי שנה, ואי-עשייה גוררת קנסות קבועים לכל חשבון לכל שנה, ללא קשר למס שחב בפועל. הנכס עצמו נכנס לדיווחי מס ההכנסה וה-IFI שלך. צרפת ו-UAE מחליפות מידע על חשבונות פיננסיים באופן אוטומטי, כך שחשבון ב-UAE שלא הוצהר הוא גלוי ולא דיסקרטי. הצהר עליו, שמור את שטר הבעלות של ה-DLD ואת מסמכי ההעברה, והמצב נשאר פשוט."
+        }
+      },
+      {
+        "question": {
+          "en": "Is a Dubai yield better than French rental property?",
+          "fr": "Le rendement à Dubaï est-il meilleur qu'un bien locatif français ?",
+          "ru": "Доходность в Dubai выше, чем у французской арендной недвижимости?",
+          "ar": "هل عائد Dubai أفضل من عائد العقار الإيجاري الفرنسي؟",
+          "zh": "迪拜的收益率会比法国出租房产更好吗？",
+          "vi": "Lợi suất tại Dubai có tốt hơn bất động sản cho thuê tại Pháp không?",
+          "he": "האם התשואה ב-Dubai טובה יותר מנכס להשכרה בצרפת?"
+        },
+        "answer": {
+          "en": "On gross, usually — roughly 5-8% in Dubai's mainstream freehold communities against typically lower yields in Paris and the major French cities. The structural gap is in the running costs: Dubai charges no taxe foncière equivalent and nothing at source on rent, whereas French rental property carries taxe foncière annually plus the 17.2% social charges on income. Against that, if you remain French tax resident the income is taxable in France and the asset may attract IFI, so model net at your own rates.",
+          "fr": "En brut, généralement oui — environ 5-8% dans les principales communautés freehold de Dubaï, contre des rendements habituellement plus faibles à Paris et dans les grandes villes françaises. L'écart structurel se situe dans les coûts de détention : Dubaï ne prélève aucun équivalent de la taxe foncière ni rien à la source sur les loyers, alors qu'un bien locatif français supporte la taxe foncière chaque année ainsi que les 17.2% de prélèvements sociaux sur les revenus. En regard, si vous restez résident fiscal français, les revenus sont imposables en France et l'actif peut entrer dans l'assiette de l'IFI : modélisez donc en net, à vos propres taux.",
+          "ru": "По валовой — обычно да: примерно 5-8% в основных freehold-сообществах Dubai против, как правило, более низкой доходности в Париже и крупных французских городах. Структурный разрыв — в текущих расходах: в Dubai нет аналога taxe foncière и нет удержания налога с аренды у источника, тогда как французская арендная недвижимость ежегодно облагается taxe foncière плюс 17.2% социальных взносов с дохода. С другой стороны, если вы остаётесь французским налоговым резидентом, доход облагается во Франции, а актив может попасть под IFI, — поэтому считайте чистую доходность по вашим собственным ставкам.",
+          "ar": "من حيث الإجمالي، نعم في الغالب — نحو 5-8% في مجتمعات freehold الرئيسية في Dubai مقابل عوائد أدنى عادةً في باريس والمدن الفرنسية الكبرى. والفجوة البنيوية تكمن في التكاليف الجارية: فـ Dubai لا تفرض ما يعادل taxe foncière ولا شيئاً عند المنبع على الإيجار، بينما يتحمل العقار الإيجاري الفرنسي taxe foncière سنوياً إضافةً إلى الرسوم الاجتماعية 17.2% على الدخل. في المقابل، إذا بقيت مقيماً ضريبياً فرنسياً فسيخضع الدخل للضريبة في فرنسا وقد يستقطب الأصل IFI، لذا احسب الصافي وفق معدلاتك أنت.",
+          "zh": "就毛收益而言通常是——迪拜主流 freehold 社区大致为 5-8%，而巴黎及法国主要城市的收益率通常更低。结构性差距在于持有成本：迪拜没有相当于 taxe foncière 的税项，租金也不在源头课税；而法国出租房产每年须缴 taxe foncière，收入还须承担 17.2% 的社会摊款。但另一方面，若您仍是法国税务居民，收入须在法国纳税，该资产还可能引发 IFI，因此请按您自身的税率以净额测算。",
+          "vi": "Xét trên cơ sở gộp thì thường là vậy — khoảng 5-8% tại các cộng đồng freehold phổ thông của Dubai so với lợi suất thường thấp hơn ở Paris và các thành phố lớn của Pháp. Khoảng cách mang tính cấu trúc nằm ở chi phí vận hành: Dubai không có khoản nào tương đương taxe foncière và không khấu trừ tại nguồn với tiền thuê, trong khi bất động sản cho thuê tại Pháp phải chịu taxe foncière hằng năm cộng 17.2% đóng góp xã hội trên thu nhập. Ở chiều ngược lại, nếu bạn vẫn là đối tượng cư trú thuế Pháp thì thu nhập chịu thuế tại Pháp và tài sản có thể bị tính vào IFI, nên hãy tính trên cơ sở ròng theo thuế suất của chính bạn.",
+          "he": "מבחינת ברוטו — בדרך כלל כן: בערך 5-8% בקהילות ה-freehold המרכזיות של Dubai לעומת תשואות נמוכות יותר בדרך כלל בפריז ובערים הצרפתיות הגדולות. הפער המבני הוא בעלויות השוטפות: Dubai אינה גובה מקבילה ל-taxe foncière ואינה מנכה דבר במקור על שכר דירה, בעוד שנכס להשכרה בצרפת נושא taxe foncière מדי שנה בתוספת היטלים סוציאליים של 17.2% על ההכנסה. מנגד, אם אתה נותר תושב צרפת לצורכי מס ההכנסה חייבת במס בצרפת והנכס עשוי להיכנס ל-IFI, לכן בנה מודל נטו לפי השיעורים שלך."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a mortgage on French income?",
+          "fr": "Puis-je obtenir un prêt sur des revenus français ?",
+          "ru": "Могу ли я получить ипотеку под французский доход?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري بدخل فرنسي؟",
+          "zh": "我能凭法国收入获得按揭吗？",
+          "vi": "Tôi có thể vay thế chấp dựa trên thu nhập tại Pháp không?",
+          "he": "האם אוכל לקבל משכנתה על בסיס הכנסה צרפתית?"
+        },
+        "answer": {
+          "en": "Yes. Euro-denominated income from a French employer or company is readily assessed by UAE lenders, with typical non-resident terms of 50% loan-to-value, rates around 4.5-6.5% and a 25-year term. It is worth comparing against a French facility, since French rates are often lower — though the dirham's dollar peg means a UAE loan serviced from euro income carries a currency exposure that a French loan does not.",
+          "fr": "Oui. Des revenus libellés en euros provenant d'un employeur ou d'une société française sont aisément évalués par les prêteurs des Émirats, avec des conditions types pour non-résidents de 50% de quotité de financement, des taux autour de 4.5-6.5% et une durée de 25-year. Il vaut la peine de comparer avec un financement français, les taux français étant souvent plus bas — même si l'arrimage du dirham au dollar fait qu'un prêt aux Émirats remboursé à partir de revenus en euros comporte une exposition de change qu'un prêt français n'a pas.",
+          "ru": "Да. Доход в евро от французского работодателя или компании банки UAE оценивают без затруднений; типичные условия для нерезидентов — 50% кредит к стоимости, ставки около 4.5-6.5% и срок 25-year. Стоит сравнить с французским кредитом, поскольку французские ставки нередко ниже, — хотя привязка дирхама к доллару означает, что кредит в UAE, обслуживаемый доходом в евро, несёт валютную экспозицию, которой у французского кредита нет.",
+          "ar": "نعم. الدخل المقوَّم باليورو من صاحب عمل أو شركة فرنسية تقيّمه جهات الإقراض في UAE بسهولة، بشروط نموذجية لغير المقيمين تبلغ 50% نسبة تمويل إلى قيمة، ومعدلات نحو 4.5-6.5%، ومدة 25-year. ويستحق الأمر المقارنة مع تسهيل فرنسي، إذ كثيراً ما تكون المعدلات الفرنسية أدنى — وإن كان ارتباط الدرهم بالدولار يعني أن قرضاً في UAE يُسدَّد من دخل باليورو ينطوي على تعرّض لمخاطر العملة لا ينطوي عليه قرض فرنسي.",
+          "zh": "可以。来自法国雇主或公司的欧元计价收入，阿联酋放贷机构很容易评估，典型的非居民条件为贷款价值比 50%、利率约 4.5-6.5%、期限 25-year。值得与法国的贷款方案比较，因为法国利率往往更低——不过迪拉姆与美元挂钩意味着以欧元收入偿还的阿联酋贷款存在法国贷款所没有的汇率敞口。",
+          "vi": "Có. Thu nhập bằng euro từ một chủ sử dụng lao động hoặc doanh nghiệp tại Pháp được các ngân hàng UAE thẩm định dễ dàng, với điều kiện điển hình dành cho người không cư trú là 50% tỷ lệ vay trên giá trị, lãi suất khoảng 4.5-6.5% và kỳ hạn 25-year. Cũng đáng so sánh với một khoản vay tại Pháp, vì lãi suất Pháp thường thấp hơn — dù việc dirham neo theo đô la nghĩa là khoản vay UAE trả bằng thu nhập euro mang rủi ro tỷ giá mà khoản vay tại Pháp không có.",
+          "he": "כן. הכנסה הנקובה ביורו ממעסיק או מחברה צרפתית נבחנת בקלות על ידי מלווים ב-UAE, עם תנאים טיפוסיים ללא תושבות של 50% מימון מול שווי, ריביות סביב 4.5-6.5% ותקופה של 25-year. שווה להשוות מול מסגרת צרפתית, שכן הריביות בצרפת נמוכות יותר לא פעם — אם כי הצמדת הדירהם לדולר פירושה שהלוואה ב-UAE הנפרעת מהכנסה ביורו נושאת חשיפה מטבעית שהלוואה צרפתית אינה נושאת."
+        }
+      },
+      {
+        "question": {
+          "en": "What about succession and French forced heirship?",
+          "fr": "Qu'en est-il de la succession et de la réserve héréditaire française ?",
+          "ru": "Как быть с наследованием и французской обязательной долей наследников?",
+          "ar": "ماذا عن التركات ونظام الإرث الجبري الفرنسي؟",
+          "zh": "继承以及法国的特留份制度该怎么看？",
+          "vi": "Còn vấn đề thừa kế và chế độ thừa kế bắt buộc của Pháp thì sao?",
+          "he": "ומה לגבי ירושה והורשה כפויה בצרפת?"
+        },
+        "answer": {
+          "en": "The UAE charges no inheritance tax on Dubai property, but French succession rules and their reserved-portion principles may still bear on your estate depending on your residence and the applicable law. Separately, UAE succession rules can apply to the asset itself unless you provide otherwise — non-Muslim owners commonly register a will with the DIFC Wills Service to direct the property under their chosen law. The two systems need to be considered together rather than sequentially, so raise it with a notaire who handles cross-border estates.",
+          "fr": "Les Émirats ne prélèvent aucun droit de succession sur un bien à Dubaï, mais les règles successorales françaises et leur principe de réserve héréditaire peuvent néanmoins peser sur votre succession selon votre résidence et la loi applicable. Par ailleurs, les règles successorales émiriennes peuvent s'appliquer à l'actif lui-même en l'absence de disposition contraire — les propriétaires non musulmans enregistrent couramment un testament auprès du DIFC Wills Service afin de transmettre le bien selon la loi de leur choix. Les deux systèmes doivent être envisagés ensemble plutôt que successivement : abordez donc la question avec un notaire rompu aux successions transfrontalières.",
+          "ru": "UAE не взимает налог на наследство с недвижимости в Dubai, но французские нормы наследственного права и принцип резервируемой доли всё равно могут затрагивать ваше наследство в зависимости от вашего резидентства и применимого права. Отдельно к самому активу могут применяться нормы наследственного права UAE, если вы не распорядились иначе, — владельцы-немусульмане обычно регистрируют завещание в DIFC Wills Service, чтобы распорядиться объектом по выбранному праву. Обе системы нужно рассматривать вместе, а не последовательно, поэтому обсудите это с notaire, работающим с трансграничными наследствами.",
+          "ar": "لا تفرض UAE ضريبة ميراث على العقارات في Dubai، لكن قواعد التركات الفرنسية ومبادئ الحصة المحفوظة فيها قد تظل مؤثرة في تركتك حسب إقامتك والقانون الواجب التطبيق. وبمعزل عن ذلك، قد تنطبق قواعد التركات الإماراتية على الأصل نفسه ما لم ترتّب خلاف ذلك — ويسجّل المالكون غير المسلمين عادةً وصية لدى DIFC Wills Service لتوجيه العقار وفق القانون الذي يختارونه. ويلزم النظر في النظامين معاً لا بالتتابع، لذا اطرح الأمر على notaire متمرس في التركات العابرة للحدود.",
+          "zh": "阿联酋不对迪拜房产征收遗产税，但法国的继承规则及其保留份原则仍可能影响您的遗产安排，具体取决于您的居住地与适用法律。另外，除非您另行安排，阿联酋的继承规则可能适用于该资产本身——非穆斯林业主通常在 DIFC Wills Service 登记遗嘱，按其选择的法律指定房产归属。这两套制度需要一并考虑而非先后处理，因此请向办理跨境遗产事务的 notaire 提出这个问题。",
+          "vi": "UAE không thu thuế thừa kế đối với bất động sản tại Dubai, nhưng các quy định thừa kế của Pháp cùng nguyên tắc phần di sản dành riêng cho người thừa kế bắt buộc vẫn có thể ảnh hưởng đến di sản của bạn, tùy theo nơi cư trú và luật áp dụng. Bên cạnh đó, các quy định thừa kế của UAE có thể áp dụng cho chính tài sản trừ khi bạn sắp xếp khác đi — chủ sở hữu không theo đạo Hồi thường đăng ký di chúc với DIFC Wills Service để định đoạt bất động sản theo hệ thống pháp luật mình chọn. Hai hệ thống này cần được xem xét cùng nhau chứ không phải lần lượt, nên hãy trao đổi với một notaire chuyên xử lý di sản xuyên biên giới.",
+          "he": "UAE אינה גובה מס ירושה על נכס ב-Dubai, אך כללי הירושה הצרפתיים ועקרונות המנה השמורה עשויים עדיין להשפיע על העיזבון שלך, בהתאם למקום מושבך ולדין החל. בנפרד, כללי הירושה של UAE עשויים לחול על הנכס עצמו אלא אם קבעת אחרת — בעלים שאינם מוסלמים נוהגים לרשום צוואה ב-DIFC Wills Service כדי לכוון את הנכס לפי הדין שבחרו. יש לבחון את שתי המערכות יחד ולא בזו אחר זו, לכן העלה זאת מול notaire המתמחה בעיזבונות חוצי גבולות."
+        }
+      }
     ]
   },
   {
@@ -627,6 +1603,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "JVC",
       "Dubai Marina",
       "Arjan"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Is foreign property income taxable in Vietnam?",
+          "fr": "Les revenus de biens étrangers sont-ils imposables au Vietnam ?",
+          "ru": "Облагается ли доход от зарубежной недвижимости во Вьетнаме?",
+          "ar": "هل الدخل من العقارات الأجنبية خاضع للضريبة في فيتنام؟",
+          "zh": "境外房产收入在越南需要纳税吗？",
+          "vi": "Thu nhập từ bất động sản ở nước ngoài có chịu thuế tại Việt Nam không?",
+          "he": "האם הכנסה מנכס בחו\"ל חייבת במס בווייטנאם?"
+        },
+        "answer": {
+          "en": "Technically yes. Foreign-source rental income and capital gains from overseas property are taxable in Vietnam under Circular 111, with personal income taxed at progressive rates up to 35%. Enforcement has historically been limited for offshore property held by Vietnamese who spend much of their time abroad, but that is a statement about practice rather than about the law, and the practice is changing as Common Reporting Standard data exchange comes online. Do not build a plan on an enforcement gap that is visibly closing.",
+          "fr": "Techniquement oui. Les revenus locatifs et les plus-values de source étrangère provenant d'un bien à l'étranger sont imposables au Vietnam en vertu de la Circular 111, l'impôt sur le revenu des personnes physiques étant appliqué à des taux progressifs allant jusqu'à 35%. L'application a historiquement été limitée pour les biens offshore détenus par des Vietnamiens qui passent l'essentiel de leur temps à l'étranger, mais c'est un constat sur la pratique et non sur le droit, et cette pratique évolue à mesure que l'échange de données du Common Reporting Standard se met en place. Ne bâtissez pas un plan sur une lacune d'application qui se referme visiblement.",
+          "ru": "Формально да. Арендный доход и прирост капитала от зарубежной недвижимости облагаются во Вьетнаме в соответствии с Circular 111, при этом доходы физических лиц облагаются по прогрессивным ставкам до 35%. Правоприменение исторически было ограниченным в отношении офшорной недвижимости вьетнамцев, значительную часть времени проводящих за границей, но это утверждение о практике, а не о законе, — и практика меняется по мере запуска обмена данными по Common Reporting Standard. Не стройте план на пробеле в правоприменении, который на глазах закрывается.",
+          "ar": "نظرياً نعم. فدخل الإيجار والأرباح الرأسمالية من عقار خارجي خاضعان للضريبة في فيتنام بموجب Circular 111، مع فرض ضريبة الدخل الشخصي بمعدلات تصاعدية تصل إلى 35%. وقد كان التطبيق محدوداً تاريخياً بالنسبة للعقارات الخارجية التي يملكها فيتناميون يقضون معظم وقتهم في الخارج، لكن ذلك وصف للممارسة لا للقانون، والممارسة تتغير مع دخول تبادل بيانات CRS حيز التنفيذ. لا تبنِ خطتك على ثغرة في التطبيق يجري إغلاقها على مرأى من الجميع.",
+          "zh": "严格来说需要。根据 Circular 111，来源于境外的租金收入与海外房产资本利得在越南应税，个人所得按累进税率最高 35% 征收。对于大部分时间在海外的越南人所持有的离岸房产，执法历来较为有限，但这是关于实务而非法律的陈述，而且随着共同申报准则（CRS）数据交换上线，实务正在改变。不要把规划建立在一个正在明显收窄的执法缺口之上。",
+          "vi": "Về mặt pháp lý là có. Thu nhập cho thuê và lãi chuyển nhượng phát sinh từ bất động sản ở nước ngoài thuộc diện chịu thuế tại Việt Nam theo Circular 111, với thuế thu nhập cá nhân theo biểu lũy tiến lên tới 35%. Trên thực tế, việc thực thi lâu nay còn hạn chế đối với bất động sản ở nước ngoài do người Việt dành phần lớn thời gian ở nước ngoài nắm giữ, nhưng đó là nhận định về thực tiễn chứ không phải về luật, và thực tiễn đang thay đổi khi cơ chế trao đổi dữ liệu theo Common Reporting Standard đi vào vận hành. Đừng xây dựng kế hoạch dựa trên một khoảng trống thực thi đang thu hẹp thấy rõ.",
+          "he": "טכנית כן. הכנסות שכירות ורווחי הון ממקור זר מנכס בחו\"ל חייבים במס בווייטנאם לפי Circular 111, כאשר מס הכנסה אישי נגבה בשיעורים פרוגרסיביים עד 35%. האכיפה הייתה היסטורית מוגבלת לגבי נכסים בחו\"ל שבידי וייטנאמים השוהים חלק ניכר מזמנם מחוץ למדינה, אך זו אמירה על הפרקטיקה ולא על הדין, והפרקטיקה משתנה ככל שהחלפת המידע במסגרת ה-Common Reporting Standard נכנסת לפעולה. אל תבנה תוכנית על פער אכיפה שנסגר לנגד העיניים."
+        }
+      },
+      {
+        "question": {
+          "en": "Will Vietnamese authorities find out about a Dubai purchase?",
+          "fr": "Les autorités vietnamiennes auront-elles connaissance d'un achat à Dubaï ?",
+          "ru": "Узнают ли вьетнамские органы о покупке в Dubai?",
+          "ar": "هل ستعلم السلطات الفيتنامية بشراء عقار في Dubai؟",
+          "zh": "越南当局会知道我在迪拜购房吗？",
+          "vi": "Cơ quan chức năng Việt Nam có biết về việc mua bất động sản tại Dubai không?",
+          "he": "האם הרשויות בווייטנאם יגלו על רכישה ב-Dubai?"
+        },
+        "answer": {
+          "en": "Increasingly, yes. The UAE has signed the Multilateral Competent Authority Agreement and participates in automatic exchange of financial account information, which means accounts connected to a Dubai property become visible to participating jurisdictions through routine data exchange rather than investigation. The sensible posture is to treat the holding as declarable and get your Vietnamese filing position confirmed by an adviser, rather than relying on it going unnoticed.",
+          "fr": "De plus en plus, oui. Les Émirats ont signé le Multilateral Competent Authority Agreement (MCAA) et participent à l'échange automatique d'informations sur les comptes financiers, ce qui signifie que les comptes rattachés à un bien à Dubaï deviennent visibles des juridictions participantes par le seul jeu de l'échange de données, sans enquête. La posture raisonnable consiste à considérer la détention comme déclarable et à faire confirmer votre position déclarative vietnamienne par un conseiller, plutôt que de compter sur le fait qu'elle passe inaperçue.",
+          "ru": "Всё чаще — да. UAE подписали Multilateral Competent Authority Agreement и участвуют в автоматическом обмене информацией о финансовых счетах: счета, связанные с недвижимостью в Dubai, становятся видимы участвующим юрисдикциям в ходе рутинного обмена данными, а не в результате расследования. Разумная позиция — исходить из того, что владение подлежит декларированию, и подтвердить вашу вьетнамскую отчётную позицию у консультанта, а не рассчитывать, что это останется незамеченным.",
+          "ar": "بصورة متزايدة، نعم. فقد وقّعت UAE على اتفاقية MCAA وتشارك في التبادل التلقائي لمعلومات الحسابات المالية، ما يعني أن الحسابات المرتبطة بعقار في Dubai تصبح مرئية للولايات القضائية المشاركة عبر تبادل بيانات روتيني لا عبر تحقيق. والموقف المعقول هو التعامل مع الحيازة باعتبارها واجبة الإعلان والحصول على تأكيد وضعك الضريبي الفيتنامي من مستشار، بدل الاعتماد على ألا يلاحظها أحد.",
+          "zh": "会，而且越来越确定。阿联酋已签署多边主管当局协议（MCAA）并参与金融账户信息自动交换，这意味着与迪拜房产相关的账户会通过例行数据交换、而非通过调查，被参与国看到。明智的做法是把该项持有视为须申报事项，并请顾问确认您在越南的申报立场，而不是寄望于无人察觉。",
+          "vi": "Ngày càng có khả năng. UAE đã ký Multilateral Competent Authority Agreement và tham gia trao đổi tự động thông tin tài khoản tài chính, nghĩa là các tài khoản gắn với một bất động sản tại Dubai trở nên hiển thị với các quốc gia tham gia thông qua cơ chế trao đổi dữ liệu thường quy chứ không cần điều tra. Cách tiếp cận hợp lý là xem tài sản đó thuộc diện phải kê khai và nhờ một chuyên gia tư vấn xác nhận vị thế kê khai tại Việt Nam của bạn, thay vì trông chờ vào việc không bị phát hiện.",
+          "he": "יותר ויותר — כן. UAE חתמה על ה-Multilateral Competent Authority Agreement ומשתתפת בהחלפה אוטומטית של מידע על חשבונות פיננסיים, כלומר חשבונות הקשורים לנכס ב-Dubai נעשים גלויים למדינות המשתתפות דרך החלפת נתונים שגרתית ולא דרך חקירה. העמדה הנבונה היא להתייחס להחזקה כברת-דיווח ולוודא את עמדת הדיווח הווייטנאמית שלך מול יועץ, ולא להסתמך על כך שהדבר יישאר סמוי."
+        }
+      },
+      {
+        "question": {
+          "en": "How do I move funds from Vietnam for the purchase?",
+          "fr": "Comment transférer des fonds depuis le Vietnam pour l'achat ?",
+          "ru": "Как перевести средства из Вьетнама для покупки?",
+          "ar": "كيف أحوّل الأموال من فيتنام لإتمام الشراء؟",
+          "zh": "我如何从越南汇出购房资金？",
+          "vi": "Tôi chuyển tiền từ Việt Nam để mua bằng cách nào?",
+          "he": "כיצד אני מעביר כספים מווייטנאם לצורך הרכישה?"
+        },
+        "answer": {
+          "en": "Vietnam operates foreign-exchange controls and outward capital transfers for overseas property purchase are restricted, so this is not a routine transfer. In practice most Vietnamese purchases in Dubai are funded from income already held offshore, or by buyers already working abroad. Confirm the route with your bank before you commit to any instalment schedule, because a developer payment plan assumes you can move money on fixed dates. We will not advise on structuring transfers to circumvent those controls.",
+          "fr": "Le Vietnam applique un contrôle des changes et les transferts de capitaux vers l'étranger destinés à l'achat d'un bien immobilier sont restreints : il ne s'agit donc pas d'un virement de routine. En pratique, la plupart des achats vietnamiens à Dubaï sont financés à partir de revenus déjà détenus offshore, ou par des acquéreurs travaillant déjà à l'étranger. Confirmez le circuit avec votre banque avant de vous engager sur un échéancier, car un plan de paiement promoteur suppose que vous puissiez transférer des fonds à dates fixes. Nous ne conseillons pas de montages visant à contourner ces contrôles.",
+          "ru": "Во Вьетнаме действует валютный контроль, а исходящие переводы капитала для покупки зарубежной недвижимости ограничены, так что это не рутинный перевод. На практике большинство вьетнамских покупок в Dubai финансируется из дохода, уже размещённого за рубежом, либо покупателями, уже работающими за границей. Подтвердите маршрут платежа в банке до того, как примете на себя график рассрочки, поскольку план платежей застройщика предполагает, что вы способны переводить деньги в фиксированные даты. Мы не консультируем по схемам переводов в обход этих ограничений.",
+          "ar": "تطبّق فيتنام ضوابط على الصرف الأجنبي، وتحويلات رأس المال إلى الخارج لشراء عقارات مقيَّدة، لذا فهذا ليس تحويلاً روتينياً. وعملياً تُموَّل معظم مشتريات الفيتناميين في Dubai من دخل محتفظ به أصلاً في الخارج، أو من مشترين يعملون خارج البلاد بالفعل. أكّد المسار مع مصرفك قبل أن تلتزم بأي جدول أقساط، لأن خطة الدفع لدى المطوّر تفترض قدرتك على تحويل الأموال في مواعيد محددة. ولن نقدّم أي مشورة بشأن هيكلة تحويلات للالتفاف على تلك الضوابط.",
+          "zh": "越南实行外汇管制，用于购买境外房产的资本对外转移受到限制，因此这并非一笔常规汇款。实务中，多数越南人在迪拜的购房资金来自已置于离岸的收入，或由已在海外工作的买家出资。请在承诺任何分期付款计划之前先与您的银行确认路径，因为开发商的付款计划假定您能在固定日期调动资金。我们不会就如何规避上述管制的转账安排提供建议。",
+          "vi": "Việt Nam áp dụng quản lý ngoại hối và việc chuyển vốn ra nước ngoài để mua bất động sản bị hạn chế, nên đây không phải một giao dịch chuyển tiền thông thường. Trên thực tế, phần lớn giao dịch mua tại Dubai của người Việt được tài trợ từ nguồn tiền đã có sẵn ở nước ngoài, hoặc bởi những người đang làm việc ở nước ngoài. Hãy xác nhận phương án với ngân hàng của bạn trước khi cam kết bất kỳ lịch thanh toán nào, bởi kế hoạch thanh toán của chủ đầu tư mặc định rằng bạn có thể chuyển tiền vào những ngày cố định. Chúng tôi không tư vấn về việc cấu trúc giao dịch chuyển tiền nhằm lách các quy định đó.",
+          "he": "וייטנאם מפעילה פיקוח על מט\"ח, והעברות הון החוצה לרכישת נכס בחו\"ל מוגבלות, ולכן אין מדובר בהעברה שגרתית. בפועל, מרבית הרכישות הווייטנאמיות ב-Dubai ממומנות מהכנסה המוחזקת כבר מחוץ למדינה, או על ידי רוכשים שכבר עובדים בחו\"ל. ודא את המסלול מול הבנק שלך לפני שאתה מתחייב ללוח תשלומים כלשהו, משום שתוכנית תשלומים של יזם מניחה שתוכל להעביר כסף במועדים קבועים. איננו מייעצים על מבנים להעברת כספים שנועדו לעקוף את הפיקוח הזה."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I own freehold property in Dubai as a Vietnamese citizen?",
+          "fr": "Puis-je détenir un bien en freehold à Dubaï en tant que citoyen vietnamien ?",
+          "ru": "Может ли гражданин Вьетнама владеть freehold-недвижимостью в Dubai?",
+          "ar": "هل يمكنني تملّك عقار freehold في Dubai كمواطن فيتنامي؟",
+          "zh": "作为越南公民我可以在迪拜拥有 freehold 产权吗？",
+          "vi": "Công dân Việt Nam có được sở hữu bất động sản freehold tại Dubai không?",
+          "he": "האם אזרח וייטנאמי יכול להחזיק נכס freehold ב-Dubai?"
+        },
+        "answer": {
+          "en": "Yes, on identical terms to any other foreign national. The designated freehold zones are open to all nationalities with no restriction by citizenship or residence status, and the title is registered at the Dubai Land Department in your own name. No UAE visa is needed to buy, own or let the property. An AED 2M purchase additionally qualifies for the ten-year renewable Golden Visa covering your spouse and children.",
+          "fr": "Oui, aux mêmes conditions que tout autre ressortissant étranger. Les zones freehold désignées sont ouvertes à toutes les nationalités, sans restriction liée à la citoyenneté ou au statut de résidence, et le titre est enregistré auprès du Dubai Land Department à votre propre nom. Aucun visa émirien n'est nécessaire pour acheter, détenir ou louer le bien. Un achat de AED 2M ouvre en outre droit au Golden Visa renouvelable de dix ans, couvrant votre conjoint et vos enfants.",
+          "ru": "Да, на тех же условиях, что и любой другой иностранный гражданин. Обозначенные freehold-зоны открыты для всех национальностей без ограничений по гражданству или статусу резидентства, а титул регистрируется в Dubai Land Department на ваше имя. Виза UAE для покупки, владения или сдачи объекта не требуется. Покупка на AED 2M дополнительно даёт право на десятилетнюю возобновляемую Golden Visa, охватывающую супруга и детей.",
+          "ar": "نعم، وبالشروط ذاتها المطبَّقة على أي أجنبي آخر. فمناطق freehold المخصصة مفتوحة لجميع الجنسيات بلا قيد يتعلق بالمواطنة أو بوضع الإقامة، ويُسجَّل سند الملكية لدى Dubai Land Department باسمك. ولا تحتاج إلى تأشيرة UAE لتشتري العقار أو تملكه أو تؤجّره. كما أن شراءً بقيمة AED 2M يؤهّلك إضافةً إلى ذلك للحصول على Golden Visa لعشر سنوات قابلة للتجديد وتشمل الزوج والأبناء.",
+          "zh": "可以，条件与其他任何外国人完全相同。指定的 freehold 区域向所有国籍开放，不因公民身份或居留身份而受限，产权以您本人名义在迪拜土地局登记。购买、持有或出租该房产均无需阿联酋签证。AED 2M 及以上的购房另可申请可续期的十年黄金签证，涵盖配偶与子女。",
+          "vi": "Có, với điều kiện giống hệt mọi công dân nước ngoài khác. Các khu vực freehold được chỉ định mở cho mọi quốc tịch, không hạn chế theo quốc tịch hay tình trạng cư trú, và quyền sở hữu được đăng ký tại Dubai Land Department dưới chính tên bạn. Không cần thị thực UAE để mua, sở hữu hay cho thuê bất động sản. Giao dịch mua từ AED 2M còn đủ điều kiện nhận Golden Visa mười năm có thể gia hạn, bao gồm cả vợ/chồng và con cái của bạn.",
+          "he": "כן, בתנאים זהים לכל אזרח זר אחר. אזורי ה-freehold המיועדים פתוחים לכל הלאומים ללא הגבלה לפי אזרחות או מעמד תושבות, והבעלות נרשמת ב-Dubai Land Department על שמך. אין צורך באשרת UAE כדי לרכוש, להחזיק או להשכיר את הנכס. רכישה של AED 2M מזכה בנוסף ב-Golden Visa לעשר שנים הניתנת לחידוש, הכוללת את בן/בת הזוג והילדים."
+        }
+      },
+      {
+        "question": {
+          "en": "What does the purchase cost beyond the price?",
+          "fr": "Que coûte l'achat au-delà du prix ?",
+          "ru": "Во сколько обходится покупка сверх цены объекта?",
+          "ar": "ماذا تكلّف عملية الشراء إلى جانب السعر؟",
+          "zh": "除房价之外购房还有哪些成本？",
+          "vi": "Ngoài giá mua, còn những chi phí nào?",
+          "he": "מה עולה הרכישה מעבר למחיר?"
+        },
+        "answer": {
+          "en": "Roughly 6-7% all in: the 4% Dubai Land Department transfer fee, about 2% agency commission, and registration and trustee charges. There is no annual property tax afterwards; the recurring costs are service charges set by the building and a municipality housing fee on let homes. Prices are set and settled in dirhams, and our site can display them in Vietnamese dong so you can read them natively.",
+          "fr": "Environ 6-7% tout compris : les 4% de frais de transfert du Dubai Land Department, environ 2% de commission d'agence, ainsi que les frais d'enregistrement et de fiduciaire. Il n'y a ensuite aucun impôt foncier annuel ; les coûts récurrents sont les charges de copropriété fixées par l'immeuble et une taxe municipale d'habitation sur les logements loués. Les prix sont fixés et réglés en dirhams, et notre site peut les afficher en dôngs vietnamiens pour que vous les lisiez dans votre monnaie.",
+          "ru": "Примерно 6-7% со всеми расходами: 4% сбор за перерегистрацию в Dubai Land Department, около 2% комиссии агентства, а также регистрационные и трастовые сборы. Ежегодного налога на недвижимость впоследствии нет; регулярные расходы — это сервисные сборы, устанавливаемые зданием, и муниципальный жилищный сбор для сдаваемого жилья. Цены устанавливаются и оплачиваются в дирхамах, а наш сайт может отображать их во вьетнамских донгах, чтобы вам было привычнее их читать.",
+          "ar": "نحو 6-7% شاملةً كل شيء: رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، ونحو 2% عمولة الوساطة، ورسوم التسجيل وأمين التسجيل. ولا توجد ضريبة عقارية سنوية بعد ذلك؛ فالتكاليف المتكررة هي رسوم الخدمات التي يحددها المبنى ورسم سكن بلدي على الوحدات المؤجَّرة. وتُحدَّد الأسعار وتُسوَّى بالدرهم، ويستطيع موقعنا عرضها بالدونغ الفيتنامي لتقرأها بعملتك.",
+          "zh": "整体约 6-7%：4% 的迪拜土地局过户费、约 2% 的中介佣金，以及登记与受托机构费用。此后没有年度房产税；经常性支出为楼宇设定的物业服务费，以及出租住宅的市政住房费。价格以迪拉姆标示并结算，我们的网站可以越南盾显示，方便您以本币阅读。",
+          "vi": "Khoảng 6-7% cho toàn bộ: phí chuyển nhượng 4% của Dubai Land Department, khoảng 2% hoa hồng môi giới, cùng phí đăng ký và phí văn phòng ủy thác. Sau đó không có thuế bất động sản hằng năm; chi phí định kỳ là phí dịch vụ do tòa nhà ấn định và phí nhà ở đô thị với nhà cho thuê. Giá được niêm yết và thanh toán bằng dirham, và trang web của chúng tôi có thể hiển thị bằng đồng Việt Nam để bạn đọc theo đơn vị quen thuộc.",
+          "he": "בערך 6-7% הכול כלול: 4% דמי העברה של ה-Dubai Land Department, כ-2% עמלת תיווך, ואגרות רישום ונאמן. לאחר מכן אין מס רכוש שנתי; העלויות החוזרות הן דמי ניהול שנקבעים על ידי הבניין ואגרת דיור עירונית על דירות מושכרות. המחירים נקובים ומסולקים בדירהם, והאתר שלנו יכול להציג אותם בדונג וייטנאמי כדי שתוכל לקרוא אותם בשפה שלך."
+        }
+      },
+      {
+        "question": {
+          "en": "Is off-plan or a ready property better from Vietnam?",
+          "fr": "Depuis le Vietnam, vaut-il mieux acheter sur plan ou un bien livré ?",
+          "ru": "Что лучше при покупке из Вьетнама — off-plan или готовый объект?",
+          "ar": "أيهما أفضل من فيتنام: عقار على المخطط أم عقار جاهز؟",
+          "zh": "从越南出发，买期房还是现房更好？",
+          "vi": "Từ Việt Nam thì nên mua off-plan hay bất động sản đã bàn giao?",
+          "he": "מה עדיף מווייטנאם — off-plan או נכס מוכן?"
+        },
+        "answer": {
+          "en": "Off-plan suits buyers funding from a distance, because a developer payment plan spreads the cost — 10-20% on booking, instalments through construction, balance at handover — with no credit assessment and no UAE bank relationship required. Developer payments go into a project escrow account and the purchase is registered with the Dubai Land Department. A ready unit starts producing rent immediately instead, which matters more if the income rather than the capital is the point. The funding constraint usually decides it.",
+          "fr": "L'achat sur plan convient aux acquéreurs qui financent à distance, car un plan de paiement promoteur étale le coût — 10-20% à la réservation, des échéances pendant la construction, le solde à la livraison — sans évaluation de crédit ni relation bancaire aux Émirats. Les versements au promoteur sont versés sur un compte séquestre de projet et l'achat est enregistré auprès du Dubai Land Department. Un bien livré, à l'inverse, génère un loyer immédiatement, ce qui compte davantage si l'objectif est le revenu plutôt que le capital. C'est en général la contrainte de financement qui tranche.",
+          "ru": "Off-plan удобнее тем, кто финансирует покупку издалека, поскольку план платежей застройщика распределяет стоимость во времени — 10-20% при бронировании, взносы в ходе строительства, остаток при передаче — без кредитной оценки и без необходимости отношений с банком UAE. Платежи застройщику поступают на проектный эскроу-счёт, а покупка регистрируется в Dubai Land Department. Готовый объект, напротив, начинает приносить аренду сразу, что важнее, если целью является доход, а не капитал. Обычно решающим оказывается именно ограничение по финансированию.",
+          "ar": "العقار على المخطط يناسب المشترين الذين يموّلون من بعيد، لأن خطة الدفع لدى المطوّر توزّع التكلفة — 10-20% عند الحجز، وأقساط خلال فترة البناء، والرصيد عند التسليم — دون تقييم ائتماني ودون الحاجة إلى علاقة مصرفية في UAE. وتُودَع دفعات المطوّر في حساب ضمان خاص بالمشروع، وتُسجَّل عملية الشراء لدى Dubai Land Department. أما الوحدة الجاهزة فتبدأ بتوليد إيجار فوراً، وهو ما يهم أكثر إذا كان الدخل لا رأس المال هو المقصد. وعادةً ما يحسم قيد التمويل هذا الخيار.",
+          "zh": "期房适合远程出资的买家，因为开发商付款计划可分摊成本——预订时支付 10-20%，施工期间分期付款，交付时付清余款——无需信用评估，也不需要阿联酋的银行关系。开发商款项进入项目监管（escrow）账户，购买在迪拜土地局登记。现房则可立即产生租金收入，若您看重的是收益而非资本增值，这一点更为重要。通常是资金条件决定最终选择。",
+          "vi": "Off-plan phù hợp với người mua tài trợ từ xa, vì kế hoạch thanh toán của chủ đầu tư dàn trải chi phí — 10-20% khi đặt chỗ, các đợt thanh toán trong quá trình xây dựng, phần còn lại khi bàn giao — mà không cần thẩm định tín dụng hay quan hệ với ngân hàng UAE. Tiền thanh toán cho chủ đầu tư được chuyển vào tài khoản ký quỹ của dự án và giao dịch được đăng ký với Dubai Land Department. Ngược lại, một căn đã bàn giao tạo ra tiền thuê ngay lập tức, điều quan trọng hơn nếu mục tiêu của bạn là dòng thu nhập chứ không phải tăng giá vốn. Thông thường chính điều kiện về nguồn vốn sẽ quyết định.",
+          "he": "off-plan מתאים לרוכשים הממנים ממרחק, משום שתוכנית תשלומים של יזם פורסת את העלות — 10-20% במועד ההזמנה, תשלומים לאורך הבנייה, והיתרה במסירה — ללא בדיקת אשראי וללא צורך בקשר בנקאי ב-UAE. תשלומים ליזם נכנסים לחשבון נאמנות של הפרויקט, והרכישה נרשמת ב-Dubai Land Department. יחידה מוכנה, לעומת זאת, מתחילה לייצר שכר דירה מיד, וזה חשוב יותר אם ההכנסה ולא ההון היא העיקר. אילוץ המימון הוא בדרך כלל המכריע."
+        }
+      }
     ]
   },
   {
@@ -693,6 +1791,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Business Bay",
       "Palm Jumeirah",
       "Dubai Marina"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Is Dubai rental income taxable in Israel?",
+          "fr": "Les revenus locatifs de Dubaï sont-ils imposables en Israël ?",
+          "ru": "Облагается ли арендный доход из Dubai в Израиле?",
+          "ar": "هل دخل الإيجار من Dubai خاضع للضريبة في إسرائيل؟",
+          "zh": "迪拜租金收入在以色列需要纳税吗？",
+          "vi": "Thu nhập cho thuê tại Dubai có chịu thuế tại Israel không?",
+          "he": "האם הכנסות שכירות מ-Dubai חייבות במס בישראל?"
+        },
+        "answer": {
+          "en": "If you are an Israeli resident, yes — Israel taxes residents on worldwide income and Dubai rent is taxable at marginal rates reaching 47% for high earners. The Israel-UAE double tax treaty provides that property income is taxed where the property is located, which is the UAE at 0%, but that allocation does not by itself remove the Israeli charge on a resident, and there is no UAE tax to credit. Capital gains on a disposal are taxed in Israel at 25-30% for individuals. Confirm the treaty's current status and your own position with an Israeli adviser.",
+          "fr": "Si vous êtes résident israélien, oui — Israël impose ses résidents sur leurs revenus mondiaux et les loyers de Dubaï sont imposables aux taux marginaux atteignant 47% pour les hauts revenus. La convention fiscale Israël-Émirats prévoit que les revenus immobiliers sont imposés là où le bien est situé, soit les Émirats à 0%, mais cette répartition ne supprime pas à elle seule la charge israélienne pesant sur un résident, et il n'y a aucun impôt émirien à imputer. Les plus-values de cession sont imposées en Israël à 25-30% pour les personnes physiques. Faites confirmer l'état actuel de la convention et votre propre situation par un conseiller israélien.",
+          "ru": "Если вы резидент Израиля — да: Израиль облагает резидентов по общемировому доходу, и аренда из Dubai облагается по предельным ставкам, достигающим 47% для высоких доходов. Соглашение об избежании двойного налогообложения между Израилем и UAE предусматривает, что доход от недвижимости облагается там, где расположен объект, то есть в UAE по ставке 0%, но само по себе это распределение не снимает израильский налог с резидента, а зачитывать налог UAE не из чего. Прирост капитала при продаже облагается в Израиле по ставке 25-30% для физических лиц. Уточните текущий статус соглашения и вашу собственную позицию у израильского консультанта.",
+          "ar": "إذا كنت مقيماً إسرائيلياً، فنعم — إسرائيل تفرض الضريبة على المقيمين بشأن دخلهم العالمي، وإيجار Dubai خاضع للضريبة بمعدلات حدية تصل إلى 47% لأصحاب الدخل المرتفع. وتنص اتفاقية تجنب الازدواج الضريبي بين إسرائيل وUAE على أن دخل العقار يخضع للضريبة حيث يقع العقار، أي UAE بنسبة 0%، لكن هذا التوزيع لا يلغي في حد ذاته العبء الإسرائيلي على المقيم، ولا توجد ضريبة إماراتية يمكن خصمها. أما الأرباح الرأسمالية عند البيع فتخضع للضريبة في إسرائيل بنسبة 25-30% للأفراد. أكّد الوضع الحالي للاتفاقية ووضعك الشخصي مع مستشار إسرائيلي.",
+          "zh": "如果您是以色列居民，是的——以色列就居民的全球收入征税，迪拜租金按边际税率计税，高收入者最高可达 47%。以色列与阿联酋的税收协定规定不动产所得在财产所在地征税，即阿联酋的 0%，但这一征税权分配本身并不免除居民在以色列的纳税义务，而且没有阿联酋税款可供抵免。处置时的资本利得在以色列对个人按 25-30% 征税。请向以色列顾问确认该协定的最新状态以及您自身的具体情况。",
+          "vi": "Nếu bạn là đối tượng cư trú tại Israel thì có — Israel đánh thuế người cư trú trên thu nhập toàn cầu và tiền thuê từ Dubai chịu thuế theo thuế suất biên lên tới 47% với người thu nhập cao. Hiệp định tránh đánh thuế hai lần giữa Israel và UAE quy định thu nhập từ bất động sản chịu thuế tại nơi có bất động sản, tức UAE với thuế suất 0%, nhưng việc phân bổ đó tự nó không xóa bỏ nghĩa vụ thuế tại Israel của một người cư trú, và cũng không có thuế UAE nào để khấu trừ. Lãi vốn khi chuyển nhượng chịu thuế tại Israel ở mức 25-30% đối với cá nhân. Hãy xác nhận tình trạng hiện hành của hiệp định và vị thế của chính bạn với một chuyên gia tư vấn tại Israel.",
+          "he": "אם אתה תושב ישראל — כן. ישראל ממסה תושבים על הכנסה מכל העולם, ושכר דירה מ-Dubai חייב במס בשיעורים שוליים המגיעים ל-47% לבעלי הכנסות גבוהות. אמנת המס בין ישראל ל-UAE קובעת שהכנסה מנכס ממוסה במקום שבו הנכס נמצא, כלומר ב-UAE בשיעור 0%, אך הקצאה זו אינה מסירה כשלעצמה את החבות הישראלית של תושב, ואין מס ב-UAE לזיכוי. רווחי הון במכירה ממוסים בישראל בשיעור 25-30% ליחידים. ודא את מעמדה העדכני של האמנה ואת עמדתך האישית מול יועץ מס ישראלי."
+        }
+      },
+      {
+        "question": {
+          "en": "Can Israeli citizens actually buy property in Dubai?",
+          "fr": "Les citoyens israéliens peuvent-ils réellement acheter un bien à Dubaï ?",
+          "ru": "Могут ли граждане Израиля действительно покупать недвижимость в Dubai?",
+          "ar": "هل يستطيع المواطنون الإسرائيليون فعلاً شراء عقارات في Dubai؟",
+          "zh": "以色列公民真的可以在迪拜买房吗？",
+          "vi": "Công dân Israel có thực sự mua được bất động sản tại Dubai không?",
+          "he": "האם אזרחים ישראלים באמת יכולים לרכוש נכס ב-Dubai?"
+        },
+        "answer": {
+          "en": "Yes. Following normalisation, Israeli nationals buy on the same terms as any other foreign national: freehold title in the designated zones, registered at the Dubai Land Department in your own name, no residency requirement and no restriction by nationality. Direct flights operate between Tel Aviv and Dubai, and an AED 2M purchase qualifies for the ten-year renewable Golden Visa. Practical banking and travel conditions have varied with the regional situation, so check current arrangements when you plan a viewing trip.",
+          "fr": "Oui. Depuis la normalisation, les ressortissants israéliens achètent aux mêmes conditions que tout autre étranger : propriété freehold dans les zones désignées, enregistrée auprès du Dubai Land Department à leur propre nom, sans condition de résidence ni restriction de nationalité. Des vols directs relient Tel-Aviv à Dubaï, et un achat de AED 2M ouvre droit au Golden Visa renouvelable de dix ans. Les conditions bancaires et de voyage ont varié selon la situation régionale : vérifiez donc les dispositions en vigueur lorsque vous organisez un voyage de visite.",
+          "ru": "Да. После нормализации отношений израильские граждане покупают на тех же условиях, что и любые другие иностранцы: freehold-титул в обозначенных зонах, регистрация в Dubai Land Department на ваше имя, без требования резидентства и без ограничений по гражданству. Между Тель-Авивом и Dubai выполняются прямые рейсы, а покупка на AED 2M даёт право на десятилетнюю возобновляемую Golden Visa. Практические условия банковского обслуживания и поездок менялись вместе с региональной обстановкой, поэтому уточняйте актуальные договорённости, планируя поездку на просмотры.",
+          "ar": "نعم. بعد التطبيع، يشتري المواطنون الإسرائيليون بالشروط ذاتها المطبَّقة على أي أجنبي آخر: ملكية freehold في المناطق المخصصة، مسجَّلة لدى Dubai Land Department باسمك، دون اشتراط إقامة ودون قيد يتعلق بالجنسية. وتعمل رحلات مباشرة بين تل أبيب وDubai، كما أن شراءً بقيمة AED 2M يؤهّل للحصول على Golden Visa لعشر سنوات قابلة للتجديد. وقد تباينت الظروف المصرفية وظروف السفر العملية بحسب الوضع الإقليمي، لذا تحقق من الترتيبات السارية عند التخطيط لرحلة معاينة.",
+          "zh": "可以。关系正常化之后，以色列国民与其他任何外国人条件相同：在指定区域取得 freehold 产权，以本人名义在迪拜土地局登记，无居留要求，也不因国籍而受限。特拉维夫与迪拜之间有直飞航班，AED 2M 及以上的购房可申请可续期的十年黄金签证。实际的银行与出行条件曾随地区局势而变化，因此计划看房行程时请查询当下的安排。",
+          "vi": "Có. Sau tiến trình bình thường hóa quan hệ, công dân Israel mua với điều kiện giống mọi công dân nước ngoài khác: quyền sở hữu freehold tại các khu vực được chỉ định, đăng ký tại Dubai Land Department dưới chính tên bạn, không yêu cầu cư trú và không hạn chế theo quốc tịch. Có các chuyến bay thẳng giữa Tel Aviv và Dubai, và giao dịch mua từ AED 2M đủ điều kiện nhận Golden Visa mười năm có thể gia hạn. Điều kiện ngân hàng và đi lại trên thực tế đã thay đổi theo tình hình khu vực, nên hãy kiểm tra các quy định hiện hành khi lên kế hoạch cho chuyến đi xem nhà.",
+          "he": "כן. בעקבות הנורמליזציה, אזרחים ישראלים רוכשים באותם תנאים ככל אזרח זר אחר: בעלות freehold באזורים המיועדים, רשומה ב-Dubai Land Department על שמך, ללא דרישת תושבות וללא הגבלה לפי לאום. קיימות טיסות ישירות בין תל אביב ל-Dubai, ורכישה של AED 2M מזכה ב-Golden Visa לעשר שנים הניתנת לחידוש. תנאי הבנקאות והנסיעה בפועל השתנו בהתאם למצב האזורי, לכן בדוק את ההסדרים העדכניים כשאתה מתכנן נסיעת סיור."
+        }
+      },
+      {
+        "question": {
+          "en": "How does the Israel-UAE tax treaty actually help?",
+          "fr": "En quoi la convention fiscale Israël-Émirats aide-t-elle concrètement ?",
+          "ru": "Чем на самом деле помогает налоговое соглашение между Израилем и UAE?",
+          "ar": "كيف تفيد اتفاقية الضرائب بين إسرائيل وUAE فعلياً؟",
+          "zh": "以色列与阿联酋的税收协定实际上有什么帮助？",
+          "vi": "Hiệp định thuế Israel-UAE thực sự giúp được gì?",
+          "he": "כיצד אמנת המס בין ישראל ל-UAE באמת עוזרת?"
+        },
+        "answer": {
+          "en": "It allocates taxing rights and prevents the same income being taxed twice on the same basis, which matters most on disposal and for structuring. What it does not do is make Dubai income tax-free for an Israeli resident, because Israel taxes its residents on worldwide income and the UAE's 0% rate means there is no foreign tax to credit against the Israeli liability. Treat the treaty as governing which country may tax what, not as an exemption — that distinction is where expensive assumptions get made.",
+          "fr": "Elle répartit les droits d'imposition et évite qu'un même revenu soit imposé deux fois sur la même base, ce qui compte surtout lors d'une cession et pour les montages. Ce qu'elle ne fait pas, c'est rendre les revenus de Dubaï non imposables pour un résident israélien, puisque Israël impose ses résidents sur leurs revenus mondiaux et que le taux de 0% aux Émirats signifie qu'il n'y a aucun impôt étranger à imputer sur la dette fiscale israélienne. Considérez la convention comme déterminant quel pays peut imposer quoi, et non comme une exonération — c'est sur cette distinction que se forment les hypothèses coûteuses.",
+          "ru": "Оно распределяет права налогообложения и не допускает двойного обложения одного и того же дохода на одном и том же основании, что важнее всего при продаже и при структурировании. Чего оно не делает — так это не освобождает доход из Dubai от налога для израильского резидента, поскольку Израиль облагает своих резидентов по общемировому доходу, а нулевая ставка UAE означает отсутствие иностранного налога, который можно зачесть против израильского обязательства. Воспринимайте соглашение как документ о том, какая страна что вправе облагать, а не как освобождение: именно на этом различии и возникают дорогостоящие заблуждения.",
+          "ar": "هي توزّع حقوق فرض الضريبة وتمنع فرض الضريبة على الدخل ذاته مرتين على الأساس ذاته، وهو ما يهم أكثر عند البيع وفي مسائل الهيكلة. أما ما لا تفعله فهو جعل الدخل من Dubai معفى من الضريبة بالنسبة لمقيم إسرائيلي، لأن إسرائيل تفرض الضريبة على مقيميها بشأن دخلهم العالمي، ومعدل 0% في UAE يعني عدم وجود ضريبة أجنبية تُخصم من الالتزام الإسرائيلي. تعامل مع الاتفاقية بوصفها محدِّدة لأي بلد يجوز له فرض الضريبة وعلى ماذا، لا بوصفها إعفاءً — فعند هذا التمييز تحديداً تُبنى افتراضات باهظة الثمن.",
+          "zh": "它分配征税权，避免同一笔收入在相同基础上被重复征税，这一点在处置和架构安排时最为重要。它不会做到的是让迪拜收入对以色列居民免税，因为以色列就居民的全球收入征税，而阿联酋 0% 的税率意味着没有外国税款可用来抵免以色列的税负。请把协定理解为规定哪个国家可以就什么征税，而不是一项免税——正是在这个区分上，人们容易做出代价高昂的假设。",
+          "vi": "Nó phân bổ quyền đánh thuế và ngăn cùng một khoản thu nhập bị đánh thuế hai lần trên cùng một cơ sở, điều quan trọng nhất khi chuyển nhượng và khi thiết kế cấu trúc sở hữu. Điều nó không làm được là khiến thu nhập từ Dubai được miễn thuế với một người cư trú Israel, bởi Israel đánh thuế người cư trú trên thu nhập toàn cầu và thuế suất 0% của UAE nghĩa là không có thuế nước ngoài nào để khấu trừ vào nghĩa vụ thuế tại Israel. Hãy xem hiệp định như quy định nước nào được đánh thuế khoản gì, chứ không phải như một sự miễn thuế — chính ở ranh giới này mà những giả định tốn kém thường được đưa ra.",
+          "he": "היא מחלקת את זכויות המיסוי ומונעת מיסוי כפול של אותה הכנסה על אותו בסיס, מה שחשוב בעיקר במכירה ובתכנון מבנה ההחזקה. מה שהיא אינה עושה הוא להפוך הכנסה מ-Dubai לפטורה ממס עבור תושב ישראל, משום שישראל ממסה את תושביה על הכנסה מכל העולם, ושיעור ה-0% ב-UAE פירושו שאין מס זר לזכות כנגד החבות הישראלית. התייחס לאמנה כקובעת איזו מדינה רשאית למסות מה, ולא כפטור — בהבחנה הזו נוצרות ההנחות היקרות."
+        }
+      },
+      {
+        "question": {
+          "en": "What are the total purchase costs?",
+          "fr": "Quels sont les frais d'acquisition totaux ?",
+          "ru": "Каковы суммарные расходы на покупку?",
+          "ar": "ما إجمالي تكاليف الشراء؟",
+          "zh": "购房总成本是多少？",
+          "vi": "Tổng chi phí mua vào là bao nhiêu?",
+          "he": "מהן עלויות הרכישה הכוללות?"
+        },
+        "answer": {
+          "en": "About 6-7% of the price: the 4% Dubai Land Department transfer fee, roughly 2% agency commission, and registration and trustee charges, plus 0.25% of the loan if you take a mortgage. After purchase there is no annual property tax; the standing costs are service charges and a municipality housing fee on let homes — a considerably lighter ongoing burden than Israeli arnona.",
+          "fr": "Environ 6-7% du prix : les 4% de frais de transfert du Dubai Land Department, environ 2% de commission d'agence, ainsi que les frais d'enregistrement et de fiduciaire, plus 0.25% du prêt si vous souscrivez un crédit. Après l'achat, il n'y a aucun impôt foncier annuel ; les charges courantes se limitent aux charges de copropriété et à une taxe municipale d'habitation sur les logements loués — un poids récurrent nettement plus léger que l'arnona israélienne.",
+          "ru": "Порядка 6-7% от цены: 4% сбор за перерегистрацию в Dubai Land Department, примерно 2% комиссии агентства, регистрационные и трастовые сборы, плюс 0.25% от суммы займа, если берёте ипотеку. После покупки ежегодного налога на недвижимость нет; текущие расходы — это сервисные сборы и муниципальный жилищный сбор для сдаваемого жилья, то есть заметно более лёгкая постоянная нагрузка, чем израильская arnona.",
+          "ar": "نحو 6-7% من السعر: رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، ونحو 2% عمولة الوساطة، ورسوم التسجيل وأمين التسجيل، إضافةً إلى 0.25% من قيمة القرض إن حصلت على تمويل عقاري. وبعد الشراء لا توجد ضريبة عقارية سنوية؛ فالتكاليف الجارية هي رسوم الخدمات ورسم سكن بلدي على الوحدات المؤجَّرة — وهو عبء مستمر أخف بكثير من arnona الإسرائيلية.",
+          "zh": "约为房价的 6-7%：4% 的迪拜土地局过户费、约 2% 的中介佣金，以及登记与受托机构费用；若办理按揭，再加贷款金额的 0.25%。购入之后没有年度房产税；持续性支出为物业服务费及出租住宅的市政住房费——较以色列的 arnona 轻得多。",
+          "vi": "Khoảng 6-7% giá trị bất động sản: phí chuyển nhượng 4% của Dubai Land Department, khoảng 2% hoa hồng môi giới, cùng phí đăng ký và phí văn phòng ủy thác, cộng thêm 0.25% giá trị khoản vay nếu bạn vay thế chấp. Sau khi mua không có thuế bất động sản hằng năm; chi phí thường xuyên chỉ gồm phí dịch vụ và phí nhà ở đô thị với nhà cho thuê — gánh nặng định kỳ nhẹ hơn đáng kể so với arnona tại Israel.",
+          "he": "כ-6-7% מהמחיר: 4% דמי העברה של ה-Dubai Land Department, כ-2% עמלת תיווך, ואגרות רישום ונאמן, בתוספת 0.25% מסכום ההלוואה אם אתה נוטל משכנתה. לאחר הרכישה אין מס רכוש שנתי; העלויות השוטפות הן דמי ניהול ואגרת דיור עירונית על דירות מושכרות — נטל שוטף קל בהרבה מארנונה בישראל."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a mortgage as an Israeli non-resident?",
+          "fr": "Puis-je obtenir un prêt en tant que non-résident israélien ?",
+          "ru": "Могу ли я получить ипотеку как израильский нерезидент?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري بصفتي إسرائيلياً غير مقيم؟",
+          "zh": "作为以色列非居民我能获得按揭吗？",
+          "vi": "Tôi có thể vay thế chấp với tư cách người Israel không cư trú không?",
+          "he": "האם אוכל לקבל משכנתה כישראלי שאינו תושב?"
+        },
+        "answer": {
+          "en": "UAE lenders underwrite documented income in a currency they can assess, and shekel income is assessable, though the lender list is narrower than for some nationalities and terms vary. Typical non-resident lending runs to 50% loan-to-value. The alternative is a developer payment plan on off-plan stock — 10-20% on booking, instalments through construction, balance at handover — which requires no credit assessment and no UAE banking relationship, and for many Israeli buyers is the simpler route.",
+          "fr": "Les prêteurs des Émirats acceptent des revenus documentés dans une devise qu'ils savent évaluer, et les revenus en shekels sont évaluables, même si la liste des établissements est plus restreinte que pour certaines nationalités et que les conditions varient. Le financement type pour non-résidents va jusqu'à 50% de quotité de financement. L'alternative est un plan de paiement promoteur sur un bien sur plan — 10-20% à la réservation, des échéances pendant la construction, le solde à la livraison — qui ne requiert ni évaluation de crédit ni relation bancaire aux Émirats, et qui constitue pour beaucoup d'acquéreurs israéliens la voie la plus simple.",
+          "ru": "Банки UAE оценивают документально подтверждённый доход в валюте, которую они способны оценить, и доход в шекелях оценке поддаётся, хотя список кредиторов уже, чем для некоторых других национальностей, а условия различаются. Типичное кредитование нерезидентов доходит до 50% кредит к стоимости. Альтернатива — план платежей застройщика по off-plan объектам: 10-20% при бронировании, взносы в ходе строительства, остаток при передаче, — который не требует ни кредитной оценки, ни отношений с банком UAE и для многих израильских покупателей оказывается более простым путём.",
+          "ar": "جهات الإقراض في UAE تقيّم الدخل الموثّق بعملة تستطيع تقييمها، والدخل بالشيكل قابل للتقييم، وإن كانت قائمة المقرضين أضيق مما هي عليه لبعض الجنسيات والشروط متفاوتة. ويصل تمويل غير المقيمين عادةً إلى 50% نسبة تمويل إلى قيمة. والبديل هو خطة دفع لدى المطوّر على وحدات على المخطط — 10-20% عند الحجز، وأقساط خلال فترة البناء، والرصيد عند التسليم — وهي لا تتطلب تقييماً ائتمانياً ولا علاقة مصرفية في UAE، وهي بالنسبة لكثير من المشترين الإسرائيليين المسار الأبسط.",
+          "zh": "阿联酋放贷机构对其能够评估的币种的有据收入进行核保，谢克尔收入属于可评估之列，但可选的放贷机构名单比某些国籍更窄，条件也各有不同。典型的非居民贷款可达贷款价值比 50%。另一种途径是期房的开发商付款计划——预订时支付 10-20%，施工期间分期付款，交付时付清余款——无需信用评估，也不需要阿联酋银行关系，对许多以色列买家而言是更简便的路线。",
+          "vi": "Các ngân hàng UAE thẩm định thu nhập có chứng từ bằng loại tiền tệ mà họ có thể đánh giá, và thu nhập bằng shekel là thẩm định được, dù danh sách ngân hàng cho vay hẹp hơn so với một số quốc tịch khác và điều kiện vay cũng khác nhau. Khoản vay điển hình cho người không cư trú lên tới 50% tỷ lệ vay trên giá trị. Phương án thay thế là kế hoạch thanh toán của chủ đầu tư với sản phẩm off-plan — 10-20% khi đặt chỗ, các đợt thanh toán trong quá trình xây dựng, phần còn lại khi bàn giao — vốn không cần thẩm định tín dụng và không cần quan hệ ngân hàng tại UAE, và với nhiều người mua Israel thì đây là con đường đơn giản hơn.",
+          "he": "מלווים ב-UAE מחתמים הכנסה מתועדת במטבע שהם יכולים להעריך, והכנסה בשקלים ניתנת להערכה, אם כי רשימת המלווים צרה יותר מאשר עבור לאומים מסוימים והתנאים משתנים. הלוואות טיפוסיות ללא תושבות מגיעות עד 50% מימון מול שווי. החלופה היא תוכנית תשלומים של יזם על מלאי off-plan — 10-20% במועד ההזמנה, תשלומים לאורך הבנייה, והיתרה במסירה — שאינה דורשת בדיקת אשראי ולא קשר בנקאי ב-UAE, ועבור רוכשים ישראלים רבים היא המסלול הפשוט יותר."
+        }
+      },
+      {
+        "question": {
+          "en": "How does the yield compare with Israeli property?",
+          "fr": "Comment le rendement se compare-t-il à celui de l'immobilier israélien ?",
+          "ru": "Как доходность сопоставима с израильской недвижимостью?",
+          "ar": "كيف يقارَن العائد بالعقار الإسرائيلي؟",
+          "zh": "收益率与以色列房产相比如何？",
+          "vi": "Lợi suất so với bất động sản tại Israel thì thế nào?",
+          "he": "כיצד התשואה משתווה לנכס בישראל?"
+        },
+        "answer": {
+          "en": "Gross yields in Dubai's mainstream freehold communities run roughly 5-8%, well ahead of typical Israeli residential yields where prices have far outpaced rents. The running costs also differ: no annual property tax in Dubai and nothing withheld at source on rent, against arnona in Israel. The counterweight is your Israeli tax position if you remain resident, which can take close to half the income, so model net rather than being sold on the gross figure.",
+          "fr": "Les rendements bruts dans les principales communautés freehold de Dubaï se situent autour de 5-8%, bien au-dessus des rendements résidentiels israéliens typiques, où les prix ont largement distancé les loyers. Les coûts de détention diffèrent également : aucun impôt foncier annuel à Dubaï et aucune retenue à la source sur les loyers, face à l'arnona en Israël. Le contrepoids reste votre situation fiscale israélienne si vous demeurez résident, qui peut absorber près de la moitié des revenus : modélisez donc en net plutôt que de vous laisser convaincre par le chiffre brut.",
+          "ru": "Валовая доходность в основных freehold-сообществах Dubai составляет примерно 5-8%, заметно выше типичной доходности израильского жилья, где цены существенно обогнали аренду. Текущие расходы тоже различаются: в Dubai нет ежегодного налога на недвижимость и ничего не удерживается с аренды у источника, в отличие от arnona в Израиле. Противовесом остаётся ваша израильская налоговая позиция, если вы сохраняете резидентство: она может забрать почти половину дохода, поэтому считайте чистую доходность, а не ориентируйтесь на валовую цифру.",
+          "ar": "تتراوح العوائد الإجمالية في مجتمعات freehold الرئيسية في Dubai بين 5-8% تقريباً، متقدمةً كثيراً على العوائد السكنية الإسرائيلية المعتادة حيث تجاوزت الأسعار الإيجارات بفارق كبير. كما تختلف التكاليف الجارية: لا ضريبة عقارية سنوية في Dubai ولا اقتطاع عند المنبع على الإيجار، مقابل arnona في إسرائيل. والعامل المقابل هو وضعك الضريبي الإسرائيلي إن بقيت مقيماً، إذ قد يستهلك ما يقارب نصف الدخل، لذا احسب الصافي بدل أن تُقنَع بالرقم الإجمالي.",
+          "zh": "迪拜主流 freehold 社区的毛收益率大致为 5-8%，远高于以色列住宅的典型水平，那里的房价涨幅早已远超租金。持有成本也不同：迪拜没有年度房产税，租金也不在源头预扣；而以色列则有 arnona。制衡因素在于您若仍是以色列居民时的税务状况，这可能拿走接近一半的收入，因此请以净额测算，而不要被毛收益数字说服。",
+          "vi": "Lợi suất gộp tại các cộng đồng freehold phổ thông của Dubai vào khoảng 5-8%, cao hơn hẳn lợi suất nhà ở thông thường tại Israel nơi giá nhà đã vượt xa tiền thuê. Chi phí vận hành cũng khác biệt: Dubai không có thuế bất động sản hằng năm và không khấu trừ gì tại nguồn với tiền thuê, so với arnona tại Israel. Yếu tố đối trọng là tình trạng thuế tại Israel của bạn nếu vẫn là người cư trú, vốn có thể lấy đi gần một nửa thu nhập, nên hãy tính trên cơ sở ròng thay vì bị thuyết phục bởi con số gộp.",
+          "he": "תשואות ברוטו בקהילות ה-freehold המרכזיות של Dubai נעות בערך בטווח 5-8%, הרבה מעל התשואות הטיפוסיות בנדל\"ן למגורים בישראל, שם המחירים עקפו בהרבה את שכר הדירה. גם העלויות השוטפות שונות: אין מס רכוש שנתי ב-Dubai ואין ניכוי במקור על שכר הדירה, לעומת ארנונה בישראל. המשקל הנגדי הוא מעמדך המיסויי בישראל אם אתה נותר תושב, שעשוי לקחת קרוב למחצית ההכנסה, לכן בנה מודל נטו במקום להשתכנע מנתון הברוטו."
+        }
+      }
     ]
   },
   {
@@ -1138,6 +2358,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "Downtown Dubai",
       "Dubai Hills Estate"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "How much can I remit from India under LRS?",
+          "fr": "Quel montant puis-je transférer depuis l'Inde dans le cadre du LRS ?",
+          "ru": "Сколько я могу перевести из Индии в рамках LRS?",
+          "ar": "كم يمكنني أن أحوّل من الهند بموجب LRS؟",
+          "zh": "在 LRS 下我可以从印度汇出多少资金？",
+          "vi": "Tôi được chuyển bao nhiêu tiền từ Ấn Độ theo LRS?",
+          "he": "כמה אוכל להעביר מהודו במסגרת LRS?"
+        },
+        "answer": {
+          "en": "The Liberalised Remittance Scheme caps outward remittance at USD 250,000 per person per financial year. For a purchase above that, families commonly pool allowances across multiple resident individuals, each remitting within their own limit — which is legitimate where the funds genuinely belong to each remitter and each is a co-owner. Structuring remittances to disguise whose money it is would not be, and a RERA-registered brokerage runs KYC regardless. Plan the timing against the financial year rather than the property, because the allowance resets, not accumulates.",
+          "fr": "Le Liberalised Remittance Scheme plafonne les transferts sortants à USD 250,000 par personne et par exercice financier. Pour un achat supérieur, les familles mettent couramment en commun les enveloppes de plusieurs personnes résidentes, chacune transférant dans sa propre limite — ce qui est légitime lorsque les fonds appartiennent réellement à chaque remettant et que chacun est copropriétaire. Structurer les transferts pour dissimuler à qui appartient l'argent ne le serait pas, et une agence enregistrée RERA applique de toute façon ses procédures KYC. Planifiez le calendrier en fonction de l'exercice financier plutôt que du bien, car l'enveloppe se réinitialise, elle ne s'accumule pas.",
+          "ru": "Liberalised Remittance Scheme ограничивает исходящие переводы суммой USD 250,000 на человека за финансовый год. При покупке дороже этой суммы семьи обычно объединяют лимиты нескольких резидентов, и каждый переводит в пределах собственного лимита — это законно, когда средства действительно принадлежат каждому отправителю и каждый является сособственником. Структурирование переводов ради сокрытия того, чьи это деньги, законным не будет, а брокерская компания с регистрацией RERA в любом случае проводит KYC. Планируйте сроки относительно финансового года, а не относительно объекта, потому что лимит обнуляется, а не накапливается.",
+          "ar": "يحدّ مخطط التحويل الميسّر LRS التحويلات الخارجة بمبلغ USD 250,000 للشخص في السنة المالية الواحدة. وللشراء بأعلى من ذلك، تلجأ العائلات عادة إلى تجميع الحصص عبر عدة أفراد مقيمين، يحوّل كل منهم ضمن حدّه الخاص — وهو أمر مشروع متى كانت الأموال مملوكة فعلاً لكل محوِّل وكان كل منهم مالكاً مشاركاً. أما هيكلة التحويلات لإخفاء هوية صاحب المال فليست كذلك، والوساطة المسجلة لدى RERA تُجري إجراءات اعرف عميلك في كل الأحوال. وخطّط للتوقيت وفق السنة المالية لا وفق العقار، لأن الحصة تتجدد ولا تتراكم.",
+          "zh": "自由汇款计划将对外汇款上限定为每人每财政年度 USD 250,000。若购房金额高于此数，家庭通常会汇集多位居民个人的额度，各自在自身限额内汇出——在资金确实属于各汇款人、且各人均为共有产权人的前提下，这是合法的。而通过安排汇款来掩饰资金归属则并不合法，况且 RERA 注册的经纪机构无论如何都会执行 KYC。请按财政年度而非按房产来规划时点，因为额度是重置的，而不是累积的。",
+          "vi": "Liberalised Remittance Scheme giới hạn chuyển tiền ra nước ngoài ở mức USD 250,000 mỗi người mỗi năm tài chính. Với giao dịch vượt mức đó, các gia đình thường gộp hạn mức của nhiều cá nhân cư trú, mỗi người chuyển trong hạn mức riêng — điều này hợp lệ khi nguồn tiền thực sự thuộc về từng người chuyển và mỗi người đều là đồng sở hữu. Sắp xếp việc chuyển tiền nhằm che giấu tiền thuộc về ai thì không hợp lệ, và một sàn môi giới đăng ký RERA vẫn phải thực hiện KYC trong mọi trường hợp. Hãy lên kế hoạch thời điểm theo năm tài chính chứ không theo bất động sản, vì hạn mức được đặt lại chứ không cộng dồn.",
+          "he": "ה-Liberalised Remittance Scheme מגביל העברות החוצה ל-USD 250,000 לאדם לשנת כספים. לרכישה מעל סכום זה, משפחות נוהגות לאחד מכסות של כמה יחידים תושבים, כשכל אחד מעביר במסגרת המגבלה שלו — דבר לגיטימי כאשר הכספים באמת שייכים לכל מעביר וכל אחד מהם הוא בעלים משותף. בנייה של העברות כדי להסוות למי הכסף שייך אינה לגיטימית, ותיווך רשום ב-RERA מבצע בדיקות KYC בכל מקרה. תכננו את התזמון מול שנת הכספים ולא מול הנכס, משום שהמכסה מתאפסת ואינה נצברת."
+        }
+      },
+      {
+        "question": {
+          "en": "Is the 20% TCS on remittance a real cost?",
+          "fr": "Le TCS de 20% sur les transferts est-il un coût réel ?",
+          "ru": "Является ли TCS в 20% с перевода реальными издержками?",
+          "ar": "هل الـ TCS بنسبة 20% على التحويل كلفة حقيقية؟",
+          "zh": "汇款的 20% TCS 是一项真实成本吗？",
+          "vi": "Khoản TCS 20% khi chuyển tiền có phải là chi phí thật không?",
+          "he": "האם ה-TCS של 20% על העברה הוא עלות אמיתית?"
+        },
+        "answer": {
+          "en": "No, and this is the most common misunderstanding. Tax Collected at Source of 20% applies to investment remittances above ₹10 lakh in a financial year, but it is a prepayment, not a tax. It is creditable against your income-tax liability or refundable if you overpay. What it does is tie up cash — you must fund 20% more than the purchase price at the moment of remittance and recover it later. Budget the cash-flow, not a 20% haircut, and do not let anyone sell you a workaround for something that is not actually a cost.",
+          "fr": "Non, et c'est le malentendu le plus répandu. Le Tax Collected at Source de 20% s'applique aux transferts d'investissement supérieurs à ₹10 lakh au cours d'un exercice financier, mais il s'agit d'un acompte, pas d'un impôt. Il est imputable sur votre impôt sur le revenu, ou remboursable en cas de trop-perçu. Son effet est d'immobiliser de la trésorerie : vous devez financer 20% de plus que le prix d'achat au moment du transfert et récupérer la différence ensuite. Budgétez l'effet de trésorerie, pas une décote de 20%, et ne laissez personne vous vendre un contournement pour quelque chose qui n'est pas réellement un coût.",
+          "ru": "Нет, и это самое распространённое заблуждение. Tax Collected at Source по ставке 20% применяется к инвестиционным переводам свыше ₹10 lakh за финансовый год, но это предоплата, а не налог. Она зачитывается против вашего обязательства по подоходному налогу или возвращается при переплате. Её реальный эффект — заморозка денег: в момент перевода вам нужно профинансировать на 20% больше цены покупки и вернуть эту сумму позже. Закладывайте нагрузку на денежный поток, а не потерю в 20%, и не позволяйте никому продавать вам «обходной путь» для того, что издержками на самом деле не является.",
+          "ar": "لا، وهذا أكثر سوء فهم شيوعاً. تنطبق الضريبة المحصّلة من المنبع TCS بنسبة 20% على تحويلات الاستثمار التي تتجاوز ₹10 lakh في السنة المالية، لكنها دفعة مقدّمة لا ضريبة نهائية. فهي قابلة للخصم من التزامك بضريبة الدخل أو للاسترداد إن دفعت زائداً. وما تفعله فعلياً هو تجميد السيولة — إذ يتعيّن عليك تدبير 20% فوق سعر الشراء لحظة التحويل واستردادها لاحقاً. فاحسب أثر التدفق النقدي لا اقتطاعاً بنسبة 20%، ولا تدع أحداً يبيعك حلاً التفافياً لشيء ليس كلفة في الأصل.",
+          "zh": "不是，这是最常见的误解。源头代扣税（TCS）20% 适用于一个财政年度内超过 ₹10 lakh 的投资类汇款，但它是预缴款，而非税负。它可以抵扣您的所得税应纳税额，若多缴还可退还。它真正的影响是占用现金——在汇款时刻，您必须比购房价多准备 20% 的资金，之后再行收回。请把它作为现金流来预算，而不是当作 20% 的折损，也不要让任何人向您兜售针对一项本不构成成本的事情的「变通办法」。",
+          "vi": "Không, và đây là hiểu lầm phổ biến nhất. Tax Collected at Source ở mức 20% áp dụng cho các khoản chuyển tiền đầu tư vượt ₹10 lakh trong một năm tài chính, nhưng đó là khoản nộp trước, không phải một sắc thuế. Nó được khấu trừ vào nghĩa vụ thuế thu nhập của bạn hoặc được hoàn lại nếu nộp thừa. Tác động thực sự là làm đọng vốn — bạn phải chuẩn bị nhiều hơn 20% so với giá mua tại thời điểm chuyển tiền rồi thu hồi sau. Hãy dự trù dòng tiền, chứ không phải một khoản hao hụt 20%, và đừng để ai bán cho bạn một giải pháp lách luật cho thứ vốn không phải là chi phí.",
+          "he": "לא, וזו אי-ההבנה הנפוצה ביותר. TCS בשיעור 20% חל על העברות להשקעה מעל ₹10 lakh בשנת כספים, אך מדובר בתשלום מקדמה ולא במס. הוא ניתן לזיכוי כנגד חבות מס ההכנסה שלכם, או להחזר אם שילמתם ביתר. מה שהוא כן עושה הוא לתפוס מזומן — עליכם לממן 20% יותר ממחיר הרכישה ברגע ההעברה ולהשיב את הסכום מאוחר יותר. תקצבו את תזרים המזומנים ולא קיצוץ של 20%, ואל תיתנו לאיש למכור לכם מעקף למשהו שאינו באמת עלות."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I use an Indian home loan to buy in Dubai?",
+          "fr": "Puis-je utiliser un prêt immobilier indien pour acheter à Dubaï ?",
+          "ru": "Можно ли использовать индийский ипотечный кредит для покупки в Dubai?",
+          "ar": "هل يمكنني استخدام قرض سكني هندي للشراء في Dubai؟",
+          "zh": "我可以用印度的住房贷款在迪拜买房吗？",
+          "vi": "Tôi có thể dùng khoản vay mua nhà tại Ấn Độ để mua ở Dubai không?",
+          "he": "האם אוכל להשתמש בהלוואת דיור הודית לרכישה ב-Dubai?"
+        },
+        "answer": {
+          "en": "No. An Indian home loan cannot fund an overseas purchase, so the realistic options are a UAE mortgage, a developer payment plan, or cash. UAE banks lend to non-resident Indians at roughly 50-60% loan-to-value with rates typically in the 4-6% range. If you are an NRI already resident in the UAE on a local salary, you are treated as a resident applicant and can reach 75-80%. Emirates NBD, Mashreq, HSBC UAE and ICICI Bank UAE are all active in this segment.",
+          "fr": "Non. Un prêt immobilier indien ne peut pas financer un achat à l'étranger : les options réalistes sont donc un prêt émirien, un échéancier promoteur, ou le comptant. Les banques émiriennes prêtent aux Indiens non-résidents à hauteur d'environ 50-60% de la valeur, avec des taux généralement dans la fourchette 4-6%. Si vous êtes déjà un NRI résidant aux Émirats avec un salaire local, vous êtes traité comme un demandeur résident et pouvez atteindre 75-80%. Emirates NBD, Mashreq, HSBC UAE et ICICI Bank UAE sont tous actifs sur ce segment.",
+          "ru": "Нет. Индийский жилищный кредит не может финансировать зарубежную покупку, поэтому реальные варианты — ипотека в UAE, рассрочка от застройщика или наличные. Банки UAE кредитуют нерезидентов Индии примерно под 50-60% от стоимости со ставками обычно в диапазоне 4-6%. Если вы NRI, уже проживающий в UAE с местной зарплатой, вас рассматривают как заявителя-резидента и доступно до 75-80%. Emirates NBD, Mashreq, HSBC UAE и ICICI Bank UAE активно работают в этом сегменте.",
+          "ar": "لا. فالقرض السكني الهندي لا يمكن أن يموّل شراءً خارجياً، وبالتالي فالخيارات الواقعية هي تمويل عقاري إماراتي أو خطة سداد من المطوّر أو الدفع نقداً. وتقرض مصارف UAE الهنود غير المقيمين بنسبة تمويل تتراوح نحو 50-60% من قيمة العقار بأسعار فائدة تقع عادة ضمن نطاق 4-6%. وإذا كنت هندياً غير مقيم تعيش أصلاً في UAE براتب محلي، فستُعامَل معاملة المتقدّم المقيم ويمكنك بلوغ 75-80%. وتنشط في هذا القطاع مصارف Emirates NBD وMashreq وHSBC UAE وICICI Bank UAE جميعها.",
+          "zh": "不可以。印度的住房贷款不能为境外购房提供资金，因此现实的选择是阿联酋按揭、开发商分期付款计划或全款。阿联酋银行向非居民印度人放贷的成数大致为 50-60%，利率通常在 4-6% 区间。如果您已经是在阿联酋本地领薪的 NRI，将被视为居民申请人，成数可达 75-80%。Emirates NBD、Mashreq、HSBC UAE 与 ICICI Bank UAE 在这一领域都很活跃。",
+          "vi": "Không. Khoản vay mua nhà tại Ấn Độ không thể tài trợ cho giao dịch ở nước ngoài, nên các lựa chọn thực tế là vay thế chấp tại UAE, kế hoạch thanh toán của chủ đầu tư, hoặc tiền mặt. Ngân hàng UAE cho người Ấn Độ không cư trú vay khoảng 50-60% giá trị tài sản với lãi suất thường trong khoảng 4-6%. Nếu bạn là NRI đã cư trú tại UAE với mức lương địa phương, bạn được xem như người nộp hồ sơ cư trú và có thể đạt 75-80%. Emirates NBD, Mashreq, HSBC UAE và ICICI Bank UAE đều hoạt động tích cực trong phân khúc này.",
+          "he": "לא. הלוואת דיור הודית אינה יכולה לממן רכישה בחו\"ל, ולכן האפשרויות המעשיות הן משכנתה ב-UAE, תוכנית תשלומים של היזם, או מזומן. בנקים ב-UAE מלווים להודים שאינם תושבים בשיעור מימון של כ-50-60% בריביות בטווח 4-6% בדרך כלל. אם אתם NRI שכבר מתגורר ב-UAE עם משכורת מקומית, אתם נחשבים כמבקשים תושבים ויכולים להגיע ל-75-80%. Emirates NBD, Mashreq, HSBC UAE ו-ICICI Bank UAE פעילים כולם בתחום זה."
+        }
+      },
+      {
+        "question": {
+          "en": "Is Dubai rental income taxable in India?",
+          "fr": "Les revenus locatifs de Dubaï sont-ils imposables en Inde ?",
+          "ru": "Облагается ли арендный доход из Dubai налогом в Индии?",
+          "ar": "هل يخضع دخل الإيجار من Dubai للضريبة في الهند؟",
+          "zh": "迪拜的租金收入在印度需要纳税吗？",
+          "vi": "Thu nhập cho thuê tại Dubai có chịu thuế ở Ấn Độ không?",
+          "he": "האם הכנסות שכירות מ-Dubai חייבות במס בהודו?"
+        },
+        "answer": {
+          "en": "If you are an Indian resident, yes — residents are taxed on worldwide income, so Dubai rent is taxable at your slab rates, with relief available under the India-UAE double tax treaty. Because the UAE levies nothing, there is no UAE tax to credit, so expect the Indian charge to apply in full and model your net yield accordingly. If you are an NRI, the position differs and depends on your residential status for the year, which is determined by day-counts rather than by intention.",
+          "fr": "Si vous êtes résident indien, oui — les résidents sont imposés sur leurs revenus mondiaux, donc les loyers de Dubaï sont imposables selon vos tranches, avec un allègement prévu par la convention fiscale Inde-Émirats. Comme les Émirats ne prélèvent rien, il n'y a aucun impôt émirien à imputer : attendez-vous à ce que la charge indienne s'applique pleinement et modélisez votre rendement net en conséquence. Si vous êtes NRI, la situation diffère et dépend de votre statut de résidence pour l'année, déterminé par le décompte des jours et non par l'intention.",
+          "ru": "Если вы налоговый резидент Индии — да: резиденты облагаются по всемирному доходу, поэтому аренда в Dubai облагается по вашим ставкам шкалы, с возможностью применения соглашения об избежании двойного налогообложения между Индией и UAE. Поскольку UAE не взимает ничего, зачитывать нечего, так что рассчитывайте, что индийский налог применится в полном объёме, и моделируйте чистую доходность соответственно. Если вы NRI, картина иная и зависит от вашего статуса резидентства за год, который определяется подсчётом дней, а не намерениями.",
+          "ar": "إذا كنت مقيماً هندياً، فنعم — إذ يخضع المقيمون للضريبة على دخلهم العالمي، فيكون إيجار Dubai خاضعاً للضريبة وفق شرائحك، مع إعفاء متاح بموجب اتفاقية تجنّب الازدواج الضريبي بين الهند وUAE. وبما أن UAE لا تفرض شيئاً، فلا توجد ضريبة إماراتية لخصمها، فتوقّع تطبيق العبء الهندي كاملاً واحسب صافي عائدك على هذا الأساس. أما إن كنت هندياً غير مقيم فالوضع مختلف ويتوقف على حالتك من حيث الإقامة خلال السنة، وهي تُحدَّد بعدد الأيام لا بالنية.",
+          "zh": "如果您是印度居民，需要——居民按全球收入纳税，因此迪拜租金须按您所属税级计税，并可依据印度与阿联酋的双重征税协定获得减免。由于阿联酋分文不征，没有阿联酋税额可供抵免，所以请预期印度税负全额适用，并据此测算净收益率。如果您是 NRI，情况则有所不同，取决于当年的居民身份，而该身份由居住天数而非主观意图决定。",
+          "vi": "Nếu bạn là đối tượng cư trú tại Ấn Độ thì có — người cư trú bị đánh thuế trên thu nhập toàn cầu, nên tiền thuê từ Dubai chịu thuế theo bậc thuế của bạn, với cơ chế miễn giảm theo hiệp định tránh đánh thuế hai lần giữa Ấn Độ và UAE. Vì UAE không thu gì, nên không có thuế UAE để khấu trừ, do đó hãy dự tính nghĩa vụ thuế tại Ấn Độ áp dụng đầy đủ và tính lại tỷ suất ròng của bạn. Nếu bạn là NRI, tình huống sẽ khác và phụ thuộc vào tình trạng cư trú trong năm đó, vốn được xác định bằng số ngày có mặt chứ không phải bằng ý định.",
+          "he": "אם אתם תושבי הודו — כן. תושבים ממוסים על הכנסה עולמית, ולכן שכר דירה מ-Dubai חייב במס לפי מדרגות המס שלכם, עם הקלה הזמינה במסגרת אמנת המס הכפול בין הודו ל-UAE. מכיוון שה-UAE אינה גובה דבר, אין מס UAE לזיכוי, ולכן צפו שהחיוב ההודי יחול במלואו ובנו את מודל התשואה נטו בהתאם. אם אתם NRI, המצב שונה ותלוי במעמד התושבות שלכם לאותה שנה, הנקבע לפי ספירת ימים ולא לפי כוונה."
+        }
+      },
+      {
+        "question": {
+          "en": "How do I get sale proceeds back to India?",
+          "fr": "Comment rapatrier le produit d'une vente en Inde ?",
+          "ru": "Как вернуть средства от продажи обратно в Индию?",
+          "ar": "كيف أعيد حصيلة البيع إلى الهند؟",
+          "zh": "我如何把售房款汇回印度？",
+          "vi": "Làm sao để chuyển tiền bán tài sản về Ấn Độ?",
+          "he": "כיצד אחזיר את תמורת המכירה להודו?"
+        },
+        "answer": {
+          "en": "Straightforwardly, through normal banking channels. The UAE has no exchange controls and no withholding on rental income or sale proceeds leaving the country. Proceeds from a property bought under LRS can be repatriated to a resident account. A non-resident will typically route rental income and proceeds through an NRE or NRO account depending on residential status — the distinction matters for repatriability, so set the right account up before the money moves rather than after.",
+          "fr": "Simplement, par les canaux bancaires habituels. Les Émirats n'ont ni contrôle des changes ni retenue à la source sur les loyers ou le produit de vente quittant le pays. Le produit d'un bien acquis dans le cadre du LRS peut être rapatrié sur un compte de résident. Un non-résident fera généralement transiter loyers et produit de vente par un compte NRE ou NRO selon son statut de résidence — la distinction compte pour la rapatriabilité, alors ouvrez le bon compte avant que l'argent ne bouge, pas après.",
+          "ru": "Просто — через обычные банковские каналы. В UAE нет валютного контроля и нет удержаний с арендного дохода или средств от продажи, покидающих страну. Средства от объекта, купленного в рамках LRS, могут быть репатриированы на счёт резидента. Нерезидент обычно проводит арендный доход и выручку через счёт NRE или NRO в зависимости от статуса резидентства — это различие важно для возможности репатриации, поэтому откройте нужный счёт до того, как деньги начнут двигаться, а не после.",
+          "ar": "بسهولة، عبر القنوات المصرفية الاعتيادية. فـ UAE لا تفرض قيوداً على الصرف ولا اقتطاعاً على دخل الإيجار أو حصيلة البيع الخارجة من البلاد. والحصيلة الناتجة عن عقار اشتُري بموجب LRS يمكن إعادتها إلى حساب مقيم. أما غير المقيم فيوجّه عادة دخل الإيجار والحصيلة عبر حساب NRE أو NRO بحسب حالته من حيث الإقامة — وهذا التمييز مهم لقابلية إعادة التحويل، لذا افتح الحساب الصحيح قبل تحريك المال لا بعده.",
+          "zh": "很直接，通过正常的银行渠道即可。阿联酋没有外汇管制，租金收入或售房款离境也不代扣任何税款。在 LRS 下购入的房产，其处置所得可汇回居民账户。非居民通常会根据居民身份，通过 NRE 或 NRO 账户接收租金与款项——这一区分关系到可汇回性，因此请在资金转出之前、而非之后就设好正确的账户。",
+          "vi": "Khá đơn giản, qua các kênh ngân hàng thông thường. UAE không có kiểm soát ngoại hối và không khấu trừ thuế đối với thu nhập cho thuê hay tiền bán tài sản chuyển ra khỏi nước này. Tiền thu từ bất động sản mua theo LRS có thể chuyển về tài khoản của người cư trú. Người không cư trú thường sẽ chuyển thu nhập cho thuê và tiền bán qua tài khoản NRE hoặc NRO tuỳ theo tình trạng cư trú — sự khác biệt này rất quan trọng đối với khả năng chuyển tiền về nước, nên hãy mở đúng loại tài khoản trước khi tiền được chuyển, chứ không phải sau đó.",
+          "he": "בפשטות, דרך ערוצים בנקאיים רגילים. ל-UAE אין פיקוח על מטבע חוץ ואין ניכוי במקור על הכנסות שכירות או תמורת מכירה היוצאות מהמדינה. תמורה מנכס שנרכש במסגרת LRS ניתנת להעברה לחשבון תושב. מי שאינו תושב ינתב בדרך כלל הכנסות שכירות ותמורה דרך חשבון NRE או NRO בהתאם למעמד התושבות — ההבחנה משמעותית לעניין יכולת ההעברה, ולכן פתחו את החשבון הנכון לפני שהכסף זז ולא אחרי."
+        }
+      },
+      {
+        "question": {
+          "en": "Does the dirham peg protect me against rupee moves?",
+          "fr": "L'arrimage du dirham me protège-t-il des variations de la roupie ?",
+          "ru": "Защищает ли привязка дирхама от колебаний рупии?",
+          "ar": "هل يحميني ربط الدرهم من تقلبات الروبية؟",
+          "zh": "迪拉姆的汇率挂钩能保护我免受卢比波动影响吗？",
+          "vi": "Việc dirham neo tỷ giá có bảo vệ tôi trước biến động của rupee không?",
+          "he": "האם הצמדת הדירהם מגינה עליי מפני תנודות הרופי?"
+        },
+        "answer": {
+          "en": "It changes the nature of the risk rather than removing it. The dirham is pegged to the US dollar at 3.6725, so an AED/INR position is effectively a USD/INR position. That means you are not exposed to a separate Gulf currency, but you are exposed to the rupee against the dollar — which, over the long run, has generally moved in one direction. For many Indian buyers that is precisely the point: the asset and its income sit in hard currency rather than in rupees.",
+          "fr": "Il change la nature du risque plutôt qu'il ne le supprime. Le dirham est arrimé au dollar américain à 3.6725 : une position AED/INR équivaut donc de fait à une position USD/INR. Vous n'êtes pas exposé à une devise du Golfe distincte, mais vous l'êtes à la roupie face au dollar — laquelle, sur le long terme, a globalement évolué dans une seule direction. Pour beaucoup d'acheteurs indiens, c'est précisément l'objectif : l'actif et ses revenus sont libellés en devise forte plutôt qu'en roupies.",
+          "ru": "Она меняет характер риска, а не устраняет его. Дирхам привязан к доллару США по курсу 3.6725, поэтому позиция AED/INR фактически является позицией USD/INR. Это значит, что вы не подвержены риску отдельной валюты Залива, но подвержены риску рупии против доллара — который на длинном горизонте, как правило, двигался в одну сторону. Для многих индийских покупателей в этом и заключается смысл: актив и доход от него находятся в твёрдой валюте, а не в рупиях.",
+          "ar": "إنه يغيّر طبيعة المخاطرة لا أن يزيلها. فالدرهم مربوط بالدولار الأمريكي عند 3.6725، ومن ثم فإن مركز الدرهم مقابل الروبية هو فعلياً مركز دولار مقابل روبية. وهذا يعني أنك غير معرّض لعملة خليجية منفصلة، لكنك معرّض لحركة الروبية أمام الدولار — وهي حركة سارت عموماً في اتجاه واحد على المدى الطويل. وبالنسبة إلى كثير من المشترين الهنود فهذا هو المقصود تحديداً: أن يكون الأصل ودخله بعملة صعبة لا بالروبية.",
+          "zh": "它改变了风险的性质，而不是消除风险。迪拉姆以 3.6725 与美元挂钩，因此 AED/INR 的敞口实质上就是 USD/INR 的敞口。这意味着您不必承担一个独立的海湾货币风险，但仍要承担卢比对美元的风险——而从长期看，后者基本上朝一个方向移动。对许多印度买家而言，这恰恰正是重点：资产及其收益以硬通货而非卢比计价。",
+          "vi": "Nó thay đổi bản chất của rủi ro chứ không loại bỏ rủi ro. Dirham được neo vào đô la Mỹ ở mức 3.6725, nên vị thế AED/INR về bản chất là vị thế USD/INR. Điều đó có nghĩa bạn không chịu rủi ro của một đồng tiền vùng Vịnh riêng biệt, nhưng bạn chịu rủi ro của rupee so với đô la — vốn trong dài hạn nhìn chung chỉ đi theo một chiều. Với nhiều người mua Ấn Độ, đó chính là điểm mấu chốt: tài sản và dòng thu nhập của nó nằm trong đồng tiền mạnh thay vì rupee.",
+          "he": "היא משנה את אופי הסיכון ולא מסירה אותו. הדירהם צמוד לדולר האמריקאי בשער 3.6725, ולכן פוזיציית AED/INR היא למעשה פוזיציית USD/INR. משמעות הדבר היא שאינכם חשופים למטבע מפרצי נפרד, אך אתם חשופים לרופי מול הדולר — שלאורך זמן נע בדרך כלל בכיוון אחד. עבור רוכשים הודים רבים זו בדיוק הנקודה: הנכס וההכנסה ממנו יושבים במטבע קשה ולא ברופי."
+        }
+      }
     ]
   },
   {
@@ -1205,6 +2547,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "Downtown Dubai",
       "Dubai Hills Estate"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "How do I transfer funds out of Egypt for the purchase?",
+          "fr": "Comment transférer des fonds hors d'Égypte pour l'achat ?",
+          "ru": "Как перевести средства из Египта для покупки?",
+          "ar": "كيف أحوّل الأموال خارج مصر لإتمام الشراء؟",
+          "zh": "我如何为购房把资金汇出埃及？",
+          "vi": "Làm thế nào để chuyển tiền ra khỏi Ai Cập cho giao dịch mua?",
+          "he": "כיצד אעביר כספים ממצרים לצורך הרכישה?"
+        },
+        "answer": {
+          "en": "Transfers abroad must go through banks or licensed bureaux under Central Bank of Egypt supervision, supported by documentation justifying the purpose, so allow time and prepare the file rather than assuming a same-week wire. Availability of foreign currency has been a real constraint at points in recent years, which is why many Egyptian purchases in Dubai are funded from income already held offshore or from Gulf employment rather than converted in Cairo. Confirm the route with your bank before committing to any schedule of payments.",
+          "fr": "Les transferts vers l'étranger doivent passer par des banques ou des bureaux agréés sous la supervision de la Banque centrale d'Égypte, accompagnés de justificatifs motivant l'opération : prévoyez du temps et préparez le dossier plutôt que de tabler sur un virement dans la semaine. La disponibilité des devises a constitué une contrainte réelle à certains moments ces dernières années, ce qui explique que de nombreux achats égyptiens à Dubaï soient financés par des revenus déjà détenus à l'étranger ou issus d'un emploi dans le Golfe, plutôt que convertis au Caire. Confirmez le circuit avec votre banque avant de vous engager sur un quelconque échéancier de paiement.",
+          "ru": "Переводы за рубеж должны проходить через банки или лицензированные обменные конторы под надзором Центрального банка Египта, с приложением документов, обосновывающих цель, поэтому закладывайте время и готовьте пакет документов, а не рассчитывайте на перевод в течение недели. Доступность иностранной валюты в отдельные периоды последних лет была реальным ограничением — именно поэтому многие египетские покупки в Dubai финансируются из дохода, уже размещённого за рубежом, или из заработка в странах Залива, а не конвертируются в Каире. Согласуйте маршрут со своим банком, прежде чем принимать на себя какой-либо график платежей.",
+          "ar": "يجب أن تتم التحويلات إلى الخارج عبر المصارف أو شركات الصرافة المرخّصة تحت إشراف البنك المركزي المصري، مدعومة بمستندات تبرّر الغرض، لذا خصّص وقتاً وجهّز الملف بدل افتراض تحويل خلال الأسبوع نفسه. وقد شكّل توافر العملة الأجنبية قيداً حقيقياً في فترات من السنوات الأخيرة، ولهذا تُموَّل كثير من عمليات الشراء المصرية في Dubai من دخل محتفظ به أصلاً في الخارج أو من عمل في الخليج بدل تحويله من القاهرة. أكّد المسار مع مصرفك قبل الالتزام بأي جدول مدفوعات.",
+          "zh": "对外汇款必须通过受埃及中央银行监管的银行或持牌兑换机构办理，并附具说明用途的证明文件，因此请预留时间并备齐材料，而不要假定一周之内就能完成电汇。近年来外币供应在某些时点确实构成实际制约，这也是为什么许多埃及买家在迪拜的购房资金来自已存放于境外的收入或海湾地区的就业所得，而非在开罗兑换。在承诺任何付款时间表之前，请先与您的银行确认路径。",
+          "vi": "Việc chuyển tiền ra nước ngoài phải thực hiện qua ngân hàng hoặc các điểm đổi tiền được cấp phép dưới sự giám sát của Ngân hàng Trung ương Ai Cập, kèm hồ sơ chứng minh mục đích, nên hãy dành đủ thời gian và chuẩn bị hồ sơ thay vì mặc định có thể chuyển tiền trong cùng tuần. Nguồn cung ngoại tệ đã là một hạn chế thực tế vào một số thời điểm trong những năm gần đây, đó là lý do nhiều giao dịch của người Ai Cập tại Dubai được tài trợ bằng thu nhập đã nắm giữ ở nước ngoài hoặc từ công việc tại vùng Vịnh, thay vì quy đổi tại Cairo. Hãy xác nhận phương án với ngân hàng của bạn trước khi cam kết bất kỳ lịch thanh toán nào.",
+          "he": "העברות לחו\"ל חייבות לעבור דרך בנקים או חלפנים מורשים בפיקוח הבנק המרכזי של מצרים, בליווי תיעוד המצדיק את מטרת ההעברה — ולכן הקצו זמן והכינו את התיק במקום להניח שתתאפשר העברה באותו שבוע. זמינות מטבע חוץ הייתה מגבלה אמיתית בנקודות שונות בשנים האחרונות, וזו הסיבה שרכישות מצריות רבות ב-Dubai ממומנות מהכנסה המוחזקת כבר בחו\"ל או מתעסוקה במפרץ ולא מהמרה בקהיר. ודאו את המסלול מול הבנק שלכם לפני שאתם מתחייבים ללוח תשלומים כלשהו."
+        }
+      },
+      {
+        "question": {
+          "en": "Is my tax position different if I already live in the UAE?",
+          "fr": "Ma situation fiscale est-elle différente si je vis déjà aux Émirats ?",
+          "ru": "Отличается ли моя налоговая ситуация, если я уже живу в UAE?",
+          "ar": "هل يختلف وضعي الضريبي إن كنت أقيم بالفعل في UAE؟",
+          "zh": "如果我已经住在阿联酋，我的税务情况会不同吗？",
+          "vi": "Vị thế thuế của tôi có khác không nếu tôi đã sống tại UAE?",
+          "he": "האם מצב המס שלי שונה אם אני כבר מתגורר ב-UAE?"
+        },
+        "answer": {
+          "en": "Substantially. An Egyptian living and working in the UAE is generally outside Egyptian tax on UAE-source income, and the UAE itself levies no personal income tax, no capital gains tax and no annual property tax — so for a UAE-resident Egyptian the rental yield is largely untaxed on both sides. An Egyptian tax resident should confirm with an Egyptian adviser how foreign rental income and a foreign disposal are treated under current law, because that is the case where a real liability can arise.",
+          "fr": "Sensiblement. Un Égyptien vivant et travaillant aux Émirats est en général hors du champ de l'impôt égyptien sur les revenus de source émirienne, et les Émirats eux-mêmes ne prélèvent ni impôt sur le revenu des personnes physiques, ni impôt sur les plus-values, ni taxe foncière annuelle — de sorte que, pour un Égyptien résident aux Émirats, le rendement locatif est largement non imposé des deux côtés. Un résident fiscal égyptien devrait faire confirmer par un conseil égyptien le traitement des revenus locatifs étrangers et d'une cession à l'étranger selon le droit en vigueur, car c'est dans ce cas qu'une charge réelle peut naître.",
+          "ru": "Существенно. Египтянин, живущий и работающий в UAE, как правило, не подпадает под египетский налог по доходу из источников в UAE, а сами UAE не взимают ни личного подоходного налога, ни налога на прирост капитала, ни ежегодного налога на недвижимость — так что для египтянина-резидента UAE арендная доходность по большей части не облагается ни с одной из сторон. Налоговому резиденту Египта следует уточнить у египетского консультанта, как по действующему законодательству трактуются иностранный арендный доход и продажа зарубежного актива, потому что именно в этом случае может возникнуть реальное обязательство.",
+          "ar": "بشكل جوهري. فالمصري المقيم والعامل في UAE يقع عموماً خارج نطاق الضريبة المصرية على الدخل الناشئ في UAE، وUAE نفسها لا تفرض ضريبة دخل شخصي ولا ضريبة أرباح رأسمالية ولا ضريبة عقارية سنوية — ومن ثم يكون عائد الإيجار بالنسبة إلى المصري المقيم في UAE غير خاضع للضريبة إلى حد بعيد على الجانبين. أما المقيم ضريبياً في مصر فينبغي أن يؤكد مع مستشار مصري كيفية معاملة دخل الإيجار الأجنبي والبيع الخارجي بموجب القانون الساري، لأن هذه هي الحالة التي قد تنشأ فيها مسؤولية حقيقية.",
+          "zh": "有实质性差别。在阿联酋生活和工作的埃及人，其阿联酋来源收入通常不在埃及税网之内，而阿联酋本身不征收个人所得税、资本利得税和年度房产税——因此对于居住在阿联酋的埃及人而言，租金收益在两边基本都免于课税。埃及税务居民则应向埃及顾问确认，在现行法律下境外租金收入与境外处置如何处理，因为那正是可能产生实际税负的情形。",
+          "vi": "Khác đáng kể. Một người Ai Cập sống và làm việc tại UAE nhìn chung nằm ngoài phạm vi thuế Ai Cập đối với thu nhập có nguồn từ UAE, và bản thân UAE không thu thuế thu nhập cá nhân, thuế lãi vốn hay thuế bất động sản hằng năm — nên với một người Ai Cập cư trú tại UAE, tỷ suất cho thuê phần lớn không bị đánh thuế ở cả hai phía. Một người Ai Cập là đối tượng cư trú thuế tại Ai Cập nên xác nhận với cố vấn thuế Ai Cập về cách thu nhập cho thuê ở nước ngoài và việc chuyển nhượng tài sản ở nước ngoài được xử lý theo luật hiện hành, bởi đó là trường hợp có thể phát sinh nghĩa vụ thuế thực sự.",
+          "he": "באופן מהותי. מצרי המתגורר ועובד ב-UAE נמצא בדרך כלל מחוץ למיסוי המצרי על הכנסה שמקורה ב-UAE, וה-UAE עצמה אינה גובה מס הכנסה אישי, מס רווחי הון או מס רכוש שנתי — כך שעבור מצרי תושב UAE תשואת השכירות אינה ממוסה כמעט בשני הצדדים. תושב מס מצרי צריך לוודא מול יועץ מצרי כיצד מטופלות הכנסות שכירות זרות ומימוש נכס זר תחת החוק הנוכחי, משום שזה המקרה שבו עלולה להיווצר חבות אמיתית."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a mortgage, or should I use a payment plan?",
+          "fr": "Puis-je obtenir un prêt, ou vaut-il mieux passer par un échéancier ?",
+          "ru": "Стоит ли брать ипотеку или лучше воспользоваться рассрочкой?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري، أم أستخدم خطة سداد؟",
+          "zh": "我能申请按揭，还是应该采用付款计划？",
+          "vi": "Tôi nên vay thế chấp hay dùng kế hoạch thanh toán?",
+          "he": "האם אוכל לקבל משכנתה, או שעדיף להשתמש בתוכנית תשלומים?"
+        },
+        "answer": {
+          "en": "Both exist, but the payment plan is the more common route for buyers funding from Egypt. UAE banks lend to non-residents against documented income in a currency they can assess, which is straightforward if you hold Gulf or dollar income and harder on Egyptian pound income alone. A developer payment plan on off-plan stock needs no credit assessment: typically 10-20% on booking, instalments during construction and the balance at handover, all in dirhams — which also lets you spread transfers across months rather than moving one large sum.",
+          "fr": "Les deux existent, mais l'échéancier est la voie la plus courante pour les acheteurs finançant depuis l'Égypte. Les banques émiriennes prêtent aux non-résidents sur la base de revenus documentés dans une devise qu'elles peuvent apprécier, ce qui est simple si vous percevez des revenus du Golfe ou en dollars, et plus difficile sur des seuls revenus en livres égyptiennes. Un échéancier promoteur sur un bien sur plan ne requiert aucun examen de solvabilité : typiquement 10-20% à la réservation, des versements pendant la construction et le solde à la livraison, le tout en dirhams — ce qui permet aussi d'étaler les transferts sur plusieurs mois plutôt que de déplacer une grosse somme en une fois.",
+          "ru": "Существует и то, и другое, но для покупателей, финансирующих покупку из Египта, более распространённый путь — рассрочка. Банки UAE кредитуют нерезидентов под документально подтверждённый доход в валюте, которую они могут оценить, — это просто, если у вас доход в валютах Залива или в долларах, и сложнее при доходе только в египетских фунтах. Рассрочка от застройщика на строящемся объекте не требует кредитной оценки: обычно 10-20% при бронировании, платежи в ходе строительства и остаток при передаче ключей, всё в дирхамах — что также позволяет распределить переводы на несколько месяцев вместо отправки одной крупной суммы.",
+          "ar": "الخياران متاحان، لكن خطة السداد هي المسار الأشيع للمشترين الممولين من مصر. فمصارف UAE تقرض غير المقيمين مقابل دخل موثّق بعملة يمكنها تقديرها، وهو أمر ميسور إن كان دخلك خليجياً أو بالدولار وأصعب بالاعتماد على دخل بالجنيه المصري وحده. أما خطة السداد لدى المطوّر على وحدة على الخارطة فلا تتطلب أي تقييم ائتماني: عادة 10-20% عند الحجز، وأقساط أثناء البناء، والرصيد عند التسليم، والجميع بالدرهم — وهو ما يتيح لك كذلك توزيع التحويلات على أشهر بدل تحريك مبلغ واحد كبير.",
+          "zh": "两者都存在，但对于从埃及筹资的买家而言，付款计划是更常见的路径。阿联酋银行向非居民放贷，依据的是以其能够评估的货币计价、且有据可查的收入，因此若您拥有海湾地区或美元收入会较为顺利，仅有埃及镑收入则更为困难。期房的开发商付款计划无需信用评估：通常认购时支付 10-20%，施工期间分期付款，交房时结清余款，全部以迪拉姆计价——这也让您可以把转账分散到数月，而不必一次性汇出大额资金。",
+          "vi": "Cả hai đều khả thi, nhưng kế hoạch thanh toán là lựa chọn phổ biến hơn với người mua sử dụng nguồn tiền từ Ai Cập. Ngân hàng UAE cho người không cư trú vay dựa trên thu nhập có chứng từ bằng loại tiền tệ mà họ đánh giá được, điều này đơn giản nếu bạn có thu nhập bằng tiền vùng Vịnh hoặc đô la, và khó hơn nếu chỉ có thu nhập bằng bảng Ai Cập. Kế hoạch thanh toán của chủ đầu tư với sản phẩm off-plan không cần thẩm định tín dụng: thường là 10-20% khi đặt chỗ, trả góp trong quá trình xây dựng và phần còn lại khi bàn giao, tất cả bằng dirham — cách này cũng cho phép bạn dàn trải việc chuyển tiền qua nhiều tháng thay vì chuyển một khoản lớn.",
+          "he": "שניהם קיימים, אך תוכנית התשלומים היא המסלול הנפוץ יותר עבור רוכשים המממנים ממצרים. בנקים ב-UAE מלווים ללא-תושבים כנגד הכנסה מתועדת במטבע שהם יכולים להעריך, מה שפשוט אם יש לכם הכנסה מהמפרץ או בדולר, וקשה יותר על הכנסה בלירה מצרית בלבד. תוכנית תשלומים של יזם על מלאי off-plan אינה דורשת הערכת אשראי: בדרך כלל 10-20% בהזמנה, תשלומים במהלך הבנייה והיתרה במסירה, הכול בדירהם — מה שגם מאפשר לכם לפרוס העברות על פני חודשים במקום להעביר סכום גדול אחד."
+        }
+      },
+      {
+        "question": {
+          "en": "What does it cost beyond the purchase price?",
+          "fr": "Que coûte l'opération au-delà du prix d'achat ?",
+          "ru": "Во что обойдётся покупка сверх цены объекта?",
+          "ar": "ما التكلفة إلى جانب سعر الشراء؟",
+          "zh": "除房价之外还需要多少费用？",
+          "vi": "Ngoài giá mua, tôi còn phải trả những gì?",
+          "he": "מה העלות מעבר למחיר הרכישה?"
+        },
+        "answer": {
+          "en": "The 4% Dubai Land Department transfer fee, agency commission of about 2%, and roughly AED 4,200 in registration and trustee charges, taking the all-in cost to approximately 6-7%. After completion there is no annual property tax; the standing costs are service charges set by the building and a municipality housing fee on let homes.",
+          "fr": "Les frais de transfert de 4% du Dubai Land Department, une commission d'agence d'environ 2%, et environ AED 4,200 de frais d'enregistrement et de mandataire, portant le coût tout compris à environ 6-7%. Après la finalisation, il n'y a pas de taxe foncière annuelle ; les coûts courants sont les charges de copropriété fixées par l'immeuble et une taxe municipale d'habitation sur les biens loués.",
+          "ru": "Сбор за передачу права Dubai Land Department в размере 4%, комиссия агентства около 2% и примерно AED 4,200 регистрационных и трастовых сборов — итого приблизительно 6-7%. После завершения сделки ежегодного налога на недвижимость нет; постоянные расходы — это сервисные сборы, устанавливаемые зданием, и муниципальный жилищный сбор для сдаваемых объектов.",
+          "ar": "رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، وعمولة وساطة بنحو 2%، ونحو AED 4,200 رسوم تسجيل وأمانة، ليصل الإجمالي إلى ما يقارب 6-7%. وبعد الإتمام لا توجد ضريبة عقارية سنوية؛ فالتكاليف الجارية هي رسوم الخدمات التي يحددها المبنى ورسم السكن البلدي على الوحدات المؤجرة.",
+          "zh": "4% 的迪拜土地局过户费、约 2% 的中介佣金，以及约 AED 4,200 的登记与受托人费用，全部计入约为 6-7%。成交之后没有年度房产税；持有成本是楼盘设定的物业费，以及出租住宅的市政住房费。",
+          "vi": "Phí chuyển nhượng 4% của Dubai Land Department, hoa hồng môi giới khoảng 2%, và khoảng AED 4,200 phí đăng ký cùng phí uỷ thác, đưa tổng chi phí lên xấp xỉ 6-7%. Sau khi hoàn tất giao dịch, không có thuế bất động sản hằng năm; các chi phí thường xuyên là phí dịch vụ do toà nhà ấn định và phí nhà ở đô thị đối với căn cho thuê.",
+          "he": "אגרת ההעברה של Dubai Land Department בשיעור 4%, עמלת תיווך של כ-2%, וכ-AED 4,200 באגרות רישום ונאמן — המביאות את העלות הכוללת לכ-6-7%. לאחר השלמת העסקה אין מס רכוש שנתי; העלויות השוטפות הן דמי ניהול הנקבעים על ידי הבניין ואגרת דיור עירונית על דירות מושכרות."
+        }
+      },
+      {
+        "question": {
+          "en": "Does buying in Dubai give me residence?",
+          "fr": "Acheter à Dubaï me donne-t-il un titre de séjour ?",
+          "ru": "Даёт ли покупка в Dubai право на резидентство?",
+          "ar": "هل يمنحني الشراء في Dubai إقامة؟",
+          "zh": "在迪拜买房能让我获得居留身份吗？",
+          "vi": "Mua nhà ở Dubai có cho tôi quyền cư trú không?",
+          "he": "האם רכישה ב-Dubai מקנה לי תושבות?"
+        },
+        "answer": {
+          "en": "A purchase of AED 2M or more qualifies you for the ten-year renewable Golden Visa, self-sponsored and covering your spouse and children, with no minimum stay requirement. Below that, an AED 750,000 purchase has historically supported a shorter renewable investor visa. Both are residence permits tied to continuing to hold the property, not a route to Emirati citizenship — the UAE does not offer naturalisation by investment, and any adviser suggesting otherwise is worth walking away from.",
+          "fr": "Un achat de AED 2M ou plus vous ouvre droit au Golden Visa de dix ans renouvelable, auto-parrainé et couvrant votre conjoint et vos enfants, sans durée de séjour minimale. En deçà, un achat de AED 750,000 a historiquement permis d'obtenir un visa investisseur renouvelable de plus courte durée. Les deux sont des titres de séjour conditionnés au maintien de la détention du bien, et non une voie vers la citoyenneté émirienne — les Émirats n'offrent pas de naturalisation par investissement, et tout conseil suggérant le contraire mérite qu'on s'en éloigne.",
+          "ru": "Покупка от AED 2M даёт право на десятилетнюю возобновляемую Golden Visa с самостоятельным спонсорством, охватывающую супруга и детей, без требования минимального пребывания. Ниже этого порога покупка на AED 750,000 исторически позволяла получить более короткую возобновляемую инвесторскую визу. Обе — это виды на жительство, привязанные к сохранению собственности, а не путь к эмиратскому гражданству: UAE не предоставляет натурализацию за инвестиции, и от любого консультанта, утверждающего обратное, стоит уйти.",
+          "ar": "شراء بقيمة AED 2M أو أكثر يؤهّلك لـ Golden Visa لعشر سنوات قابلة للتجديد، بكفالة ذاتية وشاملة لزوجك وأبنائك، دون شرط حد أدنى للإقامة. وما دون ذلك، دعم شراء بقيمة AED 750,000 تاريخياً تأشيرة مستثمر أقصر أجلاً وقابلة للتجديد. وكلاهما تصريح إقامة مرتبط باستمرار حيازتك للعقار، لا طريق إلى الجنسية الإماراتية — فـ UAE لا تمنح التجنّس بالاستثمار، وأي مستشار يوحي بغير ذلك يستحق أن تبتعد عنه.",
+          "zh": "购买 AED 2M 或以上的房产可使您符合十年期可续签黄金签证的条件，由本人自担保并涵盖配偶与子女，且无最低居住时间要求。低于此金额的情况下，AED 750,000 的购房历来可支持申请期限较短的可续签投资者签证。两者都是与持续持有该房产挂钩的居留许可，而不是取得阿联酋公民身份的途径——阿联酋不提供投资入籍，任何作出相反暗示的顾问都值得您转身离开。",
+          "vi": "Một giao dịch từ AED 2M trở lên giúp bạn đủ điều kiện nhận Golden Visa mười năm có thể gia hạn, tự bảo lãnh và bao gồm cả vợ/chồng cùng con cái, không yêu cầu thời gian lưu trú tối thiểu. Dưới mức đó, một giao dịch AED 750,000 trước nay vẫn hỗ trợ một visa nhà đầu tư thời hạn ngắn hơn, có thể gia hạn. Cả hai đều là giấy phép cư trú gắn với việc tiếp tục nắm giữ bất động sản, chứ không phải con đường dẫn tới quốc tịch Emirati — UAE không có chương trình nhập tịch theo diện đầu tư, và bất kỳ cố vấn nào gợi ý điều ngược lại đều đáng để bạn rời đi.",
+          "he": "רכישה של AED 2M ומעלה מזכה אתכם ב-Golden Visa לעשר שנים הניתנת לחידוש, בחסות עצמית והכוללת את בן או בת הזוג והילדים, ללא דרישת שהייה מינימלית. מתחת לסף זה, רכישה של AED 750,000 תמכה בעבר בוויזת משקיע קצרה יותר הניתנת לחידוש. שתיהן היתרי תושבות הכרוכים בהמשך החזקת הנכס, ולא מסלול לאזרחות אמירתית — ה-UAE אינה מציעה התאזרחות בדרך של השקעה, ומכל יועץ הרומז אחרת כדאי להתרחק."
+        }
+      },
+      {
+        "question": {
+          "en": "Why Dubai rather than the North Coast or New Cairo?",
+          "fr": "Pourquoi Dubaï plutôt que la Côte Nord ou New Cairo ?",
+          "ru": "Почему Dubai, а не Северное побережье или Новый Каир?",
+          "ar": "لماذا Dubai بدلاً من الساحل الشمالي أو القاهرة الجديدة؟",
+          "zh": "为什么选择迪拜，而不是北海岸或新开罗？",
+          "vi": "Vì sao chọn Dubai thay vì North Coast hay New Cairo?",
+          "he": "מדוע Dubai ולא החוף הצפוני או קהיר החדשה?"
+        },
+        "answer": {
+          "en": "The honest answer is currency and title rather than yield alone. A Dubai property is priced in dirhams pegged to the US dollar, and the rent arrives in the same currency, so neither the asset nor its income sits in a currency that has devalued repeatedly. Ownership is registered at the Dubai Land Department as full freehold in your own name with no nationality restriction, gross yields in mainstream communities run roughly 5-8%, and the rental market increasingly settles monthly rather than annually.",
+          "fr": "La réponse honnête tient à la devise et au titre de propriété plus qu'au seul rendement. Un bien à Dubaï est libellé en dirhams arrimés au dollar américain, et le loyer arrive dans la même devise : ni l'actif ni ses revenus ne sont donc adossés à une monnaie qui s'est dévaluée à répétition. La propriété est enregistrée auprès du Dubai Land Department en pleine propriété freehold à votre nom, sans restriction de nationalité, les rendements bruts dans les communautés grand public se situent autour de 5-8%, et le marché locatif se règle de plus en plus au mois plutôt qu'à l'année.",
+          "ru": "Честный ответ — дело в валюте и праве собственности, а не только в доходности. Недвижимость в Dubai оценивается в дирхамах, привязанных к доллару США, и арендная плата поступает в той же валюте, поэтому ни сам актив, ни доход от него не находятся в валюте, которая неоднократно девальвировалась. Право собственности регистрируется в Dubai Land Department как полный freehold на ваше собственное имя без ограничений по гражданству, валовая доходность в основных районах составляет примерно 5-8%, а арендный рынок всё чаще переходит на помесячную, а не годовую оплату.",
+          "ar": "الجواب الصادق هو العملة وسند الملكية أكثر من العائد وحده. فالعقار في Dubai مسعّر بالدرهم المربوط بالدولار الأمريكي، والإيجار يصل بالعملة ذاتها، فلا يستقر الأصل ولا دخله في عملة تعرّضت لخفض قيمتها مراراً. والملكية مسجّلة لدى Dubai Land Department بوصفها freehold كاملة باسمك ودون قيد على الجنسية، والعوائد الإجمالية في المجتمعات الرئيسية تتراوح نحو 5-8%، وسوق الإيجار يتجه بصورة متزايدة إلى السداد شهرياً بدل السنوي.",
+          "zh": "坦白的答案是货币与产权，而不仅仅是收益率。迪拜房产以与美元挂钩的迪拉姆计价，租金也以同一货币到账，因此无论资产还是收益，都不以一种反复贬值的货币计价。所有权以完整 freehold 形式、以您本人名义在迪拜土地局登记，不受国籍限制；主流社区的毛收益率大致为 5-8%；而且租赁市场正越来越多地按月结算，而非按年结算。",
+          "vi": "Câu trả lời thành thật là vì đồng tiền và quyền sở hữu, chứ không chỉ vì tỷ suất lợi nhuận. Bất động sản Dubai được định giá bằng dirham neo theo đô la Mỹ, và tiền thuê cũng về bằng chính đồng tiền đó, nên cả tài sản lẫn dòng thu nhập đều không nằm trong một đồng tiền đã mất giá nhiều lần. Quyền sở hữu được đăng ký tại Dubai Land Department dưới dạng freehold đầy đủ, đứng tên chính bạn, không hạn chế theo quốc tịch; tỷ suất gộp tại các cộng đồng phổ thông vào khoảng 5-8%, và thị trường cho thuê ngày càng thanh toán theo tháng thay vì theo năm.",
+          "he": "התשובה הכנה היא מטבע ובעלות, ולא תשואה בלבד. נכס ב-Dubai מתומחר בדירהם הצמוד לדולר האמריקאי, ושכר הדירה מגיע באותו מטבע, כך שלא הנכס ולא ההכנסה ממנו יושבים במטבע שעבר פיחותים חוזרים. הבעלות נרשמת ב-Dubai Land Department כ-freehold מלא על שמכם וללא הגבלת לאום, תשואות ברוטו בקהילות המרכזיות נעות בסביבות 5-8%, ושוק השכירות עובר יותר ויותר לתשלום חודשי במקום שנתי."
+        }
+      }
     ]
   },
   {
@@ -1272,6 +2736,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Marina",
       "Dubai Hills Estate",
       "Downtown Dubai"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Do I need State Bank approval to send money from Pakistan?",
+          "fr": "Ai-je besoin de l'accord de la State Bank pour envoyer de l'argent depuis le Pakistan ?",
+          "ru": "Нужно ли разрешение State Bank для отправки денег из Пакистана?",
+          "ar": "هل أحتاج إلى موافقة البنك المركزي لإرسال أموال من باكستان؟",
+          "zh": "从巴基斯坦汇款需要国家银行批准吗？",
+          "vi": "Tôi có cần phê duyệt của Ngân hàng Trung ương để chuyển tiền từ Pakistan không?",
+          "he": "האם אני זקוק לאישור הבנק המרכזי כדי לשלוח כסף מפקיסטן?"
+        },
+        "answer": {
+          "en": "Yes. Sending capital out of Pakistan for an overseas property purchase requires State Bank approval through your bank, so this is not a routine transfer. Obtain it before you sign anything with an instalment schedule attached, because a developer payment plan assumes you can move money on fixed dates and a missed instalment is expensive. Many Pakistani purchases are instead funded from income already held offshore, which avoids the approval timeline entirely. We will not advise on routes around exchange control.",
+          "fr": "Oui. Sortir des capitaux du Pakistan pour un achat immobilier à l'étranger requiert l'accord de la State Bank via votre banque : ce n'est donc pas un virement de routine. Obtenez-le avant de signer quoi que ce soit comportant un échéancier, car un échéancier promoteur suppose que vous pouvez transférer des fonds à dates fixes et un versement manqué coûte cher. Beaucoup d'achats pakistanais sont plutôt financés avec des revenus déjà détenus à l'étranger, ce qui évite entièrement les délais d'autorisation. Nous ne conseillerons pas de circuits contournant le contrôle des changes.",
+          "ru": "Да. Вывод капитала из Пакистана для покупки зарубежной недвижимости требует разрешения State Bank через ваш банк, так что это не рядовой перевод. Получите его до того, как подпишете что-либо с графиком рассрочки, потому что план платежей застройщику предполагает, что вы можете переводить деньги в фиксированные даты, а пропущенный платёж обходится дорого. Многие пакистанские покупки вместо этого финансируются из дохода, уже размещённого за рубежом, что полностью снимает вопрос сроков получения разрешения. Мы не будем консультировать по маршрутам в обход валютного контроля.",
+          "ar": "نعم. فإخراج رأس المال من باكستان لشراء عقار خارجي يتطلب موافقة البنك المركزي عبر مصرفك، وبالتالي فهذا ليس تحويلاً روتينياً. احصل عليها قبل أن توقّع أي شيء مرفق بجدول أقساط، لأن خطة السداد لدى المطوّر تفترض قدرتك على تحريك المال في تواريخ ثابتة، والتأخر عن قسط مكلف. وتُموَّل كثير من عمليات الشراء الباكستانية بدلاً من ذلك من دخل محتفظ به أصلاً في الخارج، ما يتجنب زمن الموافقة كلياً. ولن نقدّم نصيحة بشأن مسارات تلتف على قيود الصرف.",
+          "zh": "需要。为境外购房而将资本汇出巴基斯坦，须经您的银行取得国家银行批准，因此这不是一笔例行转账。请在签署任何附带分期付款时间表的文件之前取得批准，因为开发商的付款计划假定您能在固定日期转出资金，而漏付一期代价高昂。许多巴基斯坦买家改以已存放在境外的收入付款，从而完全避开审批周期。我们不会就绕开外汇管制的路径提供建议。",
+          "vi": "Có. Việc chuyển vốn ra khỏi Pakistan để mua bất động sản ở nước ngoài cần có sự chấp thuận của Ngân hàng Nhà nước thông qua ngân hàng của bạn, nên đây không phải một giao dịch chuyển tiền thông thường. Hãy xin phê duyệt trước khi ký bất kỳ hợp đồng nào có lịch thanh toán theo đợt, bởi kế hoạch thanh toán của chủ đầu tư mặc định rằng bạn có thể chuyển tiền vào những ngày cố định, và một đợt trễ hạn sẽ rất tốn kém. Nhiều giao dịch của người Pakistan thay vào đó được tài trợ bằng thu nhập đã nắm giữ ở nước ngoài, giúp tránh hoàn toàn thời gian chờ phê duyệt. Chúng tôi sẽ không tư vấn về các cách lách kiểm soát ngoại hối.",
+          "he": "כן. הוצאת הון מפקיסטן לרכישת נכס בחו\"ל מחייבת אישור של ה-State Bank דרך הבנק שלכם, ולכן אין מדובר בהעברה שגרתית. השיגו אותו לפני שאתם חותמים על כל מסמך שמצורף אליו לוח תשלומים, משום שתוכנית תשלומים של יזם מניחה שתוכלו להעביר כסף במועדים קבועים, ותשלום שהוחמץ הוא יקר. רכישות פקיסטניות רבות ממומנות במקום זאת מהכנסה המוחזקת כבר בחו\"ל, מה שחוסך לחלוטין את לוח הזמנים של האישור. לא נייעץ על מסלולים לעקיפת הפיקוח על מטבע חוץ."
+        }
+      },
+      {
+        "question": {
+          "en": "Must I declare Dubai property in Pakistan?",
+          "fr": "Dois-je déclarer un bien à Dubaï au Pakistan ?",
+          "ru": "Обязан ли я декларировать недвижимость в Dubai в Пакистане?",
+          "ar": "هل يجب أن أفصح عن عقاري في Dubai داخل باكستان؟",
+          "zh": "我必须在巴基斯坦申报迪拜房产吗？",
+          "vi": "Tôi có phải khai báo bất động sản Dubai tại Pakistan không?",
+          "he": "האם עליי להצהיר על נכס ב-Dubai בפקיסטן?"
+        },
+        "answer": {
+          "en": "If you are a Pakistan tax resident, yes. Foreign property must be declared in the wealth statement filed with your return, with the remittance shown as the source of funds, and Dubai rental income should be expected to be reportable as Pakistan taxes residents on worldwide income. Because the UAE levies nothing, there is no foreign tax to credit against the Pakistani charge. Declaring the asset and showing a clean remittance trail is also what makes a later sale or repatriation straightforward rather than contested.",
+          "fr": "Si vous êtes résident fiscal pakistanais, oui. Un bien étranger doit être déclaré dans l'état de patrimoine joint à votre déclaration, avec le transfert de fonds indiqué comme origine des ressources, et il faut s'attendre à ce que les revenus locatifs de Dubaï soient déclarables, le Pakistan imposant ses résidents sur leurs revenus mondiaux. Comme les Émirats ne prélèvent rien, il n'y a aucun impôt étranger à imputer sur la charge pakistanaise. Déclarer l'actif et présenter une traçabilité de transfert irréprochable est aussi ce qui rend une revente ou un rapatriement ultérieur simple plutôt que contesté.",
+          "ru": "Если вы налоговый резидент Пакистана — да. Зарубежная недвижимость должна быть отражена в декларации об имуществе, подаваемой вместе с налоговой декларацией, с указанием перевода как источника средств, и следует исходить из того, что арендный доход из Dubai подлежит декларированию, поскольку Пакистан облагает резидентов по всемирному доходу. Поскольку UAE не взимает ничего, иностранного налога к зачёту против пакистанского начисления нет. Декларирование актива и прозрачная история перевода — это также то, что делает последующую продажу или репатриацию простой, а не спорной.",
+          "ar": "إذا كنت مقيماً ضريبياً في باكستان، فنعم. يجب الإفصاح عن العقار الأجنبي في بيان الثروة المرفق بإقرارك الضريبي، مع إظهار التحويل بوصفه مصدر الأموال، ويُتوقَّع أن يكون دخل الإيجار من Dubai واجب الإبلاغ لأن باكستان تفرض الضريبة على المقيمين بشأن دخلهم العالمي. وبما أن UAE لا تفرض شيئاً، فلا توجد ضريبة أجنبية تُخصم من العبء الباكستاني. كما أن الإفصاح عن الأصل وإظهار مسار تحويل نظيف هو ما يجعل البيع أو إعادة الأموال لاحقاً أمراً سلساً لا موضع نزاع.",
+          "zh": "如果您是巴基斯坦税务居民，必须申报。境外房产须在随纳税申报表提交的财产申报表中列明，并以汇款作为资金来源；由于巴基斯坦对居民的全球收入征税，迪拜租金收入也应预期属于须申报范围。由于阿联酋分文不征，没有外国税额可抵免巴基斯坦税负。申报该资产并呈现清晰的汇款轨迹，也正是日后出售或资金汇回得以顺畅而非受到质疑的关键。",
+          "vi": "Nếu bạn là đối tượng cư trú thuế tại Pakistan thì có. Bất động sản ở nước ngoài phải được khai trong bản kê khai tài sản nộp kèm tờ khai thuế, với khoản chuyển tiền được nêu là nguồn gốc tài chính, và thu nhập cho thuê tại Dubai nên được dự liệu là phải kê khai, bởi Pakistan đánh thuế người cư trú trên thu nhập toàn cầu. Vì UAE không thu gì, nên không có thuế nước ngoài để khấu trừ vào nghĩa vụ thuế tại Pakistan. Việc khai báo tài sản và chứng minh được một lộ trình chuyển tiền minh bạch cũng chính là điều giúp việc bán hoặc chuyển tiền về nước sau này diễn ra thuận lợi thay vì bị tranh cãi.",
+          "he": "אם אתם תושבי מס בפקיסטן — כן. יש להצהיר על נכס זר בהצהרת ההון המוגשת עם הדוח השנתי, כאשר ההעברה מוצגת כמקור הכספים, ויש לצפות שהכנסות שכירות מ-Dubai יהיו ברות דיווח, שכן פקיסטן ממסה תושבים על הכנסה עולמית. מכיוון שה-UAE אינה גובה דבר, אין מס זר לזיכוי כנגד החיוב הפקיסטני. הצהרה על הנכס והצגת שרשרת העברות נקייה הן גם מה שהופך מכירה או החזרת כספים עתידית לפשוטה ולא שנויה במחלוקת."
+        }
+      },
+      {
+        "question": {
+          "en": "Will a UAE bank lend to me on Pakistani income?",
+          "fr": "Une banque émirienne me prêtera-t-elle sur la base de revenus pakistanais ?",
+          "ru": "Даст ли банк UAE кредит под пакистанский доход?",
+          "ar": "هل يقرضني مصرف إماراتي بالاعتماد على دخل باكستاني؟",
+          "zh": "阿联酋银行会基于巴基斯坦收入向我放贷吗？",
+          "vi": "Ngân hàng UAE có cho tôi vay dựa trên thu nhập tại Pakistan không?",
+          "he": "האם בנק ב-UAE ילווה לי על בסיס הכנסה פקיסטנית?"
+        },
+        "answer": {
+          "en": "It is harder than for buyers from some other markets but not closed. UAE lenders underwrite documented income in a currency they can assess, so a rupee salary complicates the file, and buyers with US dollar income, an offshore employer or a foreign-currency account with real history have a much easier time. Where a mortgage is not realistic, the developer payment plan on an off-plan unit is the practical route: 10-20% on booking, instalments through construction, balance at handover, with no credit assessment.",
+          "fr": "C'est plus difficile que pour les acheteurs de certains autres marchés, mais ce n'est pas fermé. Les prêteurs émiriens analysent des revenus documentés dans une devise qu'ils peuvent apprécier : un salaire en roupies complique le dossier, et les acheteurs disposant de revenus en dollars américains, d'un employeur offshore ou d'un compte en devises avec un historique réel s'en sortent bien plus facilement. Lorsqu'un prêt n'est pas réaliste, l'échéancier promoteur sur un bien sur plan est la voie pratique : 10-20% à la réservation, des versements pendant la construction, le solde à la livraison, sans examen de solvabilité.",
+          "ru": "Это сложнее, чем для покупателей с некоторых других рынков, но не невозможно. Кредиторы UAE оценивают документально подтверждённый доход в валюте, которую они могут оценить, поэтому зарплата в рупиях усложняет досье, а покупателям с доходом в долларах США, зарубежным работодателем или валютным счётом с реальной историей гораздо проще. Там, где ипотека нереалистична, практический путь — рассрочка от застройщика на строящемся объекте: 10-20% при бронировании, платежи в ходе строительства, остаток при передаче ключей, без кредитной оценки.",
+          "ar": "الأمر أصعب مما هو عليه لمشترين من أسواق أخرى، لكنه ليس مغلقاً. فالمقرضون في UAE يقيّمون الدخل الموثّق بعملة يمكنهم تقديرها، ومن ثم يعقّد الراتب بالروبية الملف، بينما يجد المشترون ذوو الدخل بالدولار الأمريكي أو صاحب العمل الخارجي أو حساب العملة الأجنبية ذي السجل الفعلي الأمر أيسر بكثير. وحيث يتعذر التمويل العقاري، تصبح خطة السداد لدى المطوّر على وحدة على الخارطة هي المسار العملي: 10-20% عند الحجز، وأقساط خلال البناء، والرصيد عند التسليم، دون أي تقييم ائتماني.",
+          "zh": "比来自某些其他市场的买家更难，但并非不可能。阿联酋放贷机构审核的是以其能够评估的货币计价、且有据可查的收入，因此卢比薪资会让材料变得复杂，而拥有美元收入、离岸雇主或有真实流水的外币账户的买家会顺利得多。在按揭不现实的情况下，期房的开发商付款计划是可行路径：认购时支付 10-20%，施工期间分期付款，交房时结清余款，且无需信用评估。",
+          "vi": "Khó hơn so với người mua từ một số thị trường khác, nhưng không phải bất khả thi. Các ngân hàng UAE thẩm định thu nhập có chứng từ bằng loại tiền tệ mà họ đánh giá được, nên mức lương bằng rupee khiến hồ sơ phức tạp hơn, còn người mua có thu nhập bằng đô la Mỹ, làm việc cho chủ lao động ở nước ngoài hoặc có tài khoản ngoại tệ với lịch sử giao dịch thực tế sẽ thuận lợi hơn nhiều. Khi vay thế chấp không khả thi, kế hoạch thanh toán của chủ đầu tư với căn off-plan là lựa chọn thực tế: 10-20% khi đặt chỗ, trả góp trong quá trình xây dựng, phần còn lại khi bàn giao, và không cần thẩm định tín dụng.",
+          "he": "זה קשה יותר מאשר לרוכשים משווקים אחרים, אך אינו סגור. מלווים ב-UAE מבצעים חיתום להכנסה מתועדת במטבע שהם יכולים להעריך, ולכן משכורת ברופי מסבכת את התיק, ורוכשים עם הכנסה בדולר אמריקאי, מעסיק בחו\"ל או חשבון מטבע חוץ עם היסטוריה אמיתית נהנים מתהליך קל בהרבה. כאשר משכנתה אינה מציאותית, תוכנית התשלומים של היזם על יחידה off-plan היא המסלול המעשי: 10-20% בהזמנה, תשלומים לאורך הבנייה, והיתרה במסירה, ללא הערכת אשראי."
+        }
+      },
+      {
+        "question": {
+          "en": "What will a Dubai purchase cost a Pakistani buyer in total?",
+          "fr": "Combien coûte au total un achat à Dubaï pour un acheteur pakistanais ?",
+          "ru": "Во сколько обойдётся покупка в Дубае пакистанскому покупателю?",
+          "ar": "كم تبلغ التكلفة الإجمالية لشراء عقار في دبي للمشتري الباكستاني؟",
+          "zh": "对巴基斯坦买家而言，在迪拜购房的总成本是多少？",
+          "vi": "Tổng chi phí mua bất động sản Dubai với người mua Pakistan là bao nhiêu?",
+          "he": "כמה תעלה רכישה בדובאי לרוכש פקיסטני בסך הכול?"
+        },
+        "answer": {
+          "en": "The 4% Dubai Land Department transfer fee, agency commission of about 2%, and roughly AED 4,200 in registration and trustee charges — approximately 6-7% of the price all in. There is no annual property tax, so after purchase the recurring costs are service charges and a municipality housing fee on let homes. Model the entry cost into your yield rather than against the headline price.",
+          "fr": "Les frais de transfert de 4% du Dubai Land Department, une commission d'agence d'environ 2%, et environ AED 4,200 de frais d'enregistrement et de mandataire — soit approximativement 6-7% du prix tout compris. Il n'y a pas de taxe foncière annuelle : après l'achat, les coûts récurrents sont les charges de copropriété et une taxe municipale d'habitation sur les biens loués. Intégrez le coût d'entrée à votre rendement plutôt que de le comparer au prix affiché.",
+          "ru": "Сбор за передачу права Dubai Land Department в размере 4%, комиссия агентства около 2% и примерно AED 4,200 регистрационных и трастовых сборов — в сумме приблизительно 6-7% от цены. Ежегодного налога на недвижимость нет, поэтому после покупки регулярные расходы — это сервисные сборы и муниципальный жилищный сбор для сдаваемых объектов. Закладывайте расходы на вход в расчёт доходности, а не сопоставляйте их с заявленной ценой.",
+          "ar": "رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، وعمولة وساطة بنحو 2%، ونحو AED 4,200 رسوم تسجيل وأمانة — أي ما يقارب 6-7% من السعر إجمالاً. ولا توجد ضريبة عقارية سنوية، فبعد الشراء تنحصر التكاليف المتكررة في رسوم الخدمات ورسم السكن البلدي على الوحدات المؤجرة. أدرج كلفة الدخول ضمن حساب عائدك بدل قياسها مقابل السعر المعلن.",
+          "zh": "4% 的迪拜土地局过户费、约 2% 的中介佣金，以及约 AED 4,200 的登记与受托人费用——全部计入约为房价的 6-7%。没有年度房产税，因此购房后的经常性支出是物业费，以及出租住宅的市政住房费。请把入场成本计入您的收益率测算，而不是与标价作对比。",
+          "vi": "Phí chuyển nhượng 4% của Dubai Land Department, hoa hồng môi giới khoảng 2%, và khoảng AED 4,200 phí đăng ký cùng phí uỷ thác — tổng cộng xấp xỉ 6-7% giá mua. Không có thuế bất động sản hằng năm, nên sau khi mua, các chi phí định kỳ là phí dịch vụ và phí nhà ở đô thị đối với căn cho thuê. Hãy đưa chi phí vào này vào tính toán tỷ suất lợi nhuận thay vì so với giá niêm yết.",
+          "he": "אגרת ההעברה של Dubai Land Department בשיעור 4%, עמלת תיווך של כ-2%, וכ-AED 4,200 באגרות רישום ונאמן — בסך הכול כ-6-7% מהמחיר. אין מס רכוש שנתי, ולכן לאחר הרכישה העלויות השוטפות הן דמי ניהול ואגרת דיור עירונית על דירות מושכרות. שלבו את עלות הכניסה בתשואה שלכם ולא כנגד המחיר המפורסם."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I own freehold property in Dubai as a Pakistani citizen?",
+          "fr": "Puis-je détenir un bien en freehold à Dubaï en tant que citoyen pakistanais ?",
+          "ru": "Может ли гражданин Пакистана владеть freehold-недвижимостью в Dubai?",
+          "ar": "هل يمكنني تملّك عقار freehold في Dubai كمواطن باكستاني؟",
+          "zh": "作为巴基斯坦公民，我可以在迪拜拥有 freehold 产权吗？",
+          "vi": "Là công dân Pakistan, tôi có thể sở hữu bất động sản freehold tại Dubai không?",
+          "he": "האם אוכל להחזיק בנכס freehold ב-Dubai כאזרח פקיסטני?"
+        },
+        "answer": {
+          "en": "Yes, on the same terms as every other foreign national. The designated freehold zones are open to all nationalities, the title is registered at the Dubai Land Department in your own name, and there is no residency requirement to own. An AED 2M purchase additionally qualifies you for the renewable ten-year Golden Visa covering your spouse and children, which is residence rather than citizenship — the UAE offers no naturalisation by investment.",
+          "fr": "Oui, aux mêmes conditions que tout autre ressortissant étranger. Les zones freehold désignées sont ouvertes à toutes les nationalités, le titre est enregistré à votre nom auprès du Dubai Land Department, et aucune condition de résidence n'est exigée pour être propriétaire. Un achat à AED 2M vous ouvre en outre droit au Golden Visa renouvelable de dix ans couvrant votre conjoint et vos enfants, qui relève de la résidence et non de la citoyenneté — les Émirats n'offrent pas de naturalisation par investissement.",
+          "ru": "Да, на тех же условиях, что и любой другой иностранец. Обозначенные freehold-зоны открыты для всех национальностей, право собственности регистрируется в Dubai Land Department на ваше собственное имя, и требования к резидентству для владения нет. Покупка от AED 2M дополнительно даёт право на возобновляемую десятилетнюю Golden Visa, охватывающую супруга и детей, — это вид на жительство, а не гражданство: UAE не предоставляет натурализацию за инвестиции.",
+          "ar": "نعم، بالشروط ذاتها المطبّقة على كل أجنبي آخر. فمناطق التملّك الحر المعتمدة مفتوحة لجميع الجنسيات، ويُسجَّل سند الملكية لدى Dubai Land Department باسمك، ولا يوجد شرط إقامة للتملّك. كما أن شراءً بقيمة AED 2M يؤهّلك إضافة إلى ذلك لـ Golden Visa لعشر سنوات قابلة للتجديد تشمل زوجك وأبناءك، وهي إقامة لا جنسية — فـ UAE لا تمنح التجنّس بالاستثمار.",
+          "zh": "可以，条件与所有其他外籍人士相同。指定的 freehold 区域对所有国籍开放，产权以您本人名义在迪拜土地局登记，且拥有房产没有居留要求。AED 2M 的购房还可额外使您符合可续签十年期黄金签证的条件，涵盖配偶与子女，这属于居留身份而非公民身份——阿联酋不提供投资入籍。",
+          "vi": "Có, với cùng điều kiện như mọi công dân nước ngoài khác. Các khu freehold được quy hoạch mở cho mọi quốc tịch, quyền sở hữu được đăng ký tại Dubai Land Department dưới chính tên bạn, và không có yêu cầu cư trú để được sở hữu. Một giao dịch AED 2M còn giúp bạn đủ điều kiện nhận Golden Visa mười năm có thể gia hạn, bao gồm cả vợ/chồng và con cái, vốn là quyền cư trú chứ không phải quốc tịch — UAE không có chương trình nhập tịch theo diện đầu tư.",
+          "he": "כן, באותם תנאים כמו כל אזרח זר אחר. אזורי ה-freehold המוגדרים פתוחים לכל הלאומים, הבעלות נרשמת ב-Dubai Land Department על שמכם, ואין דרישת תושבות לבעלות. רכישה של AED 2M מזכה אתכם בנוסף ב-Golden Visa לעשר שנים הניתנת לחידוש, הכוללת את בן או בת הזוג והילדים — וזו תושבות ולא אזרחות; ה-UAE אינה מציעה התאזרחות בדרך של השקעה."
+        }
+      },
+      {
+        "question": {
+          "en": "What source-of-funds evidence do Pakistani buyers need?",
+          "fr": "Quels justificatifs d'origine des fonds les acheteurs pakistanais doivent-ils fournir ?",
+          "ru": "Какие подтверждения происхождения средств нужны пакистанским покупателям?",
+          "ar": "ما إثباتات مصدر الأموال التي يحتاجها المشترون الباكستانيون؟",
+          "zh": "巴基斯坦买家需要提供哪些资金来源证明？",
+          "vi": "Người mua Pakistan cần chứng từ nguồn gốc tiền nào?",
+          "he": "אילו הוכחות מקור כספים נדרשות מרוכשים פקיסטנים?"
+        },
+        "answer": {
+          "en": "Expect a documented trail and expect the request early. UAE anti-money-laundering rules require the brokerage and the developer or seller to establish where the money came from before completion: audited business accounts, salary and remittance records, evidence of a previously sold asset, or bank statements showing accumulation offshore. Alongside that, the State Bank remittance paperwork itself becomes useful evidence. A RERA-registered brokerage runs this check on every buyer regardless of nationality.",
+          "fr": "Attendez-vous à devoir fournir une traçabilité documentée, et attendez-vous à ce que la demande arrive tôt. La réglementation anti-blanchiment des Émirats impose à l'agence ainsi qu'au promoteur ou au vendeur d'établir l'origine des fonds avant la finalisation : comptes d'entreprise audités, justificatifs de salaire et de transferts, preuve de la vente antérieure d'un actif, ou relevés bancaires attestant d'une accumulation à l'étranger. En complément, les documents de transfert de la State Bank constituent eux-mêmes une preuve utile. Une agence enregistrée RERA effectue cette vérification sur chaque acquéreur, quelle que soit sa nationalité.",
+          "ru": "Готовьтесь к документально подтверждённой цепочке и к тому, что запрос поступит рано. Правила UAE о противодействии отмыванию денег обязывают брокера и застройщика или продавца установить происхождение денег до завершения сделки: аудированная отчётность бизнеса, данные о зарплате и переводах, подтверждение ранее проданного актива или банковские выписки, показывающие накопление за рубежом. Наряду с этим сами документы по переводу через State Bank становятся полезным доказательством. Брокерская компания с регистрацией RERA проводит эту проверку по каждому покупателю независимо от гражданства.",
+          "ar": "توقّع مساراً موثقاً، وتوقّع أن يُطلب منك مبكراً. فقواعد مكافحة غسل الأموال في UAE تلزم الوساطة والمطوّر أو البائع بإثبات مصدر المال قبل الإتمام: حسابات أعمال مدققة، أو سجلات رواتب وتحويلات، أو دليل على أصل بيع سابقاً، أو كشوف مصرفية تُظهر تراكماً في الخارج. وإلى جانب ذلك، تصبح أوراق تحويل البنك المركزي نفسها دليلاً مفيداً. والوساطة المسجلة لدى RERA تُجري هذا الفحص على كل مشترٍ بصرف النظر عن الجنسية.",
+          "zh": "请预期需要完整的文件轨迹，而且请预期会被提早索取。阿联酋反洗钱规则要求经纪机构与开发商或卖方在成交前确认资金来源：经审计的企业账目、薪资与汇款记录、此前已出售资产的证明，或显示境外资金积累的银行对账单。除此之外，国家银行的汇款文件本身也会成为有用的证据。RERA 注册的经纪机构会对每一位买家执行这项核查，不论其国籍。",
+          "vi": "Hãy chuẩn bị một lộ trình có chứng từ đầy đủ và lường trước rằng yêu cầu sẽ đến sớm. Quy định phòng chống rửa tiền của UAE buộc sàn môi giới và chủ đầu tư hoặc bên bán phải xác định nguồn gốc dòng tiền trước khi hoàn tất giao dịch: báo cáo tài chính doanh nghiệp đã kiểm toán, hồ sơ lương và chuyển tiền, bằng chứng về một tài sản đã bán trước đó, hoặc sao kê ngân hàng thể hiện quá trình tích luỹ ở nước ngoài. Bên cạnh đó, chính bộ hồ sơ chuyển tiền của Ngân hàng Nhà nước cũng trở thành bằng chứng hữu ích. Một sàn môi giới đăng ký RERA thực hiện kiểm tra này với mọi người mua, bất kể quốc tịch.",
+          "he": "צפו לשרשרת מתועדת וצפו שהבקשה תגיע מוקדם. כללי איסור הלבנת הון ב-UAE מחייבים את התיווך ואת היזם או המוכר לבסס מהיכן הגיע הכסף לפני השלמת העסקה: דוחות עסקיים מבוקרים, רישומי משכורת והעברות, ראיות לנכס שנמכר בעבר, או דפי בנק המראים צבירה בחו\"ל. במקביל, ניירת ההעברה של ה-State Bank עצמה הופכת לראיה שימושית. תיווך רשום ב-RERA מבצע בדיקה זו על כל רוכש ללא קשר ללאום."
+        }
+      }
     ]
   },
   {
@@ -1339,6 +2925,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Business Bay",
       "Dubai Hills Estate",
       "JBR"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Do I pay any tax on a Dubai property as a Saudi citizen?",
+          "fr": "Dois-je payer un impôt sur un bien à Dubaï en tant que citoyen saoudien ?",
+          "ru": "Плачу ли я какой-либо налог с недвижимости в Dubai как гражданин Саудовской Аравии?",
+          "ar": "هل أدفع أي ضريبة على عقار في Dubai بصفتي مواطناً سعودياً؟",
+          "zh": "作为沙特公民，我需要为迪拜房产缴纳任何税款吗？",
+          "vi": "Là công dân Ả Rập Xê Út, tôi có phải nộp thuế nào cho bất động sản tại Dubai không?",
+          "he": "האם אני משלם מס כלשהו על נכס ב-Dubai כאזרח סעודי?"
+        },
+        "answer": {
+          "en": "This is the simplest tax position of any buyer nationality. Neither the UAE nor Saudi Arabia levies personal income tax, so rental income is untaxed on both sides, and neither charges capital gains tax on an individual's property disposal. What you pay is transactional and recurring rather than fiscal: the 4% Dubai Land Department transfer fee at purchase, then service charges and a municipality housing fee on let homes. There is no annual property tax and no inheritance tax on the property in the UAE.",
+          "fr": "C'est la situation fiscale la plus simple de toutes les nationalités d'acquéreurs. Ni les Émirats ni l'Arabie saoudite ne prélèvent d'impôt sur le revenu des personnes physiques : les revenus locatifs ne sont donc imposés d'aucun côté, et aucun des deux pays n'applique d'impôt sur les plus-values lors de la cession d'un bien par un particulier. Ce que vous payez est transactionnel et récurrent plutôt que fiscal : les 4% de frais de transfert du Dubai Land Department à l'achat, puis les charges de copropriété et une taxe municipale d'habitation sur les logements loués. Il n'y a ni impôt foncier annuel ni droits de succession sur le bien aux Émirats.",
+          "ru": "Это самая простая налоговая позиция среди покупателей любых национальностей. Ни UAE, ни Саудовская Аравия не взимают подоходный налог с физических лиц, поэтому арендный доход не облагается с обеих сторон, и ни одна из стран не взимает налог на прирост капитала при продаже недвижимости физическим лицом. Вы платите транзакционные и регулярные, а не фискальные суммы: 4% сбор за перерегистрацию в Dubai Land Department при покупке, затем сервисные сборы и муниципальный жилищный сбор для сдаваемого жилья. Ежегодного налога на недвижимость нет, равно как и налога на наследство в отношении объекта в UAE.",
+          "ar": "هذا أبسط وضع ضريبي بين جميع جنسيات المشترين. فلا UAE ولا السعودية تفرض ضريبة دخل شخصي، لذا فإن دخل الإيجار غير خاضع للضريبة في الجانبين، ولا تفرض أي منهما ضريبة أرباح رأسمالية على بيع فرد لعقار. وما تدفعه هو تكاليف معاملات وتكاليف متكررة لا تكاليف ضريبية: رسم نقل الملكية لدى Dubai Land Department بنسبة 4% عند الشراء، ثم رسوم الخدمات ورسم سكن بلدي على الوحدات المؤجَّرة. ولا توجد ضريبة عقارية سنوية ولا ضريبة ميراث على العقار في UAE.",
+          "zh": "这是所有买家国籍中最简单的税务状况。阿联酋与沙特阿拉伯均不征收个人所得税，因此租金收入在两地都不课税，双方也都不对个人处置房产征收资本利得税。您需要支付的是交易性和经常性费用，而非税赋：购买时 4% 的迪拜土地局过户费，此后是物业服务费及出租住宅的市政住房费。阿联酋对该房产既无年度房产税，也无遗产税。",
+          "vi": "Đây là vị thế thuế đơn giản nhất trong tất cả các quốc tịch người mua. Cả UAE lẫn Ả Rập Xê Út đều không thu thuế thu nhập cá nhân, nên thu nhập cho thuê không bị đánh thuế ở cả hai phía, và cả hai đều không thu thuế lãi vốn khi cá nhân chuyển nhượng bất động sản. Khoản bạn phải trả mang tính giao dịch và định kỳ chứ không phải thuế: phí chuyển nhượng 4% của Dubai Land Department khi mua, sau đó là phí dịch vụ và phí nhà ở đô thị với nhà cho thuê. Không có thuế bất động sản hằng năm và không có thuế thừa kế đối với bất động sản tại UAE.",
+          "he": "זו עמדת המס הפשוטה ביותר מבין כל לאומי הרוכשים. לא UAE ולא ערב הסעודית גובות מס הכנסה אישי, ולכן הכנסות השכירות אינן ממוסות בשני הצדדים, ואף אחת מהן אינה גובה מס רווחי הון על מכירת נכס בידי יחיד. מה שאתה משלם הוא עסקאי ושוטף ולא פיסקלי: 4% דמי העברה של ה-Dubai Land Department ברכישה, ולאחר מכן דמי ניהול ואגרת דיור עירונית על דירות מושכרות. אין מס רכוש שנתי ואין מס ירושה על הנכס ב-UAE."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I own outside the designated freehold zones as a GCC national?",
+          "fr": "Puis-je acheter en dehors des zones freehold désignées en tant que ressortissant du CCG ?",
+          "ru": "Могу ли я как гражданин GCC владеть недвижимостью за пределами обозначенных freehold-зон?",
+          "ar": "هل يمكنني التملّك خارج مناطق freehold المخصصة بصفتي من مواطني دول الخليج؟",
+          "zh": "作为海合会（GCC）国民，我可以在指定 freehold 区域之外持有房产吗？",
+          "vi": "Là công dân GCC, tôi có được sở hữu ngoài các khu vực freehold được chỉ định không?",
+          "he": "האם אוכל להחזיק בנכס מחוץ לאזורי ה-freehold המיועדים כאזרח מדינות המפרץ?"
+        },
+        "answer": {
+          "en": "GCC nationals have broader ownership rights in Dubai than other foreign nationals, extending beyond the designated freehold areas that non-GCC buyers are limited to. That widens the map considerably — but the rules are specific about area and property type rather than unlimited, and they are administered by the Dubai Land Department. Confirm the position for the specific plot or building before you commit, because the assumption that a GCC passport means 'anywhere' is where deals stall.",
+          "fr": "Les ressortissants du CCG disposent à Dubaï de droits de propriété plus étendus que les autres étrangers, au-delà des zones freehold désignées auxquelles les acquéreurs hors CCG sont limités. Cela élargit sensiblement la carte — mais les règles sont précises quant à la zone et au type de bien, et non illimitées, et elles sont administrées par le Dubai Land Department. Faites confirmer la situation pour la parcelle ou l'immeuble précis avant de vous engager, car c'est l'idée qu'un passeport du CCG signifie « n'importe où » qui fait échouer les transactions.",
+          "ru": "У граждан GCC в Dubai более широкие права собственности, чем у других иностранцев: они не ограничены обозначенными freehold-зонами, которыми ограничены покупатели не из GCC. Это заметно расширяет карту — но правила конкретны в отношении района и типа объекта, а не безграничны, и администрируются Dubai Land Department. Подтвердите позицию по конкретному участку или зданию до того, как примете обязательства: предположение, будто паспорт GCC означает «где угодно», — как раз то, на чём срываются сделки.",
+          "ar": "يتمتع مواطنو دول الخليج بحقوق تملّك أوسع في Dubai مقارنةً بغيرهم من الأجانب، تمتد إلى ما وراء مناطق freehold المخصصة التي يقتصر عليها المشترون من خارج الخليج. وهذا يوسّع الخريطة كثيراً — لكن القواعد محددة بحسب المنطقة ونوع العقار لا مفتوحة بلا حدود، وتتولى إدارتها Dubai Land Department. تحقق من الوضع بشأن قطعة الأرض أو المبنى تحديداً قبل الالتزام، لأن افتراض أن جواز سفر خليجياً يعني «أي مكان» هو ما تتعثر عنده الصفقات.",
+          "zh": "海合会国民在迪拜的所有权范围比其他外国人更广，可延伸至非海合会买家所受限的指定 freehold 区域之外。这确实大幅拓宽了选择范围——但相关规定对区域和房产类型有具体限定，并非毫无限制，且由迪拜土地局管理执行。请在承诺之前就具体地块或楼宇确认其适用情况，因为「持海合会护照就能买任何地方」的假设，正是交易受阻的常见原因。",
+          "vi": "Công dân GCC có quyền sở hữu rộng hơn tại Dubai so với các công dân nước ngoài khác, vượt ra ngoài những khu vực freehold được chỉ định vốn giới hạn người mua ngoài GCC. Điều đó mở rộng bản đồ lựa chọn đáng kể — nhưng các quy định là cụ thể theo khu vực và loại bất động sản chứ không phải không giới hạn, và do Dubai Land Department quản lý. Hãy xác nhận tình trạng pháp lý của chính lô đất hoặc tòa nhà đó trước khi cam kết, bởi giả định rằng hộ chiếu GCC nghĩa là mua được “ở bất cứ đâu” chính là chỗ khiến nhiều giao dịch bị đình trệ.",
+          "he": "לאזרחי מדינות המפרץ יש זכויות בעלות רחבות יותר ב-Dubai מאשר לאזרחים זרים אחרים, החורגות מעבר לאזורי ה-freehold המיועדים שאליהם מוגבלים רוכשים שאינם ממדינות המפרץ. הדבר מרחיב את המפה במידה ניכרת — אך הכללים ספציפיים לגבי אזור וסוג נכס ואינם בלתי מוגבלים, והם מנוהלים על ידי ה-Dubai Land Department. ודא את המצב לגבי המגרש או הבניין הספציפי לפני שאתה מתחייב, משום שההנחה שדרכון מדינות המפרץ פירושו \"בכל מקום\" היא המקום שבו עסקאות נתקעות."
+        }
+      },
+      {
+        "question": {
+          "en": "Is moving money from Saudi Arabia to Dubai straightforward?",
+          "fr": "Transférer des fonds d'Arabie saoudite vers Dubaï est-il simple ?",
+          "ru": "Просто ли перевести деньги из Саудовской Аравии в Dubai?",
+          "ar": "هل تحويل الأموال من السعودية إلى Dubai بسيط؟",
+          "zh": "从沙特阿拉伯向迪拜汇款顺畅吗？",
+          "vi": "Chuyển tiền từ Ả Rập Xê Út sang Dubai có dễ dàng không?",
+          "he": "האם העברת כספים מערב הסעודית ל-Dubai היא פשוטה?"
+        },
+        "answer": {
+          "en": "Yes, and this is the other reason Saudi purchases are administratively simple. The riyal and the dirham are both pegged to the US dollar, so the exchange rate between them is effectively fixed and your purchasing power does not drift between signing and completion. There are no exchange controls to navigate on either side. Your bank will still apply source-of-funds documentation under anti-money-laundering rules, and a RERA-registered brokerage runs the same check — routine rather than an obstacle.",
+          "fr": "Oui, et c'est l'autre raison pour laquelle les achats saoudiens sont administrativement simples. Le riyal et le dirham sont tous deux arrimés au dollar américain : le taux de change entre les deux est donc pratiquement fixe et votre pouvoir d'achat ne dérive pas entre la signature et la finalisation. Il n'y a aucun contrôle des changes à gérer d'un côté comme de l'autre. Votre banque appliquera néanmoins ses exigences de justification de l'origine des fonds au titre de la lutte anti-blanchiment, et une agence enregistrée auprès de la RERA procède au même contrôle — une formalité de routine plutôt qu'un obstacle.",
+          "ru": "Да, и это вторая причина административной простоты саудовских покупок. Риал и дирхам оба привязаны к доллару США, поэтому обменный курс между ними фактически фиксирован, и ваша покупательная способность не меняется между подписанием и завершением сделки. Валютного контроля нет ни с одной стороны. Банк всё же запросит документы о происхождении средств в рамках правил противодействия отмыванию денег, и зарегистрированный в RERA брокер проводит ту же проверку — это рутина, а не препятствие.",
+          "ar": "نعم، وهذا سبب آخر لكون المشتريات السعودية بسيطة إدارياً. فالريال والدرهم كلاهما مربوط بالدولار الأمريكي، لذا فإن سعر الصرف بينهما ثابت عملياً ولا تتغير قوتك الشرائية بين التوقيع والإتمام. ولا توجد ضوابط صرف يلزم التعامل معها في أي من الجانبين. وسيطبّق مصرفك مع ذلك متطلبات توثيق مصدر الأموال بموجب قواعد مكافحة غسل الأموال، وتجري الوساطة المسجّلة لدى RERA الفحص ذاته — وهو إجراء روتيني لا عقبة.",
+          "zh": "顺畅，这也是沙特买家在行政流程上较为简便的另一个原因。里亚尔与迪拉姆均与美元挂钩，因此两者之间的汇率实际上是固定的，您的购买力不会在签约与交割之间发生漂移。双方都没有需要应对的外汇管制。您的银行仍会依照反洗钱规定要求提供资金来源证明，RERA 注册的经纪机构也会进行同样的核查——这属于例行程序，而非障碍。",
+          "vi": "Có, và đây là lý do thứ hai khiến giao dịch của người Ả Rập Xê Út đơn giản về mặt thủ tục. Đồng riyal và đồng dirham đều neo theo đô la Mỹ, nên tỷ giá giữa chúng gần như cố định và sức mua của bạn không trôi nổi giữa thời điểm ký và thời điểm hoàn tất. Không có quy định quản lý ngoại hối nào phải xử lý ở cả hai phía. Ngân hàng của bạn vẫn sẽ yêu cầu hồ sơ chứng minh nguồn tiền theo quy định phòng chống rửa tiền, và một công ty môi giới đăng ký với RERA cũng thực hiện kiểm tra tương tự — đây là thủ tục thường quy chứ không phải trở ngại.",
+          "he": "כן, וזו הסיבה הנוספת לכך שרכישות סעודיות פשוטות מבחינה מנהלית. הריאל והדירהם צמודים שניהם לדולר האמריקאי, ולכן שער החליפין ביניהם קבוע למעשה וכוח הקנייה שלך אינו נסחף בין החתימה להשלמה. אין פיקוח על מט\"ח שצריך לנווט בו בשום צד. הבנק שלך עדיין יחיל דרישות תיעוד מקור כספים לפי כללי איסור הלבנת הון, ומשרד תיווך רשום ב-RERA מבצע את אותה בדיקה — שגרה ולא מכשול."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a UAE mortgage as a Saudi national?",
+          "fr": "Puis-je obtenir un prêt aux Émirats en tant que ressortissant saoudien ?",
+          "ru": "Могу ли я получить ипотеку в UAE как гражданин Саудовской Аравии?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري في UAE بصفتي مواطناً سعودياً؟",
+          "zh": "作为沙特国民我能获得阿联酋按揭吗？",
+          "vi": "Là công dân Ả Rập Xê Út, tôi có vay thế chấp tại UAE được không?",
+          "he": "האם אוכל לקבל משכנתה ב-UAE כאזרח סעודי?"
+        },
+        "answer": {
+          "en": "Yes. Riyal income is readily assessed by UAE lenders and the currency peg removes the mismatch that complicates other non-resident files, so Saudi applicants are among the more straightforward. Typical non-resident terms run to 50-60% loan-to-value with rates in the usual range. Many Saudi buyers pay cash or use a developer payment plan instead, simply because the purchase is often a second home rather than a leveraged investment.",
+          "fr": "Oui. Les revenus en riyals sont aisément évalués par les prêteurs des Émirats et l'arrimage monétaire supprime le décalage qui complique d'autres dossiers de non-résidents : les candidats saoudiens comptent donc parmi les plus simples à traiter. Les conditions types pour non-résidents vont jusqu'à 50-60% de quotité de financement, avec des taux dans la fourchette habituelle. Beaucoup d'acquéreurs saoudiens paient comptant ou recourent plutôt à un plan de paiement promoteur, simplement parce que l'achat est souvent une résidence secondaire et non un investissement à effet de levier.",
+          "ru": "Да. Доход в риалах банки UAE оценивают без затруднений, а валютная привязка снимает несоответствие валют, усложняющее другие досье нерезидентов, поэтому саудовские заявители относятся к числу самых беспроблемных. Типичные условия для нерезидентов доходят до 50-60% кредит к стоимости со ставками в обычном диапазоне. Многие саудовские покупатели вместо этого платят наличными или используют план платежей застройщика — просто потому, что покупка часто является вторым домом, а не инвестицией с использованием кредитного плеча.",
+          "ar": "نعم. الدخل بالريال تقيّمه جهات الإقراض في UAE بسهولة، كما يزيل ربط العملة عدم التطابق الذي يعقّد ملفات غير المقيمين الأخرى، لذا يُعد المتقدمون السعوديون من بين الأيسر تعاملاً. وتصل الشروط النموذجية لغير المقيمين إلى 50-60% نسبة تمويل إلى قيمة بمعدلات ضمن النطاق المعتاد. ويدفع كثير من المشترين السعوديين نقداً أو يستخدمون خطة دفع لدى المطوّر بدلاً من ذلك، لمجرد أن الشراء غالباً ما يكون منزلاً ثانياً لا استثماراً بالرافعة المالية.",
+          "zh": "可以。阿联酋放贷机构很容易评估里亚尔收入，而货币挂钩消除了困扰其他非居民申请的币种错配，因此沙特申请人属于较为顺畅的一类。典型的非居民条件可达贷款价值比 50-60%，利率处于通常区间。许多沙特买家改为全款支付或采用开发商付款计划，原因很简单：这类购置往往是第二居所，而非杠杆化的投资。",
+          "vi": "Có. Thu nhập bằng riyal được các ngân hàng UAE thẩm định dễ dàng và việc neo tỷ giá loại bỏ sự lệch pha tiền tệ vốn làm phức tạp hồ sơ của nhiều người không cư trú khác, nên người nộp hồ sơ từ Ả Rập Xê Út thuộc nhóm thuận lợi nhất. Điều kiện điển hình cho người không cư trú lên tới 50-60% tỷ lệ vay trên giá trị với lãi suất trong khoảng thông thường. Nhiều người mua Ả Rập Xê Út vẫn chọn trả tiền mặt hoặc dùng kế hoạch thanh toán của chủ đầu tư, đơn giản vì giao dịch thường là ngôi nhà thứ hai chứ không phải một khoản đầu tư có đòn bẩy.",
+          "he": "כן. הכנסה בריאל נבחנת בקלות על ידי מלווים ב-UAE, והצמדת המטבעות מסירה את אי-ההתאמה שמסבכת תיקים אחרים של לא-תושבים, כך שמבקשים סעודים הם מהפשוטים יותר. תנאים טיפוסיים ללא תושבות מגיעים עד 50-60% מימון מול שווי בריביות בטווח המקובל. רוכשים סעודים רבים משלמים במזומן או משתמשים בתוכנית תשלומים של יזם, פשוט משום שהרכישה היא לעיתים קרובות בית שני ולא השקעה ממונפת."
+        }
+      },
+      {
+        "question": {
+          "en": "How far is Dubai and do I need a visa?",
+          "fr": "À quelle distance se trouve Dubaï et ai-je besoin d'un visa ?",
+          "ru": "Далеко ли до Dubai и нужна ли виза?",
+          "ar": "كم تبعد Dubai وهل أحتاج إلى تأشيرة؟",
+          "zh": "迪拜有多远？我需要签证吗？",
+          "vi": "Dubai cách bao xa và tôi có cần thị thực không?",
+          "he": "כמה רחוקה Dubai והאם אני צריך אשרה?"
+        },
+        "answer": {
+          "en": "GCC nationals travel to the UAE without a visa, and Dubai is roughly a two-hour flight from Riyadh or Jeddah with services running throughout the day. That proximity changes what the property is used for: a large share of Saudi purchases are genuine second homes used across weekends and summers, rather than pure rental investments, which is worth reflecting in whether you buy for yield or for the location you actually want to spend time in.",
+          "fr": "Les ressortissants du CCG se rendent aux Émirats sans visa, et Dubaï est à environ deux heures de vol de Riyad ou de Djeddah, avec des liaisons tout au long de la journée. Cette proximité change l'usage du bien : une large part des achats saoudiens sont de véritables résidences secondaires occupées les week-ends et l'été, plutôt que de purs investissements locatifs — ce qu'il vaut la peine de refléter dans le choix entre acheter pour le rendement ou pour un emplacement où vous souhaitez réellement passer du temps.",
+          "ru": "Граждане GCC въезжают в UAE без визы, а Dubai находится примерно в двух часах лёта от Эр-Рияда или Джидды, причём рейсы выполняются в течение всего дня. Эта близость меняет назначение объекта: значительная доля саудовских покупок — это настоящие вторые дома, используемые по выходным и летом, а не чисто арендные инвестиции, и это стоит учитывать при выборе между покупкой ради доходности и покупкой ради места, где вы действительно хотите проводить время.",
+          "ar": "يسافر مواطنو دول الخليج إلى UAE بدون تأشيرة، وتبعد Dubai نحو ساعتين بالطائرة عن الرياض أو جدة مع رحلات متاحة على مدار اليوم. وهذا القرب يغيّر الغرض من العقار: فحصة كبيرة من المشتريات السعودية هي منازل ثانية حقيقية تُستخدم في عطل نهاية الأسبوع وفصول الصيف، لا استثمارات إيجارية بحتة، وهو ما يستحق أن ينعكس في اختيارك بين الشراء من أجل العائد أو من أجل الموقع الذي ترغب فعلاً في قضاء الوقت فيه.",
+          "zh": "海合会国民前往阿联酋无需签证，从利雅得或吉达飞往迪拜约两小时，航班全天运行。这种地理上的便利改变了房产的用途：沙特买家中有很大一部分购置的是真正的第二居所，用于周末与暑期居住，而非纯粹的出租投资——这一点值得在决定「为收益而买」还是「为自己真正想待的地方而买」时纳入考量。",
+          "vi": "Công dân GCC nhập cảnh UAE không cần thị thực, và Dubai chỉ cách Riyadh hay Jeddah khoảng hai giờ bay với các chuyến khai thác suốt cả ngày. Khoảng cách gần đó thay đổi mục đích sử dụng bất động sản: một tỷ trọng lớn giao dịch của người Ả Rập Xê Út là ngôi nhà thứ hai thực sự, được dùng vào cuối tuần và mùa hè, chứ không phải khoản đầu tư cho thuê thuần túy — điều đáng cân nhắc khi quyết định mua vì lợi suất hay vì vị trí bạn thực sự muốn dành thời gian ở đó.",
+          "he": "אזרחי מדינות המפרץ נוסעים ל-UAE ללא אשרה, ו-Dubai נמצאת בטיסה של כשעתיים מריאד או מג'דה, עם טיסות לאורך כל היום. הקרבה הזו משנה את ייעוד הנכס: חלק ניכר מהרכישות הסעודיות הן בתים שניים אמיתיים המשמשים בסופי שבוע ובקיץ, ולא השקעות שכירות טהורות — וכדאי לשקף זאת בשאלה אם אתה רוכש לשם תשואה או לשם המקום שבו אתה באמת רוצה לבלות."
+        }
+      },
+      {
+        "question": {
+          "en": "Should I buy for use or for rental income?",
+          "fr": "Dois-je acheter pour mon usage ou pour un revenu locatif ?",
+          "ru": "Покупать для собственного проживания или ради арендного дохода?",
+          "ar": "هل أشتري للاستخدام أم للدخل الإيجاري؟",
+          "zh": "我应该为自用还是为租金收入而买？",
+          "vi": "Tôi nên mua để sử dụng hay để cho thuê?",
+          "he": "האם לרכוש לשימוש עצמי או להכנסה משכירות?"
+        },
+        "answer": {
+          "en": "Decide before you choose the community, because the answer points at different stock. Gross yields in the mainstream freehold communities run roughly 5-8%, and the highest yields tend to be in apartment communities away from the waterfront. A second home used regularly argues instead for Downtown, the Marina or Palm Jumeirah, where yields are lower but the property is somewhere you want to be. Buyers who try to optimise both usually get a compromise that serves neither.",
+          "fr": "Tranchez avant de choisir la communauté, car la réponse oriente vers des biens différents. Les rendements bruts dans les principales communautés freehold se situent autour de 5-8%, et les rendements les plus élevés se trouvent plutôt dans les communautés d'appartements éloignées du front de mer. Une résidence secondaire utilisée régulièrement plaide au contraire pour Downtown, la Marina ou Palm Jumeirah, où les rendements sont plus faibles mais où le bien se trouve là où vous voulez être. Les acquéreurs qui tentent d'optimiser les deux aboutissent généralement à un compromis qui ne sert ni l'un ni l'autre.",
+          "ru": "Решите до выбора сообщества, потому что ответ указывает на разные объекты. Валовая доходность в основных freehold-сообществах составляет примерно 5-8%, причём самая высокая доходность обычно в апартаментных сообществах вдали от набережной. Второй дом для регулярного использования, напротив, говорит в пользу Downtown, Marina или Palm Jumeirah, где доходность ниже, но объект находится там, где вам хочется быть. Покупатели, пытающиеся оптимизировать и то, и другое, обычно получают компромисс, не устраивающий ни по одному критерию.",
+          "ar": "احسم هذا قبل اختيار المجتمع، لأن الإجابة تقود إلى نوعيات عقارات مختلفة. فالعوائد الإجمالية في مجتمعات freehold الرئيسية تتراوح بين 5-8% تقريباً، وتميل أعلى العوائد إلى مجتمعات الشقق البعيدة عن الواجهة المائية. أما المنزل الثاني الذي يُستخدم بانتظام فيرجّح Downtown أو Marina أو Palm Jumeirah، حيث العوائد أدنى لكن العقار في مكان ترغب في أن تكون فيه. والمشترون الذين يحاولون تحقيق الأمرين معاً ينتهون عادةً إلى حل وسط لا يخدم أياً منهما.",
+          "zh": "请在挑选社区之前先做决定，因为答案指向截然不同的房源。主流 freehold 社区的毛收益率大致为 5-8%，而收益最高的往往是远离海滨的公寓社区。若是经常使用的第二居所，则更适合 Downtown、Marina 或 Palm Jumeirah，那里的收益率较低，但房产位于您真正愿意停留的地方。试图两者兼顾的买家，通常会得到一个两头都不讨好的折中方案。",
+          "vi": "Hãy quyết định trước khi chọn cộng đồng, bởi câu trả lời dẫn tới những loại sản phẩm khác nhau. Lợi suất gộp tại các cộng đồng freehold phổ thông vào khoảng 5-8%, và lợi suất cao nhất thường nằm ở các cộng đồng căn hộ xa mặt nước. Ngược lại, một ngôi nhà thứ hai sử dụng thường xuyên lại nghiêng về Downtown, Marina hay Palm Jumeirah, nơi lợi suất thấp hơn nhưng bất động sản là nơi bạn thực sự muốn ở. Những người mua cố tối ưu cả hai thường nhận về một phương án dung hòa không phục vụ tốt mục tiêu nào.",
+          "he": "החלט לפני שאתה בוחר קהילה, משום שהתשובה מפנה למלאי אחר. תשואות ברוטו בקהילות ה-freehold המרכזיות נעות בערך בטווח 5-8%, והתשואות הגבוהות ביותר נוטות להימצא בקהילות דירות הרחק מקו המים. בית שני שנמצא בשימוש קבוע מצדיק דווקא את Downtown, ה-Marina או Palm Jumeirah, שבהם התשואות נמוכות יותר אך הנכס נמצא במקום שאתה רוצה להיות בו. רוכשים שמנסים למטב את שניהם בדרך כלל מקבלים פשרה שאינה משרתת אף אחד מהם."
+        }
+      }
     ]
   },
   {
@@ -1406,6 +3114,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Jumeirah Village Circle",
       "Downtown Dubai",
       "Dubai Hills Estate"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Can I get a UAE mortgage on naira income?",
+          "fr": "Puis-je obtenir un prêt immobilier aux Émirats avec des revenus en naira ?",
+          "ru": "Могу ли я получить ипотеку в UAE при доходе в найрах?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري في UAE بدخل بالنايرا؟",
+          "zh": "我能凭奈拉收入申请阿联酋按揭吗？",
+          "vi": "Tôi có thể vay thế chấp tại UAE dựa trên thu nhập bằng naira không?",
+          "he": "האם אפשר לקבל משכנתה ב-UAE על בסיס הכנסה בנאירה?"
+        },
+        "answer": {
+          "en": "Generally no. UAE lenders underwrite documented income in a currency they recognise and assess, and naira-denominated salary or business income is usually declined on that basis. Nigerians who do obtain UAE mortgages typically show US dollar income, an offshore employer, or a domiciliary account with a real history. For everyone else the practical route is a developer payment plan on off-plan stock: 10-20% on booking, instalments through construction, balance at handover, all in dirhams with no credit assessment.",
+          "fr": "En général non. Les banques des Émirats analysent des revenus documentés dans une devise qu'elles reconnaissent et savent évaluer, et un salaire ou des revenus d'entreprise libellés en naira sont généralement refusés pour cette raison. Les Nigérians qui obtiennent effectivement un prêt aux Émirats présentent le plus souvent des revenus en dollars américains, un employeur offshore ou un compte domiciliaire avec un historique réel. Pour tous les autres, la voie pratique est un échéancier promoteur sur un bien en VEFA : 10-20% à la réservation, des versements pendant la construction, le solde à la livraison, le tout en dirhams et sans analyse de crédit.",
+          "ru": "Как правило, нет. Банки UAE оценивают только документально подтверждённый доход в валюте, которую они признают и умеют анализировать, и зарплата или доход от бизнеса, номинированные в найрах, обычно становятся основанием для отказа. Нигерийцы, которым всё же удаётся получить ипотеку в UAE, как правило показывают доход в долларах США, зарубежного работодателя или долларовый (domiciliary) счёт с реальной историей операций. Для всех остальных практичный путь — план рассрочки от застройщика на объекты off-plan: 10-20% при бронировании, платежи в ходе строительства, остаток при передаче ключей, всё в дирхамах и без оценки кредитоспособности.",
+          "ar": "غالباً لا. تعتمد جهات الإقراض في UAE على دخل موثّق بعملة تعترف بها وتستطيع تقييمها، والراتب أو دخل الأعمال المقوّم بالنايرا يُرفض عادةً على هذا الأساس. النيجيريون الذين ينجحون فعلاً في الحصول على تمويل عقاري في UAE يقدّمون في الغالب دخلاً بالدولار الأمريكي، أو جهة عمل خارجية، أو حساباً بالعملة الأجنبية له سجل حقيقي. أما بقية المشترين فالمسار العملي أمامهم هو خطة سداد من المطوّر على مشاريع على الخارطة: 10-20% عند الحجز، وأقساط خلال فترة الإنشاء، والرصيد عند التسليم، والكل بالدرهم ودون أي تقييم ائتماني.",
+          "zh": "通常不能。阿联酋贷款机构只接受以其认可并能评估的货币计价的有据收入，以奈拉计价的工资或经营收入一般会因此被拒。少数成功获批阿联酋按揭的尼日利亚人，往往能出示美元收入、境外雇主，或一个有真实流水记录的外币账户。对其他人而言，切实可行的路径是购买期房并采用开发商付款计划：预订时支付 10-20%，施工期间分期付款，交房时结清余款，全程以迪拉姆结算，无需信用评估。",
+          "vi": "Về cơ bản là không. Các ngân hàng UAE thẩm định khoản vay dựa trên thu nhập có chứng từ bằng loại tiền tệ mà họ công nhận và đánh giá được, nên lương hoặc thu nhập kinh doanh tính bằng naira thường bị từ chối vì lý do đó. Những người Nigeria thực sự vay được thế chấp tại UAE thường chứng minh thu nhập bằng đô la Mỹ, có chủ lao động ở nước ngoài, hoặc sở hữu tài khoản ngoại tệ (domiciliary) với lịch sử giao dịch thực. Với những người còn lại, lộ trình thực tế là kế hoạch thanh toán của chủ đầu tư đối với bất động sản off-plan: 10-20% khi đặt chỗ, trả góp trong quá trình xây dựng, phần còn lại khi bàn giao, toàn bộ bằng dirham và không cần thẩm định tín dụng.",
+          "he": "ככלל לא. המלווים ב-UAE מחתמים הכנסה מתועדת במטבע שהם מכירים ויודעים להעריך, והכנסה משכר או מעסק הנקובה בנאירה נדחית בדרך כלל מסיבה זו. ניגרים שכן מקבלים משכנתאות ב-UAE מציגים לרוב הכנסה בדולר אמריקאי, מעסיק בחו\"ל, או חשבון דומיסיליארי עם היסטוריה אמיתית. לכל השאר המסלול המעשי הוא תוכנית תשלומים של היזם על נכס מחוץ לתוכנית (off-plan): 10-20% במועד ההזמנה, תשלומים לאורך הבנייה, והיתרה במסירה — הכול בדירהם וללא בדיקת אשראי."
+        }
+      },
+      {
+        "question": {
+          "en": "How do I move funds from Nigeria for the purchase?",
+          "fr": "Comment transférer des fonds depuis le Nigeria pour l'achat ?",
+          "ru": "Как перевести средства из Нигерии для покупки?",
+          "ar": "كيف أحوّل الأموال من نيجيريا لإتمام الشراء؟",
+          "zh": "我该如何把资金从尼日利亚汇出用于购房？",
+          "vi": "Làm thế nào để chuyển tiền từ Nigeria cho giao dịch mua?",
+          "he": "כיצד אעביר כספים מניגריה לצורך הרכישה?"
+        },
+        "answer": {
+          "en": "Moving capital out of Nigeria for a property purchase is not a routine transfer — CBN rules govern what leaves and official foreign exchange is rationed. In practice most Nigerian purchases in Dubai are funded from money already held offshore, in domiciliary or foreign accounts, rather than converted at the point of sale. Clear the route with your bank before you sign anything with an instalment schedule attached, because a missed payment on a developer plan is expensive. We will not advise on working around those controls.",
+          "fr": "Sortir des capitaux du Nigeria pour acheter un bien immobilier n'a rien d'un virement de routine : les règles de la CBN encadrent ce qui sort du pays et les devises officielles sont rationnées. Dans les faits, la plupart des acquisitions nigérianes à Dubaï sont financées par des fonds déjà détenus offshore, sur des comptes domiciliaires ou étrangers, plutôt que converties au moment de la vente. Validez le circuit avec votre banque avant de signer quoi que ce soit comportant un échéancier, car un versement manqué sur un plan promoteur coûte cher. Nous ne conseillerons pas de moyens de contourner ces contrôles.",
+          "ru": "Вывод капитала из Нигерии для покупки недвижимости — не рядовой перевод: правила CBN регулируют, что может покинуть страну, а официальная валюта распределяется по квотам. На практике большинство нигерийских покупок в Dubai финансируется из средств, уже размещённых за рубежом — на domiciliary или иностранных счетах, — а не конвертируется в момент сделки. Согласуйте маршрут платежей с вашим банком до того, как подпишете что-либо с графиком рассрочки, потому что пропущенный платёж по плану застройщика обходится дорого. Мы не консультируем по обходу этих валютных ограничений.",
+          "ar": "إخراج رأس المال من نيجيريا لشراء عقار ليس تحويلاً روتينياً — فقواعد CBN تحكم ما يخرج، والنقد الأجنبي الرسمي يُوزَّع بالحصص. عملياً، تُموَّل معظم عمليات الشراء النيجيرية في Dubai من أموال محفوظة أصلاً في الخارج، في حسابات بالعملة الأجنبية أو حسابات خارجية، لا من تحويل عند لحظة البيع. اتفق مع بنكك على المسار قبل أن توقّع أي شيء مرفق بجدول أقساط، لأن تفويت دفعة في خطة المطوّر مكلف. ونحن لن نقدّم مشورة بشأن الالتفاف على تلك الضوابط.",
+          "zh": "把资本汇出尼日利亚用于购房并非一笔普通转账——CBN 规则管辖资金外流，官方外汇额度受到配给。实际操作中，尼日利亚人在迪拜的购房款多数来自已存放于境外的资金，例如外币账户或海外账户，而非在交易时临时兑换。在签署任何带有分期付款时间表的文件之前，先与银行确认汇款路径，因为开发商付款计划一旦逾期代价高昂。我们不会就规避这些管制提供建议。",
+          "vi": "Chuyển vốn ra khỏi Nigeria để mua bất động sản không phải là một giao dịch thông thường — quy định của CBN kiểm soát dòng tiền ra và nguồn ngoại tệ chính thức bị hạn chế theo hạn mức. Trên thực tế, phần lớn các giao dịch mua tại Dubai của người Nigeria được tài trợ từ tiền đã nắm giữ ở nước ngoài, trong tài khoản ngoại tệ hoặc tài khoản nước ngoài, thay vì quy đổi tại thời điểm mua. Hãy làm rõ lộ trình chuyển tiền với ngân hàng của bạn trước khi ký bất kỳ hợp đồng nào có lịch trả góp kèm theo, bởi việc trễ một kỳ thanh toán trong kế hoạch của chủ đầu tư sẽ rất tốn kém. Chúng tôi sẽ không tư vấn về cách lách các biện pháp kiểm soát đó.",
+          "he": "הוצאת הון מניגריה לרכישת נכס אינה העברה שגרתית — כללי ה-CBN קובעים מה יוצא, והמט\"ח הרשמי מוקצב. בפועל רוב הרכישות הניגריות ב-Dubai ממומנות מכספים המוחזקים כבר בחו\"ל, בחשבונות דומיסיליאריים או זרים, ולא מהמרה במועד העסקה. בררו את המסלול מול הבנק שלכם לפני שאתם חותמים על כל דבר שמצורף אליו לוח תשלומים, משום שפיגור בתשלום בתוכנית של יזם הוא יקר. איננו מייעצים כיצד לעקוף את הפיקוח הזה."
+        }
+      },
+      {
+        "question": {
+          "en": "What source-of-funds evidence will I need?",
+          "fr": "Quels justificatifs d'origine des fonds me seront demandés ?",
+          "ru": "Какие подтверждения происхождения средств потребуются?",
+          "ar": "ما إثباتات مصدر الأموال التي سأحتاج إليها؟",
+          "zh": "我需要准备哪些资金来源证明？",
+          "vi": "Tôi cần chuẩn bị những bằng chứng nào về nguồn gốc tiền?",
+          "he": "אילו ראיות למקור הכספים אצטרך?"
+        },
+        "answer": {
+          "en": "Expect to be asked early and thoroughly. UAE anti-money-laundering rules require documented source of funds before completion: audited company accounts, dividend records, contracts from a previously sold asset, or bank statements showing accumulation offshore. A RERA-registered brokerage has to run this check on every buyer regardless of nationality, so it is not a judgement about you. Assemble the file at the start rather than when a payment has already been queried.",
+          "fr": "Attendez-vous à ce qu'on vous les demande tôt et en détail. La réglementation anti-blanchiment des Émirats impose de documenter l'origine des fonds avant la finalisation : comptes annuels audités, relevés de dividendes, contrats de cession d'un actif déjà vendu, ou relevés bancaires attestant d'une accumulation offshore. Un courtier enregistré auprès de la RERA doit effectuer ce contrôle sur chaque acquéreur, quelle que soit sa nationalité : ce n'est donc pas un jugement sur vous. Constituez le dossier dès le départ, plutôt qu'au moment où un paiement est déjà bloqué.",
+          "ru": "Их запросят рано и очень подробно. Правила UAE по противодействию отмыванию денег требуют документального подтверждения источника средств до завершения сделки: аудированную отчётность компании, документы о выплате дивидендов, договоры по ранее проданному активу или банковские выписки, показывающие накопление средств за рубежом. Брокерская компания, зарегистрированная в RERA, обязана проводить эту проверку по каждому покупателю независимо от гражданства, так что это не оценка лично вас. Соберите пакет документов в самом начале, а не тогда, когда платёж уже вызвал вопросы.",
+          "ar": "توقّع أن يُطلب منك ذلك مبكراً وبتفصيل. تشترط قواعد مكافحة غسل الأموال في UAE توثيق مصدر الأموال قبل إتمام الصفقة: حسابات شركة مدقّقة، أو سجلات توزيعات أرباح، أو عقود بيع أصل سابق، أو كشوف حسابات بنكية تُظهر تراكماً في الخارج. وأي وساطة عقارية مسجّلة لدى RERA ملزَمة بإجراء هذا الفحص على كل مشترٍ أياً كانت جنسيته، فالأمر ليس حكماً عليك شخصياً. جهّز الملف من البداية لا عندما يكون سؤال قد طُرح بالفعل حول دفعة ما.",
+          "zh": "预计对方会在早期就详尽地向你索取这些材料。阿联酋反洗钱规则要求在交易完成前提供有据可查的资金来源：经审计的公司财务报表、分红记录、此前出售资产的合同，或显示资金在境外逐步积累的银行对账单。RERA 注册的经纪机构必须对每一位买家执行这项核查，无论国籍，因此这并非针对你个人的评判。请在一开始就准备好这套材料，而不是等到某笔付款已被质疑时才去补。",
+          "vi": "Hãy chuẩn bị tinh thần được hỏi sớm và kỹ lưỡng. Quy định chống rửa tiền của UAE yêu cầu chứng minh nguồn gốc tiền bằng hồ sơ trước khi hoàn tất giao dịch: báo cáo tài chính công ty đã kiểm toán, hồ sơ cổ tức, hợp đồng bán một tài sản trước đó, hoặc sao kê ngân hàng thể hiện quá trình tích lũy ở nước ngoài. Một công ty môi giới đăng ký với RERA bắt buộc phải thực hiện kiểm tra này với mọi người mua bất kể quốc tịch, nên đây không phải là đánh giá nhắm vào cá nhân bạn. Hãy chuẩn bị hồ sơ ngay từ đầu thay vì đợi đến khi một khoản thanh toán đã bị chất vấn.",
+          "he": "צפו להישאל מוקדם ולעומק. כללי איסור הלבנת ההון ב-UAE מחייבים תיעוד של מקור הכספים לפני השלמת העסקה: דוחות כספיים מבוקרים של חברה, רישומי דיבידנדים, חוזים מנכס שנמכר בעבר, או דפי חשבון המראים צבירה בחו\"ל. תיווך רשום ב-RERA חייב לבצע בדיקה זו לכל רוכש ללא קשר לאזרחותו, ולכן אין בכך שיפוט לגביכם. הכינו את התיק בתחילת הדרך ולא כשתשלום כבר נתקע בבירור."
+        }
+      },
+      {
+        "question": {
+          "en": "Is Dubai rental income taxable in Nigeria?",
+          "fr": "Les revenus locatifs de Dubaï sont-ils imposables au Nigeria ?",
+          "ru": "Облагается ли доход от аренды в Dubai налогом в Нигерии?",
+          "ar": "هل دخل الإيجار من Dubai خاضع للضريبة في نيجيريا؟",
+          "zh": "迪拜的租金收入在尼日利亚需要纳税吗？",
+          "vi": "Thu nhập cho thuê tại Dubai có bị đánh thuế ở Nigeria không?",
+          "he": "האם הכנסה משכירות ב-Dubai חייבת במס בניגריה?"
+        },
+        "answer": {
+          "en": "Nigeria taxes residents on worldwide income, so rental income from a Dubai apartment is in principle within the Nigerian net even though the UAE takes nothing, and there is no UAE tax to credit against it. Nigeria and the UAE have signed a double tax agreement, but do not assume it is in force for your purchase — confirm its status with your own adviser rather than planning around it. Model your net yield after the Nigerian charge rather than quoting the gross.",
+          "fr": "Le Nigeria impose ses résidents sur leurs revenus mondiaux : les loyers d'un appartement à Dubaï entrent donc en principe dans l'assiette nigériane, même si les Émirats ne prélèvent rien, et il n'existe aucun impôt émirati à imputer en crédit. Le Nigeria et les Émirats ont signé une convention de non-double imposition, mais ne présumez pas qu'elle est en vigueur pour votre acquisition : faites-en confirmer le statut par votre propre conseil plutôt que de bâtir votre plan dessus. Calculez votre rendement net après la charge fiscale nigériane, plutôt que d'annoncer le brut.",
+          "ru": "Нигерия облагает налогом мировой доход резидентов, поэтому доход от аренды квартиры в Dubai в принципе попадает в нигерийскую налоговую базу, хотя UAE не взимает ничего, и зачитывать против нигерийского налога попросту нечего. Нигерия и UAE подписали соглашение об избежании двойного налогообложения, но не исходите из того, что оно действует применительно к вашей покупке — уточните его статус у собственного консультанта, а не стройте на этом планы. Рассчитывайте чистую доходность после нигерийского налога, а не оперируйте валовой цифрой.",
+          "ar": "تفرض نيجيريا الضريبة على المقيمين عن دخلهم العالمي، وبالتالي فإن دخل الإيجار من شقة في Dubai يقع من حيث المبدأ ضمن النطاق الضريبي النيجيري رغم أن UAE لا تقتطع شيئاً، ولا توجد ضريبة إماراتية يمكن خصمها مقابله. وقّعت نيجيريا وUAE اتفاقية لتجنب الازدواج الضريبي، لكن لا تفترض أنها نافذة بالنسبة لصفقتك — تحقّق من وضعها مع مستشارك الخاص بدلاً من التخطيط على أساسها. احسب صافي عائدك بعد الاقتطاع النيجيري بدلاً من الاكتفاء بذكر العائد الإجمالي.",
+          "zh": "尼日利亚对税务居民的全球收入征税，因此迪拜公寓的租金收入原则上落入尼日利亚的征税范围，尽管阿联酋分文不取，也就没有任何阿联酋税款可用于抵免。尼日利亚与阿联酋已签署避免双重征税协定，但不要想当然地认为它在你购房时已经生效——请向你自己的顾问确认其效力状态，而不是据此做规划。请按扣除尼日利亚税负后的净收益来测算，而不是引用毛收益率。",
+          "vi": "Nigeria đánh thuế người cư trú trên thu nhập toàn cầu, vì vậy về nguyên tắc thu nhập cho thuê từ một căn hộ ở Dubai nằm trong phạm vi chịu thuế của Nigeria dù UAE không thu gì, và cũng không có khoản thuế UAE nào để khấu trừ đối ứng. Nigeria và UAE đã ký hiệp định tránh đánh thuế hai lần, nhưng đừng mặc định rằng nó đã có hiệu lực áp dụng cho giao dịch của bạn — hãy xác nhận tình trạng hiệu lực với cố vấn riêng của bạn thay vì lập kế hoạch dựa trên giả định. Hãy tính lợi suất ròng sau thuế Nigeria thay vì trích dẫn con số gộp.",
+          "he": "ניגריה ממסה תושבים על הכנסה עולמית, ולכן הכנסה משכירות מדירה ב-Dubai נמצאת עקרונית ברשת המס הניגרית אף שה-UAE אינה גובה דבר, ואין מס של UAE שניתן לזכות כנגדו. ניגריה וה-UAE חתמו על אמנה למניעת כפל מס, אך אל תניחו שהיא בתוקף עבור הרכישה שלכם — אמתו את מעמדה מול יועץ מטעמכם במקום לתכנן סביבה. חשבו את התשואה נטו לאחר החיוב הניגרי ולא לפי הברוטו."
+        }
+      },
+      {
+        "question": {
+          "en": "What does an AED 2M purchase get me besides the property?",
+          "fr": "Qu'apporte un achat à AED 2M au-delà du bien lui-même ?",
+          "ru": "Что, кроме самой недвижимости, даёт покупка на AED 2M?",
+          "ar": "ماذا أحصل عليه إلى جانب العقار عند شراء بقيمة AED 2M؟",
+          "zh": "除了房产本身，AED 2M 的购置还能带来什么？",
+          "vi": "Ngoài bất động sản, khoản mua AED 2M mang lại cho tôi điều gì?",
+          "he": "מה מקבלים ברכישה של AED 2M מעבר לנכס עצמו?"
+        },
+        "answer": {
+          "en": "A ten-year renewable UAE residence visa for you and your dependants, self-sponsored rather than tied to an employer, with no minimum stay requirement. For families already sending children to school abroad, that turns the property into a base — Dubai is around a six-hour flight from Lagos with schooling, healthcare and banking in one place. It is residence and not citizenship: the UAE offers no naturalisation by investment, and the visa lapses if you stop holding the property.",
+          "fr": "Un visa de résidence émirati de dix ans renouvelable pour vous et les personnes à votre charge, auto-sponsorisé plutôt que lié à un employeur, sans durée de séjour minimale. Pour les familles qui scolarisent déjà leurs enfants à l'étranger, le bien devient une véritable base : Dubaï est à environ six heures de vol de Lagos, avec la scolarité, la santé et la banque réunies au même endroit. Il s'agit d'une résidence et non d'une citoyenneté : les Émirats n'offrent aucune naturalisation par investissement, et le visa devient caduc si vous cessez de détenir le bien.",
+          "ru": "Десятилетнюю возобновляемую резидентскую визу UAE для вас и ваших иждивенцев — самоспонсируемую, не привязанную к работодателю и без требования минимального срока пребывания. Для семей, которые и так отправляют детей учиться за границу, это превращает недвижимость в базу: Dubai примерно в шести часах полёта от Lagos, а школы, медицина и банки собраны в одном месте. Это резидентство, а не гражданство: UAE не предоставляет натурализацию за инвестиции, и виза прекращает действие, если вы перестаёте владеть объектом.",
+          "ar": "تأشيرة إقامة في UAE لعشر سنوات قابلة للتجديد لك ولمُعاليك، بكفالة ذاتية لا مرتبطة بصاحب عمل، ودون شرط حد أدنى للإقامة. وبالنسبة للعائلات التي ترسل أبناءها بالفعل للدراسة في الخارج، يحوّل ذلك العقار إلى قاعدة — فـ Dubai تبعد نحو ست ساعات طيران عن لاغوس، وتجمع التعليم والرعاية الصحية والخدمات المصرفية في مكان واحد. لكنها إقامة لا جنسية: فـ UAE لا تمنح التجنّس عبر الاستثمار، والتأشيرة تسقط إذا توقّفت عن الاحتفاظ بالعقار.",
+          "zh": "为你和你的家属带来一张可续期的十年期阿联酋居留签证，由本人自担保而非挂靠雇主，且没有最低居住时间要求。对于已经把子女送往海外就学的家庭，这让房产成为一个生活基地——迪拜距拉各斯约六小时飞行，教育、医疗和银行服务集中在一地。这是居留权而非公民身份：阿联酋不提供任何投资入籍途径，且一旦你不再持有该房产，签证即告失效。",
+          "vi": "Một thị thực cư trú UAE mười năm có thể gia hạn cho bạn và người phụ thuộc, do chính bạn bảo lãnh chứ không gắn với chủ lao động, và không có yêu cầu thời gian lưu trú tối thiểu. Với những gia đình vốn đã cho con đi học ở nước ngoài, điều đó biến bất động sản thành một cơ sở sinh sống — Dubai cách Lagos khoảng sáu giờ bay, với trường học, y tế và ngân hàng gói gọn trong một nơi. Đây là quyền cư trú chứ không phải quốc tịch: UAE không cấp quốc tịch theo diện đầu tư, và thị thực sẽ chấm dứt nếu bạn không còn nắm giữ bất động sản.",
+          "he": "אשרת תושבות ב-UAE לעשר שנים, ניתנת לחידוש, עבורכם ועבור בני משפחתכם התלויים בכם, בחסות עצמית ולא קשורה למעסיק, וללא דרישת שהייה מינימלית. עבור משפחות ששולחות כבר ילדים ללימודים בחו\"ל, הדבר הופך את הנכס לבסיס — Dubai נמצאת כשש שעות טיסה מלאגוס, עם חינוך, בריאות ובנקאות במקום אחד. מדובר בתושבות ולא באזרחות: ה-UAE אינה מציעה התאזרחות באמצעות השקעה, והאשרה פוקעת אם תחדלו להחזיק בנכס."
+        }
+      },
+      {
+        "question": {
+          "en": "Why Dubai rather than London or Lagos?",
+          "fr": "Pourquoi Dubaï plutôt que Londres ou Lagos ?",
+          "ru": "Почему Dubai, а не London или Lagos?",
+          "ar": "لماذا Dubai بدلاً من لندن أو لاغوس؟",
+          "zh": "为什么选迪拜，而不是伦敦或拉各斯？",
+          "vi": "Vì sao chọn Dubai thay vì London hay Lagos?",
+          "he": "מדוע Dubai ולא לונדון או לאגוס?"
+        },
+        "answer": {
+          "en": "Dubai offers what the naira does not: a currency pegged to the US dollar, an asset holding value in hard currency, and a title that a devaluation cannot re-price. Against London, the entry costs are far lower — roughly 6-7% all in against UK stamp duty surcharges — and there is no annual property tax and no tax at source on rent. Gross yields in the mainstream freehold communities run roughly 5-8%, paid in dirhams. The hard part remains the funding route, not the asset.",
+          "fr": "Dubaï offre ce que le naira ne peut pas offrir : une devise arrimée au dollar américain, un actif qui conserve sa valeur en monnaie forte, et un titre de propriété qu'une dévaluation ne peut pas réévaluer à la baisse. Face à Londres, les coûts d'entrée sont nettement plus faibles — environ 6-7% tout compris contre les surtaxes de droit de timbre britanniques — et il n'y a ni impôt foncier annuel ni prélèvement à la source sur les loyers. Les rendements bruts dans les communautés freehold grand public se situent autour de 5-8%, versés en dirhams. La difficulté reste le circuit de financement, pas l'actif.",
+          "ru": "Dubai даёт то, чего не даёт найра: валюту, привязанную к доллару США, актив, сохраняющий стоимость в твёрдой валюте, и право собственности, которое девальвация не может переоценить. По сравнению с London входные издержки заметно ниже — примерно 6-7% «под ключ» против британских надбавок к гербовому сбору, — а ежегодного налога на недвижимость и налога у источника на арендную плату нет вовсе. Валовая доходность в основных freehold-сообществах составляет примерно 5-8% и выплачивается в дирхамах. Сложным остаётся маршрут финансирования, а не сам актив.",
+          "ar": "تقدّم Dubai ما لا تقدّمه النايرا: عملة مربوطة بالدولار الأمريكي، وأصل يحتفظ بقيمته بعملة صعبة، وسند ملكية لا يمكن لخفض العملة أن يعيد تسعيره. وبالمقارنة مع لندن، فإن تكاليف الدخول أقل بكثير — نحو 6-7% شاملة مقابل رسوم الدمغة الإضافية في المملكة المتحدة — ولا توجد ضريبة عقارية سنوية ولا ضريبة تُقتطع من المنبع على الإيجار. تتراوح العوائد الإجمالية في مجتمعات التملك الحر الرئيسية بين 5-8% تقريباً، وتُدفع بالدرهم. ويبقى الجزء الصعب هو مسار التمويل، لا الأصل نفسه.",
+          "zh": "迪拜提供了奈拉所不具备的东西：一种与美元挂钩的货币、一项以硬通货保值的资产，以及一份贬值无法重新定价的产权。与伦敦相比，入场成本低得多——全部费用约 6-7%，而英国还有印花税附加税——并且没有年度房产税，租金也不在源头扣税。主流 freehold 社区的毛租金收益率大致在 5-8%，以迪拉姆支付。真正困难的部分始终是资金出境路径，而不是资产本身。",
+          "vi": "Dubai mang lại điều mà đồng naira không có: một đồng tiền neo theo đô la Mỹ, một tài sản giữ giá trị bằng ngoại tệ mạnh, và một giấy tờ sở hữu mà sự mất giá tiền tệ không thể định giá lại. So với London, chi phí đầu vào thấp hơn nhiều — khoảng 6-7% trọn gói so với các khoản phụ thu thuế trước bạ tại Anh — và không có thuế bất động sản hằng năm, cũng không có thuế khấu trừ tại nguồn trên tiền thuê. Lợi suất gộp tại các cộng đồng freehold phổ thông dao động khoảng 5-8%, thanh toán bằng dirham. Phần khó vẫn là lộ trình chuyển vốn, chứ không phải bản thân tài sản.",
+          "he": "Dubai מציעה את מה שהנאירה אינה: מטבע הצמוד לדולר האמריקאי, נכס ששומר על ערכו במטבע קשה, ובעלות שפיחות אינו יכול לתמחר מחדש. מול לונדון, עלויות הכניסה נמוכות בהרבה — כ-6-7% הכול כלול לעומת תוספות מס הבולים בבריטניה — ואין מס נכסים שנתי ואין ניכוי מס במקור על דמי השכירות. תשואות ברוטו בקהילות ה-freehold המרכזיות נעות בסביבות 5-8%, ומשולמות בדירהם. החלק הקשה נותר מסלול המימון, לא הנכס."
+        }
+      }
     ]
   },
   {
@@ -1473,6 +3303,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Business Bay",
       "Dubai Hills Estate",
       "Downtown Dubai"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Is it difficult to send money from Kenya?",
+          "fr": "Est-il difficile d'envoyer de l'argent depuis le Kenya ?",
+          "ru": "Сложно ли отправить деньги из Кении?",
+          "ar": "هل من الصعب تحويل الأموال من كينيا؟",
+          "zh": "从肯尼亚汇款困难吗？",
+          "vi": "Chuyển tiền từ Kenya có khó không?",
+          "he": "האם קשה לשלוח כסף מקניה?"
+        },
+        "answer": {
+          "en": "No, and this is where Kenyan buyers have an advantage over much of the region. Kenya abolished exchange control in the 1990s, the shilling is convertible, and residents can hold and move foreign currency without seeking permission — so funding a Dubai purchase is a matter of your bank's own compliance process rather than a regulator's approval. Kenyan banks apply source-of-funds checks on large outward transfers, and UAE anti-money-laundering rules require the same from the buyer, so assemble the documentation before you transfer.",
+          "fr": "Non, et c'est précisément là que les acheteurs kényans disposent d'un avantage sur une grande partie de la région. Le Kenya a supprimé le contrôle des changes dans les années 1990, le shilling est convertible et les résidents peuvent détenir et transférer des devises sans autorisation préalable : financer un achat à Dubaï relève donc du processus de conformité de votre banque plutôt que de l'aval d'un régulateur. Les banques kényanes appliquent des contrôles d'origine des fonds sur les gros virements sortants, et la réglementation anti-blanchiment des Émirats exige la même chose de l'acquéreur : réunissez la documentation avant de transférer.",
+          "ru": "Нет, и здесь кенийские покупатели в выигрыше по сравнению с большей частью региона. Кения отменила валютный контроль ещё в 1990-х, шиллинг конвертируем, а резиденты могут держать и перемещать иностранную валюту без разрешений — поэтому финансирование покупки в Dubai упирается в комплаенс-процедуры вашего банка, а не в одобрение регулятора. Кенийские банки проверяют происхождение средств при крупных исходящих переводах, и правила UAE по противодействию отмыванию денег требуют того же от покупателя, так что соберите документы до перевода.",
+          "ar": "لا، وهنا يتمتع المشترون الكينيون بميزة على معظم دول المنطقة. ألغت كينيا الرقابة على الصرف في التسعينيات، والشلن قابل للتحويل، ويمكن للمقيمين الاحتفاظ بالعملات الأجنبية وتحريكها دون طلب إذن — فتمويل شراء عقار في Dubai مسألة تتعلق بإجراءات الامتثال لدى بنكك لا بموافقة جهة تنظيمية. تطبّق البنوك الكينية فحوص مصدر الأموال على التحويلات الخارجية الكبيرة، وتشترط قواعد مكافحة غسل الأموال في UAE الشيء نفسه من المشتري، فجهّز المستندات قبل أن تحوّل.",
+          "zh": "不困难，这正是肯尼亚买家相对本地区多数国家的优势所在。肯尼亚在上世纪九十年代废除了外汇管制，先令可自由兑换，居民无需申请许可即可持有和转移外币——因此为迪拜购房提供资金，取决于你所在银行自身的合规流程，而非监管机构的批准。肯尼亚银行会对大额对外汇款执行资金来源核查，阿联酋反洗钱规则也对买家提出同样要求，所以请在转账前备齐文件。",
+          "vi": "Không, và đây chính là lợi thế của người mua Kenya so với phần lớn khu vực. Kenya đã bãi bỏ kiểm soát ngoại hối từ thập niên 1990, đồng shilling có thể chuyển đổi, và người cư trú được nắm giữ và chuyển ngoại tệ mà không cần xin phép — nên việc tài trợ một giao dịch mua tại Dubai là vấn đề quy trình tuân thủ của chính ngân hàng bạn chứ không phải sự phê duyệt của cơ quan quản lý. Ngân hàng Kenya áp dụng kiểm tra nguồn gốc tiền đối với các khoản chuyển ra nước ngoài giá trị lớn, và quy định chống rửa tiền của UAE cũng yêu cầu điều tương tự từ người mua, vì vậy hãy chuẩn bị hồ sơ trước khi chuyển tiền.",
+          "he": "לא, וכאן לרוכשים הקנייתים יש יתרון על פני רוב האזור. קניה ביטלה את הפיקוח על המט\"ח בשנות התשעים, השילינג בר-המרה, ותושבים רשאים להחזיק ולהעביר מטבע חוץ ללא צורך באישור — כך שמימון רכישה ב-Dubai הוא עניין של תהליך הציות של הבנק שלכם ולא של אישור רגולטור. בנקים בקניה מבצעים בדיקות מקור כספים על העברות גדולות לחו\"ל, וכללי איסור הלבנת ההון ב-UAE דורשים את אותו דבר מהרוכש, ולכן הכינו את המסמכים לפני ההעברה."
+        }
+      },
+      {
+        "question": {
+          "en": "Is my Dubai rental income taxable in Kenya?",
+          "fr": "Mes revenus locatifs de Dubaï sont-ils imposables au Kenya ?",
+          "ru": "Облагается ли мой доход от аренды в Dubai налогом в Кении?",
+          "ar": "هل دخل الإيجار من Dubai خاضع للضريبة في كينيا؟",
+          "zh": "我在迪拜的租金收入在肯尼亚需要纳税吗？",
+          "vi": "Thu nhập cho thuê tại Dubai của tôi có bị đánh thuế ở Kenya không?",
+          "he": "האם הכנסת השכירות שלי מ-Dubai חייבת במס בקניה?"
+        },
+        "answer": {
+          "en": "The position is more favourable than most worldwide-income systems, because Kenyan income tax for individuals is largely charged on income accrued in or derived from Kenya, with employment income the main exception that reaches abroad. In practice that often leaves rental income from a Dubai apartment outside the Kenyan charge — but 'often' is not 'always', the Finance Acts have moved this ground more than once, and your residence status is what decides it. Have a Kenyan adviser confirm your own position in writing before you rely on it.",
+          "fr": "La situation est plus favorable que dans la plupart des systèmes d'imposition mondiale, car l'impôt kényan sur le revenu des personnes physiques frappe pour l'essentiel les revenus nés ou tirés du Kenya, les revenus d'emploi constituant la principale exception qui porte à l'étranger. En pratique, cela laisse souvent les loyers d'un appartement à Dubaï hors du champ kényan — mais « souvent » n'est pas « toujours », les Finance Acts ont déplacé ce terrain à plus d'une reprise, et c'est votre statut de résidence qui tranche. Faites confirmer votre situation par écrit par un conseil kényan avant de vous y fier.",
+          "ru": "Ситуация благоприятнее, чем в большинстве систем налогообложения мирового дохода, поскольку подоходный налог для физических лиц в Кении взимается в основном с дохода, начисленного в Кении или полученного из кенийских источников, а главное исключение, дотягивающееся за рубеж, — доход от трудовой деятельности. На практике это «часто» выводит доход от аренды квартиры в Dubai за пределы кенийского налогообложения — но «часто» не значит «всегда», законы о финансах не раз сдвигали эту почву, и решающим фактором остаётся ваш статус резидентства. Попросите кенийского консультанта письменно подтвердить именно вашу ситуацию, прежде чем на неё полагаться.",
+          "ar": "الوضع أكثر مواءمة من معظم أنظمة الدخل العالمي، لأن ضريبة الدخل الكينية على الأفراد تُفرض في معظمها على الدخل المتحقق في كينيا أو المستمد منها، مع كون دخل العمل هو الاستثناء الرئيسي الذي يمتد إلى الخارج. وعملياً، كثيراً ما يترك ذلك دخل الإيجار من شقة في Dubai خارج النطاق الضريبي الكيني — لكن «كثيراً» ليست «دائماً»، فقوانين المالية حرّكت هذه الأرضية أكثر من مرة، ووضع إقامتك هو ما يحسم الأمر. اطلب من مستشار كيني أن يؤكد وضعك الخاص كتابةً قبل أن تعتمد عليه.",
+          "zh": "这一处境比多数实行全球征税的体系更为有利，因为肯尼亚对个人的所得税主要针对在肯尼亚产生或来源于肯尼亚的所得征收，雇佣所得是延伸至境外的主要例外。实际上这往往使迪拜公寓的租金收入落在肯尼亚征税范围之外——但「往往」并不等于「总是」，历年财政法案不止一次改动过这一领域，而最终起决定作用的是你的税务居民身份。在依赖这一结论之前，请让肯尼亚的顾问就你自己的具体情况出具书面确认。",
+          "vi": "Tình hình thuận lợi hơn so với hầu hết các hệ thống đánh thuế thu nhập toàn cầu, bởi thuế thu nhập cá nhân của Kenya về cơ bản chỉ áp lên thu nhập phát sinh tại hoặc có nguồn gốc từ Kenya, với thu nhập từ việc làm là ngoại lệ chính vươn ra nước ngoài. Trên thực tế, điều đó thường khiến thu nhập cho thuê từ một căn hộ ở Dubai nằm ngoài phạm vi chịu thuế của Kenya — nhưng “thường” không phải là “luôn luôn”, các Đạo luật Tài chính đã nhiều lần thay đổi nền tảng này, và chính tình trạng cư trú của bạn mới là yếu tố quyết định. Hãy để một cố vấn Kenya xác nhận bằng văn bản vị thế riêng của bạn trước khi dựa vào đó.",
+          "he": "המצב נוח יותר מרוב שיטות המס על הכנסה עולמית, משום שמס ההכנסה הקנייתי ליחידים מוטל ברובו על הכנסה שנצמחה בקניה או שמקורה בה, כאשר הכנסת עבודה היא החריג העיקרי שמגיע גם לחו\"ל. בפועל הדבר משאיר לעתים קרובות הכנסה משכירות מדירה ב-Dubai מחוץ לחבות הקנייתית — אך «לעתים קרובות» אינו «תמיד», חוקי התקציב שינו את הקרקע הזו יותר מפעם אחת, ומעמד התושבות שלכם הוא שמכריע. בקשו מיועץ קנייתי לאשר בכתב את מצבכם האישי לפני שאתם מסתמכים על כך."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I actually get a UAE mortgage?",
+          "fr": "Puis-je réellement obtenir un prêt immobilier aux Émirats ?",
+          "ru": "Действительно ли я могу получить ипотеку в UAE?",
+          "ar": "هل يمكنني فعلاً الحصول على تمويل عقاري في UAE؟",
+          "zh": "我真的能申请到阿联酋按揭吗？",
+          "vi": "Tôi có thực sự vay được thế chấp tại UAE không?",
+          "he": "האם באמת אפשר לקבל משכנתה ב-UAE?"
+        },
+        "answer": {
+          "en": "Yes, and genuinely so, in a way that is not true for buyers from much of the region. Lenders typically finance up to 50-60% for a non-resident against documented income and a clean bank history, with the property itself as security. Rates and eligibility vary by bank and by whether your income is in shillings or dollars, so get an indicative offer before you commit to a price. The developer payment plan on off-plan stock remains the alternative and needs no credit assessment at all.",
+          "fr": "Oui, et réellement, d'une manière qui n'est pas vraie pour les acheteurs d'une grande partie de la région. Les banques financent généralement jusqu'à 50-60% pour un non-résident, sur la base de revenus documentés et d'un historique bancaire sain, le bien lui-même servant de garantie. Les taux et les conditions d'éligibilité varient selon l'établissement et selon que vos revenus sont en shillings ou en dollars : obtenez une offre indicative avant de vous engager sur un prix. L'échéancier promoteur sur un bien en VEFA reste l'alternative et ne requiert aucune analyse de crédit.",
+          "ru": "Да, и вполне реально — в отличие от покупателей из многих стран региона. Банки обычно финансируют до 50-60% стоимости для нерезидента при документально подтверждённом доходе и чистой банковской истории, а обеспечением выступает сам объект. Ставки и условия зависят от банка и от того, в шиллингах или долларах ваш доход, поэтому получите предварительное предложение до того, как зафиксируете цену. Альтернативой остаётся план рассрочки от застройщика на объекты off-plan — он вообще не требует оценки кредитоспособности.",
+          "ar": "نعم، وبشكل حقيقي، بطريقة لا تنطبق على مشترين من كثير من دول المنطقة. تموّل البنوك عادةً حتى 50-60% لغير المقيم مقابل دخل موثّق وسجل مصرفي نظيف، مع العقار نفسه كضمان. تختلف الأسعار وشروط الأهلية من بنك لآخر وبحسب ما إذا كان دخلك بالشلن أم بالدولار، فاحصل على عرض استرشادي قبل الالتزام بسعر. وتبقى خطة السداد من المطوّر على مشاريع على الخارطة بديلاً لا يتطلب أي تقييم ائتماني على الإطلاق.",
+          "zh": "可以，而且是切实可行的，这一点对本地区许多国家的买家并不成立。贷款机构通常向非居民提供最高 50-60% 的融资，依据是有据可查的收入和良好的银行记录，并以房产本身作为担保。利率和申请条件因银行而异，也取决于你的收入是先令还是美元，因此在敲定价格前先取得一份初步报价。期房的开发商付款计划仍是备选方案，且完全无需信用评估。",
+          "vi": "Có, và thực sự là vậy, theo cách không đúng với người mua đến từ phần lớn khu vực. Các ngân hàng thường tài trợ tới 50-60% cho người không cư trú dựa trên thu nhập có chứng từ và lịch sử ngân hàng sạch, với chính bất động sản làm tài sản bảo đảm. Lãi suất và điều kiện xét duyệt khác nhau theo từng ngân hàng và tùy theo thu nhập của bạn bằng shilling hay đô la, vì vậy hãy lấy một đề nghị sơ bộ trước khi cam kết một mức giá. Kế hoạch thanh toán của chủ đầu tư với bất động sản off-plan vẫn là phương án thay thế và hoàn toàn không cần thẩm định tín dụng.",
+          "he": "כן, ובאופן ממשי, בצורה שאינה נכונה לרוכשים מחלקים רבים באזור. מלווים מממנים בדרך כלל עד 50-60% לתושב חוץ כנגד הכנסה מתועדת והיסטוריה בנקאית נקייה, כשהנכס עצמו משמש כבטוחה. הריביות והזכאות משתנות מבנק לבנק ולפי השאלה אם הכנסתכם בשילינג או בדולר, לכן קבלו הצעה עקרונית לפני שאתם מתחייבים למחיר. תוכנית התשלומים של היזם על נכס off-plan נותרת החלופה ואינה דורשת בדיקת אשראי כלל."
+        }
+      },
+      {
+        "question": {
+          "en": "How long is the flight and does that matter?",
+          "fr": "Quelle est la durée du vol, et est-ce important ?",
+          "ru": "Сколько лететь и имеет ли это значение?",
+          "ar": "كم تستغرق الرحلة وهل لذلك أهمية؟",
+          "zh": "航程多长，这重要吗？",
+          "vi": "Chuyến bay dài bao lâu và điều đó có quan trọng không?",
+          "he": "כמה זמן אורכת הטיסה והאם זה משנה?"
+        },
+        "answer": {
+          "en": "Nairobi and Dubai are about five hours apart on a route flown several times a day, and that proximity does more work than buyers expect. It makes a viewing trip a long weekend rather than an expedition, and it makes the handover and snagging stage practical to supervise in person. For business owners already trading with the Gulf, it also means a Dubai address functions as an operating base rather than only an investment.",
+          "fr": "Nairobi et Dubaï sont distantes d'environ cinq heures sur une liaison desservie plusieurs fois par jour, et cette proximité joue davantage que les acheteurs ne l'imaginent. Elle transforme un voyage de visite en long week-end plutôt qu'en expédition, et elle rend la livraison et la réception des réserves supervisables en personne. Pour les chefs d'entreprise qui commercent déjà avec le Golfe, une adresse à Dubaï fonctionne aussi comme une base opérationnelle et non seulement comme un investissement.",
+          "ru": "Nairobi и Dubai разделяют примерно пять часов полёта по маршруту, который выполняется несколько раз в день, и эта близость значит больше, чем покупатели ожидают. Она превращает поездку на просмотры в длинные выходные, а не в экспедицию, и делает передачу объекта и устранение недоделок реально контролируемыми лично. Для предпринимателей, уже торгующих со странами Залива, адрес в Dubai становится ещё и операционной базой, а не только инвестицией.",
+          "ar": "تفصل نحو خمس ساعات بين نيروبي وDubai على خط تُسيَّر عليه رحلات عدة مرات يومياً، وهذا القرب يؤدي دوراً أكبر مما يتوقعه المشترون. فهو يجعل رحلة المعاينة عطلة نهاية أسبوع طويلة لا رحلة استكشافية، ويجعل الإشراف شخصياً على مرحلة التسليم ومعالجة الملاحظات أمراً عملياً. وبالنسبة لأصحاب الأعمال الذين يتاجرون أصلاً مع الخليج، فهو يعني أيضاً أن عنواناً في Dubai يعمل كقاعدة تشغيلية لا كاستثمار فحسب.",
+          "zh": "内罗毕与迪拜相距约五小时，航线每日多班，这种地理邻近带来的便利超出买家预期。它让看房之旅成为一个长周末而非一次远征，也让交房和验房阶段能够亲自到场监督。对已经与海湾地区有贸易往来的企业主而言，这还意味着一个迪拜地址可以作为经营基地，而不仅仅是一项投资。",
+          "vi": "Nairobi và Dubai cách nhau khoảng năm giờ bay trên tuyến đường có nhiều chuyến mỗi ngày, và sự gần gũi đó có ý nghĩa hơn người mua vẫn tưởng. Nó biến một chuyến đi xem nhà thành một kỳ nghỉ cuối tuần dài thay vì một chuyến viễn du, và khiến giai đoạn bàn giao cùng nghiệm thu lỗi trở nên khả thi để giám sát trực tiếp. Với các chủ doanh nghiệp vốn đã giao thương với vùng Vịnh, điều đó còn có nghĩa một địa chỉ ở Dubai vận hành như một cơ sở kinh doanh chứ không chỉ là một khoản đầu tư.",
+          "he": "ניירובי ו-Dubai מרוחקות כחמש שעות זו מזו במסלול שמופעל כמה פעמים ביום, וקרבה זו עושה יותר ממה שרוכשים מצפים. היא הופכת נסיעת סיור לסוף שבוע ארוך במקום למשלחת, והיא הופכת את שלב המסירה ובדיקת הליקויים למעשי לפיקוח אישי. עבור בעלי עסקים שכבר סוחרים עם המפרץ, משמעות הדבר היא גם שכתובת ב-Dubai מתפקדת כבסיס תפעולי ולא רק כהשקעה."
+        }
+      },
+      {
+        "question": {
+          "en": "What are the total costs of buying?",
+          "fr": "Quels sont les coûts totaux de l'achat ?",
+          "ru": "Каковы совокупные расходы на покупку?",
+          "ar": "ما إجمالي تكاليف الشراء؟",
+          "zh": "购房的总成本是多少？",
+          "vi": "Tổng chi phí mua là bao nhiêu?",
+          "he": "מהן העלויות הכוללות של הרכישה?"
+        },
+        "answer": {
+          "en": "Roughly 6-7% of the purchase price all in: the 4% Dubai Land Department transfer fee, about 2% agency commission, and registration and trustee charges. If you borrow, add 0.25% of the loan for mortgage registration. There is no annual property tax afterwards — the standing costs are service charges and a municipality housing fee on let homes.",
+          "fr": "Environ 6-7% du prix d'acquisition tout compris : les 4% de frais de mutation du Dubai Land Department, environ 2% de commission d'agence, ainsi que les frais d'enregistrement et de trustee. Si vous empruntez, ajoutez 0.25% du montant du prêt pour l'inscription hypothécaire. Il n'y a ensuite aucun impôt foncier annuel : les charges récurrentes sont les charges de copropriété et une taxe municipale d'habitation sur les logements loués.",
+          "ru": "Примерно 6-7% от цены покупки «под ключ»: сбор за передачу права в размере 4% в пользу Dubai Land Department, около 2% комиссии агентства, а также регистрационные и доверительные сборы. Если берёте кредит, добавьте 0.25% от суммы займа за регистрацию ипотеки. Ежегодного налога на недвижимость затем нет — постоянные расходы сводятся к сервисным сборам и муниципальному жилищному сбору на сдаваемое жильё.",
+          "ar": "نحو 6-7% من سعر الشراء شاملة: رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، ونحو 2% عمولة الوساطة، ورسوم التسجيل وأمين التسجيل. وإذا اقترضت، أضف 0.25% من قيمة القرض لتسجيل الرهن. ولا توجد ضريبة عقارية سنوية بعد ذلك — فالتكاليف الجارية هي رسوم الخدمات ورسم سكن بلدي على المساكن المؤجَّرة.",
+          "zh": "约为成交价的 6-7%，含全部费用：4% 的迪拜土地局过户费、约 2% 的中介佣金，以及登记费和受托机构费用。若使用贷款，再加上贷款额的 0.25% 作为按揭登记费。此后没有年度房产税——持有期间的固定支出是物业服务费，以及出租房屋需缴纳的市政住房费。",
+          "vi": "Khoảng 6-7% giá mua trọn gói: phí chuyển nhượng 4% của Dubai Land Department, khoảng 2% hoa hồng môi giới, cùng các khoản phí đăng ký và phí ủy thác. Nếu bạn vay, cộng thêm 0.25% giá trị khoản vay cho việc đăng ký thế chấp. Sau đó không có thuế bất động sản hằng năm — chi phí thường xuyên là phí dịch vụ và phí nhà ở đô thị đối với nhà cho thuê.",
+          "he": "בערך 6-7% ממחיר הרכישה הכול כלול: עמלת ההעברה של Dubai Land Department בשיעור 4%, כ-2% עמלת תיווך, ואגרות רישום ונאמנות. אם אתם לווים, הוסיפו 0.25% מסכום ההלוואה עבור רישום המשכנתה. לאחר מכן אין מס נכסים שנתי — העלויות השוטפות הן דמי ניהול ואגרת דיור עירונית על בתים המושכרים."
+        }
+      },
+      {
+        "question": {
+          "en": "How does Dubai compare with buying in Nairobi?",
+          "fr": "Comment Dubaï se compare-t-elle à un achat à Nairobi ?",
+          "ru": "Как Dubai сравнить с покупкой в Nairobi?",
+          "ar": "كيف تُقارن Dubai بالشراء في نيروبي؟",
+          "zh": "迪拜与在内罗毕置业相比如何？",
+          "vi": "Dubai so với việc mua nhà ở Nairobi thì thế nào?",
+          "he": "כיצד Dubai משתווה לרכישה בניירובי?"
+        },
+        "answer": {
+          "en": "The currency and the title are the substantive differences. A Dubai property is priced and let in dirhams pegged to the US dollar, and ownership is registered at the Dubai Land Department as full freehold in your own name, with transactions publicly recorded. Gross yields in mainstream freehold communities run roughly 5-8%, with rent increasingly collected monthly rather than in large advance instalments. Against that, Nairobi is a market you know and can supervise directly, which has its own real value.",
+          "fr": "La devise et le titre de propriété constituent les différences de fond. Un bien à Dubaï est valorisé et loué en dirhams arrimés au dollar américain, et la propriété est inscrite au Dubai Land Department en pleine propriété freehold à votre nom, les transactions étant publiquement enregistrées. Les rendements bruts dans les communautés freehold grand public tournent autour de 5-8%, avec des loyers de plus en plus souvent perçus mensuellement plutôt qu'en gros versements d'avance. En face, Nairobi est un marché que vous connaissez et pouvez superviser directement, ce qui a sa propre valeur bien réelle.",
+          "ru": "Существенные различия — в валюте и в праве собственности. Недвижимость в Dubai оценивается и сдаётся в дирхамах, привязанных к доллару США, а владение регистрируется в Dubai Land Department как полноценный freehold на ваше имя, причём сделки фиксируются публично. Валовая доходность в основных freehold-сообществах составляет примерно 5-8%, и аренда всё чаще оплачивается ежемесячно, а не крупными авансовыми платежами. С другой стороны, Nairobi — рынок, который вы знаете и можете контролировать напрямую, и это тоже имеет реальную ценность.",
+          "ar": "العملة وسند الملكية هما الفرقان الجوهريان. فالعقار في Dubai يُسعَّر ويُؤجَّر بالدرهم المربوط بالدولار الأمريكي، وتُسجَّل الملكية لدى Dubai Land Department كتملك حر كامل باسمك، مع تسجيل المعاملات علنياً. وتتراوح العوائد الإجمالية في مجتمعات التملك الحر الرئيسية بين 5-8% تقريباً، مع تحصيل الإيجار شهرياً بصورة متزايدة بدلاً من دفعات مقدّمة كبيرة. وفي المقابل، نيروبي سوق تعرفه ويمكنك الإشراف عليه مباشرة، وهذه قيمة حقيقية بحد ذاتها.",
+          "zh": "货币和产权是实质性的区别。迪拜房产以与美元挂钩的迪拉姆计价和出租，所有权在迪拜土地局登记为你本人名下的完全 freehold 产权，交易记录公开可查。主流 freehold 社区的毛收益率大致在 5-8%，且租金越来越多地按月收取，而非一次性大额预付。相对地，内罗毕是你熟悉且能亲自监管的市场，这本身也有其真实价值。",
+          "vi": "Đồng tiền và giấy tờ sở hữu là hai khác biệt cốt lõi. Bất động sản Dubai được định giá và cho thuê bằng dirham neo theo đô la Mỹ, và quyền sở hữu được đăng ký tại Dubai Land Department dưới dạng freehold đầy đủ đứng tên bạn, với giao dịch được ghi nhận công khai. Lợi suất gộp tại các cộng đồng freehold phổ thông dao động khoảng 5-8%, với tiền thuê ngày càng được thu theo tháng thay vì trả trước theo những đợt lớn. Đổi lại, Nairobi là thị trường bạn am hiểu và có thể giám sát trực tiếp, điều đó cũng có giá trị thực sự riêng.",
+          "he": "המטבע והבעלות הם ההבדלים המהותיים. נכס ב-Dubai מתומחר ומושכר בדירהם הצמוד לדולר האמריקאי, והבעלות נרשמת ב-Dubai Land Department כ-freehold מלא על שמכם, כשהעסקאות מתועדות בפומבי. תשואות ברוטו בקהילות freehold מרכזיות נעות בסביבות 5-8%, כששכר הדירה נגבה יותר ויותר חודשית ולא במקדמות גדולות. מנגד, ניירובי היא שוק שאתם מכירים ויכולים לפקח עליו ישירות, ולכך יש ערך אמיתי משלו."
+        }
+      }
     ]
   },
   {
@@ -1540,6 +3492,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Dubai Hills Estate",
       "Downtown Dubai",
       "Business Bay"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Which SARB allowance do I use to move the money?",
+          "fr": "Quelle allocation SARB dois-je utiliser pour transférer les fonds ?",
+          "ru": "Какой лимит SARB использовать для перевода денег?",
+          "ar": "أي مخصّص من SARB أستخدمه لتحويل الأموال؟",
+          "zh": "我该用哪一项 SARB 额度来汇出资金？",
+          "vi": "Tôi dùng hạn mức SARB nào để chuyển tiền?",
+          "he": "באיזו הקצאה של SARB עליי להשתמש כדי להעביר את הכסף?"
+        },
+        "answer": {
+          "en": "Two apply. The single discretionary allowance is R1 million per calendar year and needs no tax clearance. The foreign investment allowance goes up to R10 million per calendar year but does require approval — you apply to SARS for an approval for international transfer, and the bank will not release funds without it. Larger amounts need specific SARS and Reserve Bank approval and take time. In practice the allowance year, not the property, sets your timetable: a couple has two sets of allowances, and an off-plan payment plan can be matched to transfers across two or more years.",
+          "fr": "Deux s'appliquent. La single discretionary allowance est de R1 million par année civile et ne requiert aucun quitus fiscal. La foreign investment allowance va jusqu'à R10 million par année civile mais exige une approbation : vous sollicitez auprès de la SARS une approval for international transfer, et la banque ne libérera pas les fonds sans elle. Les montants supérieurs nécessitent une approbation spécifique de la SARS et de la Reserve Bank et prennent du temps. En pratique, c'est l'année d'allocation, et non le bien, qui fixe votre calendrier : un couple dispose de deux jeux d'allocations, et un échéancier en VEFA peut être calé sur des transferts étalés sur deux années ou plus.",
+          "ru": "Применимы два. Единый дискреционный лимит составляет R1 million за календарный год и не требует налогового разрешения. Лимит зарубежных инвестиций достигает R10 million за календарный год, но требует одобрения — вы подаёте в SARS заявление на approval for international transfer, и без него банк средства не выпустит. Для более крупных сумм нужны отдельные одобрения SARS и Резервного банка, и это занимает время. На практике ваш график задаёт не объект, а год действия лимитов: у супружеской пары два набора лимитов, а план рассрочки на off-plan можно распределить по переводам за два года и более.",
+          "ar": "ينطبق مخصّصان. المخصّص التقديري الفردي وقدره R1 million في السنة التقويمية ولا يتطلب شهادة تخليص ضريبي. أما مخصّص الاستثمار الخارجي فيصل إلى R10 million في السنة التقويمية لكنه يتطلب موافقة — إذ تتقدم إلى SARS للحصول على موافقة على التحويل الدولي، ولن يفرج البنك عن الأموال بدونها. والمبالغ الأكبر تحتاج موافقة خاصة من SARS والبنك الاحتياطي وتستغرق وقتاً. وعملياً، فإن سنة المخصّص هي التي تحدّد جدولك الزمني لا العقار: فالزوجان لديهما مجموعتان من المخصّصات، ويمكن مواءمة خطة سداد على الخارطة مع تحويلات موزّعة على سنتين أو أكثر.",
+          "zh": "两项都适用。单一酌情额度为每个日历年 R1 million，无需税务清关。对外投资额度每个日历年最高 R10 million，但需要审批——你须向 SARS 申请一份国际转账批准，银行在取得该批准前不会放款。更大金额需要 SARS 和储备银行的专项批准，且耗时较长。实际操作中，决定你时间表的是额度年度而非房产本身：夫妻二人拥有两套额度，而期房付款计划可以与跨两年或多年的汇款安排相匹配。",
+          "vi": "Có hai hạn mức áp dụng. Hạn mức tùy nghi cá nhân là R1 million mỗi năm dương lịch và không cần giấy xác nhận thuế. Hạn mức đầu tư ra nước ngoài lên tới R10 million mỗi năm dương lịch nhưng cần được phê duyệt — bạn nộp hồ sơ lên SARS xin chấp thuận chuyển tiền quốc tế, và ngân hàng sẽ không giải ngân nếu thiếu giấy này. Các khoản lớn hơn cần phê duyệt riêng của SARS và Ngân hàng Dự trữ, và việc này mất thời gian. Trên thực tế, chính năm hạn mức chứ không phải bất động sản mới quyết định tiến độ của bạn: một cặp vợ chồng có hai bộ hạn mức, và một kế hoạch thanh toán off-plan có thể được khớp với các đợt chuyển tiền trải dài hai năm trở lên.",
+          "he": "שתיים רלוונטיות. ההקצאה השיקולית היחידה עומדת על R1 million לשנה קלנדרית ואינה דורשת אישור מס. הקצאת ההשקעה בחו\"ל מגיעה עד R10 million לשנה קלנדרית אך כן דורשת אישור — אתם מגישים בקשה ל-SARS לאישור העברה בינלאומית, והבנק לא ישחרר כספים בלעדיו. סכומים גדולים יותר מחייבים אישור ספציפי של SARS ושל הבנק המרכזי ולוקחים זמן. בפועל שנת ההקצאה, ולא הנכס, היא שקובעת את לוח הזמנים שלכם: לזוג יש שתי מערכות הקצאות, וניתן להתאים תוכנית תשלומים off-plan להעברות על פני שנתיים או יותר."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I pay South African tax on Dubai rental income?",
+          "fr": "Dois-je payer l'impôt sud-africain sur les revenus locatifs de Dubaï ?",
+          "ru": "Плачу ли я южноафриканский налог с дохода от аренды в Dubai?",
+          "ar": "هل أدفع ضريبة جنوب أفريقية على دخل الإيجار من Dubai؟",
+          "zh": "迪拜的租金收入需要缴纳南非税吗？",
+          "vi": "Tôi có phải nộp thuế Nam Phi trên thu nhập cho thuê tại Dubai không?",
+          "he": "האם אשלם מס דרום-אפריקאי על הכנסת שכירות מ-Dubai?"
+        },
+        "answer": {
+          "en": "If you remain South African tax resident, yes. SARS taxes residents on worldwide income, so rental profit goes into your return at your marginal rate, and a future disposal falls within South African capital gains tax. Because the UAE levies nothing, there is no foreign tax to credit under section 6quat — the relief mechanism exists but has nothing to relieve. Model the Dubai yield net of your own marginal rate rather than gross, because the gross figure is not what you keep.",
+          "fr": "Si vous demeurez résident fiscal sud-africain, oui. La SARS impose ses résidents sur leurs revenus mondiaux : le bénéfice locatif entre dans votre déclaration à votre taux marginal, et une cession future relève de l'impôt sud-africain sur les plus-values. Comme les Émirats ne prélèvent rien, il n'y a aucun impôt étranger à imputer au titre de la section 6quat — le mécanisme d'allègement existe, mais n'a rien à alléger. Modélisez le rendement de Dubaï net de votre taux marginal plutôt qu'en brut, car le chiffre brut n'est pas ce que vous conservez.",
+          "ru": "Если вы остаётесь налоговым резидентом ЮАР — да. SARS облагает резидентов налогом на мировой доход, поэтому прибыль от аренды попадает в вашу декларацию по предельной ставке, а будущая продажа — под южноафриканский налог на прирост капитала. Поскольку UAE не взимает ничего, нет и иностранного налога, который можно было бы зачесть по section 6quat: механизм льготы существует, но зачитывать нечего. Моделируйте доходность в Dubai после вашей предельной ставки, а не по валовой цифре, потому что валовая — это не то, что останется у вас.",
+          "ar": "إذا بقيت مقيماً ضريبياً في جنوب أفريقيا، فنعم. تفرض SARS الضريبة على المقيمين عن دخلهم العالمي، فيدخل ربح الإيجار في إقرارك بمعدلك الحدّي، ويقع أي تصرف مستقبلي ضمن ضريبة أرباح رأس المال الجنوب أفريقية. ولأن UAE لا تفرض شيئاً، فلا توجد ضريبة أجنبية يمكن خصمها بموجب section 6quat — فآلية الإعفاء قائمة لكن لا شيء لديها لتخفّفه. احسب عائد Dubai صافياً من معدلك الحدّي لا إجمالياً، لأن الرقم الإجمالي ليس ما تحتفظ به.",
+          "zh": "如果你仍是南非税务居民，需要。SARS 对居民的全球收入征税，因此租金利润按你的边际税率计入申报表，日后出售也落入南非资本利得税范围。由于阿联酋分文不征，在 section 6quat 下没有可抵免的外国税款——减免机制存在，但无税可减。请按你自己的边际税率计算税后净收益，而不是毛收益，因为毛数字并不是你最终留下的钱。",
+          "vi": "Nếu bạn vẫn là đối tượng cư trú thuế Nam Phi thì có. SARS đánh thuế người cư trú trên thu nhập toàn cầu, nên lợi nhuận cho thuê được đưa vào tờ khai của bạn theo thuế suất biên, và việc bán tài sản trong tương lai nằm trong phạm vi thuế lãi vốn của Nam Phi. Vì UAE không thu bất kỳ khoản nào, không có thuế nước ngoài nào để khấu trừ theo section 6quat — cơ chế giảm trừ vẫn tồn tại nhưng không có gì để giảm trừ. Hãy tính lợi suất Dubai sau thuế suất biên của bạn thay vì con số gộp, bởi con số gộp không phải là phần bạn thực nhận.",
+          "he": "אם אתם נותרים תושבי מס בדרום אפריקה, כן. SARS ממסה תושבים על הכנסה עולמית, ולכן רווח השכירות נכנס לדוח שלכם לפי שיעור המס השולי שלכם, ומכירה עתידית נופלת בגדר מס רווחי ההון הדרום-אפריקאי. מכיוון שה-UAE אינה גובה דבר, אין מס זר לזיכוי לפי section 6quat — מנגנון ההקלה קיים אך אין לו מה להקל. חשבו את תשואת Dubai נטו לפי שיעור המס השולי שלכם ולא ברוטו, משום שהמספר ברוטו אינו מה שנשאר בידיכם."
+        }
+      },
+      {
+        "question": {
+          "en": "Should I hold the property through an offshore company?",
+          "fr": "Dois-je détenir le bien via une société offshore ?",
+          "ru": "Стоит ли владеть объектом через офшорную компанию?",
+          "ar": "هل ينبغي أن أملك العقار عبر شركة خارجية؟",
+          "zh": "我应该通过离岸公司持有这处房产吗？",
+          "vi": "Tôi có nên nắm giữ bất động sản thông qua một công ty nước ngoài không?",
+          "he": "האם כדאי להחזיק את הנכס באמצעות חברה בחו\"ל?"
+        },
+        "answer": {
+          "en": "Be careful here. A company you control from South Africa can be treated as South African tax resident by place of effective management, which imports SA tax into a structure people often build precisely to avoid that. For a single apartment, personal ownership is usually cheaper and simpler, and the company route only begins to justify its formation and annual costs across a portfolio. Take advice before incorporating rather than after.",
+          "fr": "Prudence ici. Une société que vous contrôlez depuis l'Afrique du Sud peut être considérée comme résidente fiscale sud-africaine au titre du lieu de direction effective, ce qui importe la fiscalité sud-africaine dans une structure que l'on bâtit précisément pour l'éviter. Pour un appartement unique, la détention en nom propre est généralement moins coûteuse et plus simple, et la voie sociétaire ne commence à justifier ses frais de constitution et ses coûts annuels qu'à l'échelle d'un portefeuille. Prenez conseil avant de constituer la société, pas après.",
+          "ru": "Здесь нужна осторожность. Компания, которой вы управляете из ЮАР, может быть признана налоговым резидентом ЮАР по месту фактического управления, а это вносит южноафриканский налог в структуру, которую нередко создают именно для того, чтобы его избежать. Для одной квартиры личное владение обычно дешевле и проще, а корпоративный маршрут начинает оправдывать расходы на создание и ежегодное обслуживание только на уровне портфеля. Получите консультацию до регистрации компании, а не после.",
+          "ar": "توخَّ الحذر هنا. فالشركة التي تديرها من جنوب أفريقيا قد تُعامَل كمقيم ضريبي جنوب أفريقي بحكم مكان الإدارة الفعلية، ما يُدخل الضريبة الجنوب أفريقية إلى هيكل يُبنى غالباً لتجنّب ذلك تحديداً. وبالنسبة لشقة واحدة، تكون الملكية الشخصية عادةً أرخص وأبسط، ولا يبدأ مسار الشركة في تبرير تكاليف التأسيس والتكاليف السنوية إلا على مستوى محفظة عقارية. استشر قبل التأسيس لا بعده.",
+          "zh": "这里要格外谨慎。一家由你在南非实际控制的公司，可能因实际管理地而被认定为南非税务居民，从而把南非税负引入一个人们往往正是为规避它才搭建的架构。对于一套公寓而言，个人持有通常更便宜也更简单，只有在拥有一个投资组合时，公司路径才开始值回其设立和年度维护成本。请在设立公司之前征询意见，而不是之后。",
+          "vi": "Hãy thận trọng ở điểm này. Một công ty do bạn điều hành từ Nam Phi có thể bị coi là đối tượng cư trú thuế Nam Phi theo tiêu chí nơi quản lý thực tế, điều này kéo thuế Nam Phi vào chính cấu trúc mà người ta lập ra để tránh nó. Với một căn hộ đơn lẻ, sở hữu cá nhân thường rẻ hơn và đơn giản hơn, và phương án công ty chỉ bắt đầu hợp lý về chi phí thành lập cùng chi phí duy trì hằng năm khi bạn có cả một danh mục. Hãy xin tư vấn trước khi thành lập chứ không phải sau đó.",
+          "he": "כאן נדרשת זהירות. חברה שאתם שולטים בה מדרום אפריקה עלולה להיחשב תושבת מס דרום-אפריקאית לפי מקום הניהול האפקטיבי, וכך היא מכניסה את המס הדרום-אפריקאי למבנה שאנשים בונים לעתים קרובות דווקא כדי להימנע מכך. עבור דירה בודדת, בעלות אישית היא בדרך כלל זולה ופשוטה יותר, ומסלול החברה מתחיל להצדיק את עלויות ההקמה והעלויות השנתיות רק כשמדובר בתיק נכסים. קבלו ייעוץ לפני ההתאגדות ולא אחריה."
+        }
+      },
+      {
+        "question": {
+          "en": "When should I start the SARS application?",
+          "fr": "Quand dois-je lancer la demande auprès de la SARS ?",
+          "ru": "Когда начинать подачу заявления в SARS?",
+          "ar": "متى يجب أن أبدأ طلب SARS؟",
+          "zh": "我应该什么时候启动 SARS 申请？",
+          "vi": "Tôi nên bắt đầu thủ tục với SARS khi nào?",
+          "he": "מתי כדאי להתחיל את הבקשה ל-SARS?"
+        },
+        "answer": {
+          "en": "Before you sign, not after. A payment plan assumes you can move money on fixed dates, and the approval for international transfer is the step that determines whether you can. Starting it once you are already committed to a developer schedule is how buyers end up missing instalments, which is expensive. Get the approval timeline from your bank early and structure the payment dates around it.",
+          "fr": "Avant de signer, pas après. Un échéancier suppose que vous pouvez transférer des fonds à dates fixes, et l'approval for international transfer est l'étape qui détermine si vous le pouvez. Démarrer la procédure une fois déjà engagé sur un calendrier promoteur est la façon dont les acquéreurs finissent par manquer des versements, ce qui coûte cher. Obtenez tôt le délai d'approbation auprès de votre banque et structurez les dates de paiement autour de lui.",
+          "ru": "До подписания, а не после. План рассрочки предполагает, что вы сможете переводить деньги в фиксированные даты, а именно approval for international transfer определяет, сможете ли вы это сделать. Начинать оформление, когда вы уже связаны графиком застройщика, — прямой путь к пропущенным платежам, а это дорого. Заранее уточните в банке сроки одобрения и выстройте даты платежей вокруг них.",
+          "ar": "قبل التوقيع لا بعده. فخطة السداد تفترض قدرتك على تحويل الأموال في تواريخ محددة، والموافقة على التحويل الدولي هي الخطوة التي تحدّد ما إذا كنت تستطيع ذلك. والبدء بها بعد أن تكون قد التزمت فعلاً بجدول المطوّر هو ما يجعل المشترين يفوّتون أقساطاً، وذلك مكلف. احصل من بنكك مبكراً على الجدول الزمني للموافقة، ورتّب تواريخ الدفع حوله.",
+          "zh": "在签约之前，而不是之后。付款计划的前提是你能在固定日期把钱汇出，而国际转账批准正是决定你能否做到这一点的环节。等到已经受制于开发商付款时间表才开始办理，正是买家错过分期付款的原因，而代价高昂。请尽早向银行了解审批所需时间，并据此安排付款日期。",
+          "vi": "Trước khi ký, chứ không phải sau. Một kế hoạch thanh toán giả định rằng bạn có thể chuyển tiền vào những ngày cố định, và giấy chấp thuận chuyển tiền quốc tế chính là bước quyết định bạn có làm được điều đó hay không. Bắt đầu thủ tục khi đã cam kết với lịch thanh toán của chủ đầu tư là cách khiến người mua trễ hạn trả góp, và điều đó rất tốn kém. Hãy hỏi ngân hàng sớm về thời gian phê duyệt và sắp xếp các mốc thanh toán xoay quanh mốc thời gian đó.",
+          "he": "לפני החתימה, לא אחריה. תוכנית תשלומים מניחה שאתם יכולים להעביר כסף בתאריכים קבועים, ואישור ההעברה הבינלאומית הוא השלב שקובע אם תוכלו. התחלת התהליך כשאתם כבר מחויבים ללוח תשלומים של יזם היא הדרך שבה רוכשים מפספסים תשלומים, וזה יקר. קבלו מהבנק שלכם מוקדם את לוח הזמנים לאישור ובנו את מועדי התשלום סביבו."
+        }
+      },
+      {
+        "question": {
+          "en": "Is Dubai a genuine rand hedge?",
+          "fr": "Dubaï constitue-t-elle une véritable couverture contre le rand ?",
+          "ru": "Является ли Dubai настоящей защитой от рисков ранда?",
+          "ar": "هل Dubai تحوّط حقيقي ضد الراند؟",
+          "zh": "迪拜是真正的兰特对冲工具吗？",
+          "vi": "Dubai có thực sự là một công cụ phòng vệ rủi ro đồng rand không?",
+          "he": "האם Dubai היא גידור אמיתי מול הראנד?"
+        },
+        "answer": {
+          "en": "That is the core of the case. A Dubai title is priced in a currency pegged to the US dollar and the rental income arrives in the same currency, so both the asset and its yield sit outside rand risk. Add an eight-hour direct flight from Johannesburg, a two-hour time difference, no load-shedding, and residence via the AED 2M Golden Visa, and Dubai competes directly with the UK and Mauritius as the default offshore destination. Gross yields in mainstream freehold communities run roughly 5-8%.",
+          "fr": "C'est le cœur du dossier. Un titre de propriété à Dubaï est valorisé dans une devise arrimée au dollar américain et les revenus locatifs arrivent dans cette même devise : l'actif comme son rendement se situent donc hors du risque rand. Ajoutez un vol direct de huit heures depuis Johannesburg, deux heures de décalage horaire, l'absence de délestage électrique et la résidence via le Golden Visa à AED 2M, et Dubaï concurrence directement le Royaume-Uni et Maurice comme destination offshore par défaut. Les rendements bruts dans les communautés freehold grand public tournent autour de 5-8%.",
+          "ru": "В этом и состоит суть аргумента. Право собственности в Dubai оценивается в валюте, привязанной к доллару США, и арендный доход поступает в той же валюте, поэтому и актив, и его доходность находятся вне рисков ранда. Добавьте восьмичасовой прямой перелёт из Johannesburg, разницу во времени в два часа, отсутствие веерных отключений электричества и резидентство через Golden Visa при покупке на AED 2M — и Dubai напрямую конкурирует с Великобританией и Маврикием как офшорное направление по умолчанию. Валовая доходность в основных freehold-сообществах составляет примерно 5-8%.",
+          "ar": "هذا جوهر القضية. فسند الملكية في Dubai مسعّر بعملة مربوطة بالدولار الأمريكي ودخل الإيجار يصل بالعملة نفسها، فيقع كل من الأصل وعائده خارج مخاطر الراند. أضف إلى ذلك رحلة مباشرة مدتها ثماني ساعات من جوهانسبرغ، وفارق توقيت ساعتين، وغياب انقطاع الكهرباء المجدول، والإقامة عبر Golden Visa بقيمة AED 2M، لتنافس Dubai مباشرةً المملكة المتحدة وموريشيوس كوجهة خارجية افتراضية. وتتراوح العوائد الإجمالية في مجتمعات التملك الحر الرئيسية بين 5-8% تقريباً.",
+          "zh": "这正是整个论点的核心。迪拜产权以与美元挂钩的货币计价，租金收入也以同一货币到账，因此资产及其收益都处于兰特风险之外。再加上从约翰内斯堡出发八小时直飞、两小时时差、没有轮流限电，以及通过 AED 2M 黄金签证获得的居留权，迪拜已能与英国和毛里求斯直接竞争默认离岸目的地的位置。主流 freehold 社区的毛收益率大致在 5-8%。",
+          "vi": "Đó chính là cốt lõi của luận điểm. Giấy tờ sở hữu tại Dubai được định giá bằng một đồng tiền neo theo đô la Mỹ và thu nhập cho thuê cũng về bằng chính đồng tiền đó, nên cả tài sản lẫn dòng lợi suất đều nằm ngoài rủi ro đồng rand. Cộng thêm chuyến bay thẳng tám giờ từ Johannesburg, chênh lệch múi giờ hai tiếng, không cắt điện luân phiên, và quyền cư trú qua Golden Visa với ngưỡng AED 2M, Dubai cạnh tranh trực tiếp với Anh và Mauritius với tư cách điểm đến ở nước ngoài mặc định. Lợi suất gộp tại các cộng đồng freehold phổ thông dao động khoảng 5-8%.",
+          "he": "זה ליבו של העניין. בעלות ב-Dubai מתומחרת במטבע הצמוד לדולר האמריקאי והכנסת השכירות מגיעה באותו מטבע, כך ששניהם — הנכס והתשואה שלו — יושבים מחוץ לסיכון הראנד. הוסיפו טיסה ישירה בת שמונה שעות מיוהנסבורג, הפרש שעות של שעתיים, היעדר נתקי חשמל, ותושבות באמצעות Golden Visa בסף AED 2M, ו-Dubai מתחרה ישירות בבריטניה ובמאוריציוס כיעד ברירת המחדל מעבר לים. תשואות ברוטו בקהילות freehold מרכזיות נעות בסביבות 5-8%."
+        }
+      },
+      {
+        "question": {
+          "en": "Will SARS know about the property?",
+          "fr": "La SARS sera-t-elle au courant du bien ?",
+          "ru": "Узнает ли SARS о моей недвижимости?",
+          "ar": "هل ستعلم SARS بالعقار؟",
+          "zh": "SARS 会知道这处房产吗？",
+          "vi": "SARS có biết về bất động sản của tôi không?",
+          "he": "האם SARS תדע על הנכס?"
+        },
+        "answer": {
+          "en": "Yes, and plan on that basis. South Africa and the UAE have a double tax agreement in force and both participate in automatic exchange of financial account information, so a Dubai holding and the accounts connected to it are visible by design rather than discreet. Declare the asset and the income, keep the purchase contract, DLD title and transfer records from the start, and plan around the South African charge instead of being surprised by it.",
+          "fr": "Oui, et raisonnez sur cette base. L'Afrique du Sud et les Émirats sont liés par une convention de non-double imposition en vigueur et participent tous deux à l'échange automatique d'informations sur les comptes financiers : une détention à Dubaï et les comptes qui s'y rattachent sont donc visibles par construction, et non discrets. Déclarez l'actif et les revenus, conservez dès le départ le contrat d'acquisition, le titre DLD et les justificatifs de transfert, et anticipez la charge fiscale sud-africaine au lieu d'en être surpris.",
+          "ru": "Да, и исходите именно из этого. Между ЮАР и UAE действует соглашение об избежании двойного налогообложения, и обе страны участвуют в автоматическом обмене информацией о финансовых счетах, поэтому объект в Dubai и связанные с ним счета видны по определению, а не скрыты. Декларируйте актив и доход, сохраняйте договор купли-продажи, титул DLD и документы о переводе средств с самого начала и планируйте с учётом южноафриканского налога, а не сталкивайтесь с ним неожиданно.",
+          "ar": "نعم، وخطّط على هذا الأساس. فبين جنوب أفريقيا وUAE اتفاقية سارية لتجنب الازدواج الضريبي، وكلتاهما تشارك في التبادل التلقائي لمعلومات الحسابات المالية، وبالتالي فإن أي ملكية في Dubai والحسابات المرتبطة بها ظاهرة بحكم التصميم لا خافية. صرّح عن الأصل وعن الدخل، واحتفظ بعقد الشراء وسند الملكية من DLD وسجلات التحويل منذ البداية، وخطّط في ضوء الاقتطاع الجنوب أفريقي بدلاً من أن تُفاجأ به.",
+          "zh": "会，而且请按此做规划。南非与阿联酋之间的避免双重征税协定已生效，双方也都参与金融账户信息自动交换，因此迪拜的持有资产及其关联账户在制度设计上就是可见的，谈不上隐秘。请如实申报资产和收入，从一开始就保存购房合同、DLD 产权证和过户记录，并围绕南非的税负做规划，而不是事后措手不及。",
+          "vi": "Có, và hãy lên kế hoạch trên cơ sở đó. Nam Phi và UAE có hiệp định tránh đánh thuế hai lần đang có hiệu lực và cả hai đều tham gia cơ chế trao đổi tự động thông tin tài khoản tài chính, nên một tài sản tại Dubai cùng các tài khoản liên quan là hiển thị theo thiết kế chứ không hề kín đáo. Hãy kê khai tài sản và thu nhập, lưu giữ hợp đồng mua bán, giấy tờ sở hữu DLD và hồ sơ chuyển nhượng ngay từ đầu, và lập kế hoạch tính đến nghĩa vụ thuế Nam Phi thay vì bị bất ngờ vì nó.",
+          "he": "כן, ותכננו על בסיס זה. לדרום אפריקה ול-UAE יש אמנה למניעת כפל מס בתוקף, ושתיהן משתתפות בחילופי מידע אוטומטיים על חשבונות פיננסיים, כך שהחזקה ב-Dubai והחשבונות הקשורים אליה גלויים מעצם התכנון ולא דיסקרטיים. הצהירו על הנכס ועל ההכנסה, שמרו מתחילת הדרך את חוזה הרכישה, שטר הבעלות של DLD ורישומי ההעברה, ותכננו סביב החיוב הדרום-אפריקאי במקום להיות מופתעים ממנו."
+        }
+      }
     ]
   },
   {
@@ -1607,6 +3681,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Palm Jumeirah",
       "Business Bay",
       "Jumeirah Beach Residence"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "What tax does Kazakhstan charge on Dubai property income?",
+          "fr": "Quelle fiscalité le Kazakhstan applique-t-il aux revenus d'un bien à Dubaï ?",
+          "ru": "Какой налог Казахстан взимает с дохода от недвижимости в Dubai?",
+          "ar": "ما الضريبة التي تفرضها كازاخستان على دخل العقار في Dubai؟",
+          "zh": "哈萨克斯坦对迪拜房产收入征什么税？",
+          "vi": "Kazakhstan đánh thuế thế nào với thu nhập từ bất động sản Dubai?",
+          "he": "איזה מס גובה קזחסטן על הכנסה מנכס ב-Dubai?"
+        },
+        "answer": {
+          "en": "Kazakhstan taxes residents on worldwide income at a flat 10% for individuals, and that reaches both rental income from a Dubai apartment and the gain on a later sale. Because the UAE takes nothing, there is no foreign tax to credit, so plan on the 10% applying in full and model your net yield accordingly — a 6% gross yield is not a 6% net one. A double tax treaty between Kazakhstan and the UAE is in force and governs which country may tax what.",
+          "fr": "Le Kazakhstan impose ses résidents sur leurs revenus mondiaux à un taux forfaitaire de 10% pour les personnes physiques, et cela vise aussi bien les loyers d'un appartement à Dubaï que la plus-value lors d'une revente. Comme les Émirats ne prélèvent rien, il n'y a aucun impôt étranger à imputer : prévoyez donc que les 10% s'appliquent en totalité et modélisez votre rendement net en conséquence — un rendement brut de 6% n'est pas un rendement net de 6%. Une convention de non-double imposition entre le Kazakhstan et les Émirats est en vigueur et détermine quel pays peut imposer quoi.",
+          "ru": "Казахстан облагает налогом мировой доход резидентов по единой ставке 10% для физических лиц, и это касается как дохода от аренды квартиры в Dubai, так и прибыли от последующей продажи. Поскольку UAE не взимает ничего, иностранного налога к зачёту нет, так что рассчитывайте на применение 10% в полном объёме и моделируйте чистую доходность соответственно — валовая доходность 6% не равна чистой 6%. Соглашение об избежании двойного налогообложения между Казахстаном и UAE действует и определяет, какая страна что вправе облагать.",
+          "ar": "تفرض كازاخستان الضريبة على المقيمين عن دخلهم العالمي بمعدل ثابت 10% للأفراد، ويشمل ذلك دخل الإيجار من شقة في Dubai والمكسب من بيعها لاحقاً. ولأن UAE لا تقتطع شيئاً، فلا توجد ضريبة أجنبية يمكن خصمها، لذا خطّط على أساس تطبيق الـ 10% بالكامل واحسب صافي عائدك تبعاً لذلك — فالعائد الإجمالي البالغ 6% ليس صافياً بنسبة 6%. وهناك معاهدة سارية لتجنب الازدواج الضريبي بين كازاخستان وUAE تحكم أي البلدين يجوز له فرض الضريبة وعلى ماذا.",
+          "zh": "哈萨克斯坦对税务居民的全球收入征税，个人适用 10% 的统一税率，这既涵盖迪拜公寓的租金收入，也涵盖日后出售的增值。由于阿联酋分文不取，没有可抵免的外国税款，因此请按 10% 全额适用来规划，并据此测算净收益——6% 的毛收益率并不等于 6% 的净收益率。哈萨克斯坦与阿联酋之间的避免双重征税协定已生效，并规定哪一国可就何种所得征税。",
+          "vi": "Kazakhstan đánh thuế người cư trú trên thu nhập toàn cầu với mức cố định 10% đối với cá nhân, và điều này áp dụng cho cả thu nhập cho thuê từ một căn hộ ở Dubai lẫn khoản lãi khi bán lại về sau. Vì UAE không thu gì, không có thuế nước ngoài nào để khấu trừ, nên hãy dự tính mức 10% được áp dụng đầy đủ và tính lợi suất ròng tương ứng — lợi suất gộp 6% không phải là lợi suất ròng 6%. Một hiệp định tránh đánh thuế hai lần giữa Kazakhstan và UAE đang có hiệu lực và quy định nước nào được quyền đánh thuế khoản nào.",
+          "he": "קזחסטן ממסה תושבים על הכנסה עולמית בשיעור אחיד של 10% ליחידים, וזה חל גם על הכנסה משכירות מדירה ב-Dubai וגם על הרווח ממכירה עתידית. מכיוון שה-UAE אינה גובה דבר, אין מס זר לזיכוי, ולכן הניחו שה-10% יחולו במלואם וחשבו את התשואה נטו בהתאם — תשואת ברוטו של 6% אינה תשואת נטו של 6%. אמנה למניעת כפל מס בין קזחסטן ל-UAE בתוקף וקובעת איזו מדינה רשאית למסות מה."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I have to declare the property in Kazakhstan?",
+          "fr": "Dois-je déclarer le bien au Kazakhstan ?",
+          "ru": "Нужно ли декларировать недвижимость в Казахстане?",
+          "ar": "هل يجب أن أصرّح عن العقار في كازاخستان؟",
+          "zh": "我必须在哈萨克斯坦申报这处房产吗？",
+          "vi": "Tôi có phải kê khai bất động sản tại Kazakhstan không?",
+          "he": "האם עליי להצהיר על הנכס בקזחסטן?"
+        },
+        "answer": {
+          "en": "Yes. Residents are required to declare foreign assets and foreign accounts to the tax authority, and property abroad falls squarely within that. Kazakhstan also participates in automatic exchange of financial account information with the UAE, so a Dubai holding is visible to the authorities by design. Treat the declaration as part of the purchase process rather than an afterthought — the arithmetic at 10% is manageable, the penalties for silence are not.",
+          "fr": "Oui. Les résidents sont tenus de déclarer à l'administration fiscale leurs actifs et leurs comptes à l'étranger, et un bien immobilier hors du pays entre pleinement dans ce champ. Le Kazakhstan participe également à l'échange automatique d'informations sur les comptes financiers avec les Émirats : une détention à Dubaï est donc visible des autorités par construction. Traitez la déclaration comme une composante du processus d'achat plutôt que comme un détail ultérieur — le calcul à 10% est gérable, les pénalités pour silence ne le sont pas.",
+          "ru": "Да. Резиденты обязаны декларировать зарубежные активы и иностранные счета налоговому органу, и недвижимость за границей однозначно подпадает под это требование. Казахстан также участвует в автоматическом обмене информацией о финансовых счетах с UAE, поэтому объект в Dubai виден властям по определению. Относитесь к декларированию как к части процесса покупки, а не как к тому, о чём можно подумать потом: арифметика при 10% посильна, а санкции за умолчание — нет.",
+          "ar": "نعم. يُلزَم المقيمون بالتصريح عن الأصول والحسابات الأجنبية للسلطة الضريبية، والعقار في الخارج يقع تماماً ضمن ذلك. كما تشارك كازاخستان في التبادل التلقائي لمعلومات الحسابات المالية مع UAE، فأي ملكية في Dubai مرئية للسلطات بحكم التصميم. تعامل مع التصريح كجزء من عملية الشراء لا كأمر لاحق — فالحساب عند 10% قابل للإدارة، أما عقوبات الصمت فلا.",
+          "zh": "必须。居民须向税务机关申报境外资产和境外账户，境外房产明确属于其中。哈萨克斯坦还与阿联酋参与金融账户信息自动交换，因此迪拜的持有资产在制度设计上对当局就是可见的。请把申报视为购房流程的一部分，而不是事后补办——10% 的税额尚可承受，隐瞒不报的罚则则不然。",
+          "vi": "Có. Người cư trú bắt buộc phải kê khai tài sản và tài khoản ở nước ngoài với cơ quan thuế, và bất động sản ở nước ngoài hoàn toàn thuộc diện đó. Kazakhstan cũng tham gia cơ chế trao đổi tự động thông tin tài khoản tài chính với UAE, nên một tài sản tại Dubai là hiển thị với cơ quan chức năng theo thiết kế. Hãy coi việc kê khai là một phần của quy trình mua chứ không phải việc tính sau — con số thuế ở mức 10% là chấp nhận được, còn mức phạt cho việc im lặng thì không.",
+          "he": "כן. תושבים נדרשים להצהיר על נכסים וחשבונות בחו\"ל לרשות המסים, ונכס מעבר לים נופל בדיוק בגדר זה. קזחסטן גם משתתפת בחילופי מידע אוטומטיים על חשבונות פיננסיים עם ה-UAE, כך שהחזקה ב-Dubai גלויה לרשויות מעצם התכנון. התייחסו להצהרה כחלק מתהליך הרכישה ולא כמחשבה שלאחר מעשה — החשבון בשיעור 10% הוא בר-ניהול, הקנסות על שתיקה אינם."
+        }
+      },
+      {
+        "question": {
+          "en": "Are there restrictions on sending money out of Kazakhstan?",
+          "fr": "Existe-t-il des restrictions à la sortie de fonds du Kazakhstan ?",
+          "ru": "Есть ли ограничения на вывод денег из Казахстана?",
+          "ar": "هل هناك قيود على تحويل الأموال خارج كازاخستان؟",
+          "zh": "从哈萨克斯坦汇出资金有限制吗？",
+          "vi": "Có hạn chế nào đối với việc chuyển tiền ra khỏi Kazakhstan không?",
+          "he": "האם יש הגבלות על הוצאת כספים מקזחסטן?"
+        },
+        "answer": {
+          "en": "Not in the restrictive sense. Residents may hold foreign currency and accounts abroad and move funds for a property purchase without seeking permission to transfer capital. What applies instead is a reporting regime — foreign accounts and assets must be notified and declared — and banks apply their own source-of-funds checks on large outward transfers. On the UAE side there is no exchange control at all, so rental income and sale proceeds move out freely in any currency.",
+          "fr": "Pas au sens restrictif. Les résidents peuvent détenir des devises et des comptes à l'étranger et transférer des fonds pour un achat immobilier sans demander d'autorisation de sortie de capitaux. Ce qui s'applique, c'est plutôt un régime déclaratif — comptes et actifs étrangers doivent être notifiés et déclarés — et les banques appliquent leurs propres contrôles d'origine des fonds sur les gros virements sortants. Côté émirati, il n'existe aucun contrôle des changes : loyers et produits de cession ressortent librement, dans n'importe quelle devise.",
+          "ru": "Не в запретительном смысле. Резиденты вправе держать иностранную валюту и счета за рубежом и переводить средства на покупку недвижимости без получения разрешения на вывоз капитала. Вместо этого действует режим уведомления: об иностранных счетах и активах нужно уведомлять и их нужно декларировать, а банки проводят собственные проверки происхождения средств при крупных исходящих переводах. Со стороны UAE валютного контроля нет вовсе, поэтому доход от аренды и выручка от продажи выводятся свободно в любой валюте.",
+          "ar": "ليس بالمعنى التقييدي. يجوز للمقيمين الاحتفاظ بالعملات الأجنبية وبحسابات في الخارج وتحويل الأموال لشراء عقار دون طلب إذن لنقل رأس المال. وما ينطبق بدلاً من ذلك هو نظام إفصاح — إذ يجب الإخطار عن الحسابات والأصول الأجنبية والتصريح عنها — كما تطبّق البنوك فحوصها الخاصة لمصدر الأموال على التحويلات الخارجية الكبيرة. أما في UAE فلا توجد رقابة على الصرف إطلاقاً، فينتقل دخل الإيجار وعوائد البيع إلى الخارج بحرية وبأي عملة.",
+          "zh": "没有限制性的管制。居民可以持有外币和境外账户，并为购房转移资金，无需申请资本转移许可。真正适用的是一套申报制度——境外账户和资产必须通报并申报——同时银行会对大额对外汇款执行自身的资金来源核查。在阿联酋一侧则完全没有外汇管制，租金收入和出售所得可以任何币种自由汇出。",
+          "vi": "Không theo nghĩa hạn chế. Người cư trú được nắm giữ ngoại tệ và tài khoản ở nước ngoài, và được chuyển tiền để mua bất động sản mà không cần xin phép chuyển vốn. Thay vào đó là một cơ chế báo cáo — tài khoản và tài sản ở nước ngoài phải được thông báo và kê khai — và các ngân hàng áp dụng quy trình kiểm tra nguồn gốc tiền riêng đối với những khoản chuyển ra nước ngoài giá trị lớn. Về phía UAE thì hoàn toàn không có kiểm soát ngoại hối, nên thu nhập cho thuê và tiền bán tài sản được chuyển ra tự do bằng bất kỳ đồng tiền nào.",
+          "he": "לא במובן המגביל. תושבים רשאים להחזיק מטבע חוץ וחשבונות בחו\"ל ולהעביר כספים לרכישת נכס ללא צורך באישור להעברת הון. מה שחל במקום זאת הוא משטר דיווח — יש להודיע ולהצהיר על חשבונות ונכסים בחו\"ל — והבנקים מפעילים בדיקות מקור כספים משלהם על העברות גדולות לחו\"ל. בצד של ה-UAE אין פיקוח מט\"ח כלל, כך שהכנסות משכירות ותמורת מכירה יוצאות בחופשיות בכל מטבע."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a mortgage, or is cash the only route?",
+          "fr": "Puis-je obtenir un prêt, ou le comptant est-il la seule voie ?",
+          "ru": "Можно ли взять ипотеку или единственный путь — наличные?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري أم أن الدفع النقدي هو الطريق الوحيد؟",
+          "zh": "我能申请按揭吗，还是只能全款？",
+          "vi": "Tôi có vay thế chấp được không, hay chỉ có thể mua bằng tiền mặt?",
+          "he": "האם אפשר לקבל משכנתה, או שמזומן הוא המסלול היחיד?"
+        },
+        "answer": {
+          "en": "Most Kazakh purchases are cash or developer-financed rather than mortgaged. UAE banks do lend to non-residents, generally up to 50-60% of value, but they want documented income in a currency they can assess and tenge-denominated business income usually makes the file harder rather than impossible. The straightforward alternative is an off-plan developer payment plan: 10-20% on booking, instalments through construction, balance at handover, with no credit assessment. Fix the schedule in dirhams so an exchange-rate move between instalments does not surprise you.",
+          "fr": "La plupart des acquisitions kazakhes se font au comptant ou via un financement promoteur plutôt que par emprunt. Les banques des Émirats prêtent bien aux non-résidents, généralement jusqu'à 50-60% de la valeur, mais elles veulent des revenus documentés dans une devise qu'elles savent évaluer, et des revenus d'entreprise libellés en tenge rendent le dossier plus difficile — sans le rendre impossible. L'alternative simple est un échéancier promoteur en VEFA : 10-20% à la réservation, des versements pendant la construction, le solde à la livraison, sans aucune analyse de crédit. Fixez l'échéancier en dirhams pour qu'une variation de change entre deux versements ne vous surprenne pas.",
+          "ru": "Большинство покупок казахстанских клиентов оплачивается собственными средствами или финансируется застройщиком, а не ипотекой. Банки UAE кредитуют нерезидентов, как правило до 50-60% стоимости, но им нужен документально подтверждённый доход в валюте, которую они могут оценить, а доход от бизнеса в тенге обычно усложняет дело, хотя и не делает его невозможным. Простая альтернатива — план рассрочки от застройщика на off-plan: 10-20% при бронировании, платежи в ходе строительства, остаток при передаче ключей, без оценки кредитоспособности. Зафиксируйте график в дирхамах, чтобы движение курса между платежами не стало сюрпризом.",
+          "ar": "معظم عمليات الشراء الكازاخية تتم نقداً أو بتمويل من المطوّر لا برهن عقاري. صحيح أن بنوك UAE تُقرض غير المقيمين، وعادةً حتى 50-60% من القيمة، لكنها تريد دخلاً موثّقاً بعملة تستطيع تقييمها، ودخل الأعمال المقوّم بالتنغي يجعل الملف أصعب عادةً لا مستحيلاً. والبديل المباشر هو خطة سداد من المطوّر على مشروع على الخارطة: 10-20% عند الحجز، وأقساط خلال الإنشاء، والرصيد عند التسليم، دون أي تقييم ائتماني. ثبّت الجدول بالدرهم كي لا يفاجئك تحرّك في سعر الصرف بين قسط وآخر.",
+          "zh": "哈萨克斯坦买家多数采用全款或开发商融资，而非按揭。阿联酋银行确实向非居民放贷，一般最高为房产价值的 50-60%，但他们需要以可评估币种计价的有据收入，而以坚戈计价的经营收入通常会让审批材料更难通过，但并非不可能。直截了当的替代方案是期房开发商付款计划：预订时支付 10-20%，施工期间分期付款，交房时结清余款，无需信用评估。请把付款时间表以迪拉姆锁定，以免分期之间的汇率波动让你措手不及。",
+          "vi": "Phần lớn giao dịch mua của người Kazakhstan là tiền mặt hoặc do chủ đầu tư tài trợ thay vì vay thế chấp. Ngân hàng UAE có cho người không cư trú vay, thường tới 50-60% giá trị, nhưng họ cần thu nhập có chứng từ bằng loại tiền tệ mà họ đánh giá được, và thu nhập kinh doanh tính bằng tenge thường khiến hồ sơ khó hơn chứ không phải bất khả thi. Phương án đơn giản là kế hoạch thanh toán off-plan của chủ đầu tư: 10-20% khi đặt chỗ, trả góp trong quá trình xây dựng, phần còn lại khi bàn giao, không cần thẩm định tín dụng. Hãy cố định lịch thanh toán bằng dirham để biến động tỷ giá giữa các kỳ không gây bất ngờ cho bạn.",
+          "he": "רוב הרכישות הקזחיות הן במזומן או במימון יזם ולא במשכנתה. בנקים ב-UAE אכן מלווים לתושבי חוץ, בדרך כלל עד 50-60% מהשווי, אך הם רוצים הכנסה מתועדת במטבע שהם יודעים להעריך, והכנסה עסקית הנקובה בטנגה בדרך כלל מקשה על התיק אך אינה הופכת אותו לבלתי אפשרי. החלופה הפשוטה היא תוכנית תשלומים של יזם על נכס off-plan: 10-20% במועד ההזמנה, תשלומים לאורך הבנייה, והיתרה במסירה, ללא בדיקת אשראי. קבעו את לוח התשלומים בדירהם כדי שתנודה בשער החליפין בין תשלומים לא תפתיע אתכם."
+        }
+      },
+      {
+        "question": {
+          "en": "How far is Dubai from Almaty?",
+          "fr": "À quelle distance Dubaï se trouve-t-elle d'Almaty ?",
+          "ru": "Как далеко Dubai от Almaty?",
+          "ar": "كم تبعد Dubai عن ألماتي؟",
+          "zh": "迪拜距阿拉木图有多远？",
+          "vi": "Dubai cách Almaty bao xa?",
+          "he": "כמה רחוקה Dubai מאלמטי?"
+        },
+        "answer": {
+          "en": "About four and a half hours by direct flight, which puts Dubai closer than most European alternatives, and a visa-free arrangement makes viewing trips straightforward. That accessibility is part of the appeal alongside the currency case: the tenge has devalued sharply more than once in the past decade, and a dirham-denominated asset with a dollar peg removes that exposure entirely.",
+          "fr": "Environ quatre heures et demie en vol direct, ce qui place Dubaï plus près que la plupart des alternatives européennes, et un régime d'exemption de visa rend les voyages de visite simples. Cette accessibilité fait partie de l'attrait, au même titre que l'argument monétaire : le tenge a été fortement dévalué à plus d'une reprise au cours de la dernière décennie, et un actif libellé en dirhams arrimé au dollar supprime entièrement cette exposition.",
+          "ru": "Около четырёх с половиной часов прямым рейсом, что делает Dubai ближе большинства европейских альтернатив, а безвизовый режим упрощает поездки на просмотры. Эта доступность — часть привлекательности наряду с валютным аргументом: тенге за последнее десятилетие не раз резко девальвировал, а актив, номинированный в дирхамах с привязкой к доллару, полностью снимает эту экспозицию.",
+          "ar": "نحو أربع ساعات ونصف بالطيران المباشر، ما يجعل Dubai أقرب من معظم البدائل الأوروبية، كما أن ترتيب الإعفاء من التأشيرة يجعل رحلات المعاينة سهلة. وتشكّل هذه السهولة جزءاً من جاذبية الخيار إلى جانب حجة العملة: فالتنغي انخفض بحدة أكثر من مرة خلال العقد الماضي، وأصل مقوّم بالدرهم المربوط بالدولار يزيل ذلك الانكشاف تماماً.",
+          "zh": "直飞约四个半小时，这使迪拜比多数欧洲替代目的地更近，而免签安排也让看房之旅变得简便。这种可达性与货币逻辑同样构成吸引力的一部分：坚戈在过去十年中不止一次大幅贬值，而一项以迪拉姆计价、锚定美元的资产可以完全消除这种敞口。",
+          "vi": "Khoảng bốn tiếng rưỡi bay thẳng, đưa Dubai đến gần hơn so với phần lớn các lựa chọn châu Âu, và thỏa thuận miễn thị thực khiến các chuyến đi xem nhà trở nên dễ dàng. Sự thuận tiện đó là một phần sức hút bên cạnh luận điểm về tiền tệ: đồng tenge đã mất giá mạnh hơn một lần trong thập kỷ qua, và một tài sản định giá bằng dirham với cơ chế neo theo đô la loại bỏ hoàn toàn rủi ro đó.",
+          "he": "כארבע וחצי שעות בטיסה ישירה, מה שממקם את Dubai קרוב יותר מרוב החלופות האירופיות, והסדר הפטור מאשרה הופך נסיעות סיור לפשוטות. נגישות זו היא חלק מהמשיכה לצד טיעון המטבע: הטנגה עברה פיחות חד יותר מפעם אחת בעשור האחרון, ונכס הנקוב בדירהם עם הצמדה לדולר מסלק חשיפה זו לחלוטין."
+        }
+      },
+      {
+        "question": {
+          "en": "What are the purchase costs?",
+          "fr": "Quels sont les frais d'acquisition ?",
+          "ru": "Каковы расходы на покупку?",
+          "ar": "ما تكاليف الشراء؟",
+          "zh": "购房成本是多少？",
+          "vi": "Chi phí mua là bao nhiêu?",
+          "he": "מהן עלויות הרכישה?"
+        },
+        "answer": {
+          "en": "Around 6-7% of the price all in: the 4% Dubai Land Department transfer fee, roughly 2% agency commission, and registration and trustee charges. There is no annual property tax after purchase; the recurring costs are service charges set per square foot by the building and a municipality housing fee on let homes. Our site can display prices in tenge so you can read them in your own currency.",
+          "fr": "Autour de 6-7% du prix tout compris : les 4% de frais de mutation du Dubai Land Department, environ 2% de commission d'agence, ainsi que les frais d'enregistrement et de trustee. Il n'y a pas d'impôt foncier annuel après l'achat ; les coûts récurrents sont les charges de copropriété, fixées au pied carré par l'immeuble, et une taxe municipale d'habitation sur les logements loués. Notre site peut afficher les prix en tenge, pour que vous les lisiez dans votre propre devise.",
+          "ru": "Около 6-7% от цены «под ключ»: сбор за передачу права в размере 4% в пользу Dubai Land Department, примерно 2% комиссии агентства, а также регистрационные и доверительные сборы. Ежегодного налога на недвижимость после покупки нет; периодические расходы — это сервисные сборы, устанавливаемые зданием из расчёта за квадратный фут, и муниципальный жилищный сбор на сдаваемое жильё. Наш сайт умеет показывать цены в тенге, чтобы вы читали их в своей валюте.",
+          "ar": "نحو 6-7% من السعر شاملة: رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، ونحو 2% عمولة الوساطة، ورسوم التسجيل وأمين التسجيل. ولا توجد ضريبة عقارية سنوية بعد الشراء؛ فالتكاليف المتكررة هي رسوم الخدمات المحددة لكل قدم مربعة بحسب المبنى، ورسم سكن بلدي على المساكن المؤجَّرة. ويمكن لموقعنا عرض الأسعار بالتنغي كي تقرأها بعملتك.",
+          "zh": "全部费用约为价格的 6-7%：4% 的迪拜土地局过户费、约 2% 的中介佣金，以及登记费和受托机构费用。购房后没有年度房产税；经常性支出是由楼盘按每平方英尺设定的物业服务费，以及出租房屋需缴纳的市政住房费。我们的网站可以按坚戈显示价格，方便你用本国货币阅读。",
+          "vi": "Khoảng 6-7% giá mua trọn gói: phí chuyển nhượng 4% của Dubai Land Department, khoảng 2% hoa hồng môi giới, cùng các khoản phí đăng ký và phí ủy thác. Không có thuế bất động sản hằng năm sau khi mua; chi phí định kỳ là phí dịch vụ tính theo foot vuông do từng tòa nhà quy định và phí nhà ở đô thị đối với nhà cho thuê. Trang web của chúng tôi có thể hiển thị giá bằng tenge để bạn đọc theo đồng tiền của mình.",
+          "he": "כ-6-7% מהמחיר הכול כלול: עמלת ההעברה של Dubai Land Department בשיעור 4%, כ-2% עמלת תיווך, ואגרות רישום ונאמנות. אין מס נכסים שנתי לאחר הרכישה; העלויות החוזרות הן דמי ניהול הנקבעים לפי רגל רבועה על ידי הבניין ואגרת דיור עירונית על בתים המושכרים. האתר שלנו יכול להציג מחירים בטנגה כדי שתוכלו לקרוא אותם במטבע שלכם."
+        }
+      }
     ]
   },
   {
@@ -1674,6 +3870,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Downtown Dubai",
       "Jumeirah Village Circle",
       "Palm Jumeirah"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Is Dubai's Golden Visa comparable to Turkish citizenship by investment?",
+          "fr": "Le Golden Visa de Dubaï est-il comparable à la citoyenneté turque par investissement ?",
+          "ru": "Сопоставима ли Golden Visa в Dubai с турецким гражданством за инвестиции?",
+          "ar": "هل Golden Visa في Dubai مماثلة للجنسية التركية عبر الاستثمار؟",
+          "zh": "迪拜的黄金签证能与土耳其投资入籍相提并论吗？",
+          "vi": "Golden Visa của Dubai có tương đương với chương trình quốc tịch Thổ Nhĩ Kỳ theo diện đầu tư không?",
+          "he": "האם ה-Golden Visa של Dubai דומה לאזרחות טורקית תמורת השקעה?"
+        },
+        "answer": {
+          "en": "No, and this is the comparison worth being precise about. Turkey's own programme grants citizenship and a passport. Dubai's Golden Visa grants a renewable ten-year residence permit for you and your dependants, tied to continuing to hold the property — the UAE does not offer naturalisation by investment at any price. If a second passport is the objective, Dubai is not the instrument. If currency protection, residence and yield are the objective, it is.",
+          "fr": "Non, et c'est la comparaison sur laquelle il vaut la peine d'être précis. Le programme turc accorde la citoyenneté et un passeport. Le Golden Visa de Dubaï accorde un permis de résidence renouvelable de dix ans pour vous et les personnes à votre charge, conditionné au maintien de la détention du bien — les Émirats n'offrent aucune naturalisation par investissement, à aucun prix. Si l'objectif est un second passeport, Dubaï n'est pas l'instrument. Si l'objectif est la protection monétaire, la résidence et le rendement, elle l'est.",
+          "ru": "Нет, и именно в этом сравнении важна точность. Турецкая программа даёт гражданство и паспорт. Golden Visa в Dubai даёт возобновляемый десятилетний вид на жительство для вас и ваших иждивенцев, привязанный к сохранению собственности на объект: UAE не предоставляет натурализацию за инвестиции ни за какие деньги. Если цель — второй паспорт, Dubai для этого не инструмент. Если цель — защита от валютных рисков, резидентство и доходность, то инструмент вполне подходящий.",
+          "ar": "لا، وهذه مقارنة يجدر أن نكون دقيقين بشأنها. فالبرنامج التركي يمنح الجنسية وجواز سفر. أما Golden Visa في Dubai فتمنح تصريح إقامة لعشر سنوات قابلاً للتجديد لك ولمُعاليك، مرتبطاً باستمرارك في الاحتفاظ بالعقار — فـ UAE لا تمنح التجنّس عبر الاستثمار بأي ثمن. فإذا كان الهدف جواز سفر ثانٍ، فليست Dubai هي الأداة. أما إذا كان الهدف حماية العملة والإقامة والعائد، فهي كذلك.",
+          "zh": "不能，而这正是值得说清楚的一处对比。土耳其自身的项目授予的是公民身份和护照。迪拜的黄金签证授予的是为你和家属提供的可续期十年居留许可，并以持续持有房产为条件——阿联酋在任何价位上都不提供投资入籍。如果目标是第二本护照，迪拜不是实现工具；如果目标是货币保值、居留权和收益，它就是。",
+          "vi": "Không, và đây là phép so sánh đáng được nói cho thật chính xác. Chương trình của Thổ Nhĩ Kỳ cấp quốc tịch và hộ chiếu. Golden Visa của Dubai cấp giấy phép cư trú mười năm có thể gia hạn cho bạn và người phụ thuộc, gắn với việc tiếp tục nắm giữ bất động sản — UAE không cấp quốc tịch theo diện đầu tư ở bất kỳ mức giá nào. Nếu mục tiêu là hộ chiếu thứ hai, Dubai không phải là công cụ phù hợp. Nếu mục tiêu là bảo vệ giá trị tiền tệ, quyền cư trú và lợi suất, thì đúng là nó.",
+          "he": "לא, וזו ההשוואה שכדאי לדייק בה. התוכנית הטורקית מעניקה אזרחות ודרכון. ה-Golden Visa של Dubai מעניקה אשרת תושבות לעשר שנים הניתנת לחידוש עבורכם ועבור בני משפחתכם התלויים בכם, המותנית בהמשך החזקת הנכס — ה-UAE אינה מציעה התאזרחות באמצעות השקעה בשום מחיר. אם המטרה היא דרכון שני, Dubai אינה הכלי. אם המטרה היא הגנה מפני שחיקת מטבע, תושבות ותשואה, היא כן."
+        }
+      },
+      {
+        "question": {
+          "en": "Is Dubai rental income taxable in Turkey?",
+          "fr": "Les revenus locatifs de Dubaï sont-ils imposables en Turquie ?",
+          "ru": "Облагается ли доход от аренды в Dubai налогом в Турции?",
+          "ar": "هل دخل الإيجار من Dubai خاضع للضريبة في تركيا؟",
+          "zh": "迪拜的租金收入在土耳其需要纳税吗？",
+          "vi": "Thu nhập cho thuê tại Dubai có bị đánh thuế ở Thổ Nhĩ Kỳ không?",
+          "he": "האם הכנסה משכירות ב-Dubai חייבת במס בטורקיה?"
+        },
+        "answer": {
+          "en": "If you are a Turkish tax resident, yes. Turkey taxes residents on worldwide income, so Dubai rental income is in principle declarable and taxed at progressive personal income tax rates that run well above the flat rates common elsewhere in the region. Because the UAE levies nothing, there is no foreign tax to credit against the Turkish charge. A double tax treaty is in force and allocates taxing rights, and both countries participate in automatic exchange of financial account information.",
+          "fr": "Si vous êtes résident fiscal turc, oui. La Turquie impose ses résidents sur leurs revenus mondiaux : les loyers perçus à Dubaï sont donc en principe déclarables et taxés au barème progressif de l'impôt sur le revenu, dont les taux dépassent largement les taux forfaitaires courants ailleurs dans la région. Comme les Émirats ne prélèvent rien, il n'y a aucun impôt étranger à imputer sur la charge turque. Une convention de non-double imposition est en vigueur et répartit les droits d'imposition, et les deux pays participent à l'échange automatique d'informations sur les comptes financiers.",
+          "ru": "Если вы налоговый резидент Турции — да. Турция облагает налогом мировой доход резидентов, поэтому доход от аренды в Dubai в принципе подлежит декларированию и облагается по прогрессивным ставкам подоходного налога, которые заметно выше плоских ставок, распространённых в других странах региона. Поскольку UAE не взимает ничего, иностранного налога к зачёту против турецкого начисления нет. Соглашение об избежании двойного налогообложения действует и распределяет права налогообложения, а обе страны участвуют в автоматическом обмене информацией о финансовых счетах.",
+          "ar": "إذا كنت مقيماً ضريبياً في تركيا، فنعم. تفرض تركيا الضريبة على المقيمين عن دخلهم العالمي، فدخل الإيجار من Dubai واجب التصريح من حيث المبدأ ويخضع لمعدلات ضريبة الدخل الشخصي التصاعدية التي تفوق بكثير المعدلات الثابتة الشائعة في المنطقة. ولأن UAE لا تفرض شيئاً، فلا توجد ضريبة أجنبية يمكن خصمها مقابل الاقتطاع التركي. وهناك معاهدة سارية لتجنب الازدواج الضريبي توزّع حقوق فرض الضريبة، وكلا البلدين يشارك في التبادل التلقائي لمعلومات الحسابات المالية.",
+          "zh": "如果你是土耳其税务居民，需要。土耳其对居民的全球收入征税，因此迪拜的租金收入原则上须申报，并按累进个人所得税率课税，而这些税率远高于本地区其他国家常见的统一税率。由于阿联酋分文不征，没有可用来抵扣土耳其税负的外国税款。两国之间已有生效的避免双重征税协定划分征税权，且双方均参与金融账户信息自动交换。",
+          "vi": "Nếu bạn là đối tượng cư trú thuế Thổ Nhĩ Kỳ thì có. Thổ Nhĩ Kỳ đánh thuế người cư trú trên thu nhập toàn cầu, nên về nguyên tắc thu nhập cho thuê tại Dubai phải được kê khai và chịu thuế theo biểu thuế thu nhập cá nhân lũy tiến, với mức cao hơn đáng kể so với các mức thuế suất cố định phổ biến ở những nơi khác trong khu vực. Vì UAE không thu gì, không có thuế nước ngoài nào để khấu trừ vào nghĩa vụ thuế Thổ Nhĩ Kỳ. Một hiệp định tránh đánh thuế hai lần đang có hiệu lực và phân định quyền đánh thuế, đồng thời cả hai nước đều tham gia cơ chế trao đổi tự động thông tin tài khoản tài chính.",
+          "he": "אם אתם תושבי מס בטורקיה, כן. טורקיה ממסה תושבים על הכנסה עולמית, ולכן הכנסה משכירות ב-Dubai ניתנת עקרונית להצהרה וממוסה בשיעורי מס הכנסה אישיים פרוגרסיביים הגבוהים בהרבה מהשיעורים האחידים הנפוצים במקומות אחרים באזור. מכיוון שה-UAE אינה גובה דבר, אין מס זר לזיכוי כנגד החיוב הטורקי. אמנה למניעת כפל מס בתוקף ומחלקת את זכויות המיסוי, ושתי המדינות משתתפות בחילופי מידע אוטומטיים על חשבונות פיננסיים."
+        }
+      },
+      {
+        "question": {
+          "en": "How difficult is it to transfer funds from Turkey?",
+          "fr": "Est-il difficile de transférer des fonds depuis la Turquie ?",
+          "ru": "Насколько сложно перевести средства из Турции?",
+          "ar": "ما مدى صعوبة تحويل الأموال من تركيا؟",
+          "zh": "从土耳其汇出资金有多难？",
+          "vi": "Chuyển tiền từ Thổ Nhĩ Kỳ khó đến mức nào?",
+          "he": "עד כמה קשה להעביר כספים מטורקיה?"
+        },
+        "answer": {
+          "en": "This needs more care than most markets. Turkey has tightened the rules around buying and transferring foreign currency more than once in recent years, and while individuals can and do fund property abroad, banks apply documentation requirements and transfer limits can change with little notice. Speak to your bank about the specific route and amount before you commit to an instalment schedule, because a payment plan assumes you can move money on fixed dates.",
+          "fr": "Cela demande plus de soin que sur la plupart des marchés. La Turquie a durci à plusieurs reprises ces dernières années les règles encadrant l'achat et le transfert de devises, et si les particuliers peuvent financer et financent effectivement des biens à l'étranger, les banques appliquent des exigences documentaires et les plafonds de transfert peuvent changer avec peu de préavis. Parlez à votre banque du circuit et du montant précis avant de vous engager sur un échéancier, car un plan de paiement suppose que vous pouvez transférer des fonds à dates fixes.",
+          "ru": "Здесь требуется больше внимания, чем на большинстве рынков. Турция за последние годы не раз ужесточала правила покупки и перевода иностранной валюты, и хотя физические лица могут финансировать и финансируют недвижимость за рубежом, банки предъявляют требования к документам, а лимиты на переводы могут меняться почти без предупреждения. Обсудите с вашим банком конкретный маршрут и сумму до того, как примете на себя график рассрочки, потому что план платежей предполагает возможность переводить деньги в фиксированные даты.",
+          "ar": "يحتاج هذا إلى عناية أكبر من معظم الأسواق. فقد شدّدت تركيا أكثر من مرة في السنوات الأخيرة القواعد المتعلقة بشراء العملات الأجنبية وتحويلها، ومع أن الأفراد يستطيعون تمويل عقارات في الخارج ويفعلون ذلك بالفعل، فإن البنوك تطبّق متطلبات مستندية وقد تتغيّر حدود التحويل بإشعار قصير. تحدّث مع بنكك عن المسار والمبلغ تحديداً قبل الالتزام بجدول أقساط، لأن خطة السداد تفترض قدرتك على تحويل الأموال في تواريخ محددة.",
+          "zh": "这比多数市场需要更加小心。近年来土耳其不止一次收紧了购汇和外币转账的规则，尽管个人能够也确实在为境外房产提供资金，银行仍会提出文件要求，且转账限额可能在几乎没有预告的情况下变动。在你受制于某份分期付款时间表之前，请就具体路径和金额与银行沟通，因为付款计划的前提是你能在固定日期把钱汇出。",
+          "vi": "Việc này cần thận trọng hơn hầu hết các thị trường khác. Thổ Nhĩ Kỳ đã nhiều lần siết chặt quy định về mua và chuyển ngoại tệ trong những năm gần đây, và dù cá nhân vẫn có thể và vẫn đang tài trợ mua bất động sản ở nước ngoài, các ngân hàng áp dụng yêu cầu hồ sơ chặt chẽ và hạn mức chuyển tiền có thể thay đổi mà báo trước rất ít. Hãy trao đổi với ngân hàng của bạn về lộ trình và số tiền cụ thể trước khi cam kết một lịch trả góp, bởi kế hoạch thanh toán giả định rằng bạn có thể chuyển tiền vào những ngày cố định.",
+          "he": "כאן נדרשת יותר תשומת לב מאשר ברוב השווקים. טורקיה הידקה את הכללים סביב רכישה והעברה של מטבע חוץ יותר מפעם אחת בשנים האחרונות, ואף שיחידים יכולים לממן — ואכן מממנים — נכסים בחו\"ל, הבנקים מפעילים דרישות תיעוד ומגבלות ההעברה עשויות להשתנות בהתראה קצרה. דברו עם הבנק שלכם על המסלול והסכום הספציפיים לפני שאתם מתחייבים ללוח תשלומים, משום שתוכנית תשלומים מניחה שאתם יכולים להעביר כסף בתאריכים קבועים."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a UAE mortgage on lira income?",
+          "fr": "Puis-je obtenir un prêt émirati avec des revenus en livres turques ?",
+          "ru": "Можно ли получить ипотеку в UAE при доходе в лирах?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري في UAE بدخل بالليرة؟",
+          "zh": "我能凭里拉收入申请阿联酋按揭吗？",
+          "vi": "Tôi có thể vay thế chấp tại UAE dựa trên thu nhập bằng lira không?",
+          "he": "האם אפשר לקבל משכנתה ב-UAE על בסיס הכנסה בלירה?"
+        },
+        "answer": {
+          "en": "It complicates the file. UAE lenders underwrite documented income and a lira-denominated salary is harder to assess, not least because the loan is serviced in dirhams. Turkish buyers who already hold foreign-currency income or an offshore company have a straightforward application. Otherwise the off-plan developer payment plan is the practical route, and it has a second advantage here: it lets you convert lira into dirhams in stages rather than in one exposed lump, which is worth something when the rate is moving.",
+          "fr": "Cela complique le dossier. Les banques des Émirats analysent des revenus documentés, et un salaire libellé en livres turques est plus difficile à évaluer, notamment parce que le prêt est remboursé en dirhams. Les acheteurs turcs qui disposent déjà de revenus en devises étrangères ou d'une société offshore présentent un dossier simple. Sinon, l'échéancier promoteur en VEFA est la voie pratique, et il a ici un second avantage : il vous permet de convertir les livres en dirhams par étapes plutôt qu'en une seule fois à découvert, ce qui compte lorsque le taux bouge.",
+          "ru": "Это усложняет досье. Банки UAE оценивают документально подтверждённый доход, а зарплату в лирах анализировать труднее — не в последнюю очередь потому, что кредит обслуживается в дирхамах. У турецких покупателей, уже имеющих доход в иностранной валюте или зарубежную компанию, заявка проходит без затруднений. В остальных случаях практичный путь — план рассрочки от застройщика на off-plan, и здесь у него есть второе преимущество: он позволяет конвертировать лиры в дирхамы поэтапно, а не одной уязвимой суммой, что немаловажно при движении курса.",
+          "ar": "هذا يعقّد الملف. تعتمد جهات الإقراض في UAE على دخل موثّق، والراتب المقوّم بالليرة أصعب في التقييم، ليس أقلها لأن القرض يُسدَّد بالدرهم. والمشترون الأتراك الذين لديهم أصلاً دخل بعملة أجنبية أو شركة خارجية يقدّمون طلباً مباشراً. وبخلاف ذلك، تبقى خطة السداد من المطوّر على الخارطة هي المسار العملي، ولها هنا ميزة ثانية: فهي تتيح لك تحويل الليرة إلى درهم على مراحل بدلاً من دفعة واحدة مكشوفة، وهو أمر له قيمته حين يتحرك سعر الصرف.",
+          "zh": "这会让申请材料更复杂。阿联酋贷款机构只审核有据可查的收入，以里拉计价的工资较难评估，尤其因为贷款是以迪拉姆偿还的。已经拥有外币收入或离岸公司的土耳其买家，申请会很顺畅。否则，期房开发商付款计划就是切实可行的路径，而且它在这里还有第二重好处：可以分阶段把里拉换成迪拉姆，而不是一次性大额暴露，在汇率波动时这一点很有价值。",
+          "vi": "Điều đó làm hồ sơ phức tạp hơn. Các ngân hàng UAE thẩm định dựa trên thu nhập có chứng từ, và một khoản lương tính bằng lira khó đánh giá hơn, nhất là khi khoản vay được trả bằng dirham. Người mua Thổ Nhĩ Kỳ vốn đã có thu nhập bằng ngoại tệ hoặc sở hữu công ty ở nước ngoài sẽ nộp hồ sơ thuận lợi. Nếu không, kế hoạch thanh toán off-plan của chủ đầu tư là lộ trình thực tế, và ở đây nó còn có lợi thế thứ hai: nó cho phép bạn quy đổi lira sang dirham theo từng đợt thay vì một khoản lớn đầy rủi ro, điều rất có giá trị khi tỷ giá đang biến động.",
+          "he": "זה מסבך את התיק. המלווים ב-UAE מחתמים הכנסה מתועדת, ושכר הנקוב בלירה קשה יותר להערכה, בין היתר משום שההלוואה נפרעת בדירהם. רוכשים טורקים שכבר מחזיקים הכנסה במטבע חוץ או חברה בחו\"ל מגישים בקשה פשוטה. אחרת, תוכנית התשלומים של היזם על נכס off-plan היא המסלול המעשי, ויש לה כאן יתרון נוסף: היא מאפשרת להמיר לירה לדירהם בשלבים ולא בסכום חשוף אחד, וזה שווה משהו כשהשער בתנועה."
+        }
+      },
+      {
+        "question": {
+          "en": "Why buy in Dubai rather than Istanbul?",
+          "fr": "Pourquoi acheter à Dubaï plutôt qu'à Istanbul ?",
+          "ru": "Почему покупать в Dubai, а не в Istanbul?",
+          "ar": "لماذا الشراء في Dubai بدلاً من إسطنبول؟",
+          "zh": "为什么在迪拜买房而不是伊斯坦布尔？",
+          "vi": "Vì sao nên mua ở Dubai thay vì Istanbul?",
+          "he": "מדוע לרכוש ב-Dubai ולא באיסטנבול?"
+        },
+        "answer": {
+          "en": "The currency is the honest answer. The lira has lost a large share of its value against the dollar over the past decade, and a dirham-priced asset with a hard dollar peg takes both the property and its rental income out of that exposure entirely. Add a four-hour flight from Istanbul, a large established Turkish business community, and gross yields in the mainstream freehold communities of roughly 5-8% paid in dirhams with nothing withheld at source.",
+          "fr": "La devise est la réponse honnête. La livre turque a perdu une large part de sa valeur face au dollar au cours de la dernière décennie, et un actif libellé en dirhams, avec un arrimage ferme au dollar, sort entièrement le bien et ses revenus locatifs de cette exposition. Ajoutez un vol de quatre heures depuis Istanbul, une communauté d'affaires turque importante et bien établie, et des rendements bruts dans les communautés freehold grand public d'environ 5-8%, payés en dirhams et sans aucune retenue à la source.",
+          "ru": "Честный ответ — из-за валюты. Лира за последнее десятилетие потеряла значительную часть стоимости против доллара, а актив, оценённый в дирхамах с жёсткой привязкой к доллару, полностью выводит из этой экспозиции и саму недвижимость, и арендный доход. Добавьте четырёхчасовой перелёт из Istanbul, большое сложившееся турецкое деловое сообщество и валовую доходность в основных freehold-сообществах примерно 5-8%, выплачиваемую в дирхамах без удержаний у источника.",
+          "ar": "العملة هي الجواب الصريح. فقد فقدت الليرة حصة كبيرة من قيمتها أمام الدولار خلال العقد الماضي، وأصل مسعّر بالدرهم مع ربط قوي بالدولار يُخرج العقار ودخله الإيجاري من ذلك الانكشاف تماماً. أضف إلى ذلك رحلة مدتها أربع ساعات من إسطنبول، ومجتمع أعمال تركي كبير وراسخ، وعوائد إجمالية في مجتمعات التملك الحر الرئيسية تتراوح نحو 5-8% تُدفع بالدرهم دون أي اقتطاع من المنبع.",
+          "zh": "货币是最诚实的答案。过去十年里拉对美元大幅贬值，而一项以迪拉姆计价、硬挂钩美元的资产，能把房产本身及其租金收入完全移出这一敞口。再加上从伊斯坦布尔出发四小时航程、当地已有庞大成熟的土耳其商业社群，以及主流 freehold 社区大致 5-8% 的毛收益率，以迪拉姆支付且源头不做任何扣缴。",
+          "vi": "Đồng tiền là câu trả lời thành thật. Đồng lira đã mất phần lớn giá trị so với đô la trong thập kỷ qua, và một tài sản định giá bằng dirham với cơ chế neo chặt vào đô la đưa cả bất động sản lẫn thu nhập cho thuê của nó ra khỏi rủi ro đó hoàn toàn. Cộng thêm chuyến bay bốn giờ từ Istanbul, một cộng đồng doanh nhân Thổ Nhĩ Kỳ lớn và lâu đời, cùng lợi suất gộp khoảng 5-8% tại các cộng đồng freehold phổ thông, trả bằng dirham và không bị khấu trừ gì tại nguồn.",
+          "he": "המטבע הוא התשובה הכנה. הלירה איבדה חלק ניכר מערכה מול הדולר בעשור האחרון, ונכס המתומחר בדירהם עם הצמדה קשיחה לדולר מוציא גם את הנכס וגם את הכנסת השכירות שלו מהחשיפה הזו לחלוטין. הוסיפו טיסה בת ארבע שעות מאיסטנבול, קהילה עסקית טורקית גדולה ומבוססת, ותשואות ברוטו בקהילות ה-freehold המרכזיות של כ-5-8% המשולמות בדירהם ללא ניכוי במקור."
+        }
+      },
+      {
+        "question": {
+          "en": "What are the total costs of purchase?",
+          "fr": "Quels sont les coûts totaux de l'acquisition ?",
+          "ru": "Каковы совокупные расходы на покупку?",
+          "ar": "ما إجمالي تكاليف الشراء؟",
+          "zh": "购房总成本是多少？",
+          "vi": "Tổng chi phí mua là bao nhiêu?",
+          "he": "מהן העלויות הכוללות של הרכישה?"
+        },
+        "answer": {
+          "en": "About 6-7% of the price: the 4% Dubai Land Department transfer fee, roughly 2% agency commission, and registration and trustee charges, with 0.25% of the loan added if you borrow. There is no annual property tax in Dubai. Fix any payment schedule in dirhams rather than leaving it exposed to conversion, so instalments do not reprice against you between dates.",
+          "fr": "Environ 6-7% du prix : les 4% de frais de mutation du Dubai Land Department, environ 2% de commission d'agence, ainsi que les frais d'enregistrement et de trustee, auxquels s'ajoutent 0.25% du montant du prêt si vous empruntez. Il n'y a pas d'impôt foncier annuel à Dubaï. Fixez tout échéancier en dirhams plutôt que de le laisser exposé à la conversion, afin que les versements ne se revalorisent pas à votre détriment d'une date à l'autre.",
+          "ru": "Около 6-7% от цены: сбор за передачу права в размере 4% в пользу Dubai Land Department, примерно 2% комиссии агентства, а также регистрационные и доверительные сборы, плюс 0.25% от суммы займа, если берёте кредит. Ежегодного налога на недвижимость в Dubai нет. Фиксируйте любой график платежей в дирхамах, а не оставляйте его открытым к конвертации, чтобы платежи не переоценивались против вас от даты к дате.",
+          "ar": "نحو 6-7% من السعر: رسم نقل الملكية لدى Dubai Land Department بنسبة 4%، ونحو 2% عمولة الوساطة، ورسوم التسجيل وأمين التسجيل، مع إضافة 0.25% من قيمة القرض إذا اقترضت. ولا توجد ضريبة عقارية سنوية في Dubai. ثبّت أي جدول سداد بالدرهم بدلاً من تركه مكشوفاً لتقلبات التحويل، كي لا يُعاد تسعير الأقساط ضدك بين تاريخ وآخر.",
+          "zh": "约为价格的 6-7%：4% 的迪拜土地局过户费、约 2% 的中介佣金，以及登记费和受托机构费用；若使用贷款，另加贷款额的 0.25%。迪拜没有年度房产税。请把任何付款时间表以迪拉姆锁定，而不是让它暴露于汇率转换之下，以免各期款项在付款日之间对你不利地重新定价。",
+          "vi": "Khoảng 6-7% giá mua: phí chuyển nhượng 4% của Dubai Land Department, khoảng 2% hoa hồng môi giới, cùng các khoản phí đăng ký và phí ủy thác, cộng thêm 0.25% giá trị khoản vay nếu bạn vay. Dubai không có thuế bất động sản hằng năm. Hãy cố định mọi lịch thanh toán bằng dirham thay vì để nó chịu rủi ro quy đổi, để các kỳ trả góp không bị định giá lại bất lợi cho bạn giữa các mốc thời gian.",
+          "he": "כ-6-7% מהמחיר: עמלת ההעברה של Dubai Land Department בשיעור 4%, כ-2% עמלת תיווך, ואגרות רישום ונאמנות, בתוספת 0.25% מסכום ההלוואה אם אתם לווים. אין מס נכסים שנתי ב-Dubai. קבעו כל לוח תשלומים בדירהם במקום להשאיר אותו חשוף להמרה, כך שהתשלומים לא יתומחרו מחדש לרעתכם בין המועדים."
+        }
+      }
     ]
   },
   {
@@ -1741,6 +4059,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Downtown Dubai",
       "Business Bay",
       "Jumeirah Beach Residence"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Does IVIE apply to a Dubai property?",
+          "fr": "L'IVIE s'applique-t-elle à un bien à Dubaï ?",
+          "ru": "Применяется ли IVIE к недвижимости в Dubai?",
+          "ar": "هل تنطبق IVIE على عقار في Dubai؟",
+          "zh": "IVIE 适用于迪拜房产吗？",
+          "vi": "IVIE có áp dụng cho bất động sản tại Dubai không?",
+          "he": "האם IVIE חל על נכס ב-Dubai?"
+        },
+        "answer": {
+          "en": "Yes, and this is the number most Italian buyers miss. IVIE, the wealth tax on real estate held abroad, applies annually at 1.06% of the property's value if you are an Italian tax resident. Because the UAE levies no comparable property tax, there is nothing to credit against it — you pay the full 1.06% every year you hold the asset. Put concretely: a 6% gross yield is not what an Italian tax resident receives, and modelling the purchase without IVIE overstates the return materially.",
+          "fr": "Oui, et c'est le chiffre que la plupart des acheteurs italiens oublient. L'IVIE, l'impôt sur la fortune immobilière détenue à l'étranger, s'applique chaque année à 1.06% de la valeur du bien si vous êtes résident fiscal italien. Comme les Émirats ne prélèvent aucun impôt foncier comparable, il n'y a rien à imputer en crédit : vous payez les 1.06% en totalité chaque année où vous détenez l'actif. Concrètement : un rendement brut de 6% n'est pas ce que perçoit un résident fiscal italien, et modéliser l'acquisition sans l'IVIE surestime sensiblement le rendement.",
+          "ru": "Да, и именно эту цифру чаще всего упускают итальянские покупатели. IVIE — налог на богатство в отношении недвижимости за рубежом — взимается ежегодно по ставке 1.06% от стоимости объекта, если вы налоговый резидент Италии. Поскольку UAE не взимает сопоставимого налога на недвижимость, зачитывать против него нечего: вы платите полные 1.06% каждый год владения активом. Конкретно: валовая доходность 6% — не то, что получает итальянский налоговый резидент, и расчёт покупки без учёта IVIE существенно завышает отдачу.",
+          "ar": "نعم، وهذا هو الرقم الذي يغفل عنه معظم المشترين الإيطاليين. فـ IVIE، ضريبة الثروة على العقارات المملوكة في الخارج، تُطبَّق سنوياً بنسبة 1.06% من قيمة العقار إذا كنت مقيماً ضريبياً في إيطاليا. ولأن UAE لا تفرض ضريبة عقارية مماثلة، فلا يوجد ما يُخصم مقابلها — فتدفع كامل الـ 1.06% كل سنة تحتفظ فيها بالأصل. وبعبارة ملموسة: العائد الإجمالي البالغ 6% ليس ما يتلقاه المقيم الضريبي الإيطالي، وحساب الصفقة دون IVIE يبالغ في تقدير العائد بشكل جوهري.",
+          "zh": "适用，而这正是多数意大利买家忽略的那个数字。IVIE 是针对境外持有不动产的财富税，若你是意大利税务居民，按房产价值每年征收 1.06%。由于阿联酋不征收可比的房产税，没有任何可用于抵免的税款——你持有该资产的每一年都要全额缴纳 1.06%。说得具体些：6% 的毛收益率并非意大利税务居民实际到手的收益，在测算时不计入 IVIE 会严重高估回报。",
+          "vi": "Có, và đây là con số mà hầu hết người mua Ý bỏ sót. IVIE, thuế tài sản đánh trên bất động sản nắm giữ ở nước ngoài, được áp hằng năm ở mức 1.06% giá trị bất động sản nếu bạn là đối tượng cư trú thuế Ý. Vì UAE không thu khoản thuế bất động sản tương đương nào, không có gì để khấu trừ đối ứng — bạn trả đủ 1.06% mỗi năm nắm giữ tài sản. Nói cụ thể: lợi suất gộp 6% không phải là con số mà một người cư trú thuế Ý thực nhận, và tính toán giao dịch mua mà bỏ qua IVIE sẽ phóng đại lợi nhuận một cách đáng kể.",
+          "he": "כן, וזה המספר שרוב הרוכשים האיטלקים מפספסים. IVIE, מס ההון על נדל\"ן המוחזק בחו\"ל, חל שנתית בשיעור 1.06% משווי הנכס אם אתם תושבי מס באיטליה. מכיוון שה-UAE אינה גובה מס נכסים מקביל, אין דבר לזכות כנגדו — אתם משלמים את מלוא ה-1.06% בכל שנה שבה אתם מחזיקים בנכס. במילים מוחשיות: תשואת ברוטו של 6% אינה מה שתושב מס איטלקי מקבל, ומידול הרכישה ללא IVIE מפריז בתשואה באופן מהותי."
+        }
+      },
+      {
+        "question": {
+          "en": "How is the rental income taxed in Italy?",
+          "fr": "Comment les revenus locatifs sont-ils imposés en Italie ?",
+          "ru": "Как облагается доход от аренды в Италии?",
+          "ar": "كيف يُفرض الضريبة على دخل الإيجار في إيطاليا؟",
+          "zh": "租金收入在意大利如何征税？",
+          "vi": "Thu nhập cho thuê bị đánh thuế thế nào ở Ý?",
+          "he": "כיצד ממוסה הכנסת השכירות באיטליה?"
+        },
+        "answer": {
+          "en": "Separately from IVIE and on top of it. Rental income is taxable at your IRPEF progressive rate as an Italian tax resident, and a future disposal can fall within Italian capital gains rules depending on timing and use. Since the UAE charges nothing at source there is no foreign tax credit available against either. The combination of IRPEF on the income and IVIE on the value is what makes the Italian position materially heavier than most other European buyers' — it is worth modelling precisely before committing.",
+          "fr": "Séparément de l'IVIE et en sus de celle-ci. Les revenus locatifs sont imposables au barème progressif de l'IRPEF en tant que résident fiscal italien, et une cession future peut relever des règles italiennes de plus-values selon la date et l'usage. Comme les Émirats ne prélèvent rien à la source, aucun crédit d'impôt étranger n'est disponible contre l'un ou l'autre. C'est la combinaison de l'IRPEF sur les revenus et de l'IVIE sur la valeur qui rend la position italienne sensiblement plus lourde que celle de la plupart des autres acheteurs européens — elle mérite d'être modélisée précisément avant de s'engager.",
+          "ru": "Отдельно от IVIE и вдобавок к нему. Доход от аренды облагается по вашей прогрессивной ставке IRPEF как у итальянского налогового резидента, а будущая продажа может подпасть под итальянские правила налогообложения прироста капитала в зависимости от сроков и характера использования. Поскольку UAE ничего не удерживает у источника, зачёта иностранного налога нет ни по одному из этих начислений. Именно сочетание IRPEF с дохода и IVIE со стоимости делает итальянскую позицию существенно тяжелее, чем у большинства других европейских покупателей, — это стоит просчитать точно до принятия обязательств.",
+          "ar": "بصورة منفصلة عن IVIE وفوقها. فدخل الإيجار خاضع للضريبة بمعدل IRPEF التصاعدي الخاص بك بصفتك مقيماً ضريبياً في إيطاليا، وقد يقع أي تصرف مستقبلي ضمن قواعد أرباح رأس المال الإيطالية بحسب التوقيت والاستخدام. ولأن UAE لا تقتطع شيئاً من المنبع، فلا يتوفر خصم ضريبي أجنبي مقابل أي منهما. واجتماع IRPEF على الدخل مع IVIE على القيمة هو ما يجعل الوضع الإيطالي أثقل بشكل ملموس من وضع معظم المشترين الأوروبيين الآخرين — ويستحق حساباً دقيقاً قبل الالتزام.",
+          "zh": "与 IVIE 分开计算并叠加在其之上。作为意大利税务居民，租金收入按你的 IRPEF 累进税率课税，日后出售也可能落入意大利资本利得规则，具体取决于持有时间和用途。由于阿联酋在源头不征税，两者都没有可用的外国税收抵免。IRPEF 对收入征税与 IVIE 对价值征税的叠加，正是意大利买家的处境明显重于多数其他欧洲买家的原因——值得在决定前精确测算。",
+          "vi": "Tách biệt với IVIE và cộng thêm vào đó. Thu nhập cho thuê chịu thuế theo biểu thuế lũy tiến IRPEF của bạn với tư cách người cư trú thuế Ý, và việc bán tài sản trong tương lai có thể nằm trong phạm vi quy định về thuế lãi vốn của Ý tùy theo thời điểm và mục đích sử dụng. Vì UAE không thu gì tại nguồn nên không có khoản khấu trừ thuế nước ngoài nào áp dụng cho cả hai. Sự kết hợp giữa IRPEF trên thu nhập và IVIE trên giá trị tài sản là điều khiến vị thế của người Ý nặng hơn đáng kể so với hầu hết người mua châu Âu khác — rất đáng để tính toán chính xác trước khi cam kết.",
+          "he": "בנפרד מ-IVIE ובנוסף לו. הכנסה משכירות חייבת במס לפי שיעור ה-IRPEF הפרוגרסיבי שלכם כתושב מס איטלקי, ומכירה עתידית עשויה ליפול בגדר כללי מס רווחי ההון האיטלקיים בהתאם לעיתוי ולשימוש. מכיוון שה-UAE אינה גובה דבר במקור, אין זיכוי מס זר זמין כנגד אף אחד מהם. השילוב של IRPEF על ההכנסה ו-IVIE על השווי הוא מה שהופך את המצב האיטלקי לכבד מהותית יותר מזה של רוב הרוכשים האירופים האחרים — כדאי למדל אותו במדויק לפני שמתחייבים."
+        }
+      },
+      {
+        "question": {
+          "en": "Do I have to declare the property in the RW section?",
+          "fr": "Dois-je déclarer le bien dans le quadro RW ?",
+          "ru": "Нужно ли декларировать недвижимость в разделе RW?",
+          "ar": "هل يجب أن أصرّح عن العقار في قسم RW؟",
+          "zh": "我必须在 RW 栏目中申报这处房产吗？",
+          "vi": "Tôi có phải kê khai bất động sản trong phần RW không?",
+          "he": "האם עליי להצהיר על הנכס בחלק RW?"
+        },
+        "answer": {
+          "en": "Yes, annually, and the penalties for omitting a foreign property are disproportionate to the effort of declaring it. The RW section of your return is where foreign assets are reported, and it is the same return that carries the IVIE charge. Italy and the UAE also exchange financial account information automatically, so the holding is visible by design rather than discreet. Keep the purchase contract, the DLD title and transfer records from the start and give them to your commercialista.",
+          "fr": "Oui, chaque année, et les pénalités pour l'omission d'un bien à l'étranger sont disproportionnées par rapport à l'effort que représente la déclaration. Le quadro RW de votre déclaration est l'endroit où les actifs étrangers sont reportés, et c'est la même déclaration qui porte la charge d'IVIE. L'Italie et les Émirats échangent par ailleurs automatiquement les informations sur les comptes financiers : la détention est donc visible par construction, et non discrète. Conservez dès le départ le contrat d'acquisition, le titre DLD et les justificatifs de transfert, et remettez-les à votre commercialista.",
+          "ru": "Да, ежегодно, и санкции за неуказание зарубежной недвижимости несоразмерны усилиям на её декларирование. Раздел RW вашей декларации — это место, где отражаются зарубежные активы, и это та же декларация, в которой начисляется IVIE. Италия и UAE также автоматически обмениваются информацией о финансовых счетах, поэтому владение видно по определению, а не скрыто. Сохраняйте договор купли-продажи, титул DLD и документы о переводе средств с самого начала и передайте их вашему commercialista.",
+          "ar": "نعم، سنوياً، وعقوبات إغفال عقار أجنبي غير متناسبة إطلاقاً مع الجهد المطلوب للتصريح عنه. فقسم RW من إقرارك هو المكان الذي تُدرَج فيه الأصول الأجنبية، وهو الإقرار نفسه الذي يحمل عبء IVIE. كما تتبادل إيطاليا وUAE معلومات الحسابات المالية تلقائياً، فالملكية مرئية بحكم التصميم لا خافية. احتفظ بعقد الشراء وسند الملكية من DLD وسجلات التحويل منذ البداية وسلّمها إلى محاسبك (commercialista).",
+          "zh": "必须，而且是每年申报，遗漏境外房产所带来的罚则与申报所需的工作量完全不成比例。申报表的 RW 栏目用于报告境外资产，而 IVIE 税负也在同一张申报表中体现。意大利与阿联酋之间同样自动交换金融账户信息，因此该持有资产在制度设计上就是可见的，谈不上隐秘。请从一开始就保存购房合同、DLD 产权证和过户记录，并交给你的会计师（commercialista）。",
+          "vi": "Có, hằng năm, và mức phạt cho việc bỏ sót một bất động sản ở nước ngoài là không tương xứng với công sức bỏ ra để kê khai. Phần RW trong tờ khai của bạn là nơi báo cáo tài sản ở nước ngoài, và cũng chính tờ khai đó mang nghĩa vụ IVIE. Ý và UAE cũng trao đổi tự động thông tin tài khoản tài chính, nên tài sản nắm giữ là hiển thị theo thiết kế chứ không hề kín đáo. Hãy lưu giữ hợp đồng mua bán, giấy tờ sở hữu DLD và hồ sơ chuyển nhượng ngay từ đầu và đưa cho commercialista của bạn.",
+          "he": "כן, מדי שנה, והקנסות על השמטת נכס בחו\"ל אינם פרופורציונליים למאמץ הכרוך בהצהרה. חלק RW בדוח שלכם הוא המקום שבו מדווחים על נכסים בחו\"ל, וזה אותו דוח שנושא את חיוב ה-IVIE. איטליה וה-UAE גם מחליפות מידע על חשבונות פיננסיים באופן אוטומטי, כך שההחזקה גלויה מעצם התכנון ולא דיסקרטית. שמרו מתחילת הדרך את חוזה הרכישה, שטר הבעלות של DLD ורישומי ההעברה, ומסרו אותם ל-commercialista שלכם."
+        }
+      },
+      {
+        "question": {
+          "en": "What changes if I move to Dubai permanently?",
+          "fr": "Qu'est-ce qui change si je m'installe définitivement à Dubaï ?",
+          "ru": "Что изменится, если я перееду в Dubai насовсем?",
+          "ar": "ما الذي يتغيّر إذا انتقلت إلى Dubai بشكل دائم؟",
+          "zh": "如果我永久移居迪拜，会有什么变化？",
+          "vi": "Điều gì thay đổi nếu tôi chuyển hẳn sang Dubai sinh sống?",
+          "he": "מה משתנה אם אעבור לגור ב-Dubai דרך קבע?"
+        },
+        "answer": {
+          "en": "Fundamentally everything, because IVIE, IRPEF on the rent and the RW obligation all attach to Italian tax residence. Ceasing to be an Italian tax resident removes them — but ceasing residence has its own strict tests involving AIRE registration, the location of your centre of interests and your actual presence, and assuming it rather than establishing it is the expensive mistake. Take Italian advice before you move, not after, because the order of events affects the outcome.",
+          "fr": "Fondamentalement tout, car l'IVIE, l'IRPEF sur les loyers et l'obligation RW se rattachent toutes à la résidence fiscale italienne. Cesser d'être résident fiscal italien les supprime — mais la cessation de résidence obéit à des critères stricts qui impliquent l'inscription à l'AIRE, la localisation de votre centre d'intérêts et votre présence effective, et la présumer au lieu de l'établir est l'erreur coûteuse. Prenez conseil en Italie avant de partir, pas après, car l'ordre des événements influe sur le résultat.",
+          "ru": "По сути всё, потому что и IVIE, и IRPEF с аренды, и обязанность по разделу RW привязаны к итальянскому налоговому резидентству. Прекращение итальянского налогового резидентства снимает их — но само прекращение резидентства имеет собственные строгие критерии: регистрация в AIRE, расположение центра ваших интересов и фактическое присутствие, и считать, что резидентство прекращено, вместо того чтобы это подтвердить, — дорогая ошибка. Получите итальянскую консультацию до переезда, а не после, потому что порядок событий влияет на результат.",
+          "ar": "كل شيء جوهرياً، لأن IVIE وIRPEF على الإيجار والتزام RW كلها مرتبطة بالإقامة الضريبية الإيطالية. فالتوقف عن كونك مقيماً ضريبياً إيطالياً يزيلها — لكن إنهاء الإقامة له اختباراته الصارمة الخاصة المتعلقة بالتسجيل في AIRE، وموقع مركز مصالحك، ووجودك الفعلي، وافتراضه بدلاً من إثباته هو الخطأ المكلف. استشر مستشاراً إيطالياً قبل الانتقال لا بعده، لأن ترتيب الأحداث يؤثر في النتيجة.",
+          "zh": "从根本上说一切都会变，因为 IVIE、对租金征收的 IRPEF 以及 RW 申报义务都附着于意大利税务居民身份。不再是意大利税务居民即可摆脱这些义务——但终止税务居民身份有其严格的判定标准，涉及 AIRE 登记、你的利益中心所在地以及实际居住情况，想当然地认为已经终止而非切实完成，正是代价高昂的错误。请在搬迁之前而非之后征询意大利方面的意见，因为事件的先后顺序会影响结果。",
+          "vi": "Về cơ bản là mọi thứ, bởi IVIE, IRPEF trên tiền thuê và nghĩa vụ RW đều gắn với tình trạng cư trú thuế tại Ý. Chấm dứt tư cách cư trú thuế Ý sẽ loại bỏ chúng — nhưng việc chấm dứt cư trú có những tiêu chí nghiêm ngặt riêng liên quan đến đăng ký AIRE, nơi đặt trung tâm lợi ích của bạn và sự hiện diện thực tế, và mặc định rằng mình đã chấm dứt thay vì chứng minh được điều đó là sai lầm tốn kém. Hãy xin tư vấn từ phía Ý trước khi chuyển đi, chứ không phải sau, vì trình tự các sự kiện ảnh hưởng đến kết quả.",
+          "he": "מהותית הכול, משום ש-IVIE, IRPEF על דמי השכירות וחובת ה-RW כולם נקשרים לתושבות המס האיטלקית. חדילה מלהיות תושב מס איטלקי מסירה אותם — אך חדילת תושבות כפופה למבחנים נוקשים משלה הכוללים רישום ב-AIRE, מיקום מרכז האינטרסים שלכם ונוכחותכם בפועל, וההנחה שהיא התרחשה במקום ביסוסה היא הטעות היקרה. קבלו ייעוץ איטלקי לפני המעבר ולא אחריו, משום שסדר האירועים משפיע על התוצאה."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a mortgage on Italian income?",
+          "fr": "Puis-je obtenir un prêt sur la base de revenus italiens ?",
+          "ru": "Могу ли я получить ипотеку под итальянский доход?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري بدخل إيطالي؟",
+          "zh": "我能凭意大利收入申请按揭吗？",
+          "vi": "Tôi có vay thế chấp dựa trên thu nhập tại Ý được không?",
+          "he": "האם אפשר לקבל משכנתה על בסיס הכנסה איטלקית?"
+        },
+        "answer": {
+          "en": "Yes, and easily. Euro-denominated Italian salary or company income is a currency UAE lenders assess without difficulty, so a Dubai mortgage is a realistic option rather than a long shot — typically around 50% loan-to-value for non-residents with rates in the 4.5-6.5% range. Compare honestly against borrowing in Italy, since euro and dirham rates differ and the loan is serviced in a dollar-pegged currency while your income is in euros.",
+          "fr": "Oui, et facilement. Un salaire ou des revenus d'entreprise italiens libellés en euros relèvent d'une devise que les banques des Émirats évaluent sans difficulté : un prêt à Dubaï est donc une option réaliste et non un pari lointain — typiquement autour de 50% de quotité de financement pour les non-résidents, avec des taux dans une fourchette de 4.5-6.5%. Comparez honnêtement avec un emprunt en Italie, puisque les taux en euros et en dirhams diffèrent et que le prêt est remboursé dans une devise arrimée au dollar alors que vos revenus sont en euros.",
+          "ru": "Да, и без особых сложностей. Итальянская зарплата или доход компании в евро — валюта, которую банки UAE оценивают без затруднений, поэтому ипотека в Dubai является реальным вариантом, а не призрачной возможностью: как правило около 50% от стоимости для нерезидентов со ставками в диапазоне 4.5-6.5%. Честно сравните это с кредитованием в Италии, поскольку ставки в евро и дирхамах различаются, а кредит обслуживается в валюте с привязкой к доллару, тогда как ваш доход — в евро.",
+          "ar": "نعم، وبسهولة. فالراتب أو دخل الشركة الإيطالي المقوّم باليورو عملة تقيّمها جهات الإقراض في UAE دون صعوبة، ما يجعل التمويل العقاري في Dubai خياراً واقعياً لا احتمالاً بعيداً — عادةً بنسبة تمويل نحو 50% من القيمة لغير المقيمين وبأسعار في نطاق 4.5-6.5%. قارن بصدق مع الاقتراض في إيطاليا، لأن أسعار اليورو والدرهم تختلف، والقرض يُسدَّد بعملة مربوطة بالدولار بينما دخلك باليورو.",
+          "zh": "可以，而且很容易。以欧元计价的意大利工资或公司收入，是阿联酋贷款机构能够毫无障碍评估的币种，因此迪拜按揭是一个现实可行的选项而非渺茫的指望——非居民通常可获约 50% 的贷款价值比，利率区间约在 4.5-6.5%。请与在意大利借款做诚实比较，因为欧元与迪拉姆利率不同，而贷款以挂钩美元的货币偿还，你的收入却是欧元。",
+          "vi": "Có, và khá dễ dàng. Lương hoặc thu nhập công ty tại Ý tính bằng euro là loại tiền tệ mà các ngân hàng UAE đánh giá không mấy khó khăn, nên vay thế chấp tại Dubai là một lựa chọn thực tế chứ không phải điều xa vời — thường khoảng 50% tỷ lệ cho vay trên giá trị đối với người không cư trú, với lãi suất trong khoảng 4.5-6.5%. Hãy so sánh một cách trung thực với việc vay tại Ý, vì lãi suất euro và dirham khác nhau, và khoản vay được trả bằng một đồng tiền neo theo đô la trong khi thu nhập của bạn bằng euro.",
+          "he": "כן, ובקלות. שכר או הכנסת חברה איטלקיים הנקובים ביורו הם מטבע שהמלווים ב-UAE מעריכים ללא קושי, כך שמשכנתה ב-Dubai היא אפשרות ריאלית ולא הימור רחוק — בדרך כלל כ-50% מימון לשווי לתושבי חוץ, עם ריביות בטווח של 4.5-6.5%. השוו בכנות מול לקיחת הלוואה באיטליה, שכן ריביות היורו והדירהם שונות וההלוואה נפרעת במטבע הצמוד לדולר בעוד שהכנסתכם ביורו."
+        }
+      },
+      {
+        "question": {
+          "en": "How do Dubai's running costs compare with Italian property?",
+          "fr": "Comment les charges courantes de Dubaï se comparent-elles à celles d'un bien italien ?",
+          "ru": "Как текущие расходы в Dubai сравниваются с итальянской недвижимостью?",
+          "ar": "كيف تُقارن التكاليف الجارية في Dubai بالعقار الإيطالي؟",
+          "zh": "迪拜的持有成本与意大利房产相比如何？",
+          "vi": "Chi phí vận hành tại Dubai so với bất động sản ở Ý thì thế nào?",
+          "he": "כיצד העלויות השוטפות ב-Dubai משתוות לנכס איטלקי?"
+        },
+        "answer": {
+          "en": "On the Dubai side they are light: no annual property tax, nothing withheld at source on rent, so the standing costs are service charges and a municipality housing fee on let homes. Italian residential property carries recurring local taxes and a rental regime that eats into the yield. But the comparison only holds if you are not an Italian tax resident — if you are, IVIE at 1.06% plus IRPEF on the income substantially closes the gap, which is exactly why the tax section above matters more here than on most of our country pages.",
+          "fr": "Côté Dubaï, elles sont légères : pas d'impôt foncier annuel, aucune retenue à la source sur les loyers, de sorte que les coûts récurrents se limitent aux charges de copropriété et à une taxe municipale d'habitation sur les logements loués. L'immobilier résidentiel italien supporte des taxes locales récurrentes et un régime locatif qui entame le rendement. Mais la comparaison ne tient que si vous n'êtes pas résident fiscal italien — si vous l'êtes, l'IVIE à 1.06% plus l'IRPEF sur les revenus réduisent fortement l'écart, ce qui explique précisément pourquoi la section fiscale ci-dessus compte davantage ici que sur la plupart de nos pages pays.",
+          "ru": "Со стороны Dubai они невелики: нет ежегодного налога на недвижимость и нет удержаний у источника с аренды, так что постоянные расходы — это сервисные сборы и муниципальный жилищный сбор на сдаваемое жильё. Итальянская жилая недвижимость влечёт регулярные местные налоги и режим налогообложения аренды, который съедает доходность. Но это сравнение верно только если вы не являетесь итальянским налоговым резидентом — если являетесь, IVIE по ставке 1.06% плюс IRPEF с дохода существенно сокращают разрыв, и именно поэтому налоговый раздел выше важен здесь больше, чем на большинстве наших страновых страниц.",
+          "ar": "في جانب Dubai هي خفيفة: لا ضريبة عقارية سنوية، ولا اقتطاع من المنبع على الإيجار، فالتكاليف الجارية هي رسوم الخدمات ورسم سكن بلدي على المساكن المؤجَّرة. أما العقار السكني الإيطالي فيحمل ضرائب محلية متكررة ونظاماً إيجارياً يقتطع من العائد. لكن المقارنة لا تصحّ إلا إذا لم تكن مقيماً ضريبياً في إيطاليا — فإن كنت كذلك، فإن IVIE بنسبة 1.06% إضافة إلى IRPEF على الدخل تقلّصان الفجوة بشكل كبير، وهذا بالضبط سبب أهمية القسم الضريبي أعلاه هنا أكثر من معظم صفحات الدول لدينا.",
+          "zh": "在迪拜一侧，持有成本很轻：没有年度房产税，租金在源头不做任何扣缴，因此固定支出只有物业服务费和出租房屋的市政住房费。意大利的住宅房产则要承担经常性的地方税，以及一套会侵蚀收益的租赁税制。但这一比较仅在你不是意大利税务居民时才成立——如果你是，1.06% 的 IVIE 加上对收入征收的 IRPEF 会大幅缩小这一差距，这也正是为什么上文的税务部分在这里比在我们多数国别页面上都更为重要。",
+          "vi": "Về phía Dubai, chúng khá nhẹ: không có thuế bất động sản hằng năm, không khấu trừ gì tại nguồn trên tiền thuê, nên chi phí thường xuyên chỉ là phí dịch vụ và phí nhà ở đô thị đối với nhà cho thuê. Bất động sản nhà ở tại Ý phải chịu các khoản thuế địa phương định kỳ và một chế độ thuế cho thuê ăn mòn lợi suất. Nhưng phép so sánh này chỉ đúng nếu bạn không phải là đối tượng cư trú thuế Ý — nếu bạn là, IVIE ở mức 1.06% cộng với IRPEF trên thu nhập sẽ thu hẹp khoảng cách đáng kể, và đó chính là lý do phần nội dung về thuế ở trên quan trọng ở đây hơn hầu hết các trang quốc gia khác của chúng tôi.",
+          "he": "בצד של Dubai הן קלות: אין מס נכסים שנתי, אין ניכוי במקור על שכר הדירה, ולכן העלויות השוטפות הן דמי ניהול ואגרת דיור עירונית על בתים המושכרים. נדל\"ן למגורים באיטליה נושא מסים מקומיים חוזרים ומשטר שכירות שמכרסם בתשואה. אך ההשוואה מחזיקה רק אם אינכם תושבי מס באיטליה — אם כן, IVIE בשיעור 1.06% בתוספת IRPEF על ההכנסה סוגרים את הפער במידה רבה, וזו בדיוק הסיבה שסעיף המס לעיל חשוב כאן יותר מאשר ברוב דפי המדינות שלנו."
+        }
+      }
     ]
   },
   {
@@ -1808,6 +4248,128 @@ export const FOREIGN_BUYERS: ForeignBuyerProfile[] = [
       "Business Bay",
       "Downtown Dubai",
       "Dubai Hills Estate"
+    ],
+    "faqs": [
+      {
+        "question": {
+          "en": "Is Dubai rental income taxed in Poland?",
+          "fr": "Les revenus locatifs de Dubaï sont-ils imposés en Pologne ?",
+          "ru": "Облагается ли доход от аренды в Dubai налогом в Польше?",
+          "ar": "هل يخضع دخل الإيجار من Dubai للضريبة في بولندا؟",
+          "zh": "迪拜的租金收入在波兰需要纳税吗？",
+          "vi": "Thu nhập cho thuê tại Dubai có bị đánh thuế ở Ba Lan không?",
+          "he": "האם הכנסה משכירות ב-Dubai ממוסה בפולין?"
+        },
+        "answer": {
+          "en": "Poland taxes residents on worldwide income, so the income is reportable — but how much you actually pay depends on the method of relief under the Poland-UAE treaty, and that is genuinely not something to guess. The treaty has been amended over the years including through the OECD multilateral instrument, and those amendments changed the method for some categories of income. Whether relief comes as an exemption or as a credit changes your effective rate materially, and because the UAE levies nothing, a credit method leaves the Polish charge standing in full.",
+          "fr": "La Pologne impose ses résidents sur leurs revenus mondiaux : ces revenus sont donc à déclarer — mais ce que vous payez effectivement dépend de la méthode d'élimination de la double imposition prévue par la convention Pologne-Émirats, et ce n'est vraiment pas quelque chose à deviner. La convention a été amendée au fil des ans, notamment via l'instrument multilatéral de l'OCDE, et ces amendements ont changé la méthode pour certaines catégories de revenus. Que l'allègement prenne la forme d'une exonération ou d'un crédit change sensiblement votre taux effectif, et comme les Émirats ne prélèvent rien, la méthode du crédit laisse la charge polonaise intégralement due.",
+          "ru": "Польша облагает налогом мировой доход резидентов, поэтому доход подлежит декларированию — но сколько вы фактически заплатите, зависит от метода устранения двойного налогообложения по договору между Польшей и UAE, а это действительно не тот вопрос, который стоит решать наугад. Договор с годами изменялся, в том числе через многосторонний инструмент OECD (MLI), и эти изменения поменяли метод для отдельных категорий дохода. Применяется ли освобождение или зачёт — это существенно меняет вашу эффективную ставку, а поскольку UAE не взимает ничего, при методе зачёта польское начисление остаётся в полном объёме.",
+          "ar": "تفرض بولندا الضريبة على المقيمين عن دخلهم العالمي، فالدخل واجب الإبلاغ — لكن المبلغ الذي تدفعه فعلياً يتوقف على طريقة الإعفاء بموجب المعاهدة بين بولندا وUAE، وهذا أمر لا يصح التخمين فيه إطلاقاً. فقد عُدِّلت المعاهدة على مر السنين بما في ذلك عبر الأداة المتعددة الأطراف الصادرة عن OECD، وغيّرت تلك التعديلات الطريقة المتّبعة لبعض فئات الدخل. وسواء جاء الإعفاء على شكل استثناء أو على شكل خصم، فإن ذلك يغيّر معدلك الفعلي بشكل جوهري، ولأن UAE لا تفرض شيئاً، فإن طريقة الخصم تُبقي الاقتطاع البولندي قائماً بالكامل.",
+          "zh": "波兰对税务居民的全球收入征税，因此该收入须申报——但你实际缴纳多少，取决于波兰-阿联酋协定下的免除双重征税方法，而这确实不是可以靠猜的事。该协定多年来经过修订，其中包括通过 OECD 多边工具（MLI）进行的修订，这些修订改变了某些所得类别所适用的方法。减免究竟以免税法还是抵免法实现，会显著改变你的实际税率；而由于阿联酋分文不征，抵免法会使波兰的税负全额保留。",
+          "vi": "Ba Lan đánh thuế người cư trú trên thu nhập toàn cầu, nên khoản thu nhập này phải được kê khai — nhưng bạn thực sự phải nộp bao nhiêu lại phụ thuộc vào phương pháp giảm trừ theo hiệp định Ba Lan-UAE, và đó thực sự không phải điều nên đoán. Hiệp định đã được sửa đổi qua nhiều năm, trong đó có thông qua công cụ đa phương của OECD, và những sửa đổi đó đã thay đổi phương pháp áp dụng cho một số loại thu nhập. Việc giảm trừ theo hình thức miễn thuế hay khấu trừ thuế sẽ làm thay đổi đáng kể thuế suất thực tế của bạn, và vì UAE không thu gì, phương pháp khấu trừ sẽ khiến nghĩa vụ thuế Ba Lan còn nguyên.",
+          "he": "פולין ממסה תושבים על הכנסה עולמית, ולכן ההכנסה ניתנת לדיווח — אך כמה תשלמו בפועל תלוי בשיטת ההקלה לפי האמנה בין פולין ל-UAE, וזה באמת לא משהו שכדאי לנחש. האמנה תוקנה עם השנים, בין היתר באמצעות ה-MLI של ה-OECD, ותיקונים אלה שינו את השיטה עבור חלק מסוגי ההכנסה. השאלה אם ההקלה מגיעה כפטור או כזיכוי משנה מהותית את שיעור המס האפקטיבי שלכם, ומכיוון שה-UAE אינה גובה דבר, שיטת הזיכוי מותירה את החיוב הפולני במלואו."
+        }
+      },
+      {
+        "question": {
+          "en": "Why can't you just tell me the rate?",
+          "fr": "Pourquoi ne pouvez-vous pas simplement m'indiquer le taux ?",
+          "ru": "Почему вы просто не назовёте ставку?",
+          "ar": "لماذا لا تخبرونني بالمعدل ببساطة؟",
+          "zh": "你们为什么不能直接告诉我税率？",
+          "vi": "Tại sao các bạn không nói thẳng mức thuế suất cho tôi?",
+          "he": "מדוע אינכם יכולים פשוט לומר לי מה השיעור?"
+        },
+        "answer": {
+          "en": "Because printing a single number here would be wrong for a meaningful share of readers. The exemption-versus-credit question turns on the category of income and on your own residence status, and the treaty position has moved. We would rather send you to a Polish adviser with the right question than give you a figure you might build a purchase around. Ask specifically which method applies to your income and status, then model the yield net of that answer.",
+          "fr": "Parce qu'imprimer ici un chiffre unique serait faux pour une part significative des lecteurs. La question exonération contre crédit dépend de la catégorie de revenus et de votre propre statut de résidence, et la position conventionnelle a évolué. Nous préférons vous orienter vers un conseil polonais avec la bonne question plutôt que de vous donner un chiffre autour duquel vous pourriez bâtir une acquisition. Demandez précisément quelle méthode s'applique à vos revenus et à votre statut, puis modélisez le rendement net de cette réponse.",
+          "ru": "Потому что указание единой цифры здесь было бы неверным для заметной доли читателей. Вопрос «освобождение или зачёт» зависит от категории дохода и от вашего собственного статуса резидентства, а положения договора менялись. Мы предпочитаем направить вас к польскому консультанту с правильно поставленным вопросом, чем дать цифру, вокруг которой вы можете выстроить покупку. Спросите конкретно, какой метод применяется к вашему доходу и статусу, а затем рассчитайте доходность с учётом этого ответа.",
+          "ar": "لأن طباعة رقم واحد هنا ستكون خاطئة بالنسبة لشريحة معتبرة من القرّاء. فمسألة الاستثناء مقابل الخصم تتوقف على فئة الدخل وعلى وضع إقامتك أنت، وموقف المعاهدة قد تغيّر. ونحن نفضّل أن نحيلك إلى مستشار بولندي بالسؤال الصحيح بدلاً من أن نعطيك رقماً قد تبني عليه صفقة شراء. اسأل تحديداً أي طريقة تنطبق على دخلك ووضعك، ثم احسب العائد صافياً في ضوء تلك الإجابة.",
+          "zh": "因为在这里印上一个单一数字，对相当一部分读者来说会是错的。免税法与抵免法之争取决于所得类别以及你自身的税务居民身份，而协定的规定也已发生变动。我们宁愿让你带着正确的问题去找波兰顾问，也不愿给你一个可能被你用来规划整笔购房的数字。请具体询问：针对你的收入类型和身份适用哪种方法，然后按该答案的税后口径测算收益。",
+          "vi": "Bởi in ra một con số duy nhất ở đây sẽ là sai với một tỷ lệ đáng kể người đọc. Câu hỏi miễn thuế hay khấu trừ phụ thuộc vào loại thu nhập và tình trạng cư trú của chính bạn, và vị thế theo hiệp định đã thay đổi. Chúng tôi thà hướng bạn đến một cố vấn Ba Lan với đúng câu hỏi còn hơn đưa ra một con số mà bạn có thể dựa vào đó để quyết định mua. Hãy hỏi cụ thể phương pháp nào áp dụng cho thu nhập và tình trạng của bạn, rồi tính lợi suất ròng dựa trên câu trả lời đó.",
+          "he": "משום שהדפסת מספר יחיד כאן תהיה שגויה עבור חלק משמעותי מהקוראים. שאלת הפטור מול הזיכוי תלויה בסוג ההכנסה ובמעמד התושבות שלכם, ועמדת האמנה השתנתה. אנו מעדיפים להפנות אתכם ליועץ פולני עם השאלה הנכונה מאשר לתת לכם מספר שאולי תבנו סביבו רכישה. שאלו במפורש איזו שיטה חלה על ההכנסה ועל המעמד שלכם, ואז חשבו את התשואה נטו לפי התשובה."
+        }
+      },
+      {
+        "question": {
+          "en": "Are there restrictions on moving money from Poland?",
+          "fr": "Existe-t-il des restrictions aux transferts de fonds depuis la Pologne ?",
+          "ru": "Есть ли ограничения на вывод денег из Польши?",
+          "ar": "هل هناك قيود على تحويل الأموال من بولندا؟",
+          "zh": "从波兰汇出资金有限制吗？",
+          "vi": "Có hạn chế nào đối với việc chuyển tiền từ Ba Lan không?",
+          "he": "האם יש הגבלות על העברת כספים מפולין?"
+        },
+        "answer": {
+          "en": "No. Poland is an EU member state with free movement of capital, so there is no exchange control and no approval to obtain before funding a purchase in Dubai. Your bank will apply its own anti-money-laundering documentation and report the transfer through ordinary channels, which is a compliance step rather than an obstacle. On the UAE side there is likewise no exchange control — rental income and sale proceeds leave freely in any currency.",
+          "fr": "Non. La Pologne est un État membre de l'UE où la libre circulation des capitaux s'applique : il n'y a donc ni contrôle des changes ni autorisation à obtenir avant de financer un achat à Dubaï. Votre banque appliquera sa propre documentation anti-blanchiment et déclarera le transfert par les canaux ordinaires, ce qui relève de la conformité et non de l'obstacle. Côté émirati, il n'y a pas davantage de contrôle des changes : loyers et produits de cession sortent librement, dans n'importe quelle devise.",
+          "ru": "Нет. Польша — государство — член ЕС со свободным движением капитала, поэтому валютного контроля нет и никакого одобрения перед финансированием покупки в Dubai получать не нужно. Ваш банк применит собственные требования по противодействию отмыванию денег и отразит перевод по обычным каналам — это комплаенс-шаг, а не препятствие. Со стороны UAE валютного контроля также нет: доход от аренды и выручка от продажи выводятся свободно в любой валюте.",
+          "ar": "لا. بولندا دولة عضو في الاتحاد الأوروبي تتمتع بحرية حركة رأس المال، فلا توجد رقابة على الصرف ولا موافقة يجب الحصول عليها قبل تمويل شراء في Dubai. سيطبّق بنكك مستنداته الخاصة بمكافحة غسل الأموال ويبلّغ عن التحويل عبر القنوات المعتادة، وهي خطوة امتثال لا عقبة. وفي جانب UAE كذلك لا توجد رقابة على الصرف — فدخل الإيجار وعوائد البيع تخرج بحرية وبأي عملة.",
+          "zh": "没有。波兰是欧盟成员国，资本自由流动，因此不存在外汇管制，也无需在为迪拜购房提供资金前取得任何批准。你的银行会执行其自身的反洗钱文件要求，并通过常规渠道报送该笔转账，这是一个合规步骤而非障碍。在阿联酋一侧同样没有外汇管制——租金收入和出售所得可以任何币种自由汇出。",
+          "vi": "Không. Ba Lan là thành viên EU với quyền tự do lưu chuyển vốn, nên không có kiểm soát ngoại hối và không cần xin phê duyệt nào trước khi tài trợ một giao dịch mua tại Dubai. Ngân hàng của bạn sẽ áp dụng yêu cầu hồ sơ chống rửa tiền riêng và báo cáo khoản chuyển tiền qua các kênh thông thường, đó là một bước tuân thủ chứ không phải rào cản. Về phía UAE cũng không hề có kiểm soát ngoại hối — thu nhập cho thuê và tiền bán tài sản được chuyển ra tự do bằng bất kỳ đồng tiền nào.",
+          "he": "לא. פולין היא מדינה חברה באיחוד האירופי עם תנועת הון חופשית, ולכן אין פיקוח מט\"ח ואין אישור שיש להשיג לפני מימון רכישה ב-Dubai. הבנק שלכם יחיל את דרישות התיעוד שלו לאיסור הלבנת הון וידווח על ההעברה בערוצים הרגילים, וזהו שלב ציות ולא מכשול. גם בצד של ה-UAE אין פיקוח מט\"ח — הכנסות משכירות ותמורת מכירה יוצאות בחופשיות בכל מטבע."
+        }
+      },
+      {
+        "question": {
+          "en": "What should I watch on the currency conversion?",
+          "fr": "À quoi dois-je faire attention lors de la conversion de devises ?",
+          "ru": "На что обратить внимание при конвертации валюты?",
+          "ar": "ما الذي ينبغي أن أنتبه له في تحويل العملة؟",
+          "zh": "在货币兑换上我该注意什么？",
+          "vi": "Tôi nên lưu ý gì khi quy đổi tiền tệ?",
+          "he": "למה כדאי לשים לב בהמרת המטבע?"
+        },
+        "answer": {
+          "en": "Złoty-to-dirham conversion normally routes through the dollar or euro, so ask your bank for the all-in rate including spread rather than the headline one. On a property-sized transfer the spread is real money and it is the largest avoidable cost in the process. Prices are set and settled in dirhams, which are pegged to the US dollar, so the amount does not drift while the transaction runs once you have converted.",
+          "fr": "La conversion du zloty en dirham passe normalement par le dollar ou l'euro : demandez donc à votre banque le taux tout compris, spread inclus, plutôt que le taux affiché. Sur un transfert de la taille d'une acquisition immobilière, le spread représente de l'argent réel et constitue le principal coût évitable du processus. Les prix sont fixés et réglés en dirhams, arrimés au dollar américain, de sorte que le montant ne dérive pas pendant le déroulement de la transaction une fois la conversion effectuée.",
+          "ru": "Конвертация из злотого в дирхам обычно идёт через доллар или евро, поэтому запросите у банка итоговый курс со спредом, а не заявленный. На переводе размером с покупку недвижимости спред — это реальные деньги и крупнейшая избежимая статья расходов в процессе. Цены устанавливаются и оплачиваются в дирхамах, привязанных к доллару США, поэтому после конвертации сумма не «уплывает», пока сделка идёт.",
+          "ar": "يمر تحويل الزلوتي إلى الدرهم عادةً عبر الدولار أو اليورو، لذا اطلب من بنكك السعر الشامل متضمناً هامش الصرف لا السعر المعلن. وعلى تحويل بحجم صفقة عقارية، يمثّل هذا الهامش مالاً حقيقياً وهو أكبر تكلفة يمكن تفاديها في العملية. وتُحدَّد الأسعار وتُسوَّى بالدرهم المربوط بالدولار الأمريكي، فلا ينجرف المبلغ أثناء سير المعاملة بعد أن تكون قد حوّلت.",
+          "zh": "兹罗提兑迪拉姆通常需经由美元或欧元中转，因此请向银行索取包含点差的全包汇率，而不是挂牌汇率。在房产规模的汇款上，点差是实实在在的钱，也是整个流程中最大的一笔可避免成本。价格以迪拉姆设定和结算，而迪拉姆与美元挂钩，因此一旦完成兑换，交易进行期间金额不会漂移。",
+          "vi": "Việc quy đổi złoty sang dirham thường đi qua đô la hoặc euro, vì vậy hãy hỏi ngân hàng tỷ giá trọn gói đã gồm chênh lệch mua-bán thay vì tỷ giá niêm yết. Với một khoản chuyển tiền cỡ mua bất động sản, phần chênh lệch đó là tiền thật và là chi phí có thể tránh được lớn nhất trong cả quy trình. Giá được niêm yết và thanh toán bằng dirham, vốn neo theo đô la Mỹ, nên số tiền không bị trôi trong lúc giao dịch diễn ra sau khi bạn đã quy đổi.",
+          "he": "המרה מזלוטי לדירהם עוברת בדרך כלל דרך הדולר או היורו, ולכן בקשו מהבנק שלכם את השער הכולל כולל המרווח ולא את השער המוצהר. בהעברה בסדר גודל של רכישת נכס המרווח הוא כסף אמיתי והוא העלות הנמנעת הגדולה ביותר בתהליך. המחירים נקבעים ומסולקים בדירהם, הצמוד לדולר האמריקאי, כך שהסכום אינו נודד בזמן שהעסקה מתנהלת לאחר שהמרתם."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I get a UAE mortgage on Polish income?",
+          "fr": "Puis-je obtenir un prêt émirati sur la base de revenus polonais ?",
+          "ru": "Могу ли я получить ипотеку в UAE под польский доход?",
+          "ar": "هل يمكنني الحصول على تمويل عقاري في UAE بدخل بولندي؟",
+          "zh": "我能凭波兰收入申请阿联酋按揭吗？",
+          "vi": "Tôi có thể vay thế chấp tại UAE dựa trên thu nhập tại Ba Lan không?",
+          "he": "האם אפשר לקבל משכנתה ב-UAE על בסיס הכנסה פולנית?"
+        },
+        "answer": {
+          "en": "Yes. A Polish salary or company income is assessable by UAE lenders without difficulty, with typical non-resident terms around 50-60% loan-to-value. Compare the offer against borrowing at home before deciding: Polish and UAE rates move independently, and income in złoty against a dirham-denominated loan is a currency mismatch worth pricing rather than ignoring. The lower headline rate is not automatically the cheaper loan once exchange exposure is counted.",
+          "fr": "Oui. Un salaire ou des revenus d'entreprise polonais sont évaluables par les banques des Émirats sans difficulté, avec des conditions non-résident typiques autour de 50-60% de quotité de financement. Comparez l'offre à un emprunt dans votre pays avant de décider : les taux polonais et émiratis évoluent indépendamment, et des revenus en zlotys face à un prêt libellé en dirhams constituent un décalage de devises qu'il vaut mieux chiffrer qu'ignorer. Le taux affiché le plus bas n'est pas automatiquement le prêt le moins cher une fois l'exposition de change prise en compte.",
+          "ru": "Да. Польскую зарплату или доход компании банки UAE оценивают без затруднений, типичные условия для нерезидента — около 50-60% от стоимости. Прежде чем решить, сравните предложение с кредитованием на родине: польские и эмиратские ставки движутся независимо, а доход в злотых при кредите в дирхамах — это валютное несоответствие, которое стоит оценить, а не игнорировать. Более низкая номинальная ставка не делает кредит автоматически дешевле, когда учтена валютная экспозиция.",
+          "ar": "نعم. فالراتب البولندي أو دخل الشركة قابل للتقييم من جهات الإقراض في UAE دون صعوبة، بشروط معتادة لغير المقيمين تبلغ نحو 50-60% من قيمة العقار. قارن العرض بالاقتراض في بلدك قبل أن تقرر: فالأسعار البولندية والإماراتية تتحرك باستقلال عن بعضها، ودخل بالزلوتي مقابل قرض مقوّم بالدرهم هو عدم تطابق في العملة يستحق التسعير لا التجاهل. فالسعر المعلن الأدنى ليس بالضرورة القرض الأرخص بعد احتساب الانكشاف على سعر الصرف.",
+          "zh": "可以。波兰的工资或公司收入是阿联酋贷款机构能够毫无障碍评估的，非居民的典型条件约为 50-60% 的贷款价值比。在决定前请与在本国借款做比较：波兰与阿联酋的利率各自独立变动，而以兹罗提计价的收入对应以迪拉姆计价的贷款，是一种值得定价而非忽视的货币错配。一旦把汇率敞口计入，名义利率较低的那笔贷款未必就更便宜。",
+          "vi": "Có. Lương hoặc thu nhập công ty tại Ba Lan được các ngân hàng UAE đánh giá không mấy khó khăn, với điều kiện điển hình dành cho người không cư trú là khoảng 50-60% tỷ lệ cho vay trên giá trị. Hãy so sánh đề nghị này với việc vay trong nước trước khi quyết định: lãi suất Ba Lan và UAE biến động độc lập, và thu nhập bằng złoty đối ứng với một khoản vay tính bằng dirham là một sự lệch pha tiền tệ đáng được định giá chứ không nên bỏ qua. Lãi suất niêm yết thấp hơn không đương nhiên là khoản vay rẻ hơn một khi đã tính đến rủi ro tỷ giá.",
+          "he": "כן. שכר או הכנסת חברה פולניים ניתנים להערכה על ידי המלווים ב-UAE ללא קושי, בתנאים טיפוסיים לתושבי חוץ של כ-50-60% מימון לשווי. השוו את ההצעה מול הלוואה בבית לפני שתחליטו: הריביות בפולין וב-UAE נעות באופן עצמאי, והכנסה בזלוטי מול הלוואה הנקובה בדירהם היא אי-התאמה מטבעית שכדאי לתמחר ולא להתעלם ממנה. הריבית הנמוכה יותר על הנייר אינה בהכרח ההלוואה הזולה יותר לאחר שמביאים בחשבון את החשיפה המטבעית."
+        }
+      },
+      {
+        "question": {
+          "en": "How does the yield compare with Warsaw or Spain?",
+          "fr": "Comment le rendement se compare-t-il à Varsovie ou à l'Espagne ?",
+          "ru": "Как доходность сравнивается с Warsaw или Испанией?",
+          "ar": "كيف يُقارن العائد بوارسو أو إسبانيا؟",
+          "zh": "收益率与华沙或西班牙相比如何？",
+          "vi": "Lợi suất so với Warsaw hay Tây Ban Nha thì thế nào?",
+          "he": "כיצד התשואה משתווה לוורשה או לספרד?"
+        },
+        "answer": {
+          "en": "Gross yields in Dubai's mainstream freehold communities run roughly 5-8%, ahead of what a comparable apartment in Warsaw or on the Spanish coast typically produces. Dubai also charges no annual property tax and nothing at source on rent, so the gap between gross and net is narrower than in most of Europe. The market is transparent in a way that helps a remote owner: transactions are registered with the Dubai Land Department, rents are indexed publicly, and the rental cycle settles in dirhams.",
+          "fr": "Les rendements bruts dans les communautés freehold grand public de Dubaï se situent autour de 5-8%, au-dessus de ce que produit généralement un appartement comparable à Varsovie ou sur la côte espagnole. Dubaï ne prélève par ailleurs aucun impôt foncier annuel ni rien à la source sur les loyers, de sorte que l'écart entre le brut et le net est plus étroit que dans la majeure partie de l'Europe. Le marché est transparent d'une manière qui aide un propriétaire à distance : les transactions sont enregistrées auprès du Dubai Land Department, les loyers font l'objet d'un indice public, et le cycle locatif se règle en dirhams.",
+          "ru": "Валовая доходность в основных freehold-сообществах Dubai составляет примерно 5-8%, что выше того, что обычно даёт сопоставимая квартира в Warsaw или на испанском побережье. В Dubai также нет ежегодного налога на недвижимость и удержаний у источника с аренды, поэтому разрыв между валовой и чистой доходностью уже, чем в большинстве стран Европы. Рынок прозрачен так, как это удобно удалённому собственнику: сделки регистрируются в Dubai Land Department, ставки аренды публично индексируются, а арендный цикл рассчитывается в дирхамах.",
+          "ar": "تتراوح العوائد الإجمالية في مجتمعات التملك الحر الرئيسية في Dubai نحو 5-8%، أي أعلى مما تنتجه عادةً شقة مماثلة في وارسو أو على الساحل الإسباني. كما لا تفرض Dubai ضريبة عقارية سنوية ولا أي اقتطاع من المنبع على الإيجار، فالفجوة بين الإجمالي والصافي أضيق مما هي عليه في معظم أوروبا. والسوق شفاف بطريقة تساعد المالك عن بُعد: فالمعاملات تُسجَّل لدى Dubai Land Department، والإيجارات مفهرسة علناً، ودورة الإيجار تُسوَّى بالدرهم.",
+          "zh": "迪拜主流 freehold 社区的毛收益率大致在 5-8%，高于华沙或西班牙海岸同类公寓通常能产生的水平。迪拜还不征收年度房产税，租金在源头也无任何扣缴，因此毛收益与净收益之间的差距比欧洲多数地方更小。这个市场的透明度对远程业主尤其有帮助：交易在迪拜土地局登记，租金水平公开编制指数，租赁周期以迪拉姆结算。",
+          "vi": "Lợi suất gộp tại các cộng đồng freehold phổ thông của Dubai dao động khoảng 5-8%, cao hơn mức mà một căn hộ tương đương ở Warsaw hay trên bờ biển Tây Ban Nha thường mang lại. Dubai cũng không thu thuế bất động sản hằng năm và không khấu trừ gì tại nguồn trên tiền thuê, nên khoảng cách giữa lợi suất gộp và ròng hẹp hơn so với hầu hết châu Âu. Thị trường này minh bạch theo cách hữu ích cho một chủ sở hữu ở xa: giao dịch được đăng ký với Dubai Land Department, giá thuê được lập chỉ số công khai, và chu kỳ cho thuê thanh toán bằng dirham.",
+          "he": "תשואות ברוטו בקהילות ה-freehold המרכזיות של Dubai נעות בסביבות 5-8%, מעל מה שדירה מקבילה בוורשה או בחוף הספרדי מניבה בדרך כלל. Dubai גם אינה גובה מס נכסים שנתי ואינה מנכה דבר במקור על שכר הדירה, כך שהפער בין ברוטו לנטו צר יותר מאשר ברוב אירופה. השוק שקוף באופן שמסייע לבעלים מרוחק: העסקאות נרשמות ב-Dubai Land Department, שכר הדירה מאונדקס בפומבי, ומחזור השכירות מסתלק בדירהם."
+        }
+      }
     ]
   }
 ];
