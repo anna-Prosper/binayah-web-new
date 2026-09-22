@@ -105,6 +105,11 @@ interface Listing {
   serviceCharge?: number;
   deedNo?: string;
   transactionNo?: string;
+  // Trakheesi advertising permit. Empty until the CRM sync supplies real
+  // regulator data — the page shows no permit while they are.
+  permitNumber?: string;
+  qrCode?: string;
+  permitUrl?: string;
   flags?: { featured?: boolean; offplan?: boolean; exclusive?: boolean; tenanted?: boolean; managed?: boolean; str?: boolean };
   offplan?: string | number;  // 1 or "1" = off-plan
   completionDate?: string;    // e.g. "Q4 2026" or "2026"
@@ -477,6 +482,7 @@ export default function PropertyDetailClient({
   const [enquirySending, setEnquirySending] = useState(false);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
+  const [showQrModal, setShowQrModal] = useState(false);
   const [fetchedDeveloper, setFetchedDeveloper] = useState<{name: string; slug: string} | null>(null);
   const [developerStats, setDeveloperStats] = useState<{
     projectsDelivered: number | null;
@@ -491,6 +497,21 @@ export default function PropertyDetailClient({
     email: "",
   });
   const { value: hp, field: honeypotField } = useHoneypot();
+
+  // ── Trakheesi advertising permit ────────────────────────────────────────
+  // Mirrors the off-plan project page: a QR is rendered ONLY when a real
+  // regulator-issued QR image is stored on the listing. Nothing is generated
+  // locally — a self-made QR encoding an internal CRM reference would look
+  // like a permit and verify nothing. While these fields are empty (the CRM
+  // sync does not yet supply Trakheesi data for secondary listings) the page
+  // renders no permit at all, which is the same behaviour off-plan projects
+  // without a stored QR already have.
+  const hasStoredQr = Boolean(listing.qrCode && listing.qrCode.startsWith("http"));
+  const qrSrc = hasStoredQr ? listing.qrCode! : "";
+  // Clicking opens the permit document directly when one is linked, otherwise
+  // it enlarges the QR in a modal so it can be scanned from a phone.
+  const hasDirectPermit = Boolean(listing.permitUrl);
+  const qrUrl = listing.permitUrl || `/property/${listing.slug}`;
 
   // Track property view on mount
   useEffect(() => {
@@ -752,11 +773,40 @@ export default function PropertyDetailClient({
                     </p>
                   )}
                   <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15] mb-2">{listing.title}</h1>
-                  {(listing.community || listing.address) && (
-                    <p className="text-white/75 flex items-center gap-1.5 text-sm mb-3">
-                      <MapPin className="h-3.5 w-3.5 text-accent flex-shrink-0" />
-                      {listing.address || `${listing.community}${listing.areas?.[0] ? `, ${listing.areas[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
-                    </p>
+                  {/* Location with permit QR — the QR renders only when a
+                      regulator-issued image is stored on the listing. */}
+                  {(listing.community || listing.address || hasStoredQr) && (
+                    <div className="flex items-center gap-2 sm:gap-3 mb-3">
+                      {hasStoredQr && (
+                        hasDirectPermit ? (
+                          <a
+                            href={qrUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all flex-shrink-0"
+                            title={tProject("regulatoryPermit")}
+                            aria-label={tProject("regulatoryPermit")}
+                          >
+                            <NextImage src={qrSrc} alt={tProject("regulatoryPermit")} width={80} height={80} unoptimized className="w-full h-full rounded-sm" />
+                          </a>
+                        ) : (
+                          <button
+                            onClick={() => setShowQrModal(true)}
+                            className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer flex-shrink-0"
+                            title={tProject("regulatoryPermit")}
+                            aria-label={tProject("regulatoryPermit")}
+                          >
+                            <NextImage src={qrSrc} alt={tProject("regulatoryPermit")} width={80} height={80} unoptimized className="w-full h-full rounded-sm" />
+                          </button>
+                        )
+                      )}
+                      {(listing.community || listing.address) && (
+                        <p className="text-white/75 flex items-center gap-1.5 text-sm">
+                          <MapPin className="h-3.5 w-3.5 text-accent flex-shrink-0" />
+                          {listing.address || `${listing.community}${listing.areas?.[0] ? `, ${listing.areas[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
+                        </p>
+                      )}
+                    </div>
                   )}
                   <HeroActionRow slug={listing.slug} title={listing.title} />
                 </motion.div>
@@ -1420,7 +1470,40 @@ export default function PropertyDetailClient({
                       <span className="text-foreground font-semibold text-right select-all">{listing.sourceId || listing.propertyId}</span>
                     </div>
                   )}
+                  {listing.permitNumber && (
+                    <div className="flex justify-between items-center py-3 text-sm">
+                      <span className="text-muted-foreground">{tProject("permitNumber")}</span>
+                      <span className="text-foreground font-semibold text-right select-all">{listing.permitNumber}</span>
+                    </div>
+                  )}
                 </div>
+                {/* Permit QR row — rendered only when a regulator-issued QR
+                    image is stored. Never generated locally. */}
+                {hasStoredQr && (() => {
+                  const QrInner = (
+                    <NextImage src={qrSrc} alt={tProject("regulatoryPermit")} width={100} height={100} unoptimized className="w-full h-full rounded-sm" />
+                  );
+                  const wrapperClass = "w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white border border-border/50 p-1 shadow-sm hover:shadow-md hover:border-primary/30 active:scale-95 transition-all cursor-pointer flex-shrink-0 inline-flex items-center justify-center";
+                  return (
+                    <div className="mt-4 pt-4 border-t border-border/40 flex items-center gap-3">
+                      {hasDirectPermit ? (
+                        <a href={qrUrl} target="_blank" rel="noopener noreferrer" className={wrapperClass} title={tProject("regulatoryPermit")} aria-label={tProject("regulatoryPermit")}>
+                          {QrInner}
+                        </a>
+                      ) : (
+                        <button onClick={() => setShowQrModal(true)} className={wrapperClass} title={tProject("regulatoryPermit")} aria-label={tProject("regulatoryPermit")}>
+                          {QrInner}
+                        </button>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-foreground">{tProject("regulatoryPermit")}</p>
+                        {hasDirectPermit && (
+                          <p className="text-[10px] text-muted-foreground mt-0.5">{tProject("openPermit")}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
               </motion.div>
 
               </div>
@@ -1553,6 +1636,45 @@ export default function PropertyDetailClient({
 
       {/* ── STICKY MOBILE CTA (shared 3-button component — labels live inside) ── */}
       <DetailStickyCta whatsappUrl={whatsappUrl} phone="+971555099157" entity={leadEntity} />
+
+      {/* Permit QR modal — enlarges the stored regulator QR for scanning. */}
+      <AnimatePresence>
+        {showQrModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowQrModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col items-center gap-3 max-w-[280px] sm:max-w-xs"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-48 h-48 sm:w-56 sm:h-56">
+                {hasStoredQr && (
+                  <NextImage src={qrSrc} alt={tProject("regulatoryPermit")} width={400} height={400} unoptimized className="w-full h-full" />
+                )}
+              </div>
+              <p className="text-sm font-semibold text-foreground text-center">{listing.title}</p>
+              {listing.permitNumber && (
+                <p className="text-xs text-muted-foreground text-center select-all">{listing.permitNumber}</p>
+              )}
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{tProject("regulatoryPermit")}</p>
+              <button
+                onClick={() => setShowQrModal(false)}
+                className="mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {tProject("tapToClose")}
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <NewsletterStrip source="property-detail" />
       <Footer />
