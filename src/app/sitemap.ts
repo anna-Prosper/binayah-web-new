@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { MongoClient } from "mongodb";
+import { MongoClient, type Db } from "mongodb";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
 import { OFFERS, isExpired } from "@/lib/offers";
@@ -13,19 +13,49 @@ import { isIndexableNewsArticle } from "@/lib/news-topicality";
 
 import { AE_URL, RU_BASE, SITE_URL } from "@/lib/site";
 
+/**
+ * One Mongo connection for the whole sitemap build.
+ *
+ * Every DB-backed helper below used to open its own MongoClient, connect,
+ * query and close. With fetchSlugDatesFromDb called three times (sales,
+ * rentals, buildings) that came to TEN Atlas connects per build — ten TLS
+ * handshakes and ten replica-set discoveries for one document.
+ *
+ * Returning a `close` rather than exposing the client keeps the lifetime in
+ * one place: helpers receive a Db they must not close, and the single owner
+ * closes it once in a finally. A helper that closed a shared client would
+ * break every sibling still using it — the failure this shape exists to make
+ * impossible.
+ *
+ * A failed connect resolves to db:null rather than throwing, so each helper
+ * takes the same fallback path it already had for a missing MONGODB_URI. The
+ * sitemap must still build when Mongo is unreachable.
+ */
+type SitemapDb = Db | null;
+
+async function openSitemapDb(): Promise<{ db: SitemapDb; close: () => Promise<void> }> {
+  const uri = process.env.MONGODB_URI;
+  const noop = async () => {};
+  if (!uri) return { db: null, close: noop };
+  const client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+  try {
+    await client.connect();
+    return { db: client.db(), close: () => client.close() };
+  } catch {
+    await client.close().catch(() => {});
+    return { db: null, close: noop };
+  }
+}
+
 // Fetch all slugs directly from MongoDB — bypasses the API's 100-item hard cap.
 // Falls back to empty array on any error so the sitemap still builds.
 async function fetchSlugDatesFromDb(
+  db: SitemapDb,
   collection: string,
   filter: Record<string, unknown> = {}
 ): Promise<{ slug: string; lastmod?: Date }[]> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return [];
-  let client: MongoClient | null = null;
+  if (!db) return [];
   try {
-    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
-    await client.connect();
-    const db = client.db();
     const docs = await db
       .collection(collection)
       .find(filter, { projection: { slug: 1, updatedAt: 1, _id: 0 } })
@@ -38,8 +68,6 @@ async function fetchSlugDatesFromDb(
       });
   } catch {
     return [];
-  } finally {
-    await client?.close();
   }
 }
 
@@ -48,11 +76,11 @@ async function fetchSlugDatesFromDb(
 // inventory — e.g. already-removed villas) and is excluded from search, so we
 // no longer advertise its URLs here either; that lets Google de-index the old
 // pages instead of us re-submitting removed listings each crawl.
-async function fetchAllListingSlugs(): Promise<{ slug: string; lastmod?: Date }[]> {
+async function fetchAllListingSlugs(db: SitemapDb): Promise<{ slug: string; lastmod?: Date }[]> {
   const filter = { publishStatus: "published", slug: { $exists: true, $ne: "" } };
   const [sales, rentals] = await Promise.all([
-    fetchSlugDatesFromDb("secondary_sales", filter),
-    fetchSlugDatesFromDb("secondary_rentals", filter),
+    fetchSlugDatesFromDb(db, "secondary_sales", filter),
+    fetchSlugDatesFromDb(db, "secondary_rentals", filter),
   ]);
   const seen = new Set<string>();
   const out: { slug: string; lastmod?: Date }[] = [];
@@ -71,16 +99,12 @@ async function fetchAllListingSlugs(): Promise<{ slug: string; lastmod?: Date }[
 // now unconditionally noindex (they were 84-95% duplicates of the parent, which
 // already renders all of their sections), so they are no longer submitted at all
 // and no flags are computed for them.
-async function fetchProjectsForSitemap(): Promise<
+async function fetchProjectsForSitemap(db: SitemapDb): Promise<
   { slug: string; lastmod?: Date; sub: { location: boolean } }[]
 > {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return [];
-  let client: MongoClient | null = null;
+  if (!db) return [];
   try {
-    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
-    await client.connect();
-    const docs = await client.db().collection("projects").find(
+    const docs = await db.collection("projects").find(
       { publishStatus: "published", slug: { $exists: true, $ne: "" } },
       { projection: { _id: 0, slug: 1, updatedAt: 1, locationDescription: 1, nearbyAttractions: 1 } }
     ).toArray();
@@ -99,8 +123,6 @@ async function fetchProjectsForSitemap(): Promise<
       });
   } catch {
     return [];
-  } finally {
-    await client?.close();
   }
 }
 
@@ -147,9 +169,8 @@ async function fetchDldMatrixCombos(): Promise<string[]> {
   return [...new Set(results.flat())];
 }
 
-async function fetchMatrixCombos(): Promise<string[]> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return [];
+async function fetchMatrixCombos(db: SitemapDb): Promise<string[]> {
+  if (!db) return [];
   const TYPE_SLUG: Record<string, string> = { Apartment: "apartments", Villa: "villas", Townhouse: "townhouses", Penthouse: "penthouses" };
   const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
   const nameToSlug = new Map<string, string>();
@@ -159,11 +180,8 @@ async function fetchMatrixCombos(): Promise<string[]> {
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
   }
-  let client: MongoClient | null = null;
   try {
-    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
-    await client.connect();
-    const rows = await client.db().collection("listings").aggregate([
+    const rows = await db.collection("listings").aggregate([
       { $match: { publishStatus: "published", community: { $nin: [null, ""] }, propertyType: { $in: Object.keys(TYPE_SLUG) }, bedrooms: { $gte: 0, $lte: 7 } } },
       { $group: { _id: { c: "$community", t: "$propertyType", b: "$bedrooms", lt: "$listingType" }, n: { $sum: 1 } } },
       { $match: { n: { $gte: 1 } } },
@@ -184,17 +202,14 @@ async function fetchMatrixCombos(): Promise<string[]> {
     return [...urls];
   } catch {
     return [];
-  } finally {
-    await client?.close();
   }
 }
 
 // Developer × community combos (/{dev}-projects-in-{community}) where the
 // developer has ≥2 projects in a (known) community — data-driven, so only
 // substantial pages are submitted.
-async function fetchDevCommunityCombos(): Promise<string[]> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return [];
+async function fetchDevCommunityCombos(db: SitemapDb): Promise<string[]> {
+  if (!db) return [];
   const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
   const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   const nameToSlug = new Map<string, string>();
@@ -204,11 +219,8 @@ async function fetchDevCommunityCombos(): Promise<string[]> {
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
   }
-  let client: MongoClient | null = null;
   try {
-    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
-    await client.connect();
-    const rows = await client.db().collection("projects").aggregate([
+    const rows = await db.collection("projects").aggregate([
       { $match: { publishStatus: "published", developerName: { $nin: [null, ""] }, community: { $nin: [null, ""] } } },
       { $group: { _id: { d: "$developerName", c: "$community" }, n: { $sum: 1 } } },
       { $match: { n: { $gte: 2 } } },
@@ -222,16 +234,13 @@ async function fetchDevCommunityCombos(): Promise<string[]> {
     return [...urls];
   } catch {
     return [];
-  } finally {
-    await client?.close();
   }
 }
 
 // Superlative pages (/cheapest-{type}-in-{community}) where the community has
 // >=3 for-sale listings of that type — enough to make a "ranked by price" page.
-async function fetchSuperlativeCombos(): Promise<string[]> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return [];
+async function fetchSuperlativeCombos(db: SitemapDb): Promise<string[]> {
+  if (!db) return [];
   const TYPE_SLUG: Record<string, string> = { Apartment: "apartments", Villa: "villas", Townhouse: "townhouses", Penthouse: "penthouses" };
   const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
   const nameToSlug = new Map<string, string>();
@@ -241,11 +250,8 @@ async function fetchSuperlativeCombos(): Promise<string[]> {
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
   }
-  let client: MongoClient | null = null;
   try {
-    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
-    await client.connect();
-    const rows = await client.db().collection("listings").aggregate([
+    const rows = await db.collection("listings").aggregate([
       { $match: { publishStatus: "published", listingType: "Sale", community: { $nin: [null, ""] }, propertyType: { $in: Object.keys(TYPE_SLUG) } } },
       { $group: { _id: { c: "$community", t: "$propertyType" }, n: { $sum: 1 } } },
       { $match: { n: { $gte: 3 } } },
@@ -259,8 +265,6 @@ async function fetchSuperlativeCombos(): Promise<string[]> {
     return [...urls];
   } catch {
     return [];
-  } finally {
-    await client?.close();
   }
 }
 
@@ -420,15 +424,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 // the sitemap on the next revalidate without a redeploy. `deadline` comes along
 // because expired promotions must never be submitted. Falls back to the bundled
 // array when the DB is unreachable (the sitemap still has to build).
-async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string; lastmod?: Date }[]> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return OFFERS.map((o) => ({ slug: o.slug, deadline: o.deadline }));
-  let client: MongoClient | null = null;
+async function fetchOffersForSitemap(db: SitemapDb): Promise<{ slug: string; deadline: string; lastmod?: Date }[]> {
+  if (!db) return OFFERS.map((o) => ({ slug: o.slug, deadline: o.deadline }));
   try {
-    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
-    await client.connect();
-    const docs = await client
-      .db()
+    const docs = await db
       .collection("offers")
       .find({ published: true }, { projection: { _id: 0, slug: 1, deadline: 1, updatedAt: 1 } })
       .toArray();
@@ -440,20 +439,13 @@ async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string
     }));
   } catch {
     return OFFERS.map((o) => ({ slug: o.slug, deadline: o.deadline }));
-  } finally {
-    await client?.close();
   }
 }
 
-async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }[]> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
-  let client: MongoClient | null = null;
+async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; lastmod?: Date }[]> {
+  if (!db) return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
   try {
-    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
-    await client.connect();
-    const docs = await client
-      .db()
+    const docs = await db
       .collection("guides")
       .find({ published: true }, { projection: { _id: 0, slug: 1, updatedAt: 1 } })
       .toArray();
@@ -464,18 +456,47 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
     }));
   } catch {
     return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
-  } finally {
-    await client?.close();
   }
 }
 
-  const [projects, listings, articles, reports, communities, developers, projectGuides, buildings] =
-    await Promise.all([
+  /**
+   * Every source in ONE parallel batch, over ONE Mongo connection.
+   *
+   * These were three groups before: a Promise.all, then seven sequential
+   * awaits, each opening its own client. Nothing here depends on anything
+   * else here, so the only reason for the split was how it grew.
+   *
+   * The connection is opened before the batch and closed in the finally
+   * below — helpers never close it, because a shared client closed by one
+   * caller breaks every sibling still reading from it.
+   */
+  const mongo = await openSitemapDb();
+  let projects: Awaited<ReturnType<typeof fetchProjectsForSitemap>>;
+  let listings: Awaited<ReturnType<typeof fetchAllListingSlugs>>;
+  let articles: Awaited<ReturnType<typeof fetchIndexableNewsForSitemap>>;
+  let reports: Awaited<ReturnType<typeof fetchSlugs>>;
+  let communities: Awaited<ReturnType<typeof fetchSlugs>>;
+  let developers: Awaited<ReturnType<typeof fetchSlugs>>;
+  let projectGuides: Awaited<ReturnType<typeof fetchSlugs>>;
+  let buildings: Awaited<ReturnType<typeof fetchSlugDatesFromDb>>;
+  let offers: Awaited<ReturnType<typeof fetchOffersForSitemap>>;
+  let guides: Awaited<ReturnType<typeof fetchGuidesForSitemap>>;
+  let matrixCombos: string[];
+  let dldMatrixCombos: string[];
+  let devCommunityCombos: string[];
+  let superlativeCombos: string[];
+  let agents: Awaited<ReturnType<typeof getAgents>>;
+
+  try {
+    [
+      projects, listings, articles, reports, communities, developers, projectGuides, buildings,
+      offers, guides, matrixCombos, dldMatrixCombos, devCommunityCombos, superlativeCombos, agents,
+    ] = await Promise.all([
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
       // 3000+ pages. MongoDB returns all published slugs with no cap.
-      fetchProjectsForSitemap(),
-      fetchAllListingSlugs(),
+      fetchProjectsForSitemap(mongo.db),
+      fetchAllListingSlugs(mongo.db),
       // News feed excludes weekly market reports — those live under /pulse/reports.
       // Off-topic articles are dropped here (see fetchIndexableNewsForSitemap).
       fetchIndexableNewsForSitemap(),
@@ -492,35 +513,25 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
       // isIndexable() guard in building/[slug]/page.tsx (≥3 sales AND a real
       // avg price) so a noindexed URL is never submitted. Thinner towers stay
       // reachable via sibling links and flip in automatically as DLD data grows.
-      fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gte: 3 }, avgPrice: { $gt: 0 } }),
+      fetchSlugDatesFromDb(mongo.db, "dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gte: 3 }, avgPrice: { $gt: 0 } }),
+      fetchOffersForSitemap(mongo.db),
+      fetchGuidesForSitemap(mongo.db),
+      // Populated bedroom × type × community combos (all types) — data-driven.
+      fetchMatrixCombos(mongo.db),
+      fetchDldMatrixCombos(),
+      // Developer × community combos (≥2 projects) — data-driven.
+      fetchDevCommunityCombos(mongo.db),
+      // Superlative (cheapest) combos — data-driven.
+      fetchSuperlativeCombos(mongo.db),
+      // Agent profiles substantive enough to index (real bio + RERA BRN).
+      getAgents(),
     ]);
+  } finally {
+    // Closed here and nowhere else, whether the batch resolved or threw.
+    await mongo.close();
+  }
 
-  /**
-   * The remaining sources, in parallel. They used to run as seven sequential
-   * awaits despite none depending on another, which mattered more than the
-   * usual latency argument: five of them open their OWN MongoClient, so a
-   * serial chain paid five separate Atlas connects — TLS handshake and replica
-   * set discovery each time — end to end rather than overlapped.
-   *
-   * matrix and dldMatrix are merged afterwards; they are independent of each
-   * other, only their union is used.
-   */
-  const [
-    offers, guides, matrixCombos, dldMatrixCombos,
-    devCommunityCombos, superlativeCombos, agents,
-  ] = await Promise.all([
-    fetchOffersForSitemap(),
-    fetchGuidesForSitemap(),
-    // Populated bedroom × type × community combos (all types) — data-driven.
-    fetchMatrixCombos(),
-    fetchDldMatrixCombos(),
-    // Developer × community combos (≥2 projects) — data-driven.
-    fetchDevCommunityCombos(),
-    // Superlative (cheapest) combos — data-driven.
-    fetchSuperlativeCombos(),
-    // Agent profiles substantive enough to index (real bio + RERA BRN).
-    getAgents(),
-  ]);
+  // matrix and dldMatrix are independent of each other; only their union is used.
   const allMatrixCombos = [...new Set([...matrixCombos, ...dldMatrixCombos])];
   const publishableAgents = agents.filter(isPublishableAgent);
 
