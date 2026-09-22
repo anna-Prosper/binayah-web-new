@@ -2,6 +2,7 @@
 import { Link, usePathname } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { LayoutGrid, FileText, MapPin, CreditCard } from "lucide-react";
+import { projectUrl, type ProjectSubPage } from "@/lib/routes";
 
 export function ProjectSubNav({ slug }: { slug: string }) {
   const pathname = usePathname();
@@ -18,7 +19,7 @@ export function ProjectSubNav({ slug }: { slug: string }) {
     <div className="bg-card border-b border-border/50 sticky top-[57px] z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex gap-2 overflow-x-auto scrollbar-hide">
         {links.map(({ suffix, label, Icon }) => {
-          const href = suffix ? `/project/${slug}/${suffix}` : `/project/${slug}`;
+          const href = projectUrl(slug, suffix as ProjectSubPage | undefined);
           const isActive = suffix
             ? pathname.endsWith(`/${suffix}`)
             : !["floor-plans", "location", "payment-plan"].some(s => pathname.endsWith(`/${s}`));

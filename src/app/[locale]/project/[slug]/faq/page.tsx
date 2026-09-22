@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { projectUrl } from "@/lib/routes";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const comm  = project.community ? commIn(locale, String(project.community)) : "";
   const dev   = project.developerName ? byDev(locale, String(project.developerName)) : "";
   const { title, desc } = faqMeta(locale, { name, comm, dev });
-  const path  = `/project/${slug}/faq`;
+  const path  = projectUrl(slug, "faq");
 
   return {
     title,
@@ -86,8 +87,8 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   const breadcrumbs = [
     { name: cp.home,                   href: `${lp}/` },
     { name: parentLabel,               href: `${lp}${parentHref}` },
-    { name: project.name,              href: `${lp}/project/${slug}` },
-    { name: leafLabel(locale, "faq"),  href: `${lp}/project/${slug}/faq` },
+    { name: project.name,              href: `${lp}${projectUrl(slug)}` },
+    { name: leafLabel(locale, "faq"),  href: `${lp}${projectUrl(slug, "faq")}` },
   ];
 
   return (

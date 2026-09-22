@@ -12,6 +12,7 @@ import { useRouter, usePathname } from "@/navigation";
 import { useSession } from "next-auth/react";
 import { useFavorites } from "./PropertyActions";
 import { apiUrl } from "@/lib/api";
+import { projectUrl, propertyUrl } from "@/lib/routes";
 import { useTranslations } from "next-intl";
 
 interface FavProperty {
@@ -232,7 +233,7 @@ export default function FavoritesDrawer() {
                     const displayTitle = p.title || p.name || "Property";
                     const displayPrice = formatPrice(p.price || p.startingPrice, p.currency || "AED", tCommon("priceOnRequest"));
                     const image = p.featuredImage || p.imageGallery?.[0];
-                    const href = p.title ? `/property/${p.slug}` : `/project/${p.slug}`;
+                    const href = p.title ? propertyUrl(p.slug) : projectUrl(p.slug);
                     const isOffPlan = !p.title || String(p.offplan) === "1" || p.completionStatus === "off_plan";
 
                     return (

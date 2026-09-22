@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Link } from "@/navigation";
 import { useFavorites } from "./PropertyActions";
 import { apiUrl } from "@/lib/api";
+import { projectUrl, propertyUrl } from "@/lib/routes";
 import { useTranslations } from "next-intl";
 
 interface FavProperty {
@@ -163,7 +164,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
         const displayTitle = p.title || p.name || "Property";
         const displayPrice = formatPrice(p.price || p.startingPrice, p.currency);
         const image = p.featuredImage || p.imageGallery?.[0];
-        const href = p.title ? `/property/${p.slug}` : `/project/${p.slug}`;
+        const href = p.title ? propertyUrl(p.slug) : projectUrl(p.slug);
         const isProject = !p.title;
         const isOffPlan = isProject || String(p.offplan) === "1" || p.completionStatus === "off_plan";
         const isForRent = p.listingType?.toLowerCase().includes("rent");

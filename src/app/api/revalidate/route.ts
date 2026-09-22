@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { projectRoutePattern } from "@/lib/routes";
 
 export const dynamic = "force-dynamic";
 
@@ -41,10 +42,12 @@ const DEFAULT_TARGETS: { path: string; type?: "page" | "layout" }[] = [
   // writes alone came to 63% of the hosting bill. A day-long window is only
   // safe because an edit can be published immediately from here — without
   // these entries a corrected price would have sat stale for 24 hours.
-  { path: "/[locale]/project/[slug]", type: "page" },
-  { path: "/[locale]/project/[slug]/floor-plans", type: "page" },
-  { path: "/[locale]/project/[slug]/payment-plan", type: "page" },
-  { path: "/[locale]/project/[slug]/location", type: "page" },
+  // Built from lib/routes.ts so the project URL shape lives in one place — a
+  // stale pattern here does not error, it silently makes revalidation a no-op.
+  { path: projectRoutePattern(), type: "page" },
+  { path: projectRoutePattern("floor-plans"), type: "page" },
+  { path: projectRoutePattern("payment-plan"), type: "page" },
+  { path: projectRoutePattern("location"), type: "page" },
   { path: "/[locale]/property/[slug]", type: "page" },
   // The sitemap reads news, offers and projects straight from the API and the
   // DB, so its contents drift the moment any of those change — but it was not

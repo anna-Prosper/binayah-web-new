@@ -8,6 +8,7 @@
 import type { Collection, Document } from "mongodb";
 import clientPromise from "@/lib/mongodb";
 import { tryDecrypt as safeDecrypt, fieldHash } from "@/lib/encryption";
+import { projectUrl, propertyUrl } from "@/lib/routes";
 import type {
   LeadSource,
   LeadStatus,
@@ -81,13 +82,13 @@ function mapInquiry(doc: Document): UnifiedLead {
     pageUrl:
       (doc.pageUrl as string) ||
       (doc.propertySlug
-        ? `/property/${doc.propertySlug}`
+        ? propertyUrl(doc.propertySlug as string)
         : channel.startsWith("project-detail:")
-          ? `/project/${channel.slice("project-detail:".length)}`
+          ? projectUrl(channel.slice("project-detail:".length))
           : channel.startsWith("property-detail:")
-            ? `/property/${channel.slice("property-detail:".length)}`
+            ? propertyUrl(channel.slice("property-detail:".length))
             : channel.startsWith("brochure-request:")
-              ? `/project/${channel.slice("brochure-request:".length)}`
+              ? projectUrl(channel.slice("brochure-request:".length))
               : undefined),
     pageTitle: (doc.pageTitle as string) || undefined,
     ip: (doc.ip as string) || undefined,
@@ -163,7 +164,7 @@ function mapProjectSubscribe(doc: Document): UnifiedLead {
     email: doc.email ? dec(doc.email as string) : undefined,
     phone: doc.phone ? dec(doc.phone as string) : undefined,
     project: doc.slug ? { slug: doc.slug, name: doc.projectName } : undefined,
-    pageUrl: doc.slug ? `/project/${doc.slug}` : undefined,
+    pageUrl: doc.slug ? projectUrl(doc.slug as string) : undefined,
     status: normalizeStatus(doc.status),
     assignedTo: doc.assignedTo || undefined,
     notes: normalizeNotes(doc.notes),

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { projectUrl } from "@/lib/routes";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const dev  = project.developerName ? byDev(locale, String(project.developerName)) : "";
   const area = String(project.community || project.city || "Dubai");
   const { title, desc } = locationMeta(locale, { name, comm, dev, area });
-  const path  = `/project/${slug}/location`;
+  const path  = projectUrl(slug, "location");
 
   // Only index when there's a real location write-up. Otherwise the page is
   // generic template prose + market boilerplate — crawlable (follow) but noindex.
@@ -54,7 +55,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: desc,
     alternates: hasContent
       ? { canonical: makeCanonical(locale, path), languages: altLangs(path) }
-      : { canonical: makeCanonical(locale, `/project/${slug}`) },
+      : { canonical: makeCanonical(locale, projectUrl(slug)) },
     openGraph:   {
       locale: OG_LOCALE[locale] ?? "en_AE", title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },
@@ -100,15 +101,15 @@ export default async function LocationPage({ params }: { params: Promise<{ local
   const breadcrumbs = [
     { name: cp.home,                        href: `${lp}/` },
     { name: parentLabel,                    href: `${lp}${parentHref}` },
-    { name: project.name,                   href: `${lp}/project/${slug}` },
-    { name: leafLabel(locale, "location"),  href: `${lp}/project/${slug}/location` },
+    { name: project.name,                   href: `${lp}${projectUrl(slug)}` },
+    { name: leafLabel(locale, "location"),  href: `${lp}${projectUrl(slug, "location")}` },
   ];
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type":    "RealEstateListing",
     name:        `${project.name}, Location`,
-    url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae"}/${locale}/project/${slug}/location`,
+    url:         makeCanonical(locale, projectUrl(slug, "location")),
     description: `Location and neighbourhood guide for ${project.name}`,
     address: {
       "@type":        "PostalAddress",

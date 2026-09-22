@@ -10,6 +10,7 @@ import { useRouter } from "@/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
 import { useTranslations } from "next-intl";
+import { projectUrl } from "@/lib/routes";
 
 const LOCAL_SUB_KEY = "binayah_project_subscriptions";
 const LOCAL_NOTIF_KEY = "binayah_notifications";
@@ -78,7 +79,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
     if (loading) return;
 
     if (!isAuthed) {
-      router.push(`/signin?callbackUrl=/project/${slug}`);
+      router.push(`/signin?callbackUrl=${encodeURIComponent(projectUrl(slug))}`);
       return;
     }
 

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { projectUrl } from "@/lib/routes";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const dev  = project.developerName ? byDev(locale, String(project.developerName)) : "";
   const dp   = project.downPayment ? downPay(locale, project.downPayment) : "";
   const { title, desc } = paymentPlanMeta(locale, { name, comm, dev, dp });
-  const path  = `/project/${slug}/payment-plan`;
+  const path  = projectUrl(slug, "payment-plan");
 
   return {
     title,
@@ -65,15 +66,15 @@ export default async function PaymentPlanPage({ params }: { params: Promise<{ lo
   const breadcrumbs = [
     { name: cp.home,                           href: `${lp}/` },
     { name: parentLabel,                       href: `${lp}${parentHref}` },
-    { name: project.name,                      href: `${lp}/project/${slug}` },
-    { name: leafLabel(locale, "paymentPlan"),  href: `${lp}/project/${slug}/payment-plan` },
+    { name: project.name,                      href: `${lp}${projectUrl(slug)}` },
+    { name: leafLabel(locale, "paymentPlan"),  href: `${lp}${projectUrl(slug, "payment-plan")}` },
   ];
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type":    "RealEstateListing",
     name:        `${project.name}, Payment Plan`,
-    url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae"}/${locale}/project/${slug}/payment-plan`,
+    url:         makeCanonical(locale, projectUrl(slug, "payment-plan")),
     description: `Payment plan details for ${project.name}`,
     address: {
       "@type":        "PostalAddress",

@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { projectUrl } from "@/lib/routes";
 import { MongoClient, type Db } from "mongodb";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
@@ -595,7 +596,7 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
   ];
 
   const dynamicPages: MetadataRoute.Sitemap = [
-    ...projects.map((p) => withAlternates(`/project/${p.slug}`, 0.8, "weekly", p.lastmod ?? now)),
+    ...projects.map((p) => withAlternates(projectUrl(p.slug), 0.8, "weekly", p.lastmod ?? now)),
     // Project sub-pages — /location ONLY. /faq, /floor-plans and /payment-plan
     // are unconditionally noindex (84-95% duplicates of the parent, which already
     // renders every one of those sections in full), so submitting them would both
@@ -604,7 +605,7 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
     // so we never submit a self-noindexing URL. Lean entries (no hreflang
     // alternates) to keep the sitemap under Vercel's 19 MB cap.
     ...projects.flatMap((p) =>
-      p.sub.location ? [plainEntry(`/project/${p.slug}/location`, 0.6, "weekly", p.lastmod ?? now)] : []
+      p.sub.location ? [plainEntry(projectUrl(p.slug, "location"), 0.6, "weekly", p.lastmod ?? now)] : []
     ),
     ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
     ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),

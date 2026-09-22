@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { projectUrl } from "@/lib/routes";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     ? project.unitTypes.join(", ")
     : "studio to penthouse";
   const { title, desc } = floorPlansMeta(locale, { name, comm, dev, unitStr });
-  const path  = `/project/${slug}/floor-plans`;
+  const path  = projectUrl(slug, "floor-plans");
 
   return {
     title,
@@ -71,15 +72,15 @@ export default async function FloorPlansPage({ params }: { params: Promise<{ loc
   const breadcrumbs = [
     { name: cp.home,                          href: `${lp}/` },
     { name: parentLabel,                      href: `${lp}${parentHref}` },
-    { name: project.name,                     href: `${lp}/project/${slug}` },
-    { name: leafLabel(locale, "floorPlans"),  href: `${lp}/project/${slug}/floor-plans` },
+    { name: project.name,                     href: `${lp}${projectUrl(slug)}` },
+    { name: leafLabel(locale, "floorPlans"),  href: `${lp}${projectUrl(slug, "floor-plans")}` },
   ];
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type":    "RealEstateListing",
     name:        `${project.name}, Floor Plans`,
-    url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae"}/${locale}/project/${slug}/floor-plans`,
+    url:         makeCanonical(locale, projectUrl(slug, "floor-plans")),
     description: `Floor plans and unit configurations for ${project.name}`,
     address: {
       "@type":        "PostalAddress",

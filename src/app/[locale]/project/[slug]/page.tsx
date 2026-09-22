@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { projectUrl } from "@/lib/routes";
 import { getProject, getRelatedProjects } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -94,7 +95,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   // seo.canonicalUrl values â legacy binayah.com/projects/<slug> (the old WP
   // path is now /dubai-projects/<slug>, so it 404s) or outdated .ae slugs â
   // so honoring the stored value risks canonicalising to a non-existent URL.
-  const path = `/project/${slug}`;
+  const path = projectUrl(slug);
   const canonicalUrl = makeCanonical(locale, path);
 
   return {
@@ -142,7 +143,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
     "@type": "RealEstateListing",
     name: project.name,
     description: project.shortOverview || project.overview || undefined,
-    url: `${siteUrl}/${locale}/project/${slug}`,
+    url: makeCanonical(locale, projectUrl(slug)),
     ...(project.featuredImage ? { image: [project.featuredImage] } : {}),
     ...(project.startingPrice ? {
       offers: {
@@ -230,7 +231,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   const breadcrumbs = [
     { name: locale === "fr" ? "Accueil" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${localePrefix}/` },
     { name: parentName,      href: `${localePrefix}${parentPath}` },
-    { name: project.name,    href: `${localePrefix}/project/${slug}` },
+    { name: project.name,    href: `${localePrefix}${projectUrl(slug)}` },
   ];
 
   return (
