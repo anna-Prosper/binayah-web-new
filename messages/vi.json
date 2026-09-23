@@ -3506,6 +3506,22 @@
     "waPrefill": "Chào Binayah! Tôi muốn Deal Check một bất động sản tôi vừa tìm được.",
     "tabLinkShort": "Liên kết",
     "tabUploadShort": "Ảnh",
-    "tabTextShort": "Văn bản"
+    "tabTextShort": "Văn bản",
+    "valConfidence": "Độ tin cậy",
+    "valRecentSales": "Giao dịch tương đương gần đây",
+    "valEstimate": "Trông giá trị bao nhiêu",
+    "valVsYear": "So với trung bình cả năm",
+    "valVsRecent": "So với giao dịch gần đây",
+    "valCompsTitle": "Những căn tương tự thực sự bán được bao nhiêu",
+    "valCompsIntro": "Giao dịch thật gần đây quanh đó — toà nhà, diện tích, ngày và giá chốt. Bạn tự kiểm tra được từng căn.",
+    "valListingsTitle": "Trên thị trường còn gì",
+    "valListingsIntro": "Những căn tương đương đang rao bán. Đây là giá chào, không phải giá đã bán.",
+    "valLockComps": "{count} giao dịch gần đây có tên — toà nhà, ngày, diện tích và giá chốt",
+    "valLockListings": "{count} căn đang cạnh tranh trên thị trường",
+    "valLockEstimate": "Căn này đáng giá bao nhiêu theo những giao dịch đó",
+    "valSourceNote": "Giao dịch gần đây và tin đang rao, khớp theo toà nhà, diện tích và số phòng ngủ. Đây là ước tính, không phải thẩm định chính thức.",
+    "valAsking": "Rao",
+    "valSold": "Đã bán",
+    "valQuickSale": "Nếu cần bán nhanh"
   }
 }

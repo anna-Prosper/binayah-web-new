@@ -3512,6 +3512,22 @@
     "waPrefill": "你好 Binayah！我想对一套房产做 Deal Check。",
     "tabLinkShort": "链接",
     "tabUploadShort": "截图",
-    "tabTextShort": "文字"
+    "tabTextShort": "文字",
+    "valConfidence": "可信度",
+    "valRecentSales": "近期同类成交",
+    "valEstimate": "看起来值多少",
+    "valVsYear": "对比全年均价",
+    "valVsRecent": "对比近期成交",
+    "valCompsTitle": "同类房子实际卖了多少",
+    "valCompsIntro": "附近真实的近期成交——楼盘、面积、日期和成交价。每一笔你都可以自己去核。",
+    "valListingsTitle": "市场上还有什么在卖",
+    "valListingsIntro": "目前在售的同类房源。这些是挂牌价，不是成交价。",
+    "valLockComps": "{count} 笔近期成交，含楼盘、日期、面积和成交价",
+    "valLockListings": "{count} 套正在竞争的在售房源",
+    "valLockEstimate": "根据这些成交，这套房子值多少",
+    "valSourceNote": "近期成交与在售房源，按楼盘、面积和卧室数匹配。这是估算，不是正式估值。",
+    "valAsking": "挂牌",
+    "valSold": "成交",
+    "valQuickSale": "如果需要快速出手"
   }
 }

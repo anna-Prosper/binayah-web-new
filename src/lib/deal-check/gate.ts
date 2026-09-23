@@ -12,6 +12,7 @@
  */
 
 import type { DealCheckReport, RentAssessment } from "./types";
+import type { ValuationDetail, ValuationTeaser } from "./valuation";
 
 /** What an ungated visitor receives. */
 export interface TeaserReport {
@@ -33,6 +34,9 @@ export interface TeaserReport {
     hasRental: boolean;
     hasSchedule: boolean;
   };
+  /** Confidence and one example comparable — enough to show the named
+   *  transactions exist without giving away the set. */
+  valuation: ValuationTeaser | null;
   /** Headline net yield is withheld; we only say whether we could model it. */
   dataAsOf: string | null;
   generatedAt: string;
@@ -46,6 +50,8 @@ export interface GatedRemainder {
   alternatives: DealCheckReport["alternatives"];
   assumptions: DealCheckReport["assumptions"];
   missing: string[];
+  /** The named comparables, the fair-value range and the competing listings. */
+  valuation: ValuationDetail | null;
 }
 
 export function splitReport(report: DealCheckReport): {
@@ -63,6 +69,7 @@ export function splitReport(report: DealCheckReport): {
       cashTotal: report.cash.totalWithPrice,
       cashCostsTotal: report.cash.total,
       cashPctOfPrice: price > 0 ? Math.round((report.cash.total / price) * 1000) / 10 : null,
+      valuation: report.valuation?.teaser ?? null,
       lockedCounts: {
         costLines: report.cash.lines.length,
         questions: report.questions.length,
@@ -80,6 +87,7 @@ export function splitReport(report: DealCheckReport): {
       alternatives: report.alternatives,
       assumptions: report.assumptions,
       missing: report.missing,
+      valuation: report.valuation?.detail ?? null,
     },
   };
 }

@@ -18,7 +18,14 @@ const COLLECTION = "deal_check_reports";
 const TTL_SECONDS = 24 * 60 * 60;
 
 export type StoredPayload =
-  | { kind: "purchase"; locked: GatedRemainder }
+  | {
+      kind: "purchase";
+      locked: GatedRemainder;
+      /** Everything unlock() needs to re-anchor the price on the valuation. */
+      valuationLeadId?: string | null;
+      input?: unknown;
+      dldPrice?: unknown;
+    }
   | { kind: "rent"; locked: { questions: DealQuestion[] } };
 
 /** Unguessable id — this is the only thing standing between the payload and
@@ -62,5 +69,11 @@ export async function unlockReport(id: string): Promise<StoredPayload | null> {
   if (doc.kind === "rent") {
     return { kind: "rent", locked: doc.locked as { questions: DealQuestion[] } };
   }
-  return { kind: "purchase", locked: doc.locked as GatedRemainder };
+  return {
+    kind: "purchase",
+    locked: doc.locked as GatedRemainder,
+    valuationLeadId: (doc.valuationLeadId as string | null) ?? null,
+    input: doc.input,
+    dldPrice: doc.dldPrice,
+  };
 }

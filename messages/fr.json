@@ -3506,6 +3506,22 @@
     "waPrefill": "Bonjour Binayah ! Je voudrais un Deal Check sur un bien que j'ai trouvé.",
     "tabLinkShort": "Lien",
     "tabUploadShort": "Photo",
-    "tabTextShort": "Texte"
+    "tabTextShort": "Texte",
+    "valConfidence": "Fiabilité",
+    "valRecentSales": "Ventes comparables récentes",
+    "valEstimate": "Ce que ça semble valoir",
+    "valVsYear": "Face à la moyenne de l'année",
+    "valVsRecent": "Face aux ventes récentes",
+    "valCompsTitle": "Ce que des logements similaires se sont vraiment vendus",
+    "valCompsIntro": "De vraies ventes récentes à côté — immeuble, surface, date et prix de vente. Vous pouvez vérifier chacune.",
+    "valListingsTitle": "Ce qu'il y a d'autre sur le marché",
+    "valListingsIntro": "Des logements comparables actuellement en vente. Ce sont des prix demandés, pas des prix de vente.",
+    "valLockComps": "{count} ventes récentes nommées — immeuble, date, surface et prix",
+    "valLockListings": "{count} logements concurrents actuellement en vente",
+    "valLockEstimate": "Ce que ce bien vaut d'après ces ventes",
+    "valSourceNote": "Ventes récentes et annonces en cours, appariées par immeuble, surface et nombre de chambres. Une estimation, pas une expertise.",
+    "valAsking": "Demandé",
+    "valSold": "Vendu",
+    "valQuickSale": "S'il vous fallait vendre vite"
   }
 }

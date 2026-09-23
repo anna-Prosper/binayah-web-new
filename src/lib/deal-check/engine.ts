@@ -952,3 +952,133 @@ function rentQuestions(input: DealInput, verdict: RentAssessment["verdict"]): De
 
   return q;
 }
+
+// ── Price, anchored on the valuation service ────────────────────────────────
+
+/**
+ * Re-anchor a price assessment on the per-unit valuation, keeping the DLD
+ * figure visible beside it.
+ *
+ * Why the valuation leads: its comparables are individually named, recent and
+ * checkable — a buyer can look up "Canal Bay, 1,264 sqft, AED 2.7M, July" and
+ * verify it. Our DLD median is a larger sample but anonymous, and spans the
+ * year to date, so it lags the market when prices move.
+ *
+ * Why DLD stays on screen: the valuation is an AI-assisted estimate from a
+ * portal feed, not a registry. Showing both means a bad estimate is visibly
+ * bad rather than silently authoritative — and where they disagree, that gap
+ * is itself information a buyer should have before negotiating.
+ */
+export function assessPriceWithValuation(
+  input: DealInput,
+  dld: PriceAssessment,
+  v: {
+    estimate: { low: number; high: number } | null;
+    comparableMedianPsf: number | null;
+    comparableCount: number;
+    confidence: string | null;
+    confidenceReason: string | null;
+  },
+): PriceAssessment {
+  const price = input.price;
+  const sqft = input.areaSqft;
+  const subjectPsf = price && sqft && sqft > 0 ? price / sqft : null;
+
+  // Prefer the fair-value range; fall back to the comparables' median PSF.
+  const estMidPsf =
+    v.estimate && sqft ? (v.estimate.low + v.estimate.high) / 2 / sqft : null;
+  const benchmarkPsf = estMidPsf ?? v.comparableMedianPsf;
+
+  if (!subjectPsf || !benchmarkPsf || v.comparableCount === 0) return dld;
+
+  const deltaPct = subjectPsf / benchmarkPsf - 1;
+
+  // The same implausibility guard as the DLD path — a rent read as a price
+  // must not produce a confident verdict whichever source benchmarks it.
+  if (
+    subjectPsf < PLAUSIBLE_SALE_PSF_MIN ||
+    deltaPct <= IMPLAUSIBLE_DELTA_BELOW ||
+    deltaPct >= IMPLAUSIBLE_DELTA_ABOVE
+  ) {
+    return dld;
+  }
+
+  const verdict: PriceAssessment["verdict"] =
+    deltaPct <= PRICE_BAND_WELL_BELOW
+      ? "well-below"
+      : deltaPct <= PRICE_BAND_BELOW
+        ? "below"
+        : deltaPct < PRICE_BAND_ABOVE
+          ? "in-line"
+          : deltaPct < PRICE_BAND_WELL_ABOVE
+            ? "above"
+            : "well-above";
+
+  const confidence: PriceAssessment["confidence"] =
+    v.comparableCount >= 12 ? "strong" : v.comparableCount >= 5 ? "usable" : "thin";
+
+  return {
+    ...dld,
+    basis: "valuation",
+    verdict,
+    deltaPct,
+    subjectPsf: money(subjectPsf),
+    comparablePsf: money(benchmarkPsf),
+    sampleSize: v.comparableCount,
+    confidence,
+    estimateLow: v.estimate?.low ?? null,
+    estimateHigh: v.estimate?.high ?? null,
+    recentPsf: v.comparableMedianPsf,
+    recentCount: v.comparableCount,
+    dldPsf: dld.comparablePsf,
+    dldSampleSize: dld.sampleSize,
+    comparableLabel: `${v.comparableCount} recent comparable ${v.comparableCount === 1 ? "sale" : "sales"}`,
+    summary: valuationSummary(verdict, deltaPct, v, input),
+    sourceGapNote: sourceGap(benchmarkPsf, dld.comparablePsf),
+    source: "Recent comparable sales nearby",
+  };
+}
+
+function valuationSummary(
+  verdict: PriceAssessment["verdict"],
+  deltaPct: number,
+  v: { comparableCount: number; estimate: { low: number; high: number } | null },
+  input: DealInput,
+): string {
+  const pct = Math.abs(deltaPct * 100);
+  const rounded = pct < 1 ? pct.toFixed(1) : Math.round(pct).toString();
+  const n = `${v.comparableCount} recent ${v.comparableCount === 1 ? "sale" : "sales"} of similar homes nearby`;
+  const range = v.estimate
+    ? ` Going on those, a place like this looks worth somewhere around AED ${Math.round(v.estimate.low).toLocaleString()}–${Math.round(v.estimate.high).toLocaleString()}.`
+    : "";
+
+  switch (verdict) {
+    case "well-below":
+      return `The asking price is about ${rounded}% below what ${n} actually went for.${range} A discount that size usually has a reason — worth asking what it is before you get excited.`;
+    case "below":
+      return `The asking price sits roughly ${rounded}% under what ${n} went for.${range} Keenly priced, and in the range where deals get done.`;
+    case "in-line":
+      return `The asking price is within ${rounded}% of what ${n} went for.${range} It's priced at the market, so any value has to come from the terms or the specific unit.`;
+    case "above":
+      return `The asking price is about ${rounded}% above what ${n} went for.${range} Not unusual for a better floor, view or finish — but it should be something you can point at.`;
+    case "well-above":
+      return `The asking price is around ${rounded}% above what ${n} went for.${range} That's a big premium. Unless this unit is materially better than the ones that sold, there's room to negotiate.`;
+    default:
+      return "";
+  }
+}
+
+/**
+ * When the recent comparables and the year-to-date registry disagree by more
+ * than a fifth, say so. It usually means the market has moved, which is
+ * exactly the sort of thing a buyer wants to know before making an offer.
+ */
+function sourceGap(recentPsf: number, dldPsf: number | null): string | null {
+  if (!dldPsf) return null;
+  const gap = recentPsf / dldPsf - 1;
+  if (Math.abs(gap) < 0.2) return null;
+  const pct = Math.round(Math.abs(gap) * 100);
+  return gap < 0
+    ? `Worth knowing: homes here have been selling about ${pct}% below the average for the year so far, so recent buyers have been paying less than the annual figure suggests.`
+    : `Worth knowing: homes here have been selling about ${pct}% above the average for the year so far — prices have been climbing through the year.`;
+}

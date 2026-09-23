@@ -46,6 +46,23 @@ export interface CostLine {
 }
 
 export interface PriceAssessment {
+  /**
+   * Which source produced the verdict. "valuation" = the per-unit estimate
+   * from recent named sales (the headline); "dld" = our registered-sales
+   * median (the fallback, and always shown as a cross-check).
+   */
+  basis?: "valuation" | "dld";
+  /** Fair-value range from the valuation service, when we have one. */
+  estimateLow?: number | null;
+  estimateHigh?: number | null;
+  /** Median closing PSF across the named recent comparables. */
+  recentPsf?: number | null;
+  recentCount?: number | null;
+  /** The DLD figure, kept visible even when it is not the headline. */
+  dldPsf?: number | null;
+  dldSampleSize?: number | null;
+  /** Set when the two sources disagree enough that the visitor should know. */
+  sourceGapNote?: string | null;
   verdict: "well-below" | "below" | "in-line" | "above" | "well-above" | "unknown";
   /** Subject price per sqft. */
   subjectPsf: number | null;
@@ -176,4 +193,7 @@ export interface DealCheckReport {
   assumptions: CostLine[];
   dataAsOf: string | null;
   generatedAt: string;
+  /** Per-unit valuation, when the upstream answered. Optional by design —
+   *  the report stands on DLD alone if it didn't. */
+  valuation?: import("./valuation").ValuationResult | null;
 }

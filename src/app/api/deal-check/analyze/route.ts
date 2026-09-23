@@ -202,7 +202,15 @@ export async function POST(req: NextRequest) {
         // see the security note in gate.ts.
         const { teaser, locked } = splitReport(report);
         const reportId = newReportId();
-        await storeReport(reportId, { kind: "purchase", locked }).catch((e) =>
+        await storeReport(reportId, {
+          kind: "purchase",
+          locked,
+          // Kept server-side so the unlock can release the named comparables
+          // and re-anchor the verdict without re-running the valuation.
+          valuationLeadId: report.valuation?.leadId ?? null,
+          input,
+          dldPrice: report.price,
+        }).catch((e) =>
           console.error("[deal-check] store failed:", e),
         );
 

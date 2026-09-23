@@ -26,6 +26,9 @@ import { notifyNewLead } from "@/lib/leads/notify";
 import { sendMail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { unlockReport } from "@/lib/deal-check/store";
+import { unlockValuation } from "@/lib/deal-check/valuation";
+import { assessPriceWithValuation } from "@/lib/deal-check/engine";
+import type { DealInput, PriceAssessment } from "@/lib/deal-check/types";
 
 export const dynamic = "force-dynamic";
 
@@ -155,11 +158,45 @@ export async function POST(req: NextRequest) {
 
   // The lead is stored and notifications are away — release the report.
   const reportId = typeof body.reportId === "string" ? body.reportId : null;
-  let locked: unknown = null;
+  let locked: Record<string, unknown> | null = null;
+  let price: PriceAssessment | null = null;
+
   if (reportId) {
     try {
       const payload = await unlockReport(reportId);
-      locked = payload?.locked ?? null;
+      locked = (payload?.locked as Record<string, unknown>) ?? null;
+
+      /**
+       * Release the per-unit valuation too. The upstream gates its named
+       * comparables behind a name and phone — the same two fields the visitor
+       * just gave us — so we pass them straight through. Nobody is asked
+       * twice, and the verdict is re-anchored on those recent named sales
+       * rather than the year-to-date registry median.
+       */
+      if (payload?.kind === "purchase" && payload.valuationLeadId && locked) {
+        const detail = await unlockValuation(payload.valuationLeadId, name, phone);
+        // The upstream intermittently returns an unlocked-but-empty result
+        // (transactions: [], estimate: null) for a query that succeeds on
+        // retry. Treated as "no valuation": the DLD-anchored report we already
+        // built stands on its own, so the visitor still gets a full answer.
+        if (detail && detail.comparables.length === 0) {
+          console.warn("[deal-check] valuation unlocked but empty — falling back to registry figures");
+        }
+        if (detail && detail.comparables.length > 0) {
+          locked = { ...locked, valuation: detail };
+          const input = payload.input as DealInput | undefined;
+          const dldPrice = payload.dldPrice as PriceAssessment | undefined;
+          if (input && dldPrice) {
+            price = assessPriceWithValuation(input, dldPrice, {
+              estimate: detail.estimate,
+              comparableMedianPsf: detail.comparableMedianPsf,
+              comparableCount: detail.comparables.length,
+              confidence: detail.confidence,
+              confidenceReason: detail.confidenceReason,
+            });
+          }
+        }
+      }
     } catch (e) {
       console.error("[deal-check] unlock fetch failed:", e);
     }
@@ -189,7 +226,9 @@ export async function POST(req: NextRequest) {
     `,
   }).catch(() => {});
 
-  return NextResponse.json({ ok: true, locked });
+  // `price` is present only when the valuation re-anchored the verdict;
+  // the client keeps its existing assessment otherwise.
+  return NextResponse.json({ ok: true, locked, price });
 }
 
 /** Whitelist + bound the summary so a crafted payload can't bloat the doc. */

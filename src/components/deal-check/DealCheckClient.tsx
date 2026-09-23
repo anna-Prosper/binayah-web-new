@@ -130,12 +130,20 @@ export default function DealCheckClient() {
     setError(null);
   };
 
-  const onUnlocked = (locked: unknown) => {
+  const onUnlocked = (locked: unknown, price?: unknown) => {
     if (!locked || !result) return;
     if (result.mode === "rent") {
       setRentQuestions((locked as { questions: DealQuestion[] }).questions ?? []);
     } else {
       setUnlocked(locked as Unlocked);
+      // The unlock can re-anchor the verdict on the newly released named
+      // comparables, which are more recent than the year-to-date registry.
+      // Swap the teaser's assessment for it when that happens.
+      if (price) {
+        setResult((r) =>
+          r ? { ...r, teaser: { ...(r.teaser as Teaser), price: price as Teaser["price"] } } : r,
+        );
+      }
     }
     setShowGate(false);
   };
@@ -232,7 +240,7 @@ function UnlockGate({
   teaser: Teaser | RentTeaser;
   mode: Mode;
   onClose: () => void;
-  onUnlocked: (locked: unknown) => void;
+  onUnlocked: (locked: unknown, price?: unknown) => void;
 }) {
   const t = useTranslations("dealCheck");
   const { value: hp, field: hpField } = useHoneypot();
@@ -292,7 +300,7 @@ function UnlockGate({
       }
 
       trackLead({ source: "deal-check" });
-      onUnlocked(j.locked);
+      onUnlocked(j.locked, j.price);
     } catch {
       setErr(t("errGeneric"));
     } finally {

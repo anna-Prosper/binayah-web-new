@@ -3506,6 +3506,22 @@
     "waPrefill": "היי Binayah! אשמח ל-Deal Check על נכס שמצאתי.",
     "tabLinkShort": "קישור",
     "tabUploadShort": "תמונה",
-    "tabTextShort": "טקסט"
+    "tabTextShort": "טקסט",
+    "valConfidence": "רמת ודאות",
+    "valRecentSales": "עסקאות דומות אחרונות",
+    "valEstimate": "כמה זה נראה שווה",
+    "valVsYear": "מול הממוצע השנתי",
+    "valVsRecent": "מול העסקאות האחרונות",
+    "valCompsTitle": "בכמה דירות דומות באמת נמכרו",
+    "valCompsIntro": "עסקאות אמיתיות אחרונות באזור — בניין, שטח, תאריך ומחיר סגירה. אפשר לבדוק כל אחת בעצמכם.",
+    "valListingsTitle": "מה עוד יש בשוק",
+    "valListingsIntro": "דירות דומות שמוצעות כרגע למכירה. אלה מחירי בקשה, לא מחירי מכירה.",
+    "valLockComps": "{count} עסקאות אחרונות עם שם — בניין, תאריך, שטח ומחיר סגירה",
+    "valLockListings": "{count} דירות מתחרות שמוצעות כרגע",
+    "valLockEstimate": "כמה הנכס שווה לפי אותן עסקאות",
+    "valSourceNote": "עסקאות אחרונות ומודעות פעילות, מותאמות לפי בניין, שטח ומספר חדרים. זו הערכה, לא שמאות רשמית.",
+    "valAsking": "מבקשים",
+    "valSold": "נמכר",
+    "valQuickSale": "אם הייתם צריכים למכור מהר"
   }
 }

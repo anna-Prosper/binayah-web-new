@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Link } from "@/navigation";
 import type { CostLine, DealAlternative, DealQuestion, RentalEconomics, CashRequired, PriceAssessment, DealInput } from "@/lib/deal-check/types";
+import type { ValuationDetail, ValuationTeaser } from "@/lib/deal-check/valuation";
 
 /** Server-side teaser shape — the locked half arrives separately on unlock. */
 export interface Teaser {
@@ -35,6 +36,7 @@ export interface Teaser {
     hasRental: boolean;
     hasSchedule: boolean;
   };
+  valuation: ValuationTeaser | null;
   dataAsOf: string | null;
   generatedAt: string;
 }
@@ -46,6 +48,7 @@ export interface Unlocked {
   alternatives: DealAlternative[];
   assumptions: CostLine[];
   missing: string[];
+  valuation: ValuationDetail | null;
 }
 
 const aed = (n: number | null | undefined) =>
@@ -238,6 +241,33 @@ export default function DealCheckReportView({
 
         <p className="text-sm leading-relaxed text-muted-foreground">{price.summary}</p>
 
+        {/* When the verdict is anchored on recent named sales, show the
+            year-to-date registry figure beside it. A visitor can see both and
+            judge for themselves — and where they disagree, that gap is the
+            most useful thing on the page. */}
+        {price.basis === "valuation" && price.dldPsf != null && (
+          <div className="mt-4 grid grid-cols-2 gap-2.5 sm:gap-4">
+            <div className="rounded-xl border border-border/50 bg-background/70 px-3 py-2.5 sm:px-4 sm:py-3">
+              <p className="text-xs text-muted-foreground mb-1">{t("valVsRecent")}</p>
+              <p className="text-base sm:text-lg font-semibold tabular-nums text-foreground">
+                {t("rentPerSqft", { value: aed(price.recentPsf ?? price.comparablePsf) })}
+              </p>
+            </div>
+            <div className="rounded-xl border border-border/50 bg-background/70 px-3 py-2.5 sm:px-4 sm:py-3">
+              <p className="text-xs text-muted-foreground mb-1">{t("valVsYear")}</p>
+              <p className="text-base sm:text-lg font-semibold tabular-nums text-muted-foreground">
+                {t("rentPerSqft", { value: aed(price.dldPsf) })}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {price.sourceGapNote && (
+          <p className="mt-3 rounded-xl bg-amber-50/70 border border-amber-200/50 px-4 py-3 text-sm leading-relaxed text-amber-900">
+            {price.sourceGapNote}
+          </p>
+        )}
+
         <footer className="mt-4 pt-4 border-t border-border/40 text-xs text-muted-foreground space-y-1">
           {price.comparableLabel && (
             <p>
@@ -389,6 +419,81 @@ export default function DealCheckReportView({
             items={[t("lockRentalYield"), t("lockRentalCosts"), t("lockRentalAssumptions")]}
           />
         )
+      )}
+
+
+      {/* ── What similar homes actually sold for ──────────────────────────
+          The strongest evidence on the page: named buildings, real dates and
+          closing prices a visitor can verify independently. Everything else
+          we show is a median or a model; this is the raw material. */}
+      {unlocked?.valuation && unlocked.valuation.comparables.length > 0 && (
+        <Card title={t("valCompsTitle")} icon={Building2}>
+          <p className="text-sm text-muted-foreground mb-4">{t("valCompsIntro")}</p>
+          <ul className="divide-y divide-border/40">
+            {unlocked.valuation.comparables.slice(0, 12).map((c, i) => (
+              <li key={`${c.headline}-${i}`} className="flex items-start justify-between gap-3 py-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground">{c.headline}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {[c.size, c.date].filter(Boolean).join(" · ")}
+                  </p>
+                </div>
+                <div className="text-end shrink-0">
+                  <p className="text-sm font-semibold text-foreground tabular-nums">{aed(c.price)}</p>
+                  {c.pricePerSqft && (
+                    <p className="text-xs text-muted-foreground tabular-nums">
+                      {t("rentPerSqft", { value: aed(c.pricePerSqft) })}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+            {t("valSourceNote")}
+          </p>
+        </Card>
+      )}
+
+      {/* Competing supply — asking prices, clearly labelled as such. */}
+      {unlocked?.valuation && unlocked.valuation.listings.length > 0 && (
+        <Card title={t("valListingsTitle")} icon={TrendingUp}>
+          <p className="text-sm text-muted-foreground mb-4">{t("valListingsIntro")}</p>
+          <ul className="divide-y divide-border/40">
+            {unlocked.valuation.listings.slice(0, 8).map((c, i) => (
+              <li key={`${c.headline}-${i}`} className="flex items-start justify-between gap-3 py-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground line-clamp-1">{c.headline}</p>
+                  {c.size && <p className="mt-0.5 text-xs text-muted-foreground">{c.size}</p>}
+                </div>
+                <div className="text-end shrink-0">
+                  <p className="text-sm font-semibold text-foreground tabular-nums">{aed(c.price)}</p>
+                  {c.pricePerSqft && (
+                    <p className="text-xs text-muted-foreground tabular-nums">
+                      {t("rentPerSqft", { value: aed(c.pricePerSqft) })}
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+
+      {/* Locked state — names what is behind the gate without faking it. */}
+      {!unlocked && teaser.valuation && teaser.valuation.comparableCount > 0 && (
+        <LockedCard
+          title={t("valCompsTitle")}
+          icon={Building2}
+          onUnlock={onUnlock}
+          items={[
+            t("valLockComps", { count: teaser.valuation.comparableCount }),
+            t("valLockEstimate"),
+            ...(teaser.valuation.listingCount > 0
+              ? [t("valLockListings", { count: teaser.valuation.listingCount })]
+              : []),
+          ]}
+        />
       )}
 
       {/* Claims — free. A visitor should see what they're being told, unprompted. */}

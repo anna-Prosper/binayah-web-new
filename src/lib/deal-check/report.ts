@@ -4,8 +4,10 @@
 
 import { findAlternatives } from "./alternatives";
 import { emptyComps, resolveComps } from "./comps";
+import { fetchValuation } from "./valuation";
 import {
   assessPrice,
+  assessPriceWithValuation,
   buildQuestions,
   buildVerdict,
   computeCash,
@@ -17,9 +19,19 @@ import type { CostLine, DealCheckReport, DealInput } from "./types";
 import { COSTS_CASH_RULE_NOTE, DLD_SERVICE_CHARGE_INDEX_URL } from "./constants";
 
 export async function buildReport(input: DealInput): Promise<DealCheckReport> {
-  // Comps first — the price assessment and the rental model both depend on it.
-  const comps = input.community ? await resolveComps(input) : emptyComps();
+  // Comps and the per-unit valuation run together — both are network-bound
+  // and neither depends on the other. The valuation is an enhancement, so a
+  // rejection here must not sink the report.
+  const [comps, valuation] = await Promise.all([
+    input.community ? resolveComps(input) : Promise.resolve(emptyComps()),
+    fetchValuation(input).catch(() => null),
+  ]);
 
+  // Before unlock we only hold the preview, which has no fair-value range —
+  // just a quick-sale band that sits deliberately BELOW fair value. Deriving
+  // a verdict from it would understate the market, so the teaser verdict
+  // stays on DLD and the valuation re-anchors it at unlock time, once the
+  // real estimate and the named comparables are available.
   const price = assessPrice(input, comps);
   const cash = computeCash(input);
   const rental = computeRental(input, comps, cash);
@@ -41,6 +53,7 @@ export async function buildReport(input: DealInput): Promise<DealCheckReport> {
     assumptions: buildAssumptions(input, rental),
     dataAsOf: comps.coverageStart,
     generatedAt: new Date().toISOString(),
+    valuation,
   };
 }
 
