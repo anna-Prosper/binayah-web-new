@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
 import { CSP_NONCE } from "@/lib/csp";
 import ProdAnalytics from "@/components/ProdAnalytics";
+import AttributionCapture from "@/components/AttributionCapture";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { FavoritesProvider } from "@/context/FavoritesContext";
@@ -248,6 +249,7 @@ export default async function LocaleLayout({
                   <CampaignPopup />
                   {/* Analytics (GTM/GA/Clarity/LiveChat) — host-gated on the
                       client so this layout stays statically cacheable. */}
+                  <AttributionCapture />
                   <ProdAnalytics nonce={nonce} />
                 </SubscriptionsProvider>
               </CompareProvider>

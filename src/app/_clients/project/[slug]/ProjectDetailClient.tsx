@@ -1,6 +1,7 @@
 "use client";
 
 import { IMAGE_PLACEHOLDER, dedupeImages } from "@/lib/images";
+import { getAttribution } from "@/lib/attribution";
 import { apiUrl } from "@/lib/api";
 import { waHref } from "@/lib/whatsapp";
 import { useHoneypot } from "@/components/Honeypot";
@@ -450,6 +451,8 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(),
           hp,
           name: enquiryForm.name,
           email: enquiryForm.email,

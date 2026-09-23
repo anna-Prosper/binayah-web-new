@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
+import { getAttribution } from "@/lib/attribution";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
@@ -36,6 +37,8 @@ export default function ContactPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(),
           ...form,
           hp,
           phone: form.phone ? `${form.countryCode} ${form.phone}` : "",

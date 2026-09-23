@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { getAttribution } from "@/lib/attribution";
 import { useState } from "react";
 import { CheckCircle2, Loader2, ArrowRight } from "lucide-react";
 import { useHoneypot } from "@/components/Honeypot";
@@ -40,6 +41,8 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(),
           name: form.name,
           email: form.email,
           phone: `${form.countryCode} ${form.phone}`,

@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { getAttribution } from "@/lib/attribution";
 import { Link, usePathname } from "@/navigation";
 import { X, Mail, Phone, ArrowRight, Lock, CheckCircle2 } from "lucide-react";
 import { apiUrl } from "@/lib/api";
@@ -186,6 +187,8 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(),
           hp,
           pageTitle: typeof document !== "undefined" ? document.title : "",
           pageUrl: typeof window !== "undefined" ? window.location.href : "",

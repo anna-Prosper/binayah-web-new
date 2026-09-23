@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { getAttribution } from "@/lib/attribution";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot, User, Headset } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -240,6 +241,8 @@ const AIChatWidget = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(),
           name: "AI Chat visitor", phone: raw, inquiryType: "ai-chat", source: "ai-chat",
           message: `Started the AI chat on ${typeof window !== "undefined" ? window.location.pathname : ""}`,
           hp: "",

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { getAttribution } from "@/lib/attribution";
 import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown, CheckCircle2, RotateCcw, Award, Gift, Building2 } from "lucide-react";
 import React, { useState } from "react";
 import { apiUrl } from "@/lib/api";
@@ -31,7 +32,9 @@ const InquirySection = () => {
       const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, hp, phone: `${form.countryCode} ${form.phone}`, source: "homepage-inquiry" }),
+        body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(), ...form, hp, phone: `${form.countryCode} ${form.phone}`, source: "homepage-inquiry" }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent(true);

@@ -2,6 +2,7 @@
 "use client";
 
 import { IMAGE_PLACEHOLDER, dedupeImages } from "@/lib/images";
+import { getAttribution } from "@/lib/attribution";
 import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
 import { useHoneypot } from "@/components/Honeypot";
@@ -574,6 +575,8 @@ export default function PropertyDetailClient({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(),
           hp,
           name: enquiryForm.name,
           phone: `${enquiryForm.countryCode}${enquiryForm.phone}`,

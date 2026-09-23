@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getAttribution } from "@/lib/attribution";
 import { X, FileText, Send, CheckCircle2 } from "lucide-react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
@@ -55,6 +56,8 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // where this session came from, captured on arrival (see lib/attribution)
+          ...getAttribution(),
           hp,
           name: form.name,
           email: form.email,
