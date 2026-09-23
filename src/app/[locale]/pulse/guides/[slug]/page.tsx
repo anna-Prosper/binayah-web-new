@@ -12,6 +12,7 @@ import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd"
 import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
 import { resolveGuideBody, translatedLocalesForGuideDoc } from "@/lib/guide-i18n";
 import { guideTitle, guideDescription } from "@/lib/guide-text";
+import { articleBodyText } from "@/lib/sanitize";
 
 export const revalidate = 86400;
 
@@ -145,6 +146,7 @@ export default async function GuideDetailPage({ params }: Props) {
         datePublished={published}
         dateModified={modified}
         wordCount={wordCount}
+        articleBody={articleBodyText(body)}
         locale={locale}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />

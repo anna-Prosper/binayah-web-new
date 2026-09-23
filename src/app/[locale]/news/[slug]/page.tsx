@@ -5,8 +5,8 @@ import { getNewsArticle, getRelatedNews, serverApiUrl } from "@/lib/api";
 import { getMarketStats } from "@/lib/market";
 import { canonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
-import { sanitizeArticleHtml } from "@/lib/sanitize";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { sanitizeArticleHtml, articleBodyText, newsBodyToPlainText } from "@/lib/sanitize";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { isIndexableNewsArticle } from "@/lib/news-topicality";
 import { newsAuthorOrDefault } from "@/lib/news-author";
 
@@ -85,6 +85,9 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   } catch {
     related = [];
   }
+  // Flattened once: feeds both articleBody and the wordCount derived from it.
+  const newsBodyText = articleBodyText(newsBodyToPlainText(article.body));
+  const newsWordCount = newsBodyText ? newsBodyText.split(/\s+/).filter(Boolean).length : undefined;
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
     { name: locale === "fr" ? "Accueil" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${localePrefix}/` },
@@ -102,24 +105,24 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
       <Suspense>
         <NewsDetailClient article={article} related={related} marketStats={marketStats} />
       </Suspense>
-      <script
-        type="application/ld+json"
+      {/* Was a hand-rolled block that omitted description/mainEntityOfPage and
+          drifted from the other three article types. Shares ArticleJsonLd now;
+          author stays a Person because 502 of these carry a real human byline
+          (newsAuthorOrDefault falls back to the editorial name for the rest). */}
+      <ArticleJsonLd
+        type="NewsArticle"
+        headline={article.title}
+        description={article.metaDescription || article.excerpt || article.title}
+        url={canonical(locale, `/news/${slug}`)}
+        imageUrl={article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`}
+        datePublished={article.publishedAt}
+        dateModified={article.updatedAt}
+        authorName={newsAuthorOrDefault(article.author)}
+        authorType="Person"
+        articleBody={newsBodyText}
+        wordCount={newsWordCount}
+        locale={locale}
         nonce={nonce}
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "NewsArticle",
-            headline: article.title,
-            image: article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`,
-            datePublished: article.publishedAt,
-            ...(article.updatedAt ? { dateModified: article.updatedAt } : {}),
-            // Was `article.author || "..."`, which published the raw WordPress user id
-            // (an integer) as the author's NAME in structured data for 762 articles.
-            author: { "@type": "Person", name: newsAuthorOrDefault(article.author) },
-            publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: `${AE_URL}/assets/binayah-logo.webp` } },
-            url: canonical(locale, `/news/${slug}`),
-          }).replace(/</g, "\\u003c"),
-        }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
     </>

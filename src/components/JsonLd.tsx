@@ -14,7 +14,10 @@ export function ArticleJsonLd({
   datePublished,
   dateModified,
   authorName = "Binayah Properties",
+  authorType = "Organization",
   wordCount,
+  articleBody,
+  type = "Article",
   locale = "en",
   nonce,
 }: {
@@ -25,18 +28,27 @@ export function ArticleJsonLd({
   datePublished: string;
   dateModified?: string;
   authorName?: string;
+  /** A named human byline is a Person; the house/editorial byline is the Organization. */
+  authorType?: "Organization" | "Person";
   wordCount?: number;
+  /** Plain text only — pass through articleBodyText(), never raw HTML. */
+  articleBody?: string;
+  /** NewsArticle for the news feed; Article elsewhere. */
+  type?: "Article" | "NewsArticle";
   locale?: string;
   nonce?: string;
 }) {
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": type,
     headline,
     description,
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    author: { "@type": "Organization", name: authorName, url: "https://www.binayah.ae" },
+    author:
+      authorType === "Person"
+        ? { "@type": "Person", name: authorName }
+        : { "@type": "Organization", name: authorName, url: "https://www.binayah.ae" },
     publisher: {
       "@type": "Organization",
       name: "Binayah Properties",
@@ -47,6 +59,7 @@ export function ArticleJsonLd({
     dateModified: dateModified ?? datePublished,
     ...(imageUrl ? { image: { "@type": "ImageObject", url: imageUrl } } : {}),
     ...(wordCount ? { wordCount } : {}),
+    ...(articleBody ? { articleBody } : {}),
     inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Binayah Properties", url: "https://www.binayah.ae" },
   };

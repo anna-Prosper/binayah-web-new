@@ -8,9 +8,10 @@ import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
 import WeeklyReportView, { type ReportData } from "@/components/WeeklyReportView";
 import { Link } from "@/navigation";
 import { serverApiUrl, serverFetch } from "@/lib/api";
-import { sanitizeArticleHtml } from "@/lib/sanitize";
+import { sanitizeArticleHtml, articleBodyText } from "@/lib/sanitize";
 import { getNonce } from "@/lib/nonce";
 import { canonical, altLangs, OG_LOCALE, AE_URL, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { Calendar, Clock, ArrowLeft, ArrowRight, FileText } from "lucide-react";
 
 export const revalidate = 3600;
@@ -115,6 +116,10 @@ export default async function ReportDetailPage({ params }: Props) {
   const rd = article.reportData;
   const hasStructured = !!(rd && (rd.kpis || (rd.movers && rd.movers.length) || (rd.launches && rd.launches.length)));
   const contentHtml = article.content ? sanitizeArticleHtml(article.content) : "";
+  // Derived from the sanitized body so the structured data matches what renders.
+  const bodyText = articleBodyText(contentHtml);
+  const wordCount = bodyText ? bodyText.split(/\s+/).filter(Boolean).length : undefined;
+  const localePrefix = locale === "en" ? "" : `/${locale}`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -181,39 +186,28 @@ export default async function ReportDetailPage({ params }: Props) {
 
       <Footer />
 
-      <script
-        type="application/ld+json"
+      {/* Was a hand-rolled Article block missing inLanguage/isPartOf/wordCount —
+          it duplicated ArticleJsonLd's job inline, which is how it drifted. */}
+      <ArticleJsonLd
+        headline={article.title}
+        description={article.excerpt || article.metaDescription || article.title}
+        url={canonical(locale, `/pulse/reports/${slug}`)}
+        imageUrl={article.featuredImage || DEFAULT_OG_IMAGE}
+        datePublished={article.publishedAt || new Date(0).toISOString()}
+        dateModified={article.updatedAt}
+        authorName={article.author || "Binayah Editorial"}
+        wordCount={wordCount}
+        articleBody={bodyText}
+        locale={locale}
         nonce={nonce}
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              "@context": "https://schema.org",
-              "@type": "Article",
-              headline: article.title,
-              description: article.excerpt,
-              image: [article.featuredImage || DEFAULT_OG_IMAGE],
-              datePublished: article.publishedAt,
-              dateModified: article.updatedAt || article.publishedAt,
-              author: { "@type": "Organization", name: article.author || "Binayah Editorial", url: AE_URL },
-              publisher: {
-                "@type": "Organization",
-                name: "Binayah Properties",
-                logo: { "@type": "ImageObject", url: `${AE_URL}/assets/binayah-logo.webp` },
-              },
-              mainEntityOfPage: { "@type": "WebPage", "@id": canonical(locale, `/pulse/reports/${slug}`) },
-              url: canonical(locale, `/pulse/reports/${slug}`),
-            },
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: `${AE_URL}/` },
-                { "@type": "ListItem", position: 2, name: "Market Reports", item: canonical(locale, "/pulse/reports") },
-                { "@type": "ListItem", position: 3, name: article.title },
-              ],
-            },
-          ]).replace(/</g, "\\u003c"),
-        }}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: `${localePrefix}/` },
+          { name: "Market Reports", href: `${localePrefix}/pulse/reports` },
+          { name: article.title, href: `${localePrefix}/pulse/reports/${slug}` },
+        ]}
+        nonce={nonce}
       />
     </div>
   );

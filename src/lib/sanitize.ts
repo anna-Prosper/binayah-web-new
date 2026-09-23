@@ -164,3 +164,102 @@ export function sanitizeDescriptions<T extends Record<string, unknown>>(obj: T):
   delete out.wpContent;
   return out as T;
 }
+
+// schema.org articleBody must be PLAIN TEXT — markup inside it is not stripped
+// by consumers, it is taken literally, so shipping raw HTML there publishes tag
+// soup as the article's text. Three of our four article types store HTML
+// (news, reports) or markdown (guides), so both have to collapse to prose here.
+//
+// The JSON-LD is duplicated page text with no rich-result value, so it is capped:
+// uncapped, a long report roughly doubles the HTML payload for zero rendering
+// benefit. Truncation is at a word boundary so the tail is not a broken word.
+const ARTICLE_BODY_MAX_CHARS = 12000;
+
+export function toPlainText(input: string | null | undefined): string {
+  if (!input) return "";
+  return input
+    // Block-level tags become paragraph breaks, so sentences don't run together.
+    .replace(/<\/(?:p|div|h[1-6]|li|tr|blockquote|section|article)>/gi, "\n\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    // Drop script/style bodies wholesale before the generic tag strip, otherwise
+    // their contents survive as text.
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, "")
+    .replace(/<[^>]+>/g, "")
+    // Markdown leftovers from guide bodies: heading/emphasis/link syntax.
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/^[ \t]*#{1,6}[ \t]+/gm, "")
+    .replace(/(\*\*|__|\*|_|`)/g, "")
+    // Entities that would otherwise read as literal &amp; in the structured data.
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0?39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+/** Plain text for JSON-LD articleBody, capped at a word boundary. */
+export function articleBodyText(input: string | null | undefined): string | undefined {
+  const text = toPlainText(input);
+  if (!text) return undefined;
+  if (text.length <= ARTICLE_BODY_MAX_CHARS) return text;
+  const cut = text.slice(0, ARTICLE_BODY_MAX_CHARS);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd() + "…";
+}
+
+/**
+ * News articles do NOT store HTML — `body` is an array of typed blocks
+ * (paragraph, section_title, stats, table, faq, quote, …). Flatten it to the
+ * prose a reader actually sees, so articleBody matches the rendered page
+ * rather than a JSON dump. Block types are the ten observed across the feed;
+ * an unknown type falls back to its `text` field if it has one, so a new
+ * block type degrades to partial text instead of vanishing.
+ */
+export function newsBodyToPlainText(body: unknown): string {
+  if (!Array.isArray(body)) return "";
+  const parts: string[] = [];
+  for (const raw of body) {
+    if (!raw || typeof raw !== "object") continue;
+    const b = raw as Record<string, any>;
+    switch (b.type) {
+      case "intro":
+      case "paragraph":
+      case "section_title":
+        if (b.text) parts.push(String(b.text));
+        break;
+      case "callout":
+        if (b.title) parts.push(String(b.title));
+        if (b.text) parts.push(String(b.text));
+        break;
+      case "quote":
+        if (b.text) parts.push(b.author ? `"${b.text}" — ${b.author}` : String(b.text));
+        break;
+      case "bullet_list":
+        if (Array.isArray(b.items)) parts.push(b.items.map((i: any) => String(i?.text ?? i ?? "")).filter(Boolean).join("\n"));
+        break;
+      case "stats":
+        if (b.title) parts.push(String(b.title));
+        if (Array.isArray(b.stats)) parts.push(b.stats.map((s: any) => `${s?.label ?? ""}: ${s?.value ?? ""}`.trim()).filter((s: string) => s !== ":").join("\n"));
+        break;
+      case "table":
+        if (Array.isArray(b.headers)) parts.push(b.headers.map(String).join(" | "));
+        if (Array.isArray(b.rows)) parts.push(b.rows.map((r: any) => (Array.isArray(r) ? r.map(String).join(" | ") : "")).filter(Boolean).join("\n"));
+        break;
+      case "faq":
+        if (Array.isArray(b.items)) parts.push(b.items.map((i: any) => `${i?.question ?? i?.q ?? ""} ${i?.answer ?? i?.a ?? ""}`.trim()).filter(Boolean).join("\n\n"));
+        break;
+      // `image` contributes no prose — alt/caption are the image's, not the article's.
+      case "image":
+        break;
+      default:
+        if (typeof b.text === "string") parts.push(b.text);
+    }
+  }
+  // Blocks may still carry inline markup/entities, so run the text cleaner over the join.
+  return toPlainText(parts.filter(Boolean).join("\n\n"));
+}

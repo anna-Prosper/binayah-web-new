@@ -3,6 +3,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import ProjectArticleDetailClient from "@/app/_clients/construction-updates/[slug]/ConstructionUpdateDetailClient";
+import { articleBodyText } from "@/lib/sanitize";
 
 const GUIDES_LABEL: Record<string, string> = {
   fr: "Guides de Projets",
@@ -85,6 +86,7 @@ export default async function ProjectArticlePage({ params }: Props) {
         datePublished={article.publishedAt || article.createdAt || new Date(0).toISOString()}
         dateModified={article.updatedAt}
         wordCount={article.wordCount}
+        articleBody={articleBodyText(article.body)}
         locale={locale}
       />
       <BreadcrumbJsonLd
