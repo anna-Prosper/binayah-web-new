@@ -79,18 +79,21 @@ const LABELS = {
 // Localized cross-link + empty-state copy (numbers/brand names stay verbatim).
 type CxStr = {
   offTitle: (n: string) => string; offBody: (n: string) => string;
+  /** Shown when the page DOES have a few rentals — offBody's "no rentals
+   *  right now" would be false copy in that case. */
+  offBodyFew: (n: string) => string;
   offBadge: string; from: string; viewAllOff: (n: string) => string;
   similarTitle: string; similarBody: (n: string) => string;
   studio: string; br: string; sqft: string; perYr: string;
 };
 const CX: Record<string, CxStr> = {
-  en: { offTitle: (n) => `Off-Plan Projects in ${n}`, offBody: (n) => `No rentals right now — but these new launches in ${n} are open for purchase with flexible payment plans.`, offBadge: "Off-Plan", from: "From", viewAllOff: (n) => `View all off-plan in ${n} →`, similarTitle: "Rentals Available in Dubai Right Now", similarBody: (n) => `No rentals in ${n} at the moment — explore similar options across Dubai.`, studio: "Studio", br: "BR", sqft: "sqft", perYr: "/ yr" },
-  fr: { offTitle: (n) => `Projets sur plan à ${n}`, offBody: (n) => `Aucune location pour le moment — mais ces nouveaux lancements à ${n} sont ouverts à l'achat avec des plans de paiement flexibles.`, offBadge: "Sur Plan", from: "À partir de", viewAllOff: (n) => `Voir tout le sur plan à ${n} →`, similarTitle: "Locations disponibles à Dubaï en ce moment", similarBody: (n) => `Aucune location à ${n} pour le moment — explorez des options similaires à Dubaï.`, studio: "Studio", br: "ch.", sqft: "pi²", perYr: "/ an" },
-  ar: { offTitle: (n) => `مشاريع على الخارطة في ${n}`, offBody: (n) => `لا توجد عقارات للإيجار حالياً — لكن هذه الإطلاقات الجديدة في ${n} متاحة للشراء بخطط سداد مرنة.`, offBadge: "على الخارطة", from: "ابتداءً من", viewAllOff: (n) => `عرض كل المشاريع على الخارطة في ${n} →`, similarTitle: "عقارات للإيجار متاحة في دبي الآن", similarBody: (n) => `لا توجد عقارات للإيجار في ${n} حالياً — استكشف خيارات مماثلة في جميع أنحاء دبي.`, studio: "استوديو", br: "غرفة", sqft: "قدم²", perYr: "/ سنة" },
-  zh: { offTitle: (n) => `${n}期房项目`, offBody: (n) => `目前暂无租盘——但${n}的这些新楼盘正在开放购买，并提供灵活付款计划。`, offBadge: "期房", from: "起价", viewAllOff: (n) => `查看${n}全部期房 →`, similarTitle: "迪拜当前可租房源", similarBody: (n) => `${n}目前暂无租盘——探索迪拜各地的类似选择。`, studio: "开间", br: "室", sqft: "平方英尺", perYr: "/年" },
-  vi: { offTitle: (n) => `Dự án off-plan tại ${n}`, offBody: (n) => `Hiện chưa có bất động sản cho thuê — nhưng các dự án mới tại ${n} đang mở bán với kế hoạch thanh toán linh hoạt.`, offBadge: "Off-Plan", from: "Từ", viewAllOff: (n) => `Xem tất cả off-plan tại ${n} →`, similarTitle: "Bất động sản cho thuê có sẵn tại Dubai ngay bây giờ", similarBody: (n) => `Hiện chưa có bất động sản cho thuê tại ${n} — khám phá các lựa chọn tương tự trên khắp Dubai.`, studio: "Studio", br: "PN", sqft: "foot²", perYr: "/ năm" },
-  he: { offTitle: (n) => `פרויקטים על הנייר ב-${n}`, offBody: (n) => `אין כרגע נכסים להשכרה — אך השקות חדשות אלו ב-${n} פתוחות לרכישה עם תוכניות תשלום גמישות.`, offBadge: "על הנייר", from: "החל מ-", viewAllOff: (n) => `צפו בכל הפרויקטים על הנייר ב-${n} →`, similarTitle: "נכסים להשכרה זמינים בדובאי כעת", similarBody: (n) => `אין כרגע נכסים להשכרה ב-${n} — גלו אפשרויות דומות ברחבי דובאי.`, studio: "סטודיו", br: 'חד״ש', sqft: "רגל²", perYr: "/ שנה" },
-  ru: { offTitle: (n) => `Новостройки в ${n}`, offBody: (n) => `Сейчас нет объектов в аренду — но эти новые проекты в ${n} открыты для покупки с гибкими планами оплаты.`, offBadge: "Новостройка", from: "от", viewAllOff: (n) => `Все новостройки в ${n} →`, similarTitle: "Доступная аренда в Дубае сейчас", similarBody: (n) => `Сейчас нет объектов в аренду в ${n} — посмотрите похожие варианты по Дубаю.`, studio: "Студия", br: "спальни", sqft: "кв. фут", perYr: "/ год" },
+  en: { offTitle: (n) => `Off-Plan Projects in ${n}`, offBody: (n) => `No rentals right now — but these new launches in ${n} are open for purchase with flexible payment plans.`, offBodyFew: (n) => `Limited rental stock in ${n} right now — these new launches are also open for purchase with flexible payment plans.`, offBadge: "Off-Plan", from: "From", viewAllOff: (n) => `View all off-plan in ${n} →`, similarTitle: "Rentals Available in Dubai Right Now", similarBody: (n) => `No rentals in ${n} at the moment — explore similar options across Dubai.`, studio: "Studio", br: "BR", sqft: "sqft", perYr: "/ yr" },
+  fr: { offTitle: (n) => `Projets sur plan à ${n}`, offBody: (n) => `Aucune location pour le moment — mais ces nouveaux lancements à ${n} sont ouverts à l'achat avec des plans de paiement flexibles.`, offBodyFew: (n) => `Offre locative limitée à ${n} en ce moment — ces nouveaux lancements sont aussi ouverts à l'achat avec des plans de paiement flexibles.`, offBadge: "Sur Plan", from: "À partir de", viewAllOff: (n) => `Voir tout le sur plan à ${n} →`, similarTitle: "Locations disponibles à Dubaï en ce moment", similarBody: (n) => `Aucune location à ${n} pour le moment — explorez des options similaires à Dubaï.`, studio: "Studio", br: "ch.", sqft: "pi²", perYr: "/ an" },
+  ar: { offTitle: (n) => `مشاريع على الخارطة في ${n}`, offBody: (n) => `لا توجد عقارات للإيجار حالياً — لكن هذه الإطلاقات الجديدة في ${n} متاحة للشراء بخطط سداد مرنة.`, offBodyFew: (n) => `المعروض للإيجار محدود في ${n} حالياً — وهذه الإطلاقات الجديدة متاحة للشراء أيضاً بخطط سداد مرنة.`, offBadge: "على الخارطة", from: "ابتداءً من", viewAllOff: (n) => `عرض كل المشاريع على الخارطة في ${n} →`, similarTitle: "عقارات للإيجار متاحة في دبي الآن", similarBody: (n) => `لا توجد عقارات للإيجار في ${n} حالياً — استكشف خيارات مماثلة في جميع أنحاء دبي.`, studio: "استوديو", br: "غرفة", sqft: "قدم²", perYr: "/ سنة" },
+  zh: { offTitle: (n) => `${n}期房项目`, offBody: (n) => `目前暂无租盘——但${n}的这些新楼盘正在开放购买，并提供灵活付款计划。`, offBodyFew: (n) => `${n}目前租盘有限——这些新楼盘同样开放购买，并提供灵活付款计划。`, offBadge: "期房", from: "起价", viewAllOff: (n) => `查看${n}全部期房 →`, similarTitle: "迪拜当前可租房源", similarBody: (n) => `${n}目前暂无租盘——探索迪拜各地的类似选择。`, studio: "开间", br: "室", sqft: "平方英尺", perYr: "/年" },
+  vi: { offTitle: (n) => `Dự án off-plan tại ${n}`, offBody: (n) => `Hiện chưa có bất động sản cho thuê — nhưng các dự án mới tại ${n} đang mở bán với kế hoạch thanh toán linh hoạt.`, offBodyFew: (n) => `Nguồn hàng cho thuê tại ${n} hiện còn hạn chế — các dự án mới này cũng đang mở bán với kế hoạch thanh toán linh hoạt.`, offBadge: "Off-Plan", from: "Từ", viewAllOff: (n) => `Xem tất cả off-plan tại ${n} →`, similarTitle: "Bất động sản cho thuê có sẵn tại Dubai ngay bây giờ", similarBody: (n) => `Hiện chưa có bất động sản cho thuê tại ${n} — khám phá các lựa chọn tương tự trên khắp Dubai.`, studio: "Studio", br: "PN", sqft: "foot²", perYr: "/ năm" },
+  he: { offTitle: (n) => `פרויקטים על הנייר ב-${n}`, offBody: (n) => `אין כרגע נכסים להשכרה — אך השקות חדשות אלו ב-${n} פתוחות לרכישה עם תוכניות תשלום גמישות.`, offBodyFew: (n) => `היצע ההשכרה ב-${n} מוגבל כרגע — גם ההשקות החדשות האלה פתוחות לרכישה עם תוכניות תשלום גמישות.`, offBadge: "על הנייר", from: "החל מ-", viewAllOff: (n) => `צפו בכל הפרויקטים על הנייר ב-${n} →`, similarTitle: "נכסים להשכרה זמינים בדובאי כעת", similarBody: (n) => `אין כרגע נכסים להשכרה ב-${n} — גלו אפשרויות דומות ברחבי דובאי.`, studio: "סטודיו", br: 'חד״ש', sqft: "רגל²", perYr: "/ שנה" },
+  ru: { offTitle: (n) => `Новостройки в ${n}`, offBody: (n) => `Сейчас нет объектов в аренду — но эти новые проекты в ${n} открыты для покупки с гибкими планами оплаты.`, offBodyFew: (n) => `Предложений в аренду в ${n} сейчас немного — эти новые проекты также доступны для покупки с гибкими планами оплаты.`, offBadge: "Новостройка", from: "от", viewAllOff: (n) => `Все новостройки в ${n} →`, similarTitle: "Доступная аренда в Дубае сейчас", similarBody: (n) => `Сейчас нет объектов в аренду в ${n} — посмотрите похожие варианты по Дубаю.`, studio: "Студия", br: "спальни", sqft: "кв. фут", perYr: "/ год" },
 } as const;
 
 export default async function RentInCommunityPage({
@@ -136,13 +139,19 @@ export default async function RentInCommunityPage({
   // a cross-page duplicate-content signal.
   let offPlanProjects: any[] = [];
   let similarListings: any[] = [];
-  if (totalCount === 0) {
+  // Off-plan shows whenever the rental grid is not full, not only when empty.
+  // 26 of 59 communities sit in a 1-5 rental "dead zone" and were getting
+  // neither a full grid nor their off-plan inventory. This page already decided
+  // off-plan is relevant to a rent-intent visitor when there are no rentals;
+  // this just extends the same call to a nearly-empty page.
+  if (totalCount < BATCH_SIZE) {
     // Via getRelatedProjects so the synonym fallback applies: this passed
     // `c.name` alone, and for JLT that is "Jumeirah Lakes Towers" while the
     // projects store "JLT" — 21 off-plan projects were invisible here.
     offPlanProjects = await getRelatedProjects(c.name, "", "", 6, c.synonyms ?? []);
 
-    if (offPlanProjects.length === 0) {
+    // Generic Dubai-wide block stays gated on a genuinely EMPTY page.
+    if (totalCount === 0 && offPlanProjects.length === 0) {
       try {
         const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Rent&limit=6`));
         if (similarRes.ok) {
@@ -212,7 +221,7 @@ export default async function RentInCommunityPage({
       {offPlanProjects.length > 0 && (
         <section className="mb-14">
           <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{X.offTitle(c.name)}</h2>
-          <p className="text-sm text-muted-foreground mb-6">{X.offBody(c.name)}</p>
+          <p className="text-sm text-muted-foreground mb-6">{totalCount === 0 ? X.offBody(c.name) : X.offBodyFew(c.name)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {offPlanProjects.map((p: any) => (
               <a key={p._id} href={`${localePrefix}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
