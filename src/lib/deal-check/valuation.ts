@@ -83,6 +83,18 @@ export interface ValuationDetail {
   methodologyNote: string | null;
   disclaimer: string | null;
   sourceLabel: string;
+  /** What actually swings the price on THIS unit — floor, view, condition.
+   *  The most actionable thing the upstream produces after the comparables. */
+  movingFactors: string[];
+  /** Pricing strategy in one line, e.g. where in the range to list. */
+  recommendation: string | null;
+  /** How the comparable set was assembled, so the sample is auditable. */
+  cohort: {
+    sameBuilding: number | null;
+    sameCommunity: number | null;
+    method: string | null;
+    subjectSizeSqft: number | null;
+  } | null;
 }
 
 export interface ValuationResult {
@@ -338,8 +350,26 @@ function shapeDetail(d: Record<string, unknown>): ValuationDetail {
     : null;
 
   const methodology = (d.valuation_methodology ?? {}) as Record<string, unknown>;
+  const cohortRaw = (d.cohort_breakdown ?? {}) as Record<string, unknown>;
+
+  const movingFactors = (Array.isArray(d.moving_factors) ? d.moving_factors : [])
+    .filter((f): f is string => typeof f === "string" && f.trim().length > 0)
+    // The preview returns placeholder text ("… unlocks with the full report");
+    // only the unlocked call carries the real factors.
+    .filter((f) => !/unlocks? with the full report/i.test(f))
+    .map((f) => f.trim().slice(0, 160))
+    .slice(0, 6);
 
   return {
+    movingFactors,
+    recommendation:
+      typeof d.recommendation === "string" ? d.recommendation.slice(0, 300) : null,
+    cohort: {
+      sameBuilding: num(cohortRaw.same_building),
+      sameCommunity: num(cohortRaw.same_community),
+      method: typeof cohortRaw.psf_method === "string" ? cohortRaw.psf_method : null,
+      subjectSizeSqft: num(cohortRaw.subject_size_sqft),
+    },
     estimate:
       num(d.estimate_low) && num(d.estimate_high)
         ? { low: num(d.estimate_low)!, high: num(d.estimate_high)! }

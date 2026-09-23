@@ -422,6 +422,112 @@ export default function DealCheckReportView({
       )}
 
 
+
+      {/* ── What it looks worth ───────────────────────────────────────────
+          Three ranges on one axis: what it would fetch in a hurry, what it is
+          worth, and what you would ask for it. A single number would hide the
+          spread, and the spread is the negotiating room. */}
+      {unlocked?.valuation?.estimate && (
+        <Card
+          title={t("valWorthTitle")}
+          icon={Scale}
+          aside={
+            unlocked.valuation.confidence ? (
+              <span className="text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 sm:py-1 rounded-full bg-emerald-50 text-emerald-700 whitespace-nowrap">
+                {t("valConfLabel")}: {unlocked.valuation.confidence}
+              </span>
+            ) : undefined
+          }
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4">
+            {[
+              { label: t("valQuick"), r: unlocked.valuation.quickSale, tone: "muted" as const },
+              { label: t("valFair"), r: unlocked.valuation.estimate, tone: "primary" as const },
+              { label: t("valList"), r: unlocked.valuation.recommendedList, tone: "muted" as const },
+            ]
+              .filter((x) => x.r)
+              .map((x) => (
+                <div
+                  key={x.label}
+                  className={`rounded-xl border px-4 py-3 ${
+                    x.tone === "primary"
+                      ? "border-[#0B3D2E]/20 bg-[#0B3D2E]/[0.04]"
+                      : "border-border/50 bg-background/70"
+                  }`}
+                >
+                  <p className="text-xs text-muted-foreground mb-1">{x.label}</p>
+                  <p
+                    className={`tabular-nums font-semibold ${
+                      x.tone === "primary" ? "text-lg text-foreground" : "text-sm text-muted-foreground"
+                    }`}
+                  >
+                    {aed(x.r!.low)} – {aed(x.r!.high)}
+                  </p>
+                </div>
+              ))}
+          </div>
+
+          {unlocked.valuation.recommendation && (
+            <div className="mt-4 rounded-xl bg-background/70 border border-border/60 px-4 py-3.5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/70">
+                {t("valRecommendation")}
+              </p>
+              <p className="mt-1.5 text-sm leading-relaxed text-foreground/80">
+                {unlocked.valuation.recommendation}
+              </p>
+            </div>
+          )}
+
+          <footer className="mt-4 pt-4 border-t border-border/40 space-y-1 text-xs text-muted-foreground">
+            {unlocked.valuation.confidenceReason && <p>{unlocked.valuation.confidenceReason}</p>}
+            {unlocked.valuation.cohort?.sameBuilding != null &&
+              unlocked.valuation.cohort.subjectSizeSqft != null && (
+                <p>
+                  {t("valCohortNote", {
+                    n: unlocked.valuation.cohort.sameBuilding,
+                    size: unlocked.valuation.cohort.subjectSizeSqft.toLocaleString(),
+                  })}{" "}
+                  {t("valMethodNote")}
+                </p>
+              )}
+          </footer>
+        </Card>
+      )}
+
+      {/* What actually swings the price on THIS unit — the most actionable
+          thing after the comparables themselves. */}
+      {unlocked?.valuation && unlocked.valuation.movingFactors.length > 0 && (
+        <Card title={t("valMovingTitle")} icon={TrendingUp}>
+          <p className="text-sm text-muted-foreground mb-4">{t("valMovingIntro")}</p>
+          <ul className="space-y-2.5">
+            {unlocked.valuation.movingFactors.map((f, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-sm text-foreground/85">
+                <span
+                  aria-hidden
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4A847]"
+                />
+                {f}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+
+      {/* The upstream's prose read of the market. Kept last of the valuation
+          blocks because it is context, not a number to act on. */}
+      {unlocked?.valuation?.marketRead && (
+        <Card title={t("valMarketRead")} icon={Building2}>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {unlocked.valuation.marketRead}
+          </p>
+          {unlocked.valuation.disclaimer && (
+            <p className="mt-4 pt-4 border-t border-border/40 text-xs text-muted-foreground/80">
+              {unlocked.valuation.disclaimer}
+            </p>
+          )}
+        </Card>
+      )}
+
       {/* ── What similar homes actually sold for ──────────────────────────
           The strongest evidence on the page: named buildings, real dates and
           closing prices a visitor can verify independently. Everything else
@@ -489,6 +595,7 @@ export default function DealCheckReportView({
           items={[
             t("valLockComps", { count: teaser.valuation.comparableCount }),
             t("valLockEstimate"),
+            t("valMovingTitle"),
             ...(teaser.valuation.listingCount > 0
               ? [t("valLockListings", { count: teaser.valuation.listingCount })]
               : []),

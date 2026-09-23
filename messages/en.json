@@ -3525,6 +3525,17 @@
     "valSourceNote": "Recent sales and live listings, matched on building, size and bedroom count. An estimate, not a formal valuation.",
     "valAsking": "Asking",
     "valSold": "Sold",
-    "valQuickSale": "If you needed a fast sale"
+    "valQuickSale": "If you needed a fast sale",
+    "valWorthTitle": "What this place looks worth",
+    "valFair": "Fair value",
+    "valList": "If you were listing it",
+    "valQuick": "For a fast sale",
+    "valConfLabel": "Confidence",
+    "valMovingTitle": "What moves the price on this one",
+    "valMovingIntro": "The things that push a unit like this above or below the range — worth checking each against the listing.",
+    "valRecommendation": "Pricing read",
+    "valMarketRead": "How the market looks right now",
+    "valCohortNote": "Based on {n} sales in the same building, matched on a {size} sqft unit.",
+    "valMethodNote": "Median of recent closings, with outliers trimmed."
   }
 }

@@ -106,6 +106,17 @@ const MARKET_STATS_AREA_ALIASES: Record<string, string> = {
   "jumeirah village circle": "JVC",
   "jumeirah beach residence": "JBR",
   "jumeirah lakes towers": "JLT",
+  // The callers pass `apiName` (the listings vocabulary), not `name`, so the
+  // singular "Lake" spelling is what actually arrives here — the plural key
+  // above never matched and JLT silently lost its stats band and FAQ schema.
+  // DLD_AREA_ALIASES carries both spellings for the same reason.
+  "jumeirah lake towers": "JLT",
+  // Likewise "Mohammed Bin Rashid City" is the apiName; the matrix calls it
+  // "MBR City". (Note DLD_AREA_ALIASES maps the same community to the *DLD*
+  // area "Hadaeq Sheikh Mohammed Bin Rashid" — a different vocabulary; these
+  // two maps are deliberately not interchangeable.)
+  "mohammed bin rashid city": "MBR City",
+  "mohamed bin rashid city": "MBR City",
 };
 
 // Fraction of the shorter word list matched, in order, as a contiguous run

@@ -3525,6 +3525,17 @@
     "valSourceNote": "Ventes récentes et annonces en cours, appariées par immeuble, surface et nombre de chambres. Une estimation, pas une expertise.",
     "valAsking": "Demandé",
     "valSold": "Vendu",
-    "valQuickSale": "S'il vous fallait vendre vite"
+    "valQuickSale": "S'il vous fallait vendre vite",
+    "valWorthTitle": "Ce que ce bien semble valoir",
+    "valFair": "Valeur de marché",
+    "valList": "Si vous le mettiez en vente",
+    "valQuick": "Pour une vente rapide",
+    "valConfLabel": "Fiabilité",
+    "valMovingTitle": "Ce qui fait bouger le prix sur celui-ci",
+    "valMovingIntro": "Ce qui place un bien comme celui-ci au-dessus ou en dessous de la fourchette — à vérifier un par un sur l'annonce.",
+    "valRecommendation": "Lecture du prix",
+    "valMarketRead": "L'état du marché en ce moment",
+    "valCohortNote": "D'après {n} ventes dans le même immeuble, pour un bien de {size} pi².",
+    "valMethodNote": "Médiane des ventes récentes, valeurs extrêmes écartées."
   }
 }

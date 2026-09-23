@@ -3531,6 +3531,17 @@
     "valSourceNote": "近期成交与在售房源，按楼盘、面积和卧室数匹配。这是估算，不是正式估值。",
     "valAsking": "挂牌",
     "valSold": "成交",
-    "valQuickSale": "如果需要快速出手"
+    "valQuickSale": "如果需要快速出手",
+    "valWorthTitle": "这套房子值多少",
+    "valFair": "合理价值",
+    "valList": "如果挂牌出售",
+    "valQuick": "想快速出手",
+    "valConfLabel": "可信度",
+    "valMovingTitle": "哪些因素影响这一套的价格",
+    "valMovingIntro": "会让同类房子高于或低于这个区间的因素——每一项都值得对照房源核一下。",
+    "valRecommendation": "定价建议",
+    "valMarketRead": "眼下市场是什么状况",
+    "valCohortNote": "基于同一楼盘的 {n} 笔成交，按 {size} 平方英尺的户型匹配。",
+    "valMethodNote": "近期成交的中位数，已剔除异常值。"
   }
 }

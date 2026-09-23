@@ -3525,6 +3525,17 @@
     "valSourceNote": "Giao dịch gần đây và tin đang rao, khớp theo toà nhà, diện tích và số phòng ngủ. Đây là ước tính, không phải thẩm định chính thức.",
     "valAsking": "Rao",
     "valSold": "Đã bán",
-    "valQuickSale": "Nếu cần bán nhanh"
+    "valQuickSale": "Nếu cần bán nhanh",
+    "valWorthTitle": "Căn này đáng giá bao nhiêu",
+    "valFair": "Giá hợp lý",
+    "valList": "Nếu bạn rao bán",
+    "valQuick": "Nếu cần bán nhanh",
+    "valConfLabel": "Độ tin cậy",
+    "valMovingTitle": "Điều gì tác động tới giá căn này",
+    "valMovingIntro": "Những yếu tố đẩy một căn như thế này lên trên hoặc xuống dưới khoảng giá — nên đối chiếu từng thứ với tin đăng.",
+    "valRecommendation": "Nhận định về giá",
+    "valMarketRead": "Thị trường lúc này ra sao",
+    "valCohortNote": "Dựa trên {n} giao dịch cùng toà nhà, khớp với căn {size} ft².",
+    "valMethodNote": "Trung vị các giao dịch gần đây, đã loại bỏ giá trị bất thường."
   }
 }
