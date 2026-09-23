@@ -161,7 +161,10 @@
       "newsletterEmail": "כתובת הדוא\"ל שלך",
       "newsletterCta": "הירשם",
       "subscribedSuccess": "נרשמת בהצלחה!",
-      "subscribeError": "משהו השתבש. נסה שוב."
+      "subscribeError": "משהו השתבש. נסה שוב.",
+      "newsletterPhone": "מספר טלפון",
+      "newsletterPhonePlaceholder": "+971 50 000 0000",
+      "newsletterPhoneError": "יש להזין מספר טלפון תקין."
     }
   },
   "home": {
@@ -1460,7 +1463,10 @@
     "authorBio": "צוות העריכה שלנו חוקר את שוק הנדל\"ן של Dubai, עוקב אחר נתוני DLD, השקות יזמים ומגמות השקעה כדי לשמור על קונים ומשקיעים מעודכנים.",
     "tocLabel": "במאמר זה",
     "subscribedSuccess": "נרשמת בהצלחה!",
-    "subscribeError": "משהו השתבש. אנא נסה שוב."
+    "subscribeError": "משהו השתבש. אנא נסה שוב.",
+    "newsletterPhone": "מספר טלפון",
+    "newsletterPhonePlaceholder": "+971 50 000 0000",
+    "newsletterPhoneError": "יש להזין מספר טלפון תקין."
   },
   "pulse": {
     "heroLabel": "מודיעין שוק",
@@ -2819,7 +2825,8 @@
       },
       "areas": "אזורים מעניינים",
       "budget": "טווח תקציב",
-      "cta": "שלחו לי את הדוח של יום שני"
+      "cta": "שלחו לי את הדוח של יום שני",
+      "phoneInvalid": "יש להזין מספר טלפון תקין."
     },
     "areasPlaceholder": "חפש קהילות...",
     "popularAreas": "פופולרי",

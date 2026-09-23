@@ -161,7 +161,10 @@
       "newsletterEmail": "Votre adresse e-mail",
       "newsletterCta": "S'abonner",
       "subscribedSuccess": "Vous êtes abonné !",
-      "subscribeError": "Quelque chose s'est mal passé. Veuillez réessayer."
+      "subscribeError": "Quelque chose s'est mal passé. Veuillez réessayer.",
+      "newsletterPhone": "Numéro de téléphone",
+      "newsletterPhonePlaceholder": "+971 50 000 0000",
+      "newsletterPhoneError": "Veuillez saisir un numéro de téléphone valide."
     }
   },
   "home": {
@@ -1460,7 +1463,10 @@
     "authorBio": "Notre équipe éditoriale étudie le marché immobilier de Dubai, en suivant les données du DLD, les lancements de promoteurs et les tendances d'investissement pour tenir les acheteurs et investisseurs informés.",
     "tocLabel": "DANS CET ARTICLE",
     "subscribedSuccess": "Vous êtes abonné(e) !",
-    "subscribeError": "Une erreur s'est produite. Veuillez réessayer."
+    "subscribeError": "Une erreur s'est produite. Veuillez réessayer.",
+    "newsletterPhone": "Numéro de téléphone",
+    "newsletterPhonePlaceholder": "+971 50 000 0000",
+    "newsletterPhoneError": "Veuillez saisir un numéro de téléphone valide."
   },
   "pulse": {
     "heroLabel": "Intelligence de marché",
@@ -2819,7 +2825,8 @@
       },
       "areas": "Zones d'intérêt",
       "budget": "Plage de budget",
-      "cta": "Envoyez-moi le rapport du lundi"
+      "cta": "Envoyez-moi le rapport du lundi",
+      "phoneInvalid": "Veuillez saisir un numéro de téléphone valide."
     },
     "areasPlaceholder": "Rechercher des quartiers...",
     "popularAreas": "Populaire",

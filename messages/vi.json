@@ -161,7 +161,10 @@
       "newsletterEmail": "Địa chỉ email của bạn",
       "newsletterCta": "Đăng ký",
       "subscribedSuccess": "Đã đăng ký thành công!",
-      "subscribeError": "Có lỗi xảy ra. Vui lòng thử lại."
+      "subscribeError": "Có lỗi xảy ra. Vui lòng thử lại.",
+      "newsletterPhone": "Số điện thoại",
+      "newsletterPhonePlaceholder": "+971 50 000 0000",
+      "newsletterPhoneError": "Vui lòng nhập số điện thoại hợp lệ."
     }
   },
   "home": {
@@ -1460,7 +1463,10 @@
     "authorBio": "Đội ngũ biên tập của chúng tôi nghiên cứu thị trường bất động sản Dubai, theo dõi dữ liệu DLD, các dự án của chủ đầu tư và xu hướng đầu tư để giữ cho người mua và nhà đầu tư được thông tin.",
     "tocLabel": "TRONG BÀI VIẾT NÀY",
     "subscribedSuccess": "Bạn đã đăng ký thành công!",
-    "subscribeError": "Đã xảy ra lỗi. Vui lòng thử lại."
+    "subscribeError": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "newsletterPhone": "Số điện thoại",
+    "newsletterPhonePlaceholder": "+971 50 000 0000",
+    "newsletterPhoneError": "Vui lòng nhập số điện thoại hợp lệ."
   },
   "pulse": {
     "heroLabel": "Thông tin thị trường",
@@ -2819,7 +2825,8 @@
       },
       "areas": "Khu vực quan tâm",
       "budget": "Khoảng ngân sách",
-      "cta": "Gửi tôi bản tin thứ Hai"
+      "cta": "Gửi tôi bản tin thứ Hai",
+      "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ."
     },
     "areasPlaceholder": "Tìm khu vực...",
     "popularAreas": "Phổ biến",

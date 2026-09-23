@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { phoneLooksValid } from "@/lib/phone-check";
 import { Check, X, ChevronDown, Loader2, TriangleAlert, Mail } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -648,13 +649,20 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
   }
 
   async function submit(isResend = false) {
+    // Phone is mandatory on every newsletter form; the API rejects a missing or
+    // malformed number too, so this is only to say so before the round trip.
+    if (!phoneLooksValid(form.phone)) {
+      setStatus("error");
+      setErrorMsg(t("form.phoneInvalid"));
+      return;
+    }
     if (!isResend) setStatus("loading");
     else setResending(true);
 
     const payload = {
       name: form.name.trim(),
       email: form.email.trim().toLowerCase(),
-      phone: form.phone || undefined,
+      phone: form.phone.trim(),
       intents: form.intents,
       areas: form.areas,
       propertyTypes: form.propertyTypes,
@@ -767,14 +775,12 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
       {/* Phone */}
       <div>
         <label className={labelClass} htmlFor="wsf-phone">
-          {t("form.phone")}{" "}
-          <span className={`normal-case tracking-normal font-normal text-[10px] ${mutedClass}`}>
-            ({t("form.optional")})
-          </span>
+          {t("form.phone")}
         </label>
         <input
           id="wsf-phone"
           type="tel"
+          required
           value={form.phone}
           onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
           placeholder={t("form.phonePlaceholder")}

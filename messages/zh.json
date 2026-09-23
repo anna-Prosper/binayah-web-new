@@ -167,7 +167,10 @@
       "newsletterEmail": "您的邮箱地址",
       "newsletterCta": "订阅",
       "subscribedSuccess": "订阅成功！",
-      "subscribeError": "出了点问题，请重试。"
+      "subscribeError": "出了点问题，请重试。",
+      "newsletterPhone": "电话号码",
+      "newsletterPhonePlaceholder": "+971 50 000 0000",
+      "newsletterPhoneError": "请输入有效的电话号码。"
     }
   },
   "home": {
@@ -1466,7 +1469,10 @@
     "authorBio": "我们的编辑团队深入研究迪拜房地产市场，追踪DLD数据、开发商动态和投资趋势。",
     "tocLabel": "本文内容",
     "subscribedSuccess": "订阅成功！",
-    "subscribeError": "出现错误，请重试。"
+    "subscribeError": "出现错误，请重试。",
+    "newsletterPhone": "电话号码",
+    "newsletterPhonePlaceholder": "+971 50 000 0000",
+    "newsletterPhoneError": "请输入有效的电话号码。"
   },
   "pulse": {
     "heroLabel": "市场情报",
@@ -2825,7 +2831,8 @@
       },
       "areas": "感兴趣的区域",
       "budget": "预算范围",
-      "cta": "发送周一报告给我"
+      "cta": "发送周一报告给我",
+      "phoneInvalid": "请输入有效的电话号码。"
     },
     "areasPlaceholder": "搜索社区...",
     "popularAreas": "热门区域",

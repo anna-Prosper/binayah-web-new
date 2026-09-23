@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Bookmark } from "lucide-react";
 import { HoneypotInput } from "@/components/Honeypot";
+import { phoneLooksValid } from "@/lib/phone-check";
 
-type SubState = "idle" | "loading" | "done" | "error";
+type SubState = "idle" | "loading" | "done" | "error" | "bad-phone";
 
 interface PropertyTypeSidebarNewsletterProps {
   slug: string;
@@ -13,6 +14,9 @@ interface PropertyTypeSidebarNewsletterProps {
     newsletterTitle: string;
     newsletterDesc: string;
     newsletterEmail: string;
+    newsletterPhone: string;
+    newsletterPhonePlaceholder: string;
+    newsletterPhoneError: string;
     newsletterCta: string;
     subscribedSuccess: string;
     subscribeError: string;
@@ -46,14 +50,21 @@ export default function PropertyTypeSidebarNewsletter({ slug, apiUrl, messages }
             e.preventDefault();
             const fd = new FormData(e.currentTarget);
             const email = fd.get("email");
+            const phone = String(fd.get("phone") || "").trim();
             if (!email) return;
+            // Phone is required on every newsletter form now, and enforced again
+            // server-side — this is the message the person actually reads.
+            if (!phoneLooksValid(phone)) {
+              setSubState("bad-phone");
+              return;
+            }
             const hp = String(fd.get("hp_check") || "");
             setSubState("loading");
             try {
               const res = await fetch(`${apiUrl || ""}/api/market-report/subscribe`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ hp, email: String(email), source: `property-type-${slug}` }),
+                body: JSON.stringify({ hp, email: String(email), phone, source: `property-type-${slug}` }),
               });
               setSubState(res.ok ? "done" : "error");
             } catch {
@@ -63,6 +74,14 @@ export default function PropertyTypeSidebarNewsletter({ slug, apiUrl, messages }
           className="space-y-2.5"
         >
           <HoneypotInput />
+          <input
+            type="tel"
+            name="phone"
+            required
+            placeholder={messages.newsletterPhonePlaceholder}
+            aria-label={messages.newsletterPhone}
+            className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+          />
           <input
             type="email"
             name="email"
@@ -79,6 +98,7 @@ export default function PropertyTypeSidebarNewsletter({ slug, apiUrl, messages }
             {subState === "loading" ? "..." : messages.newsletterCta}
           </button>
           {subState === "error" && <p className="text-xs text-red-500">{messages.subscribeError}</p>}
+          {subState === "bad-phone" && <p className="text-xs text-red-500">{messages.newsletterPhoneError}</p>}
         </form>
       )}
     </div>

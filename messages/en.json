@@ -161,7 +161,10 @@
       "newsletterEmail": "Your email address",
       "newsletterCta": "Subscribe",
       "subscribedSuccess": "You're subscribed!",
-      "subscribeError": "Something went wrong. Try again."
+      "subscribeError": "Something went wrong. Try again.",
+      "newsletterPhone": "Phone number",
+      "newsletterPhonePlaceholder": "+971 50 000 0000",
+      "newsletterPhoneError": "Enter a valid phone number."
     }
   },
   "home": {
@@ -1460,7 +1463,10 @@
     "authorBio": "Our editorial team researches Dubai's real estate market, tracking DLD data, developer launches, and investment trends to keep buyers and investors informed.",
     "tocLabel": "IN THIS ARTICLE",
     "subscribedSuccess": "You're subscribed!",
-    "subscribeError": "Something went wrong. Please try again."
+    "subscribeError": "Something went wrong. Please try again.",
+    "newsletterPhone": "Phone number",
+    "newsletterPhonePlaceholder": "+971 50 000 0000",
+    "newsletterPhoneError": "Enter a valid phone number."
   },
   "pulse": {
     "heroLabel": "Market Intelligence",
@@ -2819,7 +2825,8 @@
       },
       "areas": "Areas of interest",
       "budget": "Budget range",
-      "cta": "Send me Monday's report"
+      "cta": "Send me Monday's report",
+      "phoneInvalid": "Enter a valid phone number."
     },
     "areasPlaceholder": "Search communities...",
     "popularAreas": "Popular",

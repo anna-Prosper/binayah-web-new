@@ -161,7 +161,10 @@
       "newsletterEmail": "Ваш email",
       "newsletterCta": "Подписаться",
       "subscribedSuccess": "Вы подписаны!",
-      "subscribeError": "Что-то пошло не так. Попробуйте снова."
+      "subscribeError": "Что-то пошло не так. Попробуйте снова.",
+      "newsletterPhone": "Номер телефона",
+      "newsletterPhonePlaceholder": "+971 50 000 0000",
+      "newsletterPhoneError": "Введите действительный номер телефона."
     }
   },
   "home": {
@@ -1460,7 +1463,10 @@
     "authorBio": "Наша редакция изучает рынок недвижимости Дубая, отслеживая данные DLD, запуски проектов и инвестиционные тренды.",
     "tocLabel": "В ЭТОЙ СТАТЬЕ",
     "subscribedSuccess": "Вы подписаны!",
-    "subscribeError": "Что-то пошло не так. Попробуйте снова."
+    "subscribeError": "Что-то пошло не так. Попробуйте снова.",
+    "newsletterPhone": "Номер телефона",
+    "newsletterPhonePlaceholder": "+971 50 000 0000",
+    "newsletterPhoneError": "Введите действительный номер телефона."
   },
   "pulse": {
     "heroLabel": "Аналитика рынка",
@@ -2819,7 +2825,8 @@
       },
       "areas": "Интересующие районы",
       "budget": "Диапазон бюджета",
-      "cta": "Отправить мне отчёт в понедельник"
+      "cta": "Отправить мне отчёт в понедельник",
+      "phoneInvalid": "Введите действительный номер телефона."
     },
     "areasPlaceholder": "Поиск районов...",
     "popularAreas": "Популярные",

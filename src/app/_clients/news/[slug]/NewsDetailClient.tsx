@@ -28,6 +28,7 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 import ArticleBody, { type ArticleBlock } from "@/components/ArticleBody";
 import { HoneypotInput } from "@/components/Honeypot";
+import { phoneLooksValid } from "@/lib/phone-check";
 import { useState, useEffect, useRef } from "react";
 
 interface Article {
@@ -89,7 +90,7 @@ function NewsDetailInner({
   const [copied, setCopied] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);
-  const [subState, setSubState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [subState, setSubState] = useState<'idle' | 'loading' | 'done' | 'error' | 'bad-phone'>('idle');
   const articleRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -403,14 +404,20 @@ function NewsDetailInner({
                       e.preventDefault();
                       const fd = new FormData(e.currentTarget);
                       const email = fd.get("email");
+                      const phone = String(fd.get("phone") || "").trim();
                       if (!email) return;
+                      // Required on every newsletter form now; server re-checks.
+                      if (!phoneLooksValid(phone)) {
+                        setSubState('bad-phone');
+                        return;
+                      }
                       const hp = String(fd.get("hp_check") || "");
                       setSubState('loading');
                       try {
                         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/market-report/subscribe`, {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ hp, email: String(email), source: 'news-article' }),
+                          body: JSON.stringify({ hp, email: String(email), phone, source: 'news-article' }),
                         });
                         if (res.ok) {
                           setSubState('done');
@@ -424,6 +431,14 @@ function NewsDetailInner({
                     className="space-y-2.5"
                   >
                     <HoneypotInput />
+                    <input
+                      type="tel"
+                      name="phone"
+                      required
+                      placeholder={t("newsletterPhonePlaceholder")}
+                      aria-label={t("newsletterPhone")}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                    />
                     <input
                       type="email"
                       name="email"
@@ -440,6 +455,9 @@ function NewsDetailInner({
                     </button>
                     {subState === 'error' && (
                       <p className="text-xs text-red-500">{t("subscribeError")}</p>
+                    )}
+                    {subState === 'bad-phone' && (
+                      <p className="text-xs text-red-500">{t("newsletterPhoneError")}</p>
                     )}
                   </form>
                 )}

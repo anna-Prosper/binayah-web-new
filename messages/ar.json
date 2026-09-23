@@ -161,7 +161,10 @@
       "newsletterEmail": "بريدك الإلكتروني",
       "newsletterCta": "اشترك",
       "subscribedSuccess": "تم اشتراكك!",
-      "subscribeError": "حدث خطأ ما. حاول مرة أخرى."
+      "subscribeError": "حدث خطأ ما. حاول مرة أخرى.",
+      "newsletterPhone": "رقم الهاتف",
+      "newsletterPhonePlaceholder": "+971 50 000 0000",
+      "newsletterPhoneError": "يرجى إدخال رقم هاتف صحيح."
     }
   },
   "home": {
@@ -1460,7 +1463,10 @@
     "authorBio": "يبحث فريق تحريرنا في سوق العقارات في دبي، ويتتبع بيانات DLD وإطلاق المشاريع والاتجاهات الاستثمارية.",
     "tocLabel": "في هذا المقال",
     "subscribedSuccess": "تم الاشتراك!",
-    "subscribeError": "حدث خطأ. يرجى المحاولة مجدداً."
+    "subscribeError": "حدث خطأ. يرجى المحاولة مجدداً.",
+    "newsletterPhone": "رقم الهاتف",
+    "newsletterPhonePlaceholder": "+971 50 000 0000",
+    "newsletterPhoneError": "يرجى إدخال رقم هاتف صحيح."
   },
   "pulse": {
     "heroLabel": "تحليلات السوق",
@@ -2819,7 +2825,8 @@
       },
       "areas": "مناطق الاهتمام",
       "budget": "نطاق الميزانية",
-      "cta": "أرسل لي تقرير يوم الاثنين"
+      "cta": "أرسل لي تقرير يوم الاثنين",
+      "phoneInvalid": "يرجى إدخال رقم هاتف صحيح."
     },
     "areasPlaceholder": "ابحث عن المجتمعات...",
     "popularAreas": "الأكثر شيوعاً",
