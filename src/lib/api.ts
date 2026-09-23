@@ -154,15 +154,50 @@ export const getProject = cache(async (slug: string) =>
 // project↔project links are crawlable and pass link equity — unlike a
 // client-only fetch. Mirrors the params the client carousel already used.
 export const getRelatedProjects = cache(
-  async (community: string, developerName: string, excludeSlug: string, limit = 8): Promise<any[]> => {
-    const params = new URLSearchParams();
-    if (community) params.set("community", community);
-    else if (developerName) params.set("q", developerName);
-    if (excludeSlug) params.set("exclude", excludeSlug);
-    params.set("limit", String(limit));
-    const raw = await fetchJsonOr404<any[]>(`/api/projects?${params.toString()}`);
-    const arr = Array.isArray(raw) ? raw : [];
-    return arr.filter((p) => p?.slug && p.slug !== excludeSlug).slice(0, limit);
+  async (
+    community: string,
+    developerName: string,
+    excludeSlug: string,
+    limit = 8,
+    /**
+     * Alternative community spellings to retry with when `community` returns
+     * nothing. The `community` filter is an exact match, so a community whose
+     * canonical name differs from the value stored on projects returns 0 and
+     * the caller silently renders its "no projects" state.
+     *
+     * This was live on four off-plan hubs: "Dubai South (Dubai World Central)"
+     * returned 0 while "Dubai South" returned 24 (and 94 published projects
+     * exist in the collection); likewise JLT (21), JVT (24) and MBR City (2).
+     * Those pages told visitors and Google there were no projects in the area
+     * and linked six unrelated Dubai-wide launches instead.
+     *
+     * BUY_COMMUNITIES already carries a `synonyms` array for exactly this —
+     * it just was not being passed through.
+     */
+    synonyms: string[] = [],
+  ): Promise<any[]> => {
+    const fetchFor = async (value: string): Promise<any[]> => {
+      const params = new URLSearchParams();
+      if (value) params.set("community", value);
+      else if (developerName) params.set("q", developerName);
+      if (excludeSlug) params.set("exclude", excludeSlug);
+      params.set("limit", String(limit));
+      const raw = await fetchJsonOr404<any[]>(`/api/projects?${params.toString()}`);
+      const arr = Array.isArray(raw) ? raw : [];
+      return arr.filter((p) => p?.slug && p.slug !== excludeSlug).slice(0, limit);
+    };
+
+    const first = await fetchFor(community);
+    if (first.length > 0 || !community) return first;
+
+    // Exact-match miss — retry the known variants before giving up. Deduped and
+    // skipping the value we already tried.
+    for (const alt of synonyms) {
+      if (!alt || alt === community) continue;
+      const next = await fetchFor(alt);
+      if (next.length > 0) return next;
+    }
+    return first;
   }
 );
 export const getListing = cache(async (slug: string) =>

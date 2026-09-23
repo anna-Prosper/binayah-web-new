@@ -62,13 +62,13 @@ export async function generateMetadata({
 }
 
 const LABELS = {
-  en: { home: "Home", offplan: "Off-Plan", offplanIn: "Off-Plan Projects in", dubai: "Dubai", eyebrow: "NEW LAUNCHES" },
-  ru: { home: "Главная", offplan: "Новостройки", offplanIn: "Новостройки в", dubai: "Дубае", eyebrow: "НОВЫЕ ПРОЕКТЫ" },
-  ar: { home: "الرئيسية", offplan: "على الخارطة", offplanIn: "مشاريع على الخارطة في", dubai: "دبي", eyebrow: "إطلاقات جديدة" },
-  zh: { home: "首页", offplan: "期房", offplanIn: "期房项目, ", dubai: "迪拜", eyebrow: "新楼盘" },
-  vi: { home: "Trang chủ", offplan: "Off-Plan", offplanIn: "Dự án Off-Plan tại", dubai: "Dubai", eyebrow: "DỰ ÁN MỚI" },
-  he: { home: "בית", offplan: "על הנייר", offplanIn: "פרויקטים על הנייר ב", dubai: "דובאי", eyebrow: "השקות חדשות" },
-  fr: { home: "Accueil", offplan: "Sur Plan", offplanIn: "Projets sur plan à", dubai: "Dubaï", eyebrow: "NOUVEAUX LANCEMENTS" },
+  en: { home: "Home", offplan: "Off-Plan", offplanIn: "Off-Plan Projects in", dubai: "Dubai", eyebrow: "NEW LAUNCHES", whyHeading: (n) => `Why buy off-plan in ${n}` },
+  ru: { home: "Главная", offplan: "Новостройки", offplanIn: "Новостройки в", dubai: "Дубае", eyebrow: "НОВЫЕ ПРОЕКТЫ", whyHeading: (n) => `Почему стоит покупать новостройку в ${n}` },
+  ar: { home: "الرئيسية", offplan: "على الخارطة", offplanIn: "مشاريع على الخارطة في", dubai: "دبي", eyebrow: "إطلاقات جديدة", whyHeading: (n) => `لماذا الشراء على الخارطة في ${n}` },
+  zh: { home: "首页", offplan: "期房", offplanIn: "期房项目, ", dubai: "迪拜", eyebrow: "新楼盘", whyHeading: (n) => `为何在${n}购买期房` },
+  vi: { home: "Trang chủ", offplan: "Off-Plan", offplanIn: "Dự án Off-Plan tại", dubai: "Dubai", eyebrow: "DỰ ÁN MỚI", whyHeading: (n) => `Vì sao nên mua off-plan tại ${n}` },
+  he: { home: "בית", offplan: "על הנייר", offplanIn: "פרויקטים על הנייר ב", dubai: "דובאי", eyebrow: "השקות חדשות", whyHeading: (n) => `למה לקנות על הנייר ב-${n}` },
+  fr: { home: "Accueil", offplan: "Sur Plan", offplanIn: "Projets sur plan à", dubai: "Dubaï", eyebrow: "NOUVEAUX LANCEMENTS", whyHeading: (n) => `Pourquoi acheter sur plan à ${n}` },
 } as const;
 
 // Localized fallback + cross-link copy (numbers/brand names stay verbatim).
@@ -104,7 +104,10 @@ export default async function OffPlanInCommunityPage({
   // Server-fetch the community's off-plan projects so the hub renders crawlable
   // links to each project (the SearchPageClient list below is client-only).
   // This is the high-authority hub → project edge of the internal-link graph.
-  const communityProjects = await getRelatedProjects(apiCommunity, "", "", 24);
+  // `synonyms` is the fallback when the canonical apiName does not match the
+  // value stored on projects — without it four hubs rendered "no projects"
+  // over real inventory (see getRelatedProjects).
+  const communityProjects = await getRelatedProjects(apiCommunity, "", "", 24, c.synonyms ?? []);
 
   // When no projects exist for this community, load a sample from the wider
   // Dubai off-plan market so the page still has substantive content.
@@ -151,6 +154,16 @@ export default async function OffPlanInCommunityPage({
           <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{L.offplanIn} {c.name}, {L.dubai}</h1>
           <p className="text-primary-foreground/80 text-lg max-w-2xl">{localizeCommunityText(c.shortIntro, locale)}</p>
         </div>
+      </section>
+
+      {/* Area rationale — `why` is already authored and translated for all 7
+          locales in buy-communities.ts and was being fetched but never rendered,
+          leaving the page with one line of unique prose above a client-side
+          widget. It is the only substantial body copy that distinguishes one
+          community hub from another. */}
+      <section className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-10">
+        <h2 className="text-xl font-bold text-foreground mb-3">{L.whyHeading(c.name)}</h2>
+        <p className="text-muted-foreground leading-relaxed">{localizeCommunityText(c.why, locale)}</p>
       </section>
 
       {/* Real market depth: DLD/listings stats snapshot + data-driven FAQs + schema */}
