@@ -461,7 +461,10 @@
     "price": "Giá",
     "reset": "Đặt lại",
     "searchDeveloper": "Tìm chủ đầu tư",
-    "anyDeveloper": "Mọi chủ đầu tư"
+    "anyDeveloper": "Mọi chủ đầu tư",
+    "errorTitle": "Không thể tải kết quả",
+    "errorBody": "Đã xảy ra lỗi khi tải trang này. Vui lòng thử lại.",
+    "retry": "Thử lại"
   },
   "offPlan": {
     "title": "Bất Động Sản Off-Plan",

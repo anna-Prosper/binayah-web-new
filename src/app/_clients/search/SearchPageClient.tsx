@@ -252,6 +252,10 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
   const [projectCount, setProjectCount] = useState(initialData?.projectCount ?? 0);
   const [listingCount, setListingCount] = useState(initialData?.listingCount ?? 0);
   const [loading, setLoading] = useState(!initialData);
+  // A failed fetch used to only console.warn, leaving the PREVIOUS page's grid
+  // on screen under the new page number — which read as "pagination is broken,
+  // same results". Surface the failure instead of silently showing stale rows.
+  const [searchError, setSearchError] = useState(false);
   const projectsSectionRef = useRef<HTMLDivElement | null>(null);
   const listingsSectionRef = useRef<HTMLDivElement | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -343,6 +347,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
       clearTimeout(timeoutId);
       if (!response.ok) throw new Error("Search failed");
       const data = await response.json();
+      setSearchError(false);
       setProjects(data.projects || []);
       setListings(data.listings || []);
       setProjectCount(data.projectCount || 0);
@@ -358,6 +363,13 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
       });
     } catch (error) {
       console.warn("Search error:", error);
+      // Clear the stale grid so the user never sees page N-1's results
+      // presented as page N.
+      setSearchError(true);
+      setProjects([]);
+      setListings([]);
+      setProjectCount(0);
+      setListingCount(0);
     } finally {
       setLoading(false);
     }
@@ -746,6 +758,18 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
           <div className="min-w-0">
           {loading ? (
             <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>{t("searching")}</span></div>
+          ) : searchError ? (
+            <div className="flex flex-col items-center py-16 text-center">
+              <Search className="h-10 w-10 text-muted-foreground/25 mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-1">{t("errorTitle")}</h3>
+              <p className="text-sm text-muted-foreground mb-5 max-w-sm">{t("errorBody")}</p>
+              <button
+                onClick={() => { void fetchResults(); }}
+                className="text-sm font-semibold px-4 py-2 rounded-xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                {t("retry")}
+              </button>
+            </div>
           ) : totalResults === 0 ? (
             <div className="flex flex-col items-center py-16">
               <Search className="h-10 w-10 text-muted-foreground/25 mb-4" />

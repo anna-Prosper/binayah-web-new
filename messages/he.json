@@ -461,7 +461,10 @@
     "price": "מחיר",
     "reset": "איפוס",
     "searchDeveloper": "חיפוש יזם",
-    "anyDeveloper": "כל יזם"
+    "anyDeveloper": "כל יזם",
+    "errorTitle": "לא ניתן לטעון את התוצאות",
+    "errorBody": "אירעה שגיאה בטעינת הדף הזה. נסו שוב.",
+    "retry": "נסו שוב"
   },
   "offPlan": {
     "title": "נכסים על הנייר",

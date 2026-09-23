@@ -461,7 +461,10 @@
     "price": "Prix",
     "reset": "Réinitialiser",
     "searchDeveloper": "Rechercher un promoteur",
-    "anyDeveloper": "Tout promoteur"
+    "anyDeveloper": "Tout promoteur",
+    "errorTitle": "Impossible de charger les résultats",
+    "errorBody": "Une erreur s'est produite lors du chargement de cette page. Veuillez réessayer.",
+    "retry": "Réessayer"
   },
   "offPlan": {
     "title": "Biens sur plan",

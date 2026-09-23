@@ -467,7 +467,10 @@
     "price": "价格",
     "reset": "重置",
     "searchDeveloper": "搜索开发商",
-    "anyDeveloper": "所有开发商"
+    "anyDeveloper": "所有开发商",
+    "errorTitle": "无法加载结果",
+    "errorBody": "加载此页面时出错，请重试。",
+    "retry": "重试"
   },
   "offPlan": {
     "title": "迪拜期房",

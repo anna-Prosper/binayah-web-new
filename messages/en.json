@@ -461,7 +461,10 @@
     "price": "Price",
     "reset": "Reset",
     "searchDeveloper": "Search developer",
-    "anyDeveloper": "Any developer"
+    "anyDeveloper": "Any developer",
+    "errorTitle": "Couldn't load results",
+    "errorBody": "Something went wrong fetching this page. Please try again.",
+    "retry": "Try again"
   },
   "offPlan": {
     "title": "Off-Plan Properties",
