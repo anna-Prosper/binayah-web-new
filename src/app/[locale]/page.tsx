@@ -1,6 +1,9 @@
 import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import HomePageClient from "@/components/HomePageClient";
 import { getHomepageData } from "@/lib/api";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { HOME_CLIENT_NAMESPACES, pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
 import { FAQJsonLd, ReviewJsonLd } from "@/components/JsonLd";
@@ -265,6 +268,12 @@ export default async function HomePage({ params }: Props) {
   // Real Google reviews (null until Places API is enabled + GOOGLE_PLACE_ID set).
   const googleReviews = await getGoogleReviews();
 
+  // Homepage-only translation slice for the nested provider below.
+  const homeMessages = pickRouteMessages(
+    (await getMessages()) as Record<string, unknown>,
+    HOME_CLIENT_NAMESPACES,
+  );
+
   return (
     <>
       <FAQJsonLd faqs={faqs} />
@@ -282,6 +291,11 @@ export default async function HomePage({ params }: Props) {
           ratingCount={googleReviews.total}
         />
       )}
+      {/* The root layout's provider only carries the always-mounted chrome's
+          namespaces, so the homepage supplies its own on top. Only these extra
+          namespaces get serialised here — not the whole 80-namespace catalogue
+          that used to bloat this document. */}
+      <NextIntlClientProvider messages={homeMessages}>
       <HomePageClient
         saleListings={saleListings.filter(Boolean)}
         rentalListings={rentalListings.filter(Boolean)}
@@ -299,6 +313,7 @@ export default async function HomePage({ params }: Props) {
         roiHeaderSlot={<ROICalculatorIntro locale={locale} />}
         mortgageHeaderSlot={<MortgageCalculatorIntro locale={locale} />}
       />
+      </NextIntlClientProvider>
     </>
   );
 }

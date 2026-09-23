@@ -85,18 +85,21 @@ type CxStr = {
   guidePre: string; guideLink: (n: string) => string;
   ownPre: string; ownLink: (n: string) => string;
   offTitle: (n: string) => string; offBody: (n: string) => string;
+  /** Shown when the page DOES have a few secondary listings — offBody's
+   *  "no listings right now" would be false copy in that case. */
+  offBodyFew: (n: string) => string;
   offBadge: string; from: string; viewAllOff: (n: string) => string;
   similarTitle: string; similarBody: (n: string) => string;
   studio: string; br: string; sqft: string;
 };
 const CX: Record<string, CxStr> = {
-  en: { guidePre: "For schools, transport and the full area overview, read the", guideLink: (n) => `${n} community guide →`, ownPre: "Own here already?", ownLink: (n) => `Get a free ${n} property valuation →`, offTitle: (n) => `Off-Plan Projects in ${n}`, offBody: (n) => `No secondary market listings right now — but these off-plan launches are open for purchase in ${n}.`, offBadge: "Off-Plan", from: "From", viewAllOff: (n) => `View all off-plan in ${n} →`, similarTitle: "Properties Available in Dubai Right Now", similarBody: (n) => `No resale listings in ${n} at the moment — explore similar homes across Dubai.`, studio: "Studio", br: "BR", sqft: "sqft" },
-  fr: { guidePre: "Pour les écoles, les transports et l'aperçu complet du quartier, consultez le", guideLink: (n) => `guide du quartier ${n} →`, ownPre: "Déjà propriétaire ici ?", ownLink: (n) => `Obtenez une estimation gratuite à ${n} →`, offTitle: (n) => `Projets sur plan à ${n}`, offBody: (n) => `Aucune annonce sur le marché secondaire pour le moment — mais ces lancements sur plan sont ouverts à l'achat à ${n}.`, offBadge: "Sur Plan", from: "À partir de", viewAllOff: (n) => `Voir tout le sur plan à ${n} →`, similarTitle: "Biens disponibles à Dubaï en ce moment", similarBody: (n) => `Aucune annonce de revente à ${n} pour le moment — explorez des biens similaires à Dubaï.`, studio: "Studio", br: "ch.", sqft: "pi²" },
-  ar: { guidePre: "للمدارس والمواصلات ونظرة كاملة على المنطقة، اطّلع على", guideLink: (n) => `دليل منطقة ${n} →`, ownPre: "تملك عقاراً هنا بالفعل؟", ownLink: (n) => `احصل على تقييم مجاني لعقارك في ${n} →`, offTitle: (n) => `مشاريع على الخارطة في ${n}`, offBody: (n) => `لا توجد قوائم في السوق الثانوي حالياً — لكن هذه الإطلاقات على الخارطة متاحة للشراء في ${n}.`, offBadge: "على الخارطة", from: "ابتداءً من", viewAllOff: (n) => `عرض كل المشاريع على الخارطة في ${n} →`, similarTitle: "عقارات متاحة في دبي الآن", similarBody: (n) => `لا توجد قوائم إعادة بيع في ${n} حالياً — استكشف عقارات مماثلة في جميع أنحاء دبي.`, studio: "استوديو", br: "غرفة", sqft: "قدم²" },
-  zh: { guidePre: "了解学校、交通和完整的区域概览，请阅读", guideLink: (n) => `${n}社区指南 →`, ownPre: "已在此拥有房产？", ownLink: (n) => `获取${n}免费房产估值 →`, offTitle: (n) => `${n}期房项目`, offBody: (n) => `目前暂无二手市场房源——但${n}的这些期房楼盘正在开放购买。`, offBadge: "期房", from: "起价", viewAllOff: (n) => `查看${n}全部期房 →`, similarTitle: "迪拜当前在售房产", similarBody: (n) => `${n}目前暂无转售房源——探索迪拜各地的类似房产。`, studio: "开间", br: "室", sqft: "平方英尺" },
-  vi: { guidePre: "Về trường học, giao thông và tổng quan khu vực, hãy đọc", guideLink: (n) => `hướng dẫn khu vực ${n} →`, ownPre: "Đã sở hữu bất động sản ở đây?", ownLink: (n) => `Nhận định giá miễn phí tại ${n} →`, offTitle: (n) => `Dự án off-plan tại ${n}`, offBody: (n) => `Hiện chưa có tin thị trường thứ cấp — nhưng các dự án off-plan này đang mở bán tại ${n}.`, offBadge: "Off-Plan", from: "Từ", viewAllOff: (n) => `Xem tất cả off-plan tại ${n} →`, similarTitle: "Bất động sản có sẵn tại Dubai ngay bây giờ", similarBody: (n) => `Hiện chưa có tin bán lại tại ${n} — khám phá các bất động sản tương tự trên khắp Dubai.`, studio: "Studio", br: "PN", sqft: "foot²" },
-  he: { guidePre: "לבתי ספר, תחבורה וסקירת האזור המלאה, קראו את", guideLink: (n) => `מדריך האזור ${n} →`, ownPre: "כבר יש לכם נכס כאן?", ownLink: (n) => `קבלו הערכת שווי חינם ב-${n} →`, offTitle: (n) => `פרויקטים על הנייר ב-${n}`, offBody: (n) => `אין כרגע מודעות בשוק המשני — אך השקות אלו על הנייר פתוחות לרכישה ב-${n}.`, offBadge: "על הנייר", from: "החל מ-", viewAllOff: (n) => `צפו בכל הפרויקטים על הנייר ב-${n} →`, similarTitle: "נכסים זמינים בדובאי כעת", similarBody: (n) => `אין כרגע מודעות יד שנייה ב-${n} — גלו נכסים דומים ברחבי דובאי.`, studio: "סטודיו", br: 'חד״ש', sqft: "רגל²" },
-  ru: { guidePre: "Школы, транспорт и полный обзор района — читайте", guideLink: (n) => `гид по району ${n} →`, ownPre: "Уже владеете здесь?", ownLink: (n) => `Получите бесплатную оценку недвижимости в ${n} →`, offTitle: (n) => `Новостройки в ${n}`, offBody: (n) => `Сейчас нет объявлений на вторичном рынке — но эти новостройки открыты для покупки в ${n}.`, offBadge: "Новостройка", from: "от", viewAllOff: (n) => `Все новостройки в ${n} →`, similarTitle: "Доступная недвижимость в Дубае сейчас", similarBody: (n) => `Сейчас нет объявлений о перепродаже в ${n} — посмотрите похожие варианты по Дубаю.`, studio: "Студия", br: "спальни", sqft: "кв. фут" },
+  en: { guidePre: "For schools, transport and the full area overview, read the", guideLink: (n) => `${n} community guide →`, ownPre: "Own here already?", ownLink: (n) => `Get a free ${n} property valuation →`, offTitle: (n) => `Off-Plan Projects in ${n}`, offBody: (n) => `No secondary market listings right now — but these off-plan launches are open for purchase in ${n}.`, offBodyFew: (n) => `Limited resale stock in ${n} right now — these off-plan launches are also open for purchase.`, offBadge: "Off-Plan", from: "From", viewAllOff: (n) => `View all off-plan in ${n} →`, similarTitle: "Properties Available in Dubai Right Now", similarBody: (n) => `No resale listings in ${n} at the moment — explore similar homes across Dubai.`, studio: "Studio", br: "BR", sqft: "sqft" },
+  fr: { guidePre: "Pour les écoles, les transports et l'aperçu complet du quartier, consultez le", guideLink: (n) => `guide du quartier ${n} →`, ownPre: "Déjà propriétaire ici ?", ownLink: (n) => `Obtenez une estimation gratuite à ${n} →`, offTitle: (n) => `Projets sur plan à ${n}`, offBody: (n) => `Aucune annonce sur le marché secondaire pour le moment — mais ces lancements sur plan sont ouverts à l'achat à ${n}.`, offBodyFew: (n) => `Stock de revente limité à ${n} en ce moment — ces lancements sur plan sont également ouverts à l'achat.`, offBadge: "Sur Plan", from: "À partir de", viewAllOff: (n) => `Voir tout le sur plan à ${n} →`, similarTitle: "Biens disponibles à Dubaï en ce moment", similarBody: (n) => `Aucune annonce de revente à ${n} pour le moment — explorez des biens similaires à Dubaï.`, studio: "Studio", br: "ch.", sqft: "pi²" },
+  ar: { guidePre: "للمدارس والمواصلات ونظرة كاملة على المنطقة، اطّلع على", guideLink: (n) => `دليل منطقة ${n} →`, ownPre: "تملك عقاراً هنا بالفعل؟", ownLink: (n) => `احصل على تقييم مجاني لعقارك في ${n} →`, offTitle: (n) => `مشاريع على الخارطة في ${n}`, offBody: (n) => `لا توجد قوائم في السوق الثانوي حالياً — لكن هذه الإطلاقات على الخارطة متاحة للشراء في ${n}.`, offBodyFew: (n) => `المعروض في السوق الثانوي محدود في ${n} حالياً — وهذه الإطلاقات على الخارطة متاحة للشراء أيضاً.`, offBadge: "على الخارطة", from: "ابتداءً من", viewAllOff: (n) => `عرض كل المشاريع على الخارطة في ${n} →`, similarTitle: "عقارات متاحة في دبي الآن", similarBody: (n) => `لا توجد قوائم إعادة بيع في ${n} حالياً — استكشف عقارات مماثلة في جميع أنحاء دبي.`, studio: "استوديو", br: "غرفة", sqft: "قدم²" },
+  zh: { guidePre: "了解学校、交通和完整的区域概览，请阅读", guideLink: (n) => `${n}社区指南 →`, ownPre: "已在此拥有房产？", ownLink: (n) => `获取${n}免费房产估值 →`, offTitle: (n) => `${n}期房项目`, offBody: (n) => `目前暂无二手市场房源——但${n}的这些期房楼盘正在开放购买。`, offBodyFew: (n) => `${n}目前二手房源有限——这些期房项目同样可以购买。`, offBadge: "期房", from: "起价", viewAllOff: (n) => `查看${n}全部期房 →`, similarTitle: "迪拜当前在售房产", similarBody: (n) => `${n}目前暂无转售房源——探索迪拜各地的类似房产。`, studio: "开间", br: "室", sqft: "平方英尺" },
+  vi: { guidePre: "Về trường học, giao thông và tổng quan khu vực, hãy đọc", guideLink: (n) => `hướng dẫn khu vực ${n} →`, ownPre: "Đã sở hữu bất động sản ở đây?", ownLink: (n) => `Nhận định giá miễn phí tại ${n} →`, offTitle: (n) => `Dự án off-plan tại ${n}`, offBody: (n) => `Hiện chưa có tin thị trường thứ cấp — nhưng các dự án off-plan này đang mở bán tại ${n}.`, offBodyFew: (n) => `Nguồn hàng bán lại tại ${n} hiện còn hạn chế — các dự án off-plan này cũng đang mở bán.`, offBadge: "Off-Plan", from: "Từ", viewAllOff: (n) => `Xem tất cả off-plan tại ${n} →`, similarTitle: "Bất động sản có sẵn tại Dubai ngay bây giờ", similarBody: (n) => `Hiện chưa có tin bán lại tại ${n} — khám phá các bất động sản tương tự trên khắp Dubai.`, studio: "Studio", br: "PN", sqft: "foot²" },
+  he: { guidePre: "לבתי ספר, תחבורה וסקירת האזור המלאה, קראו את", guideLink: (n) => `מדריך האזור ${n} →`, ownPre: "כבר יש לכם נכס כאן?", ownLink: (n) => `קבלו הערכת שווי חינם ב-${n} →`, offTitle: (n) => `פרויקטים על הנייר ב-${n}`, offBody: (n) => `אין כרגע מודעות בשוק המשני — אך השקות אלו על הנייר פתוחות לרכישה ב-${n}.`, offBodyFew: (n) => `היצע יד שנייה מוגבל ב-${n} כרגע — גם ההשקות על הנייר האלה פתוחות לרכישה.`, offBadge: "על הנייר", from: "החל מ-", viewAllOff: (n) => `צפו בכל הפרויקטים על הנייר ב-${n} →`, similarTitle: "נכסים זמינים בדובאי כעת", similarBody: (n) => `אין כרגע מודעות יד שנייה ב-${n} — גלו נכסים דומים ברחבי דובאי.`, studio: "סטודיו", br: 'חד״ש', sqft: "רגל²" },
+  ru: { guidePre: "Школы, транспорт и полный обзор района — читайте", guideLink: (n) => `гид по району ${n} →`, ownPre: "Уже владеете здесь?", ownLink: (n) => `Получите бесплатную оценку недвижимости в ${n} →`, offTitle: (n) => `Новостройки в ${n}`, offBody: (n) => `Сейчас нет объявлений на вторичном рынке — но эти новостройки открыты для покупки в ${n}.`, offBodyFew: (n) => `Вторичных предложений в ${n} сейчас немного — эти новостройки также доступны для покупки.`, offBadge: "Новостройка", from: "от", viewAllOff: (n) => `Все новостройки в ${n} →`, similarTitle: "Доступная недвижимость в Дубае сейчас", similarBody: (n) => `Сейчас нет объявлений о перепродаже в ${n} — посмотрите похожие варианты по Дубаю.`, studio: "Студия", br: "спальни", sqft: "кв. фут" },
 } as const;
 
 export default async function BuyInCommunityPage({
@@ -145,13 +148,23 @@ export default async function BuyInCommunityPage({
   // identical generic block on top of them).
   let offPlanProjects: any[] = [];
   let similarListings: any[] = [];
-  if (totalCount === 0) {
+  // Show off-plan whenever the secondary grid is not full, not only when it is
+  // empty. Measured across all 59 communities: 34 have zero sale listings, but
+  // another 20 sit in a 1-5 "dead zone" — and 17 of those have 16-30 off-plan
+  // projects. At the old `=== 0` gate they got neither a real listing grid nor
+  // their off-plan inventory: /buy-property-in/jumeirah-lakes-towers shipped on
+  // ONE listing with 21 projects invisible. A partial row of resale stock is
+  // exactly where the off-plan alternative is most useful to a buyer.
+  if (totalCount < BATCH_SIZE) {
     // Via getRelatedProjects so the synonym fallback applies: this passed
     // `c.name` alone, and for JLT that is "Jumeirah Lakes Towers" while the
     // projects store "JLT" — 21 off-plan projects were invisible here.
     offPlanProjects = await getRelatedProjects(c.name, "", "", 6, c.synonyms ?? []);
 
-    if (offPlanProjects.length === 0) {
+    // The generic Dubai-wide block stays gated on a genuinely EMPTY page — it
+    // is a last resort for a community with nothing of its own, and would be
+    // filler on a page that already shows real local stock.
+    if (totalCount === 0 && offPlanProjects.length === 0) {
       try {
         const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Sale&limit=6`));
         if (similarRes.ok) {
@@ -244,7 +257,7 @@ export default async function BuyInCommunityPage({
       {offPlanProjects.length > 0 && (
         <section className="mb-14">
           <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{X.offTitle(c.name)}</h2>
-          <p className="text-sm text-muted-foreground mb-6">{X.offBody(c.name)}</p>
+          <p className="text-sm text-muted-foreground mb-6">{totalCount === 0 ? X.offBody(c.name) : X.offBodyFew(c.name)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {offPlanProjects.map((p: any) => (
               <a key={p._id} href={`${localePrefix}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">

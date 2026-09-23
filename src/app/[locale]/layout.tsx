@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { pickBaseMessages } from "@/i18n/client-namespaces";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
 import { CSP_NONCE } from "@/lib/csp";
 import ProdAnalytics from "@/components/ProdAnalytics";
@@ -190,7 +191,15 @@ export default async function LocaleLayout({
   // dynamically and disables the ISR/edge cache site-wide.
   setRequestLocale(locale);
 
-  const messages = await getMessages();
+  // Only the namespaces the always-mounted client chrome below actually reads
+  // (Navbar, Footer, WhatsAppButton, AIChatWidget, ScrollToTop, FavoritesDrawer,
+  // CookieConsent, …). Passing the WHOLE catalogue here serialised all 80
+  // namespaces — ~182KB of the homepage's 449KB inline RSC payload — into every
+  // page, including privacyPolicy/termsOfService/projectDetail that the page
+  // never renders. Pages needing more mount their own nested provider with a
+  // narrowed slice (see src/i18n/client-namespaces.ts).
+  const allMessages = await getMessages();
+  const messages = pickBaseMessages(allMessages as Record<string, unknown>);
   // Static per-deploy nonce (see src/lib/csp.ts) — read as a constant, NOT from
   // headers(), so this layout (and thus every page) can be statically cached.
   const nonce = CSP_NONCE;
