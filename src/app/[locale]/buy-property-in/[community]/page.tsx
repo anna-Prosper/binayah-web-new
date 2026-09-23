@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- SEO landing page; community copy is localized via localizeCommunityText, UI labels via the LABELS map */
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch, getDldBuildings, getRelatedProjects } from "@/lib/api";
@@ -352,20 +355,22 @@ export default async function BuyInCommunityPage({
   );
 
   return (
-    <>
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <ListingsPageClient
-        initialListings={initialListings}
-        totalCount={totalCount}
-        listingType="Sale"
-        title={`${L.forSale} ${c.name}`}
-        subtitle={localizeCommunityText(c.shortIntro, locale)}
-        initialPage={1}
-        batchSize={BATCH_SIZE}
-        community={apiCommunity}
-        headerSlot={headerSlot}
-        emptyState={emptyState}
-      />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail", "rent"])}>
+      <>
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <ListingsPageClient
+          initialListings={initialListings}
+          totalCount={totalCount}
+          listingType="Sale"
+          title={`${L.forSale} ${c.name}`}
+          subtitle={localizeCommunityText(c.shortIntro, locale)}
+          initialPage={1}
+          batchSize={BATCH_SIZE}
+          community={apiCommunity}
+          headerSlot={headerSlot}
+          emptyState={emptyState}
+        />
+      </>
+    </NextIntlClientProvider>
   );
 }

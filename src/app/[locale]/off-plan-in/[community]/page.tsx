@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- SEO landing page; community copy localized via localizeCommunityText, UI labels via the LABELS map */
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -140,93 +143,95 @@ export default async function OffPlanInCommunityPage({
   ];
 
   return (
-    <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <Navbar />
-
-      <section
-        className="relative overflow-hidden pt-28 pb-12 text-white"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{L.eyebrow}</p>
-          <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{L.offplanIn} {c.name}, {L.dubai}</h1>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl">{localizeCommunityText(c.shortIntro, locale)}</p>
-        </div>
-      </section>
-
-      {/* Area rationale — `why` is already authored and translated for all 7
-          locales in buy-communities.ts and was being fetched but never rendered,
-          leaving the page with one line of unique prose above a client-side
-          widget. It is the only substantial body copy that distinguishes one
-          community hub from another. */}
-      <section className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-10">
-        <h2 className="text-xl font-bold text-foreground mb-3">{L.whyHeading(c.name)}</h2>
-        <p className="text-muted-foreground leading-relaxed">{localizeCommunityText(c.why, locale)}</p>
-      </section>
-
-      {/* Real market depth: DLD/listings stats snapshot + data-driven FAQs + schema */}
-      <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} buildings={areaBuildings} localePrefix={lp} nonce={nonce} />
-
-      {/* Off-plan projects pre-filtered to this community — clean URL, no query params */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
-        <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" defaultLocations={[apiCommunity]} syncUrl={false} />
-      </div>
-
-      {/* SSR crawlable index of this community's off-plan projects — passes link
-          equity from the hub to each project page (the list above is client-only). */}
-      {communityProjects.length > 0 && (
-        <nav aria-label={`${L.offplanIn} ${c.name}`} className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
-          <h2 className="text-lg font-bold text-foreground mb-3">{L.offplanIn} {c.name}</h2>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
-            {communityProjects.map((p: { slug: string; name: string }) => (
-              <li key={p.slug}>
-                <a href={`${lp}/project/${p.slug}`} className="hover:text-primary hover:underline transition-colors">
-                  {p.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-
-      {/* When no community-specific projects exist, show Dubai-wide off-plan launches */}
-      {communityProjects.length === 0 && similarProjects.length > 0 && (
-        <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-14">
-          <h2 className="text-xl font-bold text-foreground mb-2">{X.newLaunches}</h2>
-          <p className="text-sm text-muted-foreground mb-6">{X.noProjects(c.name)}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {similarProjects.map((p: any) => (
-              <a key={p._id} href={`${lp}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
-                {p.featuredImage && (
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img src={p.featuredImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-                  </div>
-                )}
-                <div className="p-4">
-                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || X.offBadge}</p>
-                  <h3 className="font-bold text-foreground text-sm leading-snug mb-1 line-clamp-2">{p.name}</h3>
-                  <p className="text-xs text-muted-foreground mb-2">{p.community} · {p.developerName}</p>
-                  {p.startingPrice && <p className="text-sm font-semibold text-foreground">{X.from} AED {Number(p.startingPrice).toLocaleString()}</p>}
-                </div>
-              </a>
-            ))}
-          </div>
-          <div className="mt-6">
-            <a href={`${lp}/off-plan`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">{X.viewAllDubai}</a>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail"])}>
+      <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <Navbar />
+  
+        <section
+          className="relative overflow-hidden pt-28 pb-12 text-white"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+            <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{L.eyebrow}</p>
+            <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{L.offplanIn} {c.name}, {L.dubai}</h1>
+            <p className="text-primary-foreground/80 text-lg max-w-2xl">{localizeCommunityText(c.shortIntro, locale)}</p>
           </div>
         </section>
-      )}
-
-      {/* Cross-link to the area guide — different intent (this page = buy off-plan; guide = lifestyle/transport) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-8 text-sm text-muted-foreground">
-        {X.guidePre}{" "}
-        <a href={`${lp}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{X.guideLink(c.name)}</a>
+  
+        {/* Area rationale — `why` is already authored and translated for all 7
+            locales in buy-communities.ts and was being fetched but never rendered,
+            leaving the page with one line of unique prose above a client-side
+            widget. It is the only substantial body copy that distinguishes one
+            community hub from another. */}
+        <section className="max-w-5xl mx-auto w-full px-4 sm:px-6 pt-10">
+          <h2 className="text-xl font-bold text-foreground mb-3">{L.whyHeading(c.name)}</h2>
+          <p className="text-muted-foreground leading-relaxed">{localizeCommunityText(c.why, locale)}</p>
+        </section>
+  
+        {/* Real market depth: DLD/listings stats snapshot + data-driven FAQs + schema */}
+        <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} buildings={areaBuildings} localePrefix={lp} nonce={nonce} />
+  
+        {/* Off-plan projects pre-filtered to this community — clean URL, no query params */}
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
+          <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" defaultLocations={[apiCommunity]} syncUrl={false} />
+        </div>
+  
+        {/* SSR crawlable index of this community's off-plan projects — passes link
+            equity from the hub to each project page (the list above is client-only). */}
+        {communityProjects.length > 0 && (
+          <nav aria-label={`${L.offplanIn} ${c.name}`} className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
+            <h2 className="text-lg font-bold text-foreground mb-3">{L.offplanIn} {c.name}</h2>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+              {communityProjects.map((p: { slug: string; name: string }) => (
+                <li key={p.slug}>
+                  <a href={`${lp}/project/${p.slug}`} className="hover:text-primary hover:underline transition-colors">
+                    {p.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+  
+        {/* When no community-specific projects exist, show Dubai-wide off-plan launches */}
+        {communityProjects.length === 0 && similarProjects.length > 0 && (
+          <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-14">
+            <h2 className="text-xl font-bold text-foreground mb-2">{X.newLaunches}</h2>
+            <p className="text-sm text-muted-foreground mb-6">{X.noProjects(c.name)}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {similarProjects.map((p: any) => (
+                <a key={p._id} href={`${lp}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
+                  {p.featuredImage && (
+                    <div className="aspect-[4/3] overflow-hidden">
+                      <img src={p.featuredImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || X.offBadge}</p>
+                    <h3 className="font-bold text-foreground text-sm leading-snug mb-1 line-clamp-2">{p.name}</h3>
+                    <p className="text-xs text-muted-foreground mb-2">{p.community} · {p.developerName}</p>
+                    {p.startingPrice && <p className="text-sm font-semibold text-foreground">{X.from} AED {Number(p.startingPrice).toLocaleString()}</p>}
+                  </div>
+                </a>
+              ))}
+            </div>
+            <div className="mt-6">
+              <a href={`${lp}/off-plan`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">{X.viewAllDubai}</a>
+            </div>
+          </section>
+        )}
+  
+        {/* Cross-link to the area guide — different intent (this page = buy off-plan; guide = lifestyle/transport) */}
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-8 text-sm text-muted-foreground">
+          {X.guidePre}{" "}
+          <a href={`${lp}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{X.guideLink(c.name)}</a>
+        </div>
+  
+        <NewsletterStrip source="off-plan-community" />
+        <Footer />
       </div>
-
-      <NewsletterStrip source="off-plan-community" />
-      <Footer />
-    </div>
+    </NextIntlClientProvider>
   );
 }

@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
@@ -79,76 +82,78 @@ export default async function ReportsPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <PulseEmirateNav />
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-6">
-        <div className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase text-accent-foreground">
-          <FileText className="h-3.5 w-3.5" style={{ color: "#B8922F" }} />
-          <span style={{ color: "#B8922F" }}>Market Reports</span>
-        </div>
-        <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-          Dubai property market, week by week
-        </h1>
-        <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
-          Our weekly read on Dubai real estate — top-moving communities, fresh launches, and the
-          data that matters for buyers and investors. Delivered here and straight to your inbox.
-        </p>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-14">
-        {reports.length === 0 ? (
-          <p className="text-muted-foreground py-16 text-center">The first weekly report is on its way — check back soon.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* No `locale` prop on Link below — it already resolves the active
-                locale, and forcing it emitted "/en/…" on the default locale,
-                which localePrefix "as-needed" is meant to omit. */}
-            {reports.map((r) => (
-              <Link
-                key={r.slug}
-                href={`/pulse/reports/${r.slug}`}
-                className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20"
-              >
-                <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-                  <ImageWithFallback
-                    src={r.featuredImage || "/assets/dubai-hero.webp"}
-                    alt={r.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <span
-                    className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider"
-                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                  >
-                    Market Report
-                  </span>
-                </div>
-                <div className="flex flex-col flex-1 p-5">
-                  <div className="flex items-center gap-3 text-[11px] text-muted-foreground mb-2">
-                    <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" />{fmtDate(r.publishedAt, locale)}</span>
-                    {r.readTime && <span>· {r.readTime}</span>}
-                  </div>
-                  <h2 className="text-base font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
-                    {r.title}
-                  </h2>
-                  {r.excerpt && <p className="mt-2 text-sm text-muted-foreground line-clamp-3 flex-1">{r.excerpt}</p>}
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                    Read report <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseEmirateNav", "weeklyReport"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <PulseEmirateNav />
+  
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-6">
+          <div className="flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase text-accent-foreground">
+            <FileText className="h-3.5 w-3.5" style={{ color: "#B8922F" }} />
+            <span style={{ color: "#B8922F" }}>Market Reports</span>
           </div>
-        )}
-      </section>
-
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
-        <WeeklySubscribeForm source="pulse-reports" variant="card" />
-      </section>
-
-      <Footer />
-    </div>
+          <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Dubai property market, week by week
+          </h1>
+          <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
+            Our weekly read on Dubai real estate — top-moving communities, fresh launches, and the
+            data that matters for buyers and investors. Delivered here and straight to your inbox.
+          </p>
+        </section>
+  
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-14">
+          {reports.length === 0 ? (
+            <p className="text-muted-foreground py-16 text-center">The first weekly report is on its way — check back soon.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* No `locale` prop on Link below — it already resolves the active
+                  locale, and forcing it emitted "/en/…" on the default locale,
+                  which localePrefix "as-needed" is meant to omit. */}
+              {reports.map((r) => (
+                <Link
+                  key={r.slug}
+                  href={`/pulse/reports/${r.slug}`}
+                  className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20"
+                >
+                  <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+                    <ImageWithFallback
+                      src={r.featuredImage || "/assets/dubai-hero.webp"}
+                      alt={r.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <span
+                      className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                    >
+                      Market Report
+                    </span>
+                  </div>
+                  <div className="flex flex-col flex-1 p-5">
+                    <div className="flex items-center gap-3 text-[11px] text-muted-foreground mb-2">
+                      <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" />{fmtDate(r.publishedAt, locale)}</span>
+                      {r.readTime && <span>· {r.readTime}</span>}
+                    </div>
+                    <h2 className="text-base font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                      {r.title}
+                    </h2>
+                    {r.excerpt && <p className="mt-2 text-sm text-muted-foreground line-clamp-3 flex-1">{r.excerpt}</p>}
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                      Read report <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+  
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+          <WeeklySubscribeForm source="pulse-reports" variant="card" />
+        </section>
+  
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

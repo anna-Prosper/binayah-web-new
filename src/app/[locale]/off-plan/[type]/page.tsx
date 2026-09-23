@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- multilingual SEO landing page */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -296,95 +299,97 @@ export default async function OffPlanTypePage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <FAQJsonLd faqs={faqs} />
-      <CollectionPageJsonLd
-        name={titleFor(typeLabel, locale).split(" | ")[0]}
-        description={descFor(typeLabel, locale)}
-        url={`/off-plan/${type}`}
-        items={collectionItems}
-      />
-      <Navbar />
-
-      {/* Hero — compact; max-w-6xl matches SearchPageClient's container so the
-          heading aligns with the search bar below it. */}
-      <section
-        className="relative overflow-hidden pt-28 pb-7 text-white"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-[11px] mb-2">{offplan}</p>
-          <h1 className="text-2xl sm:text-4xl font-bold leading-tight mb-2">{titleFor(typeLabel, locale).split(" | ")[0]}</h1>
-          <p className="text-primary-foreground/80 text-sm sm:text-base max-w-2xl">{descFor(typeLabel, locale)}</p>
-        </div>
-      </section>
-
-      {/* Search + sidebar — SearchPageClient keeps the filter bar full-width and
-          docks the sidebar on the right next to the listings (below the filters). */}
-      <SearchPageClient
-        defaultStatus="Off-Plan"
-        defaultIntent="off-plan"
-        defaultType={entry.searchType}
-        syncUrl={false}
-        initialData={initialData}
-        sidebarSlot={<PropertyTypeSidebar locale={locale} slug="off-plan" />}
-      />
-
-      {/* FAQ + CTA — full width below the search/listings */}
-      <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-14 space-y-12 sm:space-y-16">
-
-        {/* FAQ */}
-        <div>
-          <div className="text-center mb-8">
-            <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground">{fill(c.faqHeading, typeLabel)}</h2>
-          </div>
-          <div className="space-y-2 sm:space-y-3">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
-                <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
-                  <span>{faq.question}</span>
-                  <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
-                </summary>
-                <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
-              </details>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA */}
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail"])}>
+      <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <FAQJsonLd faqs={faqs} />
+        <CollectionPageJsonLd
+          name={titleFor(typeLabel, locale).split(" | ")[0]}
+          description={descFor(typeLabel, locale)}
+          url={`/off-plan/${type}`}
+          items={collectionItems}
+        />
+        <Navbar />
+  
+        {/* Hero — compact; max-w-6xl matches SearchPageClient's container so the
+            heading aligns with the search bar below it. */}
         <section
-          className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
+          className="relative overflow-hidden pt-28 pb-7 text-white"
           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
         >
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-          <div className="relative z-10">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3">{fill(c.ctaTitle, typeLabel)}</h2>
-            <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{c.ctaDesc}</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href={`${lp}/contact`}
-                className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
-                style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
-              >
-                {c.ctaBtn}
-              </Link>
-              <a
-                href={waHref(WA_DEFAULT_MESSAGE, "/off-plan")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
-              >
-                WhatsApp
-              </a>
-            </div>
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+            <p className="text-accent font-bold tracking-[0.4em] uppercase text-[11px] mb-2">{offplan}</p>
+            <h1 className="text-2xl sm:text-4xl font-bold leading-tight mb-2">{titleFor(typeLabel, locale).split(" | ")[0]}</h1>
+            <p className="text-primary-foreground/80 text-sm sm:text-base max-w-2xl">{descFor(typeLabel, locale)}</p>
           </div>
         </section>
+  
+        {/* Search + sidebar — SearchPageClient keeps the filter bar full-width and
+            docks the sidebar on the right next to the listings (below the filters). */}
+        <SearchPageClient
+          defaultStatus="Off-Plan"
+          defaultIntent="off-plan"
+          defaultType={entry.searchType}
+          syncUrl={false}
+          initialData={initialData}
+          sidebarSlot={<PropertyTypeSidebar locale={locale} slug="off-plan" />}
+        />
+  
+        {/* FAQ + CTA — full width below the search/listings */}
+        <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-14 space-y-12 sm:space-y-16">
+  
+          {/* FAQ */}
+          <div>
+            <div className="text-center mb-8">
+              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground">{fill(c.faqHeading, typeLabel)}</h2>
+            </div>
+            <div className="space-y-2 sm:space-y-3">
+              {faqs.map((faq, i) => (
+                <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
+                  <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
+                    <span>{faq.question}</span>
+                    <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+                  </summary>
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
+                </details>
+              ))}
+            </div>
+          </div>
+  
+          {/* CTA */}
+          <section
+            className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
+            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+          >
+            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+            <div className="relative z-10">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3">{fill(c.ctaTitle, typeLabel)}</h2>
+              <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{c.ctaDesc}</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link
+                  href={`${lp}/contact`}
+                  className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
+                  style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
+                >
+                  {c.ctaBtn}
+                </Link>
+                <a
+                  href={waHref(WA_DEFAULT_MESSAGE, "/off-plan")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
+                >
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+  
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </NextIntlClientProvider>
   );
 }

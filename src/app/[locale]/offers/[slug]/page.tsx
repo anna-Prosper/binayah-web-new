@@ -2,6 +2,8 @@
    translated per-locale in the document's `translations` map, not via messages */
 /* eslint-disable @next/next/no-img-element -- verified real-estate CDN images */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
 import Navbar from "@/components/Navbar";
@@ -16,7 +18,7 @@ import { isExpired, hasDeadline, eyebrowDayCount } from "@/lib/offers";
 import { loadOffer } from "@/lib/offers-data";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getMessages } from "next-intl/server";
 import { getNonce } from "@/lib/nonce";
 import { waHref } from "@/lib/whatsapp";
 import {
@@ -181,131 +183,997 @@ export default async function OfferPage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <StickyOfferBar
-        title={offer.h1}
-        deadline={offer.deadline}
-        expired={expired}
-        hideDeadline={hideDeadline}
-        showCountdown={showCountdown}
-      />
-      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
-      <FAQJsonLd faqs={offer.faqs} nonce={nonce} inLanguage={locale} />
-      <OfferJsonLd
-        name={offer.h1}
-        description={offer.metaDescription}
-        url={`/offers/${offer.slug}`}
-        image={offer.heroImage}
-        seller={offer.developer}
-        validThrough={expired ? undefined : offer.deadline}
-        priceFrom={offer.priceFrom}
-        category="Real Estate Payment Plan"
-        inLanguage={locale}
-        nonce={nonce}
-      />
-
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative flex min-h-[92vh] items-end overflow-hidden">
-        <img
-          src={offer.heroImage}
-          alt={`${offer.developer} ${offer.shortName} offer`}
-          className="ofr-kenburns absolute inset-0 h-full w-full object-cover"
-          fetchPriority="high"
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["offerPage"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <StickyOfferBar
+          title={offer.h1}
+          deadline={offer.deadline}
+          expired={expired}
+          hideDeadline={hideDeadline}
+          showCountdown={showCountdown}
         />
-        {/* Vertical wash to seat the copy, plus a warm side-light from the left
-            so the headline edge doesn't sit flat against the photograph. */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to bottom, rgba(7,42,32,0.12) 0%, rgba(7,42,32,0.30) 38%, rgba(7,42,32,0.68) 74%, rgba(7,42,32,0.92) 100%)`,
-          }}
+        <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
+        <FAQJsonLd faqs={offer.faqs} nonce={nonce} inLanguage={locale} />
+        <OfferJsonLd
+          name={offer.h1}
+          description={offer.metaDescription}
+          url={`/offers/${offer.slug}`}
+          image={offer.heroImage}
+          seller={offer.developer}
+          validThrough={expired ? undefined : offer.deadline}
+          priceFrom={offer.priceFrom}
+          category="Real Estate Payment Plan"
+          inLanguage={locale}
+          nonce={nonce}
         />
-        <div
-          className="absolute inset-0"
-          style={{ background: `radial-gradient(120% 90% at 0% 100%, rgba(212,168,71,0.16) 0%, transparent 55%)` }}
-        />
-
-        <div className="relative w-full">
-          <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 sm:px-6">
-            <div className="max-w-3xl">
-              <div className="hero-fade-up flex flex-wrap items-center gap-2.5">
-                {!expired && (
-                  <span
-                    className="ofr-sheen relative inline-flex items-center gap-1.5 overflow-hidden rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em]"
-                    style={{ background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`, color: GREEN }}
-                  >
-                    <Clock className="h-3.5 w-3.5" />
-                    {eyebrowLabel}
-                  </span>
-                )}
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm">
-                  <Building2 className="h-3.5 w-3.5" />
-                  {offer.developer}
-                </span>
-              </div>
-
-              {/* Mobile size dropped from 2.6rem: at that size a headline this
-                  long (offer.h1 is data-driven, so length varies) ran to 4-5
-                  lines and pushed the countdown/CTAs down into the global fixed
-                  WhatsApp bar at the very bottom of the first mobile viewport.
-                  sm:/lg: unchanged — desktop had room and looked right. */}
-              <h1
-                className="hero-rise mt-5 text-[1.9rem] font-extrabold leading-[1.12] tracking-[-0.01em] text-white sm:mt-6 sm:text-[3.4rem] sm:leading-[1.04] sm:tracking-[-0.02em] lg:text-[4.1rem]"
-                style={{ textShadow: "0 2px 40px rgba(0,0,0,0.35)" }}
-              >
-                {offer.h1}
-              </h1>
-
-              <p className="hero-rise mt-4 max-w-2xl text-[15px] leading-relaxed text-white/80 sm:mt-6 sm:text-lg lg:text-xl">
-                {offer.subtitle}
-              </p>
-
-              {!hideDeadline && (
-                <div className="hero-rise mt-6 sm:mt-9">
-                  {showCountdown ? (
-                    // Caption above the digits — deliberately quiet so it doesn't
-                    // compete with the countdown it introduces.
-                    <>
-                      <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
-                        <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
-                        {offer.windowLabel || t("defaultWindowLabel")}
-                      </div>
-                      <OfferCountdown deadline={offer.deadline} tone="light" />
-                    </>
-                  ) : (
-                    // Nothing beneath it, so the label has to hold the slot on its
-                    // own: a gold-ruled pill with a live dot rather than a stray
-                    // line of muted caption text.
+  
+        {/* ── HERO ─────────────────────────────────────────────────────────── */}
+        <section className="relative flex min-h-[92vh] items-end overflow-hidden">
+          <img
+            src={offer.heroImage}
+            alt={`${offer.developer} ${offer.shortName} offer`}
+            className="ofr-kenburns absolute inset-0 h-full w-full object-cover"
+            fetchPriority="high"
+          />
+          {/* Vertical wash to seat the copy, plus a warm side-light from the left
+              so the headline edge doesn't sit flat against the photograph. */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, rgba(7,42,32,0.12) 0%, rgba(7,42,32,0.30) 38%, rgba(7,42,32,0.68) 74%, rgba(7,42,32,0.92) 100%)`,
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: `radial-gradient(120% 90% at 0% 100%, rgba(212,168,71,0.16) 0%, transparent 55%)` }}
+          />
+  
+          <div className="relative w-full">
+            <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 sm:px-6">
+              <div className="max-w-3xl">
+                <div className="hero-fade-up flex flex-wrap items-center gap-2.5">
+                  {!expired && (
                     <span
-                      className="inline-flex items-center gap-3 rounded-full py-2.5 pl-4 pr-5 backdrop-blur-sm"
-                      style={{
-                        border: "1px solid rgba(212,168,71,0.36)",
-                        background:
-                          "linear-gradient(135deg, rgba(212,168,71,0.18) 0%, rgba(212,168,71,0.05) 100%)",
-                        boxShadow: "0 8px 28px rgba(0,0,0,0.20)",
-                      }}
+                      className="ofr-sheen relative inline-flex items-center gap-1.5 overflow-hidden rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em]"
+                      style={{ background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`, color: GREEN }}
                     >
-                      <span className="ofr-live-dot shrink-0" />
-                      <span
-                        className="text-[11.5px] font-bold uppercase tracking-[0.16em]"
-                        style={{ color: "#F2E0B5" }}
-                      >
-                        {offer.windowLabel || t("defaultWindowLabel")}
-                      </span>
+                      <Clock className="h-3.5 w-3.5" />
+                      {eyebrowLabel}
                     </span>
                   )}
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm">
+                    <Building2 className="h-3.5 w-3.5" />
+                    {offer.developer}
+                  </span>
+                </div>
+  
+                {/* Mobile size dropped from 2.6rem: at that size a headline this
+                    long (offer.h1 is data-driven, so length varies) ran to 4-5
+                    lines and pushed the countdown/CTAs down into the global fixed
+                    WhatsApp bar at the very bottom of the first mobile viewport.
+                    sm:/lg: unchanged — desktop had room and looked right. */}
+                <h1
+                  className="hero-rise mt-5 text-[1.9rem] font-extrabold leading-[1.12] tracking-[-0.01em] text-white sm:mt-6 sm:text-[3.4rem] sm:leading-[1.04] sm:tracking-[-0.02em] lg:text-[4.1rem]"
+                  style={{ textShadow: "0 2px 40px rgba(0,0,0,0.35)" }}
+                >
+                  {offer.h1}
+                </h1>
+  
+                <p className="hero-rise mt-4 max-w-2xl text-[15px] leading-relaxed text-white/80 sm:mt-6 sm:text-lg lg:text-xl">
+                  {offer.subtitle}
+                </p>
+  
+                {!hideDeadline && (
+                  <div className="hero-rise mt-6 sm:mt-9">
+                    {showCountdown ? (
+                      // Caption above the digits — deliberately quiet so it doesn't
+                      // compete with the countdown it introduces.
+                      <>
+                        <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
+                          <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
+                          {offer.windowLabel || t("defaultWindowLabel")}
+                        </div>
+                        <OfferCountdown deadline={offer.deadline} tone="light" />
+                      </>
+                    ) : (
+                      // Nothing beneath it, so the label has to hold the slot on its
+                      // own: a gold-ruled pill with a live dot rather than a stray
+                      // line of muted caption text.
+                      <span
+                        className="inline-flex items-center gap-3 rounded-full py-2.5 pl-4 pr-5 backdrop-blur-sm"
+                        style={{
+                          border: "1px solid rgba(212,168,71,0.36)",
+                          background:
+                            "linear-gradient(135deg, rgba(212,168,71,0.18) 0%, rgba(212,168,71,0.05) 100%)",
+                          boxShadow: "0 8px 28px rgba(0,0,0,0.20)",
+                        }}
+                      >
+                        <span className="ofr-live-dot shrink-0" />
+                        <span
+                          className="text-[11.5px] font-bold uppercase tracking-[0.16em]"
+                          style={{ color: "#F2E0B5" }}
+                        >
+                          {offer.windowLabel || t("defaultWindowLabel")}
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                )}
+  
+                <div className="hero-rise mt-6 flex flex-wrap gap-3 sm:mt-9">
+                  <a
+                    href="#enquire"
+                    className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.03]"
+                    style={{
+                      background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
+                      color: GREEN,
+                      boxShadow: "0 8px 34px rgba(212,168,71,0.38)",
+                    }}
+                  >
+                    {ctaLabel}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 rounded-full px-8 py-4 text-sm font-bold text-white transition-transform hover:scale-[1.03]"
+                    style={{ background: "#25D366", boxShadow: "0 8px 30px rgba(37,211,102,0.34)" }}
+                  >
+                    <WhatsAppIcon className="h-[18px] w-[18px]" />
+                    {waLabel}
+                  </a>
+                  <a
+                    href="tel:+971555099157"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/12"
+                  >
+                    <Phone className="h-4 w-4" /> +971 55 509 9157
+                  </a>
+                </div>
+              </div>
+            </div>
+  
+            {/* ── HIGHLIGHT BAND — flush to the hero, gold-ruled ─────────────
+                Opaque light ground. It reads as its own band between the hero
+                photograph and the dark sections below, and it is what gives the
+                page its dark / light / dark rhythm. */}
+            <div className="relative bg-card">
+              {/* Gold hairline, brightest mid-span and fading out at both ends —
+                  an edge-to-edge rule reads like a table border. */}
+              <span
+                className="pointer-events-none absolute inset-x-0 top-0 h-px"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.42) 20%, rgba(234,200,115,0.85) 50%, rgba(212,168,71,0.42) 80%, transparent 100%)",
+                }}
+              />
+              {/* Warm wash spilling down from the hairline — far lighter than the
+                  dark version needed, or it turns muddy against the light ground. */}
+              <span
+                className="pointer-events-none absolute inset-0"
+                style={{ background: "radial-gradient(68% 130% at 50% 0%, rgba(212,168,71,0.10) 0%, transparent 60%)" }}
+              />
+  
+              <div className="relative mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 lg:grid-cols-4">
+                {offer.highlights.map((h, i) => (
+                  <div key={h.label} className="relative px-4 py-8 text-center sm:py-9">
+                    {/* Separators taper away at their ends instead of ruling the
+                        full cell. Two columns on mobile, four from lg — so cell 2
+                        only takes a left rule once the row goes 4-up. */}
+                    {i !== 0 && (
+                      <span
+                        className={`pointer-events-none absolute inset-y-5 left-0 w-px ${i % 2 === 0 ? "hidden lg:block" : ""}`}
+                        style={{
+                          background:
+                            "linear-gradient(to bottom, transparent, rgba(11,61,46,0.16) 50%, transparent)",
+                        }}
+                      />
+                    )}
+                    {i > 1 && (
+                      <span
+                        className="pointer-events-none absolute inset-x-6 top-0 h-px lg:hidden"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, transparent, rgba(11,61,46,0.14) 50%, transparent)",
+                        }}
+                      />
+                    )}
+  
+                    <div
+                      className="text-[1.9rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.9rem]"
+                      style={{
+                        background: `linear-gradient(140deg, ${GOLD} 0%, ${GOLD_DEEP} 58%, #96751D 100%)`,
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      }}
+                    >
+                      {h.value}
+                    </div>
+                    <div className="mt-3 text-[11px] font-bold uppercase tracking-[0.13em] text-foreground sm:text-xs">
+                      {h.label}
+                    </div>
+                    {h.detail && (
+                      <div className="mx-auto mt-2 max-w-[30ch] text-[12px] leading-relaxed text-muted-foreground">
+                        {h.detail}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+  
+        {/* ── EXPLAINER + TERMS — one combined section now: the prose ("what is
+               this, why is it good") and the terms grid used to be two separate
+               blocks that repeated the same facts in different shapes. Now it's
+               heading, highlight, a short intro, then the terms as a single
+               points list, with nothing said twice. A distinct ground (not
+               bg-card, not bg-background) keeps it from reading as a
+               continuation of the highlight band above: a warm gold-to-cream
+               gradient, same palette as the rest of the page, no pattern. ──── */}
+        {/* Section renders if EITHER the prose explainer OR the eligibility/Key
+            Facts list has content — the two used to be coupled to one gate
+            (offer.explainer), which meant any offer without an explainer block
+            (most of them) silently dropped its entire Key Facts list: developer,
+            price, payment plan, down payment, handover, eligibility — the exact
+            crawlable-text content search engines and quick-scanning buyers need.
+            That's now its own independent condition below. */}
+        {!!(offer.explainer?.body?.length || offer.eligibility?.length) && (
+        <section
+          className="relative overflow-hidden py-14 sm:py-20"
+          style={{ background: "linear-gradient(180deg, #F7EFDC 0%, #FBF8F1 45%, #FBF8F1 100%)" }}
+        >
+          <span
+            className="pointer-events-none absolute inset-x-0 top-0 h-px"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.5) 50%, transparent 100%)",
+            }}
+          />
+          <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
+            <Reveal>
+              {!!offer.explainer?.body?.length && (
+                <>
+                  <h2 className="text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
+                    {offer.explainer.heading}
+                  </h2>
+  
+                  {offer.explainer.highlight && (
+                    <div
+                      className="mt-5 flex items-start gap-3 rounded-2xl px-5 py-4"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(212,168,71,0.14), rgba(212,168,71,0.05))",
+                        border: `1px solid rgba(212,168,71,0.35)`,
+                      }}
+                    >
+                      <Sparkles className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
+                      <p className="text-sm font-semibold leading-relaxed text-foreground sm:text-[15px]">
+                        {emphasizeStats(offer.explainer.highlight)}
+                      </p>
+                    </div>
+                  )}
+  
+                  <div className="mt-6 max-w-2xl space-y-5">
+                    {offer.explainer.body.map((p, i) => (
+                      <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+                        {emphasizeStats(p)}
+                      </p>
+                    ))}
+                  </div>
+                </>
+              )}
+  
+              {!!offer.eligibility?.length && (
+                <div className={!!offer.explainer?.body?.length ? "mt-9 border-t border-border/50 pt-8" : ""}>
+                  <Eyebrow>{t("detailEyebrow")}</Eyebrow>
+                  <h3 className="mt-3 text-lg font-bold tracking-[-0.01em] text-foreground sm:text-xl">
+                    {t("detailHeading")}
+                  </h3>
+                  <ul className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+                    {offer.eligibility.map((e, i) => {
+                      const T = [Clock, Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, ShieldCheck];
+                      const Icon = T[i] ?? CheckCircle2;
+                      return (
+                        <li key={e.label} className="flex items-start gap-3">
+                          <Icon className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
+                          <div>
+                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                              {e.label}
+                            </div>
+                            <div className="mt-1 text-[14px] font-semibold leading-relaxed text-foreground">
+                              {emphasizeStats(e.value)}
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               )}
-
-              <div className="hero-rise mt-6 flex flex-wrap gap-3 sm:mt-9">
+            </Reveal>
+          </div>
+        </section>
+        )}
+  
+        {/* ── PARTICIPATING PROJECTS — moved up alongside the terms above, right
+               after the explainer. Cards are smaller than before (3-up on desktop,
+               tighter padding and type) since this now reads as a quick reference
+               rather than the page's visual centrepiece. bg-card steps off the
+               bg-background section above it. ─────────────────────────────────── */}
+        {!!offer.projects?.length && (
+        <section id="projects" className="scroll-mt-24 bg-card py-14 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <Reveal>
+              <Eyebrow>{t("whereEyebrow")}</Eyebrow>
+              <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
+                {offer.projectsHeading || t("whereHeading")}
+              </h2>
+            </Reveal>
+  
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {offer.projects.map((pr, i) => {
+                // Whole card is clickable → the project's primary page (falls back
+                // to the offer's enquiry form when the project has no link yet).
+                // A stretched overlay link covers the card so the secondary pill
+                // links still work without nesting <a> inside <a>.
+                const cardHref = pr.links?.[0]?.href || "#enquire";
+                return (
+                <Reveal key={pr.name} delay={i * 60}>
+                  <div className="group relative h-full cursor-pointer overflow-hidden rounded-xl border border-border/60 bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-lg">
+                    <Link href={cardHref} aria-label={pr.name} className="absolute inset-0 z-[1]" />
+                    {pr.image && (
+                      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                        <img
+                          src={pr.image}
+                          alt={pr.name}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+                    <div className="p-5">
+                    <div className="flex items-start gap-2.5">
+                      <Building2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
+                      <div className="min-w-0">
+                        <h3 className="text-[15px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary">{pr.name}</h3>
+                        <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{pr.terms}</p>
+                      </div>
+                    </div>
+  
+                    {pr.links?.length ? (
+                      <div className="relative z-[2] mt-4 flex flex-wrap gap-1.5 pl-[26px]">
+                        {pr.links.map((l) => (
+                          <Link
+                            key={l.href}
+                            href={l.href}
+                            className="inline-flex items-center gap-1 min-h-[36px] rounded-full border border-border/60 px-3 py-2 text-[11px] font-semibold sm:min-h-0 sm:py-1 text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                          >
+                            {l.label}
+                            <ArrowRight className="h-3 w-3" />
+                          </Link>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="mt-4 pl-[26px] text-[11px] font-semibold text-muted-foreground">
+                        {t("messageUs")}
+                      </p>
+                    )}
+                    </div>
+                  </div>
+                </Reveal>
+                );
+              })}
+  
+              {/* A 6th card, deliberately not another community: five projects
+                  in a 3-up grid leave one cell empty on the last row, and a gold
+                  developer-credibility card reads as an intentional close to
+                  the grid rather than a gap. Previews the fuller INVESTMENT
+                  CASE section right after this one. */}
+              {!!offer.investment?.items?.length && (
+                <Reveal delay={offer.projects.length * 60}>
+                  <div
+                    className="group flex h-full flex-col justify-center overflow-hidden rounded-xl p-6"
+                    style={{
+                      background: `linear-gradient(135deg, ${GREEN} 0%, #123A2C 100%)`,
+                      border: "1px solid rgba(212,168,71,0.32)",
+                    }}
+                  >
+                    <ShieldCheck className="h-5 w-5" style={{ color: GOLD }} />
+                    <h3 className="mt-3 text-[15px] font-bold text-white">{t("whyDeveloper", { developer: offer.developer })}</h3>
+                    <p className="mt-1.5 text-[13px] leading-relaxed text-white/65">{offer.investment.heading}</p>
+                    <ul className="mt-4 space-y-2">
+                      {offer.investment.items.slice(0, 3).map((it) => (
+                        <li key={it.title} className="flex items-center gap-2 text-[12px] font-semibold text-white/85">
+                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: GOLD }} />
+                          {it.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              )}
+            </div>
+          </div>
+        </section>
+        )}
+  
+        {/* ── WHY IT MATTERS — moved up from after the gallery, right after the
+               terms/projects and before the lifestyle section: the "why is this
+               good for me" case belongs closer to the terms that make it good
+               than two-thirds down the page. Charcoal treatment from
+               ValuationCTA on the homepage: same ground, teal + gold corner
+               glows, faint grid, and white/[0.03] tiles. ────────────────────── */}
+        <section className="relative overflow-hidden py-14 sm:py-24">
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "linear-gradient(135deg, #1A1F2E 0%, #0F1218 50%, #0D1015 100%)" }}
+          />
+          <div
+            className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] opacity-[0.22]"
+            style={{ background: "radial-gradient(circle, hsl(168 100% 20%) 0%, transparent 70%)" }}
+          />
+          <div
+            className="pointer-events-none absolute -right-40 bottom-0 h-[520px] w-[520px] opacity-[0.18]"
+            style={{ background: "radial-gradient(circle, hsl(43 60% 40%) 0%, transparent 70%)" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.035]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
+            }}
+          />
+  
+          <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+            <Reveal>
+              <Eyebrow onDark>{t("whyItMattersEyebrow")}</Eyebrow>
+              <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
+                {/* Rich message rather than pre + accent halves: Chinese puts the
+                    highlighted word mid-sentence, so a fixed "{pre} {accent}"
+                    order rendered it as a fragment. */}
+                {t.rich("whyItMattersHeading", {
+                  accent: (chunks) => (
+                    <span
+                      className="bg-clip-text text-transparent"
+                      style={{ backgroundImage: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
+                    >
+                      {chunks}
+                    </span>
+                  ),
+                })}
+              </h2>
+            </Reveal>
+  
+            <div className="mt-12 grid gap-5 sm:grid-cols-2">
+              {offer.valueProps.map(([heading, body], i) => (
+                <Reveal key={heading} delay={i * 90}>
+                  <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]">
+                    <span
+                      className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                      style={{ background: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
+                    />
+                    <div className="text-[11px] font-extrabold tabular-nums" style={{ color: GOLD }}>
+                      0{i + 1}
+                    </div>
+                    <h3 className="mt-3 text-lg font-bold leading-snug text-white">{heading}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-white/55">{body}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+  
+        {/* ── INVESTMENT CASE — centred stripe, lighter in weight than the value
+               props above it so the two don't compete. bg-card now (was
+               bg-background): it sits right before the COMMUNITY section
+               below, which is bg-background, so this needs to alternate
+               against it instead of matching it. ───────────────────────────── */}
+        {!!offer.investment?.items?.length && (
+        <section className="bg-card py-14 sm:py-24">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6">
+            <Reveal>
+              <div className="text-center">
+                <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+                  {t("whyThisOne")}
+                </div>
+                <span
+                  className="mx-auto mt-4 block h-px w-14"
+                  style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
+                />
+                <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
+                  {offer.investment.heading}
+                </h2>
+              </div>
+            </Reveal>
+  
+            <div className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2">
+              {offer.investment.items.map((it, i) => {
+                const Icon = ICONS[offer.investment?.icons?.[i] ?? ""] ?? CheckCircle2;
+                return (
+                  <Reveal key={it.title} delay={i * 70}>
+                    <div className="flex items-start gap-4">
+                      <Icon className="mt-0.5 h-7 w-7 shrink-0" style={{ color: GOLD_DEEP }} />
+                      <div>
+                        <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-foreground">
+                          {it.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.text}</p>
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+        )}
+  
+        {/* ── COMMUNITY — moved up from after the gallery: the lifestyle case now
+               lands right after the hero/stat band, before the payment mechanics,
+               instead of two-thirds down the page. Two parts: a highlighted stat
+               band (offer.amenities.stats), then a divider and a plain icon-grid
+               for the rest (offer.amenities.items). bg-background so it steps off
+               the bg-card highlight band above it. ─────────────────────────────── */}
+        {!!(offer.amenities?.stats?.length || offer.amenities?.items?.length) && (
+        <section className="relative bg-background py-14 sm:py-24">
+          {/* Green hairline — same fade-in/peak/fade-out shape as the gold one atop
+              the highlight band, but green so the seam reads as "back to the
+              brand" rather than another gold rule stacked on the one above it. */}
+          <span
+            className="pointer-events-none absolute inset-x-0 top-0 h-px"
+            style={{
+              background:
+                `linear-gradient(90deg, transparent 0%, rgba(11,61,46,0.15) 20%, ${GREEN} 50%, rgba(11,61,46,0.15) 80%, transparent 100%)`,
+            }}
+          />
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <Reveal>
+              <div className="text-center">
+                <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+                  {t("communityEyebrow")}
+                </div>
+                <span
+                  className="mx-auto mt-4 block h-px w-14"
+                  style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
+                />
+                <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
+                  {offer.amenities!.heading}
+                </h2>
+              </div>
+            </Reveal>
+  
+            {/* Photo band — the four sections that follow this heading (stats,
+                masterplan, timeline, worked example, terms) are all type and
+                icons, so the middle of the page ran imageless. Three evenly
+                spaced picks from the gallery, skipping index 0 because that is
+                already the page hero. */}
+            {(() => {
+              const pool = (offer.gallery ?? []).slice(1);
+              if (pool.length < 3) return null;
+              const band = [0, 1, 2].map((k) => pool[Math.round((k * (pool.length - 1)) / 2)]);
+              return (
+                <Reveal delay={50}>
+                  <div className="mt-10 grid grid-cols-3 gap-2 sm:mt-12 sm:gap-4">
+                    {band.map((img, i) => (
+                      <div
+                        key={img.src}
+                        className={`relative overflow-hidden rounded-xl bg-muted sm:rounded-2xl ${
+                          i === 1 ? "aspect-[3/4] sm:aspect-[4/5]" : "aspect-[3/4] sm:aspect-[4/5] sm:mt-8"
+                        }`}
+                      >
+                        <img
+                          src={img.src}
+                          alt={img.alt}
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                        />
+                        <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                      </div>
+                    ))}
+                  </div>
+                </Reveal>
+              );
+            })()}
+  
+            {!!offer.amenities?.stats?.length && (
+              <Reveal delay={70}>
+                <div
+                  className={`mt-12 grid gap-4 ${
+                    offer.amenities.stats.length === 2
+                      ? "sm:grid-cols-2"
+                      : offer.amenities.stats.length >= 4
+                        ? "sm:grid-cols-4"
+                        : "sm:grid-cols-3"
+                  }`}
+                >
+                  {offer.amenities.stats.map((stat) => {
+                    const Icon = ICONS[stat.icon ?? ""] ?? CheckCircle2;
+                    return (
+                      <div
+                        key={stat.label}
+                        className="flex flex-col items-center gap-2 rounded-2xl border border-border/60 px-5 py-6 text-center sm:gap-2.5 sm:px-6 sm:py-8"
+                      >
+                        <Icon className="h-7 w-7" style={{ color: GOLD_DEEP }} />
+                        <div className="text-[1.75rem] font-extrabold tracking-[-0.02em] sm:text-3xl" style={{ color: GOLD_DEEP }}>
+                          {stat.value}
+                        </div>
+                        <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-foreground">
+                          {stat.label}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Reveal>
+            )}
+  
+            {!!offer.amenities?.items?.length && (
+              <>
+                <Reveal delay={110}>
+                  <div className="mt-14 flex items-center justify-center gap-4 sm:gap-6">
+                    <span
+                      className="h-px flex-1 max-w-24"
+                      style={{ background: `linear-gradient(90deg, transparent, rgba(212,168,71,0.5))` }}
+                    />
+                    <span className="shrink-0 text-lg font-bold text-foreground sm:text-xl">
+                      {offer.amenities.masterplanHeading ?? t("defaultMasterplanHeading")}
+                    </span>
+                    <span
+                      className="h-px flex-1 max-w-24"
+                      style={{ background: `linear-gradient(90deg, rgba(212,168,71,0.5), transparent)` }}
+                    />
+                  </div>
+                </Reveal>
+                <Reveal delay={140}>
+                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {offer.amenities.items.map((it, i) => {
+                      const Icon = ICONS[offer.amenities?.icons?.[i] ?? ""] ?? CheckCircle2;
+                      return (
+                        <div
+                          key={it}
+                          className="flex flex-col items-center justify-center gap-2.5 rounded-2xl border border-border/60 px-3 py-5 text-center sm:gap-3 sm:px-5 sm:py-7"
+                        >
+                          <Icon className="h-6 w-6" style={{ color: GOLD_DEEP }} />
+                          <span className="text-[13px] font-bold uppercase leading-snug tracking-[0.04em] text-foreground">
+                            {it}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Reveal>
+              </>
+            )}
+          </div>
+        </section>
+        )}
+  
+        {/* ── SEAM ORNAMENT — the community section (bg-background) and the
+               timeline section right after it (bg-card) are both light, so their
+               join was a bare horizontal line. A small badge straddling the
+               boundary (negative margin pulls it up onto the seam, positive
+               z-index keeps it above both) turns that into a deliberate beat
+               instead of an accidental one, and doubles as "lifestyle → money"
+               visual shorthand: sparkle (the offer) becomes a key (the deal). ── */}
+        {!!offer.timeline?.length && (
+        <div className="relative z-10 -mb-6 flex justify-center">
+          <span
+            className="flex h-12 w-12 items-center justify-center rounded-full border-4"
+            style={{
+              background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
+              borderColor: "var(--background, #fff)",
+              boxShadow: "0 6px 20px rgba(212,168,71,0.35)",
+            }}
+          >
+            <KeyRound className="h-5 w-5" style={{ color: GREEN }} />
+          </span>
+        </div>
+        )}
+  
+        {/* ── PAYMENT TIMELINE — a standing section: every offer should carry a
+               timeline. The guard is a safety net for a document missing one, not
+               an invitation to omit it. bg-card now (was bg-background) because
+               the community band directly above it took bg-background — moved up
+               from later in the page, see below. ───────────────────────────────── */}
+        {!!offer.timeline?.length && (
+        <section className="bg-card py-14 sm:py-24">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow>{t("planEyebrow")}</Eyebrow>
+            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
+              {offer.timelineHeading || t("planHeading")}
+            </h2>
+            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+              {offer.timelineIntro ?? t("defaultTimelineIntro")}
+            </p>
+          </Reveal>
+  
+          <Reveal delay={80} className="relative mt-14">
+            <div
+              className={`grid gap-5 ${
+                offer.timeline.length === 2
+                  ? "md:grid-cols-2"
+                  : offer.timeline.length >= 4
+                    ? "md:grid-cols-4"
+                    : "md:grid-cols-3"
+              }`}
+            >
+              {offer.timeline.map((step, i) => (
+                <div key={step.stage} className="relative flex flex-col">
+                  {/* Connector to the NEXT node — node centre to node centre, so
+                      the run terminates at the last step instead of trailing off
+                      to the edge of the row. 26px = half a 52px node; 46px = that
+                      plus the 20px grid gap. */}
+                  {i < offer.timeline!.length - 1 && (
+                    <span
+                      className="ofr-rail pointer-events-none absolute hidden h-[3px] rounded-full md:block"
+                      style={{
+                        left: "26px",
+                        right: "-46px",
+                        top: "25px",
+                        background: `linear-gradient(90deg, ${GREEN} 0%, ${GOLD} 55%, ${GOLD_DEEP} 100%)`,
+                        opacity: 0.30,
+                      }}
+                    />
+                  )}
+                  {/* Node sits on the rail */}
+                  <div className="relative z-10 mb-6 flex justify-center md:justify-start">
+                    <div
+                      className="flex h-[52px] w-[52px] items-center justify-center rounded-2xl text-lg font-extrabold text-white"
+                      style={{
+                        background: `linear-gradient(135deg, ${GREEN}, #1A7A5A)`,
+                        boxShadow: "0 8px 24px rgba(11,61,46,0.22)",
+                        border: "3px solid var(--background, #fff)",
+                      }}
+                    >
+                      {i + 1}
+                    </div>
+                  </div>
+  
+                  <div className="group flex-1 rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
+                    <div
+                      className="text-[2.4rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[3.2rem]"
+                      style={{
+                        background:
+                          step.share === "0%"
+                            ? "linear-gradient(135deg, #8FA39B, #6B7F77)"
+                            : `linear-gradient(135deg, ${GOLD}, ${GOLD_DEEP})`,
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      }}
+                    >
+                      {step.share}
+                    </div>
+                    <div className="mt-2 text-base font-bold text-foreground">{step.stage}</div>
+                    <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+          </div>
+        </section>
+        )}
+  
+        {/* ── WORKED EXAMPLE + ELIGIBILITY (dark) ──────────────────────────── */}
+        <section
+          className="relative overflow-hidden text-white"
+          style={{ background: DARK_SECTION }}
+        >
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "radial-gradient(90% 70% at 85% 20%, rgba(212,168,71,0.14) 0%, transparent 60%)" }}
+          />
+          <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-24">
+            {offer.worked && (
+              <Reveal className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+                <div>
+                  <Eyebrow onDark>{t("mathsEyebrow")}</Eyebrow>
+                  <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.1rem] sm:leading-[1.15]">
+                    {offer.worked.heading}
+                  </h2>
+                  {offer.worked.footnote && (
+                    <p className="mt-5 max-w-md text-xs leading-relaxed text-white/40">{offer.worked.footnote}</p>
+                  )}
+                </div>
+  
+                <div
+                  className="overflow-hidden rounded-2xl"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
+                >
+                  {offer.worked.rows.map(([label, value], i) => {
+                    const waived = value.toLowerCase().includes("waived");
+                    const last = i === offer.worked!.rows.length - 1;
+                    return (
+                      <div
+                        key={label}
+                        className="flex items-center justify-between gap-4 px-6 py-4"
+                        style={{
+                          borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.08)",
+                          background: last ? "rgba(212,168,71,0.12)" : undefined,
+                        }}
+                      >
+                        <span className={`text-sm ${last ? "font-bold text-white" : "text-white/60"}`}>{label}</span>
+                        <span
+                          className="text-sm font-bold tabular-nums"
+                          style={{ color: waived ? GOLD : last ? GOLD_LT : "#FFFFFF" }}
+                        >
+                          {value}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Reveal>
+            )}
+          </div>
+        </section>
+  
+        {/* ── GALLERY — visual proof, right after the reader meets the specific
+               projects and before the lifestyle checklist. bg-background now
+               (was bg-card): the WHY IT MATTERS/INVESTMENT block that used to
+               sit right after this moved up above the community section, so
+               this now sits directly before the bg-card long-form section and
+               needs to alternate against it instead. ─────────────────────────── */}
+        {!!offer.gallery?.length && (
+        <section className="bg-background py-14 sm:py-24">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <Reveal>
+              <Eyebrow>{t("galleryEyebrow")}</Eyebrow>
+              <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
+                {t("galleryHeading")}
+              </h2>
+            </Reveal>
+            <Reveal delay={80} className="mt-10">
+              <OfferGallery images={offer.gallery} title={offer.shortName} />
+            </Reveal>
+          </div>
+        </section>
+        )}
+  
+        {/* ── LONG-FORM + FORM ─────────────────────────────────────────────── */}
+        <section id="enquire" className="scroll-mt-24 bg-card py-14 sm:py-24">
+          <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr]">
+            <Reveal>
+              <Eyebrow>{t("longformEyebrow")}</Eyebrow>
+              <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
+                {t("longformHeading")}
+              </h2>
+              <div className="mt-7 space-y-5">
+                {offer.bodyParagraphs.map((p, i) => (
+                  <div key={i} className={i === 0 ? "space-y-5" : undefined}>
+                    <p
+                      className={
+                        i === 0
+                          ? "text-lg leading-relaxed text-foreground/85"
+                          : "text-[15px] leading-relaxed text-muted-foreground"
+                      }
+                    >
+                      {p}
+                    </p>
+                    {/* A supporting photo breaks up the long-form copy roughly a third
+                        of the way down, rather than leaving the reader on unbroken
+                        text for six paragraphs. */}
+                    {i === 0 && (offer.gallery?.at(-1) ?? offer.heroImage) && (
+                      <div className="overflow-hidden rounded-2xl">
+                        <img
+                          src={offer.gallery?.at(-1)?.src ?? offer.heroImage}
+                          alt={offer.gallery?.at(-1)?.alt ?? offer.shortName}
+                          loading="lazy"
+                          className="aspect-[16/10] w-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {offer.projectHref && (
+                <Link
+                  href={offer.projectHref}
+                  className="mt-7 inline-flex items-center gap-1.5 text-sm font-bold hover:underline"
+                  style={{ color: GOLD_DEEP }}
+                >
+                  {t("viewProject")} <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+            </Reveal>
+  
+            {/* Was lg:sticky lg:top-28 lg:self-start — the text column grew (a
+                second paragraph split by an inline photo) while the form stayed
+                short, so "self-start" pinned it to the top and left a tall dead
+                gap underneath. Centering it in the row removes that gap; the
+                form still sits beside the text, it just no longer chases the
+                scroll position. */}
+            <Reveal delay={100} className="lg:self-center">
+              <OfferLeadForm offerSlug={offer.slug} offerName={offer.shortName} expired={expired} />
+            </Reveal>
+          </div>
+        </section>
+  
+        {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+        <section className="bg-background py-14 sm:py-24">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow>{t("faqEyebrow")}</Eyebrow>
+            <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
+              {t("faqHeading")}
+            </h2>
+          </Reveal>
+  
+          <div className="mt-10 space-y-3">
+            {offer.faqs.map((f, i) => (
+              <Reveal key={f.question} delay={i * 55}>
+                <details className="group overflow-hidden rounded-2xl border border-border/60 bg-card transition-colors hover:border-primary/25 open:border-primary/25 open:shadow-sm">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-base font-bold text-foreground">
+                    {f.question}
+                    <span
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-lg leading-none transition-transform duration-300 group-open:rotate-45"
+                      style={{ background: "rgba(212,168,71,0.14)", color: GOLD_DEEP }}
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="px-6 pb-5 text-[15px] leading-relaxed text-muted-foreground">{f.answer}</p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
+          </div>
+        </section>
+  
+        {/* ── CLOSING CTA ──────────────────────────────────────────────────── */}
+        <section
+          className="relative overflow-hidden"
+          style={{ background: DARK_SECTION }}
+        >
+          {/* Photograph under the green ground rather than a flat gradient slab —
+              heavily dimmed so the white headline keeps its contrast. */}
+          {(offer.gallery?.[1]?.src ?? offer.heroImage) && (
+            <img
+              src={offer.gallery?.[1]?.src ?? offer.heroImage}
+              alt=""
+              aria-hidden
+              loading="lazy"
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.18]"
+            />
+          )}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "linear-gradient(180deg, rgba(11,61,46,0.55) 0%, rgba(11,61,46,0.35) 50%, rgba(11,61,46,0.6) 100%)" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "radial-gradient(70% 90% at 50% 110%, rgba(212,168,71,0.22) 0%, transparent 62%)" }}
+          />
+          <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 sm:py-28">
+            <Reveal>
+              <h2 className="text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.9rem] sm:leading-[1.08] sm:tracking-[-0.02em]">
+                {t("ctaHeading")}
+              </h2>
+              <p className="mx-auto mt-5 max-w-xl text-lg text-white/70">
+                {t("ctaBody")}
+              </p>
+  
+              {!expired && showCountdown && (
+                <div className="mt-9 flex justify-center">
+                  <OfferCountdown deadline={offer.deadline} tone="light" />
+                </div>
+              )}
+  
+              <div className="mt-9 flex flex-wrap justify-center gap-3">
                 <a
                   href="#enquire"
                   className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.03]"
                   style={{
                     background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
                     color: GREEN,
-                    boxShadow: "0 8px 34px rgba(212,168,71,0.38)",
+                    boxShadow: "0 8px 34px rgba(212,168,71,0.36)",
                   }}
                 >
                   {ctaLabel}
@@ -328,887 +1196,23 @@ export default async function OfferPage({ params }: Props) {
                   <Phone className="h-4 w-4" /> +971 55 509 9157
                 </a>
               </div>
-            </div>
-          </div>
-
-          {/* ── HIGHLIGHT BAND — flush to the hero, gold-ruled ─────────────
-              Opaque light ground. It reads as its own band between the hero
-              photograph and the dark sections below, and it is what gives the
-              page its dark / light / dark rhythm. */}
-          <div className="relative bg-card">
-            {/* Gold hairline, brightest mid-span and fading out at both ends —
-                an edge-to-edge rule reads like a table border. */}
-            <span
-              className="pointer-events-none absolute inset-x-0 top-0 h-px"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.42) 20%, rgba(234,200,115,0.85) 50%, rgba(212,168,71,0.42) 80%, transparent 100%)",
-              }}
-            />
-            {/* Warm wash spilling down from the hairline — far lighter than the
-                dark version needed, or it turns muddy against the light ground. */}
-            <span
-              className="pointer-events-none absolute inset-0"
-              style={{ background: "radial-gradient(68% 130% at 50% 0%, rgba(212,168,71,0.10) 0%, transparent 60%)" }}
-            />
-
-            <div className="relative mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 lg:grid-cols-4">
-              {offer.highlights.map((h, i) => (
-                <div key={h.label} className="relative px-4 py-8 text-center sm:py-9">
-                  {/* Separators taper away at their ends instead of ruling the
-                      full cell. Two columns on mobile, four from lg — so cell 2
-                      only takes a left rule once the row goes 4-up. */}
-                  {i !== 0 && (
-                    <span
-                      className={`pointer-events-none absolute inset-y-5 left-0 w-px ${i % 2 === 0 ? "hidden lg:block" : ""}`}
-                      style={{
-                        background:
-                          "linear-gradient(to bottom, transparent, rgba(11,61,46,0.16) 50%, transparent)",
-                      }}
-                    />
-                  )}
-                  {i > 1 && (
-                    <span
-                      className="pointer-events-none absolute inset-x-6 top-0 h-px lg:hidden"
-                      style={{
-                        background:
-                          "linear-gradient(90deg, transparent, rgba(11,61,46,0.14) 50%, transparent)",
-                      }}
-                    />
-                  )}
-
-                  <div
-                    className="text-[1.9rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.9rem]"
-                    style={{
-                      background: `linear-gradient(140deg, ${GOLD} 0%, ${GOLD_DEEP} 58%, #96751D 100%)`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
-                    {h.value}
-                  </div>
-                  <div className="mt-3 text-[11px] font-bold uppercase tracking-[0.13em] text-foreground sm:text-xs">
-                    {h.label}
-                  </div>
-                  {h.detail && (
-                    <div className="mx-auto mt-2 max-w-[30ch] text-[12px] leading-relaxed text-muted-foreground">
-                      {h.detail}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── EXPLAINER + TERMS — one combined section now: the prose ("what is
-             this, why is it good") and the terms grid used to be two separate
-             blocks that repeated the same facts in different shapes. Now it's
-             heading, highlight, a short intro, then the terms as a single
-             points list, with nothing said twice. A distinct ground (not
-             bg-card, not bg-background) keeps it from reading as a
-             continuation of the highlight band above: a warm gold-to-cream
-             gradient, same palette as the rest of the page, no pattern. ──── */}
-      {/* Section renders if EITHER the prose explainer OR the eligibility/Key
-          Facts list has content — the two used to be coupled to one gate
-          (offer.explainer), which meant any offer without an explainer block
-          (most of them) silently dropped its entire Key Facts list: developer,
-          price, payment plan, down payment, handover, eligibility — the exact
-          crawlable-text content search engines and quick-scanning buyers need.
-          That's now its own independent condition below. */}
-      {!!(offer.explainer?.body?.length || offer.eligibility?.length) && (
-      <section
-        className="relative overflow-hidden py-14 sm:py-20"
-        style={{ background: "linear-gradient(180deg, #F7EFDC 0%, #FBF8F1 45%, #FBF8F1 100%)" }}
-      >
-        <span
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.5) 50%, transparent 100%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
-          <Reveal>
-            {!!offer.explainer?.body?.length && (
-              <>
-                <h2 className="text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
-                  {offer.explainer.heading}
-                </h2>
-
-                {offer.explainer.highlight && (
-                  <div
-                    className="mt-5 flex items-start gap-3 rounded-2xl px-5 py-4"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(212,168,71,0.14), rgba(212,168,71,0.05))",
-                      border: `1px solid rgba(212,168,71,0.35)`,
-                    }}
-                  >
-                    <Sparkles className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
-                    <p className="text-sm font-semibold leading-relaxed text-foreground sm:text-[15px]">
-                      {emphasizeStats(offer.explainer.highlight)}
-                    </p>
-                  </div>
-                )}
-
-                <div className="mt-6 max-w-2xl space-y-5">
-                  {offer.explainer.body.map((p, i) => (
-                    <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                      {emphasizeStats(p)}
-                    </p>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {!!offer.eligibility?.length && (
-              <div className={!!offer.explainer?.body?.length ? "mt-9 border-t border-border/50 pt-8" : ""}>
-                <Eyebrow>{t("detailEyebrow")}</Eyebrow>
-                <h3 className="mt-3 text-lg font-bold tracking-[-0.01em] text-foreground sm:text-xl">
-                  {t("detailHeading")}
-                </h3>
-                <ul className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
-                  {offer.eligibility.map((e, i) => {
-                    const T = [Clock, Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, ShieldCheck];
-                    const Icon = T[i] ?? CheckCircle2;
-                    return (
-                      <li key={e.label} className="flex items-start gap-3">
-                        <Icon className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
-                        <div>
-                          <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                            {e.label}
-                          </div>
-                          <div className="mt-1 text-[14px] font-semibold leading-relaxed text-foreground">
-                            {emphasizeStats(e.value)}
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
+  
+              <div className="mt-11 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-xs text-white/50">
+                <span className="inline-flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4" style={{ color: GOLD }} /> {t("trustRera")}
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Building2 className="h-4 w-4" style={{ color: GOLD }} /> {t("trustPartner", { developer: offer.developer })}
+                </span>
               </div>
-            )}
-          </Reveal>
-        </div>
-      </section>
-      )}
-
-      {/* ── PARTICIPATING PROJECTS — moved up alongside the terms above, right
-             after the explainer. Cards are smaller than before (3-up on desktop,
-             tighter padding and type) since this now reads as a quick reference
-             rather than the page's visual centrepiece. bg-card steps off the
-             bg-background section above it. ─────────────────────────────────── */}
-      {!!offer.projects?.length && (
-      <section id="projects" className="scroll-mt-24 bg-card py-14 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <Eyebrow>{t("whereEyebrow")}</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              {offer.projectsHeading || t("whereHeading")}
-            </h2>
-          </Reveal>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {offer.projects.map((pr, i) => {
-              // Whole card is clickable → the project's primary page (falls back
-              // to the offer's enquiry form when the project has no link yet).
-              // A stretched overlay link covers the card so the secondary pill
-              // links still work without nesting <a> inside <a>.
-              const cardHref = pr.links?.[0]?.href || "#enquire";
-              return (
-              <Reveal key={pr.name} delay={i * 60}>
-                <div className="group relative h-full cursor-pointer overflow-hidden rounded-xl border border-border/60 bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-lg">
-                  <Link href={cardHref} aria-label={pr.name} className="absolute inset-0 z-[1]" />
-                  {pr.image && (
-                    <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-                      <img
-                        src={pr.image}
-                        alt={pr.name}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
-                  )}
-                  <div className="p-5">
-                  <div className="flex items-start gap-2.5">
-                    <Building2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
-                    <div className="min-w-0">
-                      <h3 className="text-[15px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary">{pr.name}</h3>
-                      <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{pr.terms}</p>
-                    </div>
-                  </div>
-
-                  {pr.links?.length ? (
-                    <div className="relative z-[2] mt-4 flex flex-wrap gap-1.5 pl-[26px]">
-                      {pr.links.map((l) => (
-                        <Link
-                          key={l.href}
-                          href={l.href}
-                          className="inline-flex items-center gap-1 min-h-[36px] rounded-full border border-border/60 px-3 py-2 text-[11px] font-semibold sm:min-h-0 sm:py-1 text-foreground transition-colors hover:border-primary/30 hover:text-primary"
-                        >
-                          {l.label}
-                          <ArrowRight className="h-3 w-3" />
-                        </Link>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="mt-4 pl-[26px] text-[11px] font-semibold text-muted-foreground">
-                      {t("messageUs")}
-                    </p>
-                  )}
-                  </div>
-                </div>
-              </Reveal>
-              );
-            })}
-
-            {/* A 6th card, deliberately not another community: five projects
-                in a 3-up grid leave one cell empty on the last row, and a gold
-                developer-credibility card reads as an intentional close to
-                the grid rather than a gap. Previews the fuller INVESTMENT
-                CASE section right after this one. */}
-            {!!offer.investment?.items?.length && (
-              <Reveal delay={offer.projects.length * 60}>
-                <div
-                  className="group flex h-full flex-col justify-center overflow-hidden rounded-xl p-6"
-                  style={{
-                    background: `linear-gradient(135deg, ${GREEN} 0%, #123A2C 100%)`,
-                    border: "1px solid rgba(212,168,71,0.32)",
-                  }}
-                >
-                  <ShieldCheck className="h-5 w-5" style={{ color: GOLD }} />
-                  <h3 className="mt-3 text-[15px] font-bold text-white">{t("whyDeveloper", { developer: offer.developer })}</h3>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-white/65">{offer.investment.heading}</p>
-                  <ul className="mt-4 space-y-2">
-                    {offer.investment.items.slice(0, 3).map((it) => (
-                      <li key={it.title} className="flex items-center gap-2 text-[12px] font-semibold text-white/85">
-                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: GOLD }} />
-                        {it.title}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            )}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* ── WHY IT MATTERS — moved up from after the gallery, right after the
-             terms/projects and before the lifestyle section: the "why is this
-             good for me" case belongs closer to the terms that make it good
-             than two-thirds down the page. Charcoal treatment from
-             ValuationCTA on the homepage: same ground, teal + gold corner
-             glows, faint grid, and white/[0.03] tiles. ────────────────────── */}
-      <section className="relative overflow-hidden py-14 sm:py-24">
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "linear-gradient(135deg, #1A1F2E 0%, #0F1218 50%, #0D1015 100%)" }}
-        />
-        <div
-          className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] opacity-[0.22]"
-          style={{ background: "radial-gradient(circle, hsl(168 100% 20%) 0%, transparent 70%)" }}
-        />
-        <div
-          className="pointer-events-none absolute -right-40 bottom-0 h-[520px] w-[520px] opacity-[0.18]"
-          style={{ background: "radial-gradient(circle, hsl(43 60% 40%) 0%, transparent 70%)" }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <Eyebrow onDark>{t("whyItMattersEyebrow")}</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              {/* Rich message rather than pre + accent halves: Chinese puts the
-                  highlighted word mid-sentence, so a fixed "{pre} {accent}"
-                  order rendered it as a fragment. */}
-              {t.rich("whyItMattersHeading", {
-                accent: (chunks) => (
-                  <span
-                    className="bg-clip-text text-transparent"
-                    style={{ backgroundImage: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
-                  >
-                    {chunks}
-                  </span>
-                ),
-              })}
-            </h2>
-          </Reveal>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2">
-            {offer.valueProps.map(([heading, body], i) => (
-              <Reveal key={heading} delay={i * 90}>
-                <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]">
-                  <span
-                    className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-                    style={{ background: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
-                  />
-                  <div className="text-[11px] font-extrabold tabular-nums" style={{ color: GOLD }}>
-                    0{i + 1}
-                  </div>
-                  <h3 className="mt-3 text-lg font-bold leading-snug text-white">{heading}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/55">{body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── INVESTMENT CASE — centred stripe, lighter in weight than the value
-             props above it so the two don't compete. bg-card now (was
-             bg-background): it sits right before the COMMUNITY section
-             below, which is bg-background, so this needs to alternate
-             against it instead of matching it. ───────────────────────────── */}
-      {!!offer.investment?.items?.length && (
-      <section className="bg-card py-14 sm:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <Reveal>
-            <div className="text-center">
-              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
-                {t("whyThisOne")}
-              </div>
-              <span
-                className="mx-auto mt-4 block h-px w-14"
-                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
-              />
-              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
-                {offer.investment.heading}
-              </h2>
-            </div>
-          </Reveal>
-
-          <div className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2">
-            {offer.investment.items.map((it, i) => {
-              const Icon = ICONS[offer.investment?.icons?.[i] ?? ""] ?? CheckCircle2;
-              return (
-                <Reveal key={it.title} delay={i * 70}>
-                  <div className="flex items-start gap-4">
-                    <Icon className="mt-0.5 h-7 w-7 shrink-0" style={{ color: GOLD_DEEP }} />
-                    <div>
-                      <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-foreground">
-                        {it.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.text}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* ── COMMUNITY — moved up from after the gallery: the lifestyle case now
-             lands right after the hero/stat band, before the payment mechanics,
-             instead of two-thirds down the page. Two parts: a highlighted stat
-             band (offer.amenities.stats), then a divider and a plain icon-grid
-             for the rest (offer.amenities.items). bg-background so it steps off
-             the bg-card highlight band above it. ─────────────────────────────── */}
-      {!!(offer.amenities?.stats?.length || offer.amenities?.items?.length) && (
-      <section className="relative bg-background py-14 sm:py-24">
-        {/* Green hairline — same fade-in/peak/fade-out shape as the gold one atop
-            the highlight band, but green so the seam reads as "back to the
-            brand" rather than another gold rule stacked on the one above it. */}
-        <span
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{
-            background:
-              `linear-gradient(90deg, transparent 0%, rgba(11,61,46,0.15) 20%, ${GREEN} 50%, rgba(11,61,46,0.15) 80%, transparent 100%)`,
-          }}
-        />
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <div className="text-center">
-              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
-                {t("communityEyebrow")}
-              </div>
-              <span
-                className="mx-auto mt-4 block h-px w-14"
-                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
-              />
-              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
-                {offer.amenities!.heading}
-              </h2>
-            </div>
-          </Reveal>
-
-          {/* Photo band — the four sections that follow this heading (stats,
-              masterplan, timeline, worked example, terms) are all type and
-              icons, so the middle of the page ran imageless. Three evenly
-              spaced picks from the gallery, skipping index 0 because that is
-              already the page hero. */}
-          {(() => {
-            const pool = (offer.gallery ?? []).slice(1);
-            if (pool.length < 3) return null;
-            const band = [0, 1, 2].map((k) => pool[Math.round((k * (pool.length - 1)) / 2)]);
-            return (
-              <Reveal delay={50}>
-                <div className="mt-10 grid grid-cols-3 gap-2 sm:mt-12 sm:gap-4">
-                  {band.map((img, i) => (
-                    <div
-                      key={img.src}
-                      className={`relative overflow-hidden rounded-xl bg-muted sm:rounded-2xl ${
-                        i === 1 ? "aspect-[3/4] sm:aspect-[4/5]" : "aspect-[3/4] sm:aspect-[4/5] sm:mt-8"
-                      }`}
-                    >
-                      <img
-                        src={img.src}
-                        alt={img.alt}
-                        loading="lazy"
-                        className="h-full w-full object-cover"
-                      />
-                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-            );
-          })()}
-
-          {!!offer.amenities?.stats?.length && (
-            <Reveal delay={70}>
-              <div
-                className={`mt-12 grid gap-4 ${
-                  offer.amenities.stats.length === 2
-                    ? "sm:grid-cols-2"
-                    : offer.amenities.stats.length >= 4
-                      ? "sm:grid-cols-4"
-                      : "sm:grid-cols-3"
-                }`}
-              >
-                {offer.amenities.stats.map((stat) => {
-                  const Icon = ICONS[stat.icon ?? ""] ?? CheckCircle2;
-                  return (
-                    <div
-                      key={stat.label}
-                      className="flex flex-col items-center gap-2 rounded-2xl border border-border/60 px-5 py-6 text-center sm:gap-2.5 sm:px-6 sm:py-8"
-                    >
-                      <Icon className="h-7 w-7" style={{ color: GOLD_DEEP }} />
-                      <div className="text-[1.75rem] font-extrabold tracking-[-0.02em] sm:text-3xl" style={{ color: GOLD_DEEP }}>
-                        {stat.value}
-                      </div>
-                      <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-foreground">
-                        {stat.label}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+  
+              <p className="mx-auto mt-9 max-w-2xl text-[11px] leading-relaxed text-white/35">{offer.disclaimer}</p>
             </Reveal>
-          )}
-
-          {!!offer.amenities?.items?.length && (
-            <>
-              <Reveal delay={110}>
-                <div className="mt-14 flex items-center justify-center gap-4 sm:gap-6">
-                  <span
-                    className="h-px flex-1 max-w-24"
-                    style={{ background: `linear-gradient(90deg, transparent, rgba(212,168,71,0.5))` }}
-                  />
-                  <span className="shrink-0 text-lg font-bold text-foreground sm:text-xl">
-                    {offer.amenities.masterplanHeading ?? t("defaultMasterplanHeading")}
-                  </span>
-                  <span
-                    className="h-px flex-1 max-w-24"
-                    style={{ background: `linear-gradient(90deg, rgba(212,168,71,0.5), transparent)` }}
-                  />
-                </div>
-              </Reveal>
-              <Reveal delay={140}>
-                <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {offer.amenities.items.map((it, i) => {
-                    const Icon = ICONS[offer.amenities?.icons?.[i] ?? ""] ?? CheckCircle2;
-                    return (
-                      <div
-                        key={it}
-                        className="flex flex-col items-center justify-center gap-2.5 rounded-2xl border border-border/60 px-3 py-5 text-center sm:gap-3 sm:px-5 sm:py-7"
-                      >
-                        <Icon className="h-6 w-6" style={{ color: GOLD_DEEP }} />
-                        <span className="text-[13px] font-bold uppercase leading-snug tracking-[0.04em] text-foreground">
-                          {it}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Reveal>
-            </>
-          )}
-        </div>
-      </section>
-      )}
-
-      {/* ── SEAM ORNAMENT — the community section (bg-background) and the
-             timeline section right after it (bg-card) are both light, so their
-             join was a bare horizontal line. A small badge straddling the
-             boundary (negative margin pulls it up onto the seam, positive
-             z-index keeps it above both) turns that into a deliberate beat
-             instead of an accidental one, and doubles as "lifestyle → money"
-             visual shorthand: sparkle (the offer) becomes a key (the deal). ── */}
-      {!!offer.timeline?.length && (
-      <div className="relative z-10 -mb-6 flex justify-center">
-        <span
-          className="flex h-12 w-12 items-center justify-center rounded-full border-4"
-          style={{
-            background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
-            borderColor: "var(--background, #fff)",
-            boxShadow: "0 6px 20px rgba(212,168,71,0.35)",
-          }}
-        >
-          <KeyRound className="h-5 w-5" style={{ color: GREEN }} />
-        </span>
+          </div>
+        </section>
+  
+        <Footer />
       </div>
-      )}
-
-      {/* ── PAYMENT TIMELINE — a standing section: every offer should carry a
-             timeline. The guard is a safety net for a document missing one, not
-             an invitation to omit it. bg-card now (was bg-background) because
-             the community band directly above it took bg-background — moved up
-             from later in the page, see below. ───────────────────────────────── */}
-      {!!offer.timeline?.length && (
-      <section className="bg-card py-14 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal>
-          <Eyebrow>{t("planEyebrow")}</Eyebrow>
-          <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-            {offer.timelineHeading || t("planHeading")}
-          </h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            {offer.timelineIntro ?? t("defaultTimelineIntro")}
-          </p>
-        </Reveal>
-
-        <Reveal delay={80} className="relative mt-14">
-          <div
-            className={`grid gap-5 ${
-              offer.timeline.length === 2
-                ? "md:grid-cols-2"
-                : offer.timeline.length >= 4
-                  ? "md:grid-cols-4"
-                  : "md:grid-cols-3"
-            }`}
-          >
-            {offer.timeline.map((step, i) => (
-              <div key={step.stage} className="relative flex flex-col">
-                {/* Connector to the NEXT node — node centre to node centre, so
-                    the run terminates at the last step instead of trailing off
-                    to the edge of the row. 26px = half a 52px node; 46px = that
-                    plus the 20px grid gap. */}
-                {i < offer.timeline!.length - 1 && (
-                  <span
-                    className="ofr-rail pointer-events-none absolute hidden h-[3px] rounded-full md:block"
-                    style={{
-                      left: "26px",
-                      right: "-46px",
-                      top: "25px",
-                      background: `linear-gradient(90deg, ${GREEN} 0%, ${GOLD} 55%, ${GOLD_DEEP} 100%)`,
-                      opacity: 0.30,
-                    }}
-                  />
-                )}
-                {/* Node sits on the rail */}
-                <div className="relative z-10 mb-6 flex justify-center md:justify-start">
-                  <div
-                    className="flex h-[52px] w-[52px] items-center justify-center rounded-2xl text-lg font-extrabold text-white"
-                    style={{
-                      background: `linear-gradient(135deg, ${GREEN}, #1A7A5A)`,
-                      boxShadow: "0 8px 24px rgba(11,61,46,0.22)",
-                      border: "3px solid var(--background, #fff)",
-                    }}
-                  >
-                    {i + 1}
-                  </div>
-                </div>
-
-                <div className="group flex-1 rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
-                  <div
-                    className="text-[2.4rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[3.2rem]"
-                    style={{
-                      background:
-                        step.share === "0%"
-                          ? "linear-gradient(135deg, #8FA39B, #6B7F77)"
-                          : `linear-gradient(135deg, ${GOLD}, ${GOLD_DEEP})`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
-                    {step.share}
-                  </div>
-                  <div className="mt-2 text-base font-bold text-foreground">{step.stage}</div>
-                  <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-        </div>
-      </section>
-      )}
-
-      {/* ── WORKED EXAMPLE + ELIGIBILITY (dark) ──────────────────────────── */}
-      <section
-        className="relative overflow-hidden text-white"
-        style={{ background: DARK_SECTION }}
-      >
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(90% 70% at 85% 20%, rgba(212,168,71,0.14) 0%, transparent 60%)" }}
-        />
-        <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-24">
-          {offer.worked && (
-            <Reveal className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
-              <div>
-                <Eyebrow onDark>{t("mathsEyebrow")}</Eyebrow>
-                <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.1rem] sm:leading-[1.15]">
-                  {offer.worked.heading}
-                </h2>
-                {offer.worked.footnote && (
-                  <p className="mt-5 max-w-md text-xs leading-relaxed text-white/40">{offer.worked.footnote}</p>
-                )}
-              </div>
-
-              <div
-                className="overflow-hidden rounded-2xl"
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
-              >
-                {offer.worked.rows.map(([label, value], i) => {
-                  const waived = value.toLowerCase().includes("waived");
-                  const last = i === offer.worked!.rows.length - 1;
-                  return (
-                    <div
-                      key={label}
-                      className="flex items-center justify-between gap-4 px-6 py-4"
-                      style={{
-                        borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.08)",
-                        background: last ? "rgba(212,168,71,0.12)" : undefined,
-                      }}
-                    >
-                      <span className={`text-sm ${last ? "font-bold text-white" : "text-white/60"}`}>{label}</span>
-                      <span
-                        className="text-sm font-bold tabular-nums"
-                        style={{ color: waived ? GOLD : last ? GOLD_LT : "#FFFFFF" }}
-                      >
-                        {value}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </Reveal>
-          )}
-        </div>
-      </section>
-
-      {/* ── GALLERY — visual proof, right after the reader meets the specific
-             projects and before the lifestyle checklist. bg-background now
-             (was bg-card): the WHY IT MATTERS/INVESTMENT block that used to
-             sit right after this moved up above the community section, so
-             this now sits directly before the bg-card long-form section and
-             needs to alternate against it instead. ─────────────────────────── */}
-      {!!offer.gallery?.length && (
-      <section className="bg-background py-14 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <Eyebrow>{t("galleryEyebrow")}</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              {t("galleryHeading")}
-            </h2>
-          </Reveal>
-          <Reveal delay={80} className="mt-10">
-            <OfferGallery images={offer.gallery} title={offer.shortName} />
-          </Reveal>
-        </div>
-      </section>
-      )}
-
-      {/* ── LONG-FORM + FORM ─────────────────────────────────────────────── */}
-      <section id="enquire" className="scroll-mt-24 bg-card py-14 sm:py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr]">
-          <Reveal>
-            <Eyebrow>{t("longformEyebrow")}</Eyebrow>
-            <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
-              {t("longformHeading")}
-            </h2>
-            <div className="mt-7 space-y-5">
-              {offer.bodyParagraphs.map((p, i) => (
-                <div key={i} className={i === 0 ? "space-y-5" : undefined}>
-                  <p
-                    className={
-                      i === 0
-                        ? "text-lg leading-relaxed text-foreground/85"
-                        : "text-[15px] leading-relaxed text-muted-foreground"
-                    }
-                  >
-                    {p}
-                  </p>
-                  {/* A supporting photo breaks up the long-form copy roughly a third
-                      of the way down, rather than leaving the reader on unbroken
-                      text for six paragraphs. */}
-                  {i === 0 && (offer.gallery?.at(-1) ?? offer.heroImage) && (
-                    <div className="overflow-hidden rounded-2xl">
-                      <img
-                        src={offer.gallery?.at(-1)?.src ?? offer.heroImage}
-                        alt={offer.gallery?.at(-1)?.alt ?? offer.shortName}
-                        loading="lazy"
-                        className="aspect-[16/10] w-full object-cover"
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            {offer.projectHref && (
-              <Link
-                href={offer.projectHref}
-                className="mt-7 inline-flex items-center gap-1.5 text-sm font-bold hover:underline"
-                style={{ color: GOLD_DEEP }}
-              >
-                {t("viewProject")} <ArrowRight className="h-4 w-4" />
-              </Link>
-            )}
-          </Reveal>
-
-          {/* Was lg:sticky lg:top-28 lg:self-start — the text column grew (a
-              second paragraph split by an inline photo) while the form stayed
-              short, so "self-start" pinned it to the top and left a tall dead
-              gap underneath. Centering it in the row removes that gap; the
-              form still sits beside the text, it just no longer chases the
-              scroll position. */}
-          <Reveal delay={100} className="lg:self-center">
-            <OfferLeadForm offerSlug={offer.slug} offerName={offer.shortName} expired={expired} />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="bg-background py-14 sm:py-24">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <Reveal>
-          <Eyebrow>{t("faqEyebrow")}</Eyebrow>
-          <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-            {t("faqHeading")}
-          </h2>
-        </Reveal>
-
-        <div className="mt-10 space-y-3">
-          {offer.faqs.map((f, i) => (
-            <Reveal key={f.question} delay={i * 55}>
-              <details className="group overflow-hidden rounded-2xl border border-border/60 bg-card transition-colors hover:border-primary/25 open:border-primary/25 open:shadow-sm">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-base font-bold text-foreground">
-                  {f.question}
-                  <span
-                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-lg leading-none transition-transform duration-300 group-open:rotate-45"
-                    style={{ background: "rgba(212,168,71,0.14)", color: GOLD_DEEP }}
-                  >
-                    +
-                  </span>
-                </summary>
-                <p className="px-6 pb-5 text-[15px] leading-relaxed text-muted-foreground">{f.answer}</p>
-              </details>
-            </Reveal>
-          ))}
-        </div>
-        </div>
-      </section>
-
-      {/* ── CLOSING CTA ──────────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: DARK_SECTION }}
-      >
-        {/* Photograph under the green ground rather than a flat gradient slab —
-            heavily dimmed so the white headline keeps its contrast. */}
-        {(offer.gallery?.[1]?.src ?? offer.heroImage) && (
-          <img
-            src={offer.gallery?.[1]?.src ?? offer.heroImage}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.18]"
-          />
-        )}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "linear-gradient(180deg, rgba(11,61,46,0.55) 0%, rgba(11,61,46,0.35) 50%, rgba(11,61,46,0.6) 100%)" }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(70% 90% at 50% 110%, rgba(212,168,71,0.22) 0%, transparent 62%)" }}
-        />
-        <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 sm:py-28">
-          <Reveal>
-            <h2 className="text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.9rem] sm:leading-[1.08] sm:tracking-[-0.02em]">
-              {t("ctaHeading")}
-            </h2>
-            <p className="mx-auto mt-5 max-w-xl text-lg text-white/70">
-              {t("ctaBody")}
-            </p>
-
-            {!expired && showCountdown && (
-              <div className="mt-9 flex justify-center">
-                <OfferCountdown deadline={offer.deadline} tone="light" />
-              </div>
-            )}
-
-            <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <a
-                href="#enquire"
-                className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.03]"
-                style={{
-                  background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
-                  color: GREEN,
-                  boxShadow: "0 8px 34px rgba(212,168,71,0.36)",
-                }}
-              >
-                {ctaLabel}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
-              <a
-                href={waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 rounded-full px-8 py-4 text-sm font-bold text-white transition-transform hover:scale-[1.03]"
-                style={{ background: "#25D366", boxShadow: "0 8px 30px rgba(37,211,102,0.34)" }}
-              >
-                <WhatsAppIcon className="h-[18px] w-[18px]" />
-                {waLabel}
-              </a>
-              <a
-                href="tel:+971555099157"
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/12"
-              >
-                <Phone className="h-4 w-4" /> +971 55 509 9157
-              </a>
-            </div>
-
-            <div className="mt-11 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-xs text-white/50">
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4" style={{ color: GOLD }} /> {t("trustRera")}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Building2 className="h-4 w-4" style={{ color: GOLD }} /> {t("trustPartner", { developer: offer.developer })}
-              </span>
-            </div>
-
-            <p className="mx-auto mt-9 max-w-2xl text-[11px] leading-relaxed text-white/35">{offer.disclaimer}</p>
-          </Reveal>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+    </NextIntlClientProvider>
   );
 }

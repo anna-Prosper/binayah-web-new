@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string */
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -122,93 +125,95 @@ export default async function ReportDetailPage({ params }: Props) {
   const localePrefix = locale === "en" ? "" : `/${locale}`;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <PulseEmirateNav />
-
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-        <Link href="/pulse/reports" locale={locale} className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="h-4 w-4" /> All market reports
-        </Link>
-
-        <div className="mt-6 flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase">
-          <FileText className="h-3.5 w-3.5" style={{ color: "#B8922F" }} />
-          <span style={{ color: "#B8922F" }}>Market Report</span>
-        </div>
-        <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
-          {article.title}
-        </h1>
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" />{fmtDate(article.publishedAt, locale)}</span>
-          {article.readTime && <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" />{article.readTime}</span>}
-          <span>By {article.author || "Binayah Editorial"}</span>
-        </div>
-
-        {hasStructured ? (
-          <WeeklyReportView data={rd!} locale={locale} />
-        ) : contentHtml ? (
-          <div
-            className="mt-8 prose prose-lg max-w-none
-              prose-headings:text-foreground prose-headings:font-bold
-              prose-p:text-muted-foreground prose-p:leading-relaxed
-              prose-li:text-muted-foreground
-              prose-strong:text-foreground
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-              prose-table:text-sm prose-th:text-foreground prose-td:text-muted-foreground"
-            dangerouslySetInnerHTML={{ __html: contentHtml }}
-          />
-        ) : (
-          <p className="mt-8 text-lg text-muted-foreground leading-relaxed">{article.excerpt}</p>
-        )}
-
-        <div className="mt-14">
-          <WeeklySubscribeForm source={`pulse-report:${slug}`} variant="card" />
-        </div>
-
-        {/* Prev / next report — internal linking + crawl continuity */}
-        {(adjacent.prev || adjacent.next) && (
-          <nav className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {adjacent.prev ? (
-              <Link href={`/pulse/reports/${adjacent.prev.slug}`} locale={locale} className="group flex flex-col rounded-2xl border border-border/60 bg-card px-5 py-4 hover:border-primary/20 transition-colors">
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground"><ArrowLeft className="h-3.5 w-3.5" /> Previous report</span>
-                <span className="mt-1 font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">{adjacent.prev.title}</span>
-              </Link>
-            ) : <span />}
-            {adjacent.next && (
-              <Link href={`/pulse/reports/${adjacent.next.slug}`} locale={locale} className="group flex flex-col rounded-2xl border border-border/60 bg-card px-5 py-4 hover:border-primary/20 transition-colors sm:text-right">
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground sm:justify-end">Next report <ArrowRight className="h-3.5 w-3.5" /></span>
-                <span className="mt-1 font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">{adjacent.next.title}</span>
-              </Link>
-            )}
-          </nav>
-        )}
-      </article>
-
-      <Footer />
-
-      {/* Was a hand-rolled Article block missing inLanguage/isPartOf/wordCount —
-          it duplicated ArticleJsonLd's job inline, which is how it drifted. */}
-      <ArticleJsonLd
-        headline={article.title}
-        description={article.excerpt || article.metaDescription || article.title}
-        url={canonical(locale, `/pulse/reports/${slug}`)}
-        imageUrl={article.featuredImage || DEFAULT_OG_IMAGE}
-        datePublished={article.publishedAt || new Date(0).toISOString()}
-        dateModified={article.updatedAt}
-        authorName={article.author || "Binayah Editorial"}
-        wordCount={wordCount}
-        articleBody={bodyText}
-        locale={locale}
-        nonce={nonce}
-      />
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", href: `${localePrefix}/` },
-          { name: "Market Reports", href: `${localePrefix}/pulse/reports` },
-          { name: article.title, href: `${localePrefix}/pulse/reports/${slug}` },
-        ]}
-        nonce={nonce}
-      />
-    </div>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseEmirateNav", "weeklyReport"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <PulseEmirateNav />
+  
+        <article className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+          <Link href="/pulse/reports" locale={locale} className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="h-4 w-4" /> All market reports
+          </Link>
+  
+          <div className="mt-6 flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase">
+            <FileText className="h-3.5 w-3.5" style={{ color: "#B8922F" }} />
+            <span style={{ color: "#B8922F" }}>Market Report</span>
+          </div>
+          <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
+            {article.title}
+          </h1>
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4" />{fmtDate(article.publishedAt, locale)}</span>
+            {article.readTime && <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" />{article.readTime}</span>}
+            <span>By {article.author || "Binayah Editorial"}</span>
+          </div>
+  
+          {hasStructured ? (
+            <WeeklyReportView data={rd!} locale={locale} />
+          ) : contentHtml ? (
+            <div
+              className="mt-8 prose prose-lg max-w-none
+                prose-headings:text-foreground prose-headings:font-bold
+                prose-p:text-muted-foreground prose-p:leading-relaxed
+                prose-li:text-muted-foreground
+                prose-strong:text-foreground
+                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                prose-table:text-sm prose-th:text-foreground prose-td:text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
+            />
+          ) : (
+            <p className="mt-8 text-lg text-muted-foreground leading-relaxed">{article.excerpt}</p>
+          )}
+  
+          <div className="mt-14">
+            <WeeklySubscribeForm source={`pulse-report:${slug}`} variant="card" />
+          </div>
+  
+          {/* Prev / next report — internal linking + crawl continuity */}
+          {(adjacent.prev || adjacent.next) && (
+            <nav className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {adjacent.prev ? (
+                <Link href={`/pulse/reports/${adjacent.prev.slug}`} locale={locale} className="group flex flex-col rounded-2xl border border-border/60 bg-card px-5 py-4 hover:border-primary/20 transition-colors">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground"><ArrowLeft className="h-3.5 w-3.5" /> Previous report</span>
+                  <span className="mt-1 font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">{adjacent.prev.title}</span>
+                </Link>
+              ) : <span />}
+              {adjacent.next && (
+                <Link href={`/pulse/reports/${adjacent.next.slug}`} locale={locale} className="group flex flex-col rounded-2xl border border-border/60 bg-card px-5 py-4 hover:border-primary/20 transition-colors sm:text-right">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground sm:justify-end">Next report <ArrowRight className="h-3.5 w-3.5" /></span>
+                  <span className="mt-1 font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">{adjacent.next.title}</span>
+                </Link>
+              )}
+            </nav>
+          )}
+        </article>
+  
+        <Footer />
+  
+        {/* Was a hand-rolled Article block missing inLanguage/isPartOf/wordCount —
+            it duplicated ArticleJsonLd's job inline, which is how it drifted. */}
+        <ArticleJsonLd
+          headline={article.title}
+          description={article.excerpt || article.metaDescription || article.title}
+          url={canonical(locale, `/pulse/reports/${slug}`)}
+          imageUrl={article.featuredImage || DEFAULT_OG_IMAGE}
+          datePublished={article.publishedAt || new Date(0).toISOString()}
+          dateModified={article.updatedAt}
+          authorName={article.author || "Binayah Editorial"}
+          wordCount={wordCount}
+          articleBody={bodyText}
+          locale={locale}
+          nonce={nonce}
+        />
+        <BreadcrumbJsonLd
+          items={[
+            { name: "Home", href: `${localePrefix}/` },
+            { name: "Market Reports", href: `${localePrefix}/pulse/reports` },
+            { name: article.title, href: `${localePrefix}/pulse/reports/${slug}` },
+          ]}
+          nonce={nonce}
+        />
+      </div>
+    </NextIntlClientProvider>
   );
 }

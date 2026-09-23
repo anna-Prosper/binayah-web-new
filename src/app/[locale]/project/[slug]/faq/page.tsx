@@ -1,4 +1,7 @@
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { projectUrl } from "@/lib/routes";
 import { getProject } from "@/lib/api";
@@ -92,21 +95,23 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   ];
 
   return (
-    <>
-      {/* Only emit FAQPage schema when the project has real DB FAQs — the
-          fallback Q&A is boilerplate shared across every project, so it is not
-          rich-result material. The page is noindex either way; the schema is
-          kept for the DB-FAQ case because the markup still describes the
-          content accurately for any consumer that reads it. */}
-      {dbFaqs.length > 0 && (
-        <script
-          type="application/ld+json"
-          nonce={nonce}
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
-        />
-      )}
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <ProjectDetailClient serverProject={project} defaultTab="faq" />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["brochureRequest", "projectDetail", "projectFaq", "propertyDetail"])}>
+      <>
+        {/* Only emit FAQPage schema when the project has real DB FAQs — the
+            fallback Q&A is boilerplate shared across every project, so it is not
+            rich-result material. The page is noindex either way; the schema is
+            kept for the DB-FAQ case because the markup still describes the
+            content accurately for any consumer that reads it. */}
+        {dbFaqs.length > 0 && (
+          <script
+            type="application/ld+json"
+            nonce={nonce}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
+          />
+        )}
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <ProjectDetailClient serverProject={project} defaultTab="faq" />
+      </>
+    </NextIntlClientProvider>
   );
 }

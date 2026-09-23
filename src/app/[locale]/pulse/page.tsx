@@ -1,10 +1,12 @@
 import Navbar from "@/components/Navbar";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import PulsePageClient from "@/app/_clients/pulse/PulsePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Activity } from "lucide-react";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale, getMessages } from "next-intl/server";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
@@ -76,59 +78,61 @@ export default async function PulsePage({ params }: { params: Promise<{ locale: 
   ]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <PulseEmirateNav />
-
-      {/* Hero */}
-      <section
-        className="relative pt-32 pb-14 text-white overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
-            backgroundSize: "48px 48px",
-          }}
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["communityLeaderboard", "featuredInsight", "pulse", "pulseEmirateNav", "pulseQuickTicker", "pulseSentimentChip", "weeklyReport"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <PulseEmirateNav />
+  
+        {/* Hero */}
+        <section
+          className="relative pt-32 pb-14 text-white overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+              backgroundSize: "48px 48px",
+            }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+            <div className="flex items-center gap-3 mb-4">
+              <Activity className="h-5 w-5 text-accent" />
+              <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs">{t("heroLabel")}</p>
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+              {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
+            </h1>
+            <p className="text-primary-foreground/70 max-w-2xl text-base sm:text-lg">
+              {t("heroSubtitle")}
+            </p>
+            <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-primary-foreground/60">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                {t("liveListings")}
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                {t("dldTransactions")}
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                {t("exchangeRates")}
+              </div>
+            </div>
+          </div>
+        </section>
+  
+        <PulsePageClient
+          marketStats={marketStats}
+          marketData={marketData}
+          areasData={areasData}
+          projectsData={projectsData}
+          binayahNews={binayahNews}
         />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <div className="flex items-center gap-3 mb-4">
-            <Activity className="h-5 w-5 text-accent" />
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs">{t("heroLabel")}</p>
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
-          </h1>
-          <p className="text-primary-foreground/70 max-w-2xl text-base sm:text-lg">
-            {t("heroSubtitle")}
-          </p>
-          <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-primary-foreground/60">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              {t("liveListings")}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-              {t("dldTransactions")}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              {t("exchangeRates")}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <PulsePageClient
-        marketStats={marketStats}
-        marketData={marketData}
-        areasData={areasData}
-        projectsData={projectsData}
-        binayahNews={binayahNews}
-      />
-
-      <Footer />
-    </div>
+  
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

@@ -1,6 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- per-locale copy lives in the CONTENT maps below, matching the /valuation page pattern */
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
+import { getTranslations, setRequestLocale, getMessages } from "next-intl/server";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/site";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { Link } from "@/navigation";
@@ -449,65 +451,140 @@ export default async function DealCheckPage({ params }: Props) {
   };
 
   return (
-    <>
-      <Navbar />
-
-      <main className="bg-background">
-        {/* ── Hero ──────────────────────────────────────────────────────────
-            The hero sits on the house gradient (#0B3D2E → #1A7A5A) and carries
-            a real check as a white card, so the page opens by demonstrating
-            the product rather than describing it. The tool card below overlaps
-            the gradient's bottom edge, pulling the form into the hero instead
-            of stranding it on the page beneath. */}
-        <section className="relative">
-          <div
-            className="relative overflow-hidden pt-20 pb-44 sm:pt-32 sm:pb-72"
-            style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #14543D 55%, #1A7A5A 100%)" }}
-          >
-            {/* Ambient warmth, top-right — keeps the flat gradient from reading
-                as a solid block without competing with the card. */}
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["dealCheck"])}>
+      <>
+        <Navbar />
+  
+        <main className="bg-background">
+          {/* ── Hero ──────────────────────────────────────────────────────────
+              The hero sits on the house gradient (#0B3D2E → #1A7A5A) and carries
+              a real check as a white card, so the page opens by demonstrating
+              the product rather than describing it. The tool card below overlaps
+              the gradient's bottom edge, pulling the form into the hero instead
+              of stranding it on the page beneath. */}
+          <section className="relative">
             <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(46% 58% at 82% 8%, rgba(212,168,71,0.16) 0%, rgba(212,168,71,0) 68%)",
-              }}
-            />
-
-            <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-              <div className="grid lg:grid-cols-[1fr_1.02fr] gap-8 lg:gap-16 items-center">
-                {/* Left — the claim */}
-                <div>
-                  <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-6" />
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#D4A847]">
-                    {t("eyebrow")}
-                  </p>
-                  <h1 className="mt-4 sm:mt-5 text-[32px] leading-[1.1] sm:text-[46px] lg:text-[56px] font-bold text-white text-balance">
-                    {t("heroTitle")} {t("heroTitleLight")}
-                  </h1>
-                  <p className="mt-4 sm:mt-6 text-[15px] sm:text-base leading-relaxed text-white/70 max-w-xl">
-                    {t("heroSubtitle")}
-                  </p>
-
-                  <ul className="mt-6 sm:mt-8 flex flex-wrap gap-2">
-                    {[t("trustFree"), t("trustNoSignup"), t("trustDld"), t("trustAnyAgency")].map((label) => (
-                      <li
-                        key={label}
-                        className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-[13px] font-medium text-white/80 sm:py-1.5 sm:text-xs"
-                      >
-                        {label}
-                      </li>
-                    ))}
-                  </ul>
+              className="relative overflow-hidden pt-20 pb-44 sm:pt-32 sm:pb-72"
+              style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #14543D 55%, #1A7A5A 100%)" }}
+            >
+              {/* Ambient warmth, top-right — keeps the flat gradient from reading
+                  as a solid block without competing with the card. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(46% 58% at 82% 8%, rgba(212,168,71,0.16) 0%, rgba(212,168,71,0) 68%)",
+                }}
+              />
+  
+              <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+                <div className="grid lg:grid-cols-[1fr_1.02fr] gap-8 lg:gap-16 items-center">
+                  {/* Left — the claim */}
+                  <div>
+                    <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-6" />
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#D4A847]">
+                      {t("eyebrow")}
+                    </p>
+                    <h1 className="mt-4 sm:mt-5 text-[32px] leading-[1.1] sm:text-[46px] lg:text-[56px] font-bold text-white text-balance">
+                      {t("heroTitle")} {t("heroTitleLight")}
+                    </h1>
+                    <p className="mt-4 sm:mt-6 text-[15px] sm:text-base leading-relaxed text-white/70 max-w-xl">
+                      {t("heroSubtitle")}
+                    </p>
+  
+                    <ul className="mt-6 sm:mt-8 flex flex-wrap gap-2">
+                      {[t("trustFree"), t("trustNoSignup"), t("trustDld"), t("trustAnyAgency")].map((label) => (
+                        <li
+                          key={label}
+                          className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-[13px] font-medium text-white/80 sm:py-1.5 sm:text-xs"
+                        >
+                          {label}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+  
+                  {/* Right — a real check, as a white card on the gradient.
+                      Desktop only: stacked on a phone this card sat between the
+                      headline and the tool, pushing the actual product to ~1100px
+                      — a screen and a half of scrolling before you could do
+                      anything. The mobile copy renders after the tool instead. */}
+                  <figure className="relative hidden lg:block">
+                    <div className="rounded-[20px] bg-white p-5 sm:p-7 shadow-2xl shadow-black/25">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
+                          {t("sampleLabel")}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          {t("vBelow")}
+                        </span>
+                      </div>
+  
+                      <p className="mt-4 text-sm font-medium text-foreground">{t("sampleProperty")}</p>
+  
+                      <div className="my-5 h-px bg-border/60" />
+  
+                      {/* Stacked bars on one shared scale — two lengths you can
+                          compare at a glance, which two side-by-side numbers
+                          never let you do. */}
+                      <div className="space-y-5">
+                        <div>
+                          <div className="flex items-end justify-between gap-3">
+                            <span className="text-sm text-muted-foreground">{t("priceThis")}</span>
+                            <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
+                              2,298
+                              <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
+                                {t("perSqft")}
+                              </span>
+                            </span>
+                          </div>
+                          <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
+                            <div className="h-full rounded-full bg-[#1A7A5A]" style={{ width: "95%" }} />
+                          </div>
+                        </div>
+  
+                        <div>
+                          <div className="flex items-end justify-between gap-3">
+                            <span className="text-sm text-muted-foreground">{t("priceComparable")}</span>
+                            <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
+                              2,419
+                              <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
+                                {t("perSqft")}
+                              </span>
+                            </span>
+                          </div>
+                          <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
+                            <div className="h-full rounded-full bg-[#D4A847]" style={{ width: "100%" }} />
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl bg-emerald-50/70 px-4 py-3.5">
+                        <span className="text-sm text-emerald-900">{t("sampleCheaper")}</span>
+                        <span className="text-lg font-semibold tabular-nums text-emerald-700">−5.0%</span>
+                      </div>
+  
+                      <p className="mt-4 text-xs leading-relaxed text-muted-foreground sm:text-[11px]">
+                        {t("sampleBasis")}
+                      </p>
+                      <figcaption className="mt-1.5 text-xs italic leading-relaxed text-muted-foreground/70 sm:text-[11px]">
+                        {t("sampleCaption")}
+                      </figcaption>
+                    </div>
+                  </figure>
                 </div>
-
-                {/* Right — a real check, as a white card on the gradient.
-                    Desktop only: stacked on a phone this card sat between the
-                    headline and the tool, pushing the actual product to ~1100px
-                    — a screen and a half of scrolling before you could do
-                    anything. The mobile copy renders after the tool instead. */}
-                <figure className="relative hidden lg:block">
+              </div>
+            </div>
+  
+            {/* Tool — lifted over the gradient's edge. The id is the target of
+                the closing band's CTA; scroll-mt keeps it clear of the navbar. */}
+            <div id="dc-tool" className="relative -mt-32 sm:-mt-60 pb-14 sm:pb-16 scroll-mt-20 sm:scroll-mt-24">
+              <div className="max-w-3xl mx-auto px-4 sm:px-6">
+                <DealCheckClient />
+                {/* Same example, below the tool on mobile. */}
+                <figure className="relative mt-8 lg:hidden">
                   <div className="rounded-[20px] bg-white p-5 sm:p-7 shadow-2xl shadow-black/25">
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
@@ -518,11 +595,11 @@ export default async function DealCheckPage({ params }: Props) {
                         {t("vBelow")}
                       </span>
                     </div>
-
+  
                     <p className="mt-4 text-sm font-medium text-foreground">{t("sampleProperty")}</p>
-
+  
                     <div className="my-5 h-px bg-border/60" />
-
+  
                     {/* Stacked bars on one shared scale — two lengths you can
                         compare at a glance, which two side-by-side numbers
                         never let you do. */}
@@ -541,7 +618,7 @@ export default async function DealCheckPage({ params }: Props) {
                           <div className="h-full rounded-full bg-[#1A7A5A]" style={{ width: "95%" }} />
                         </div>
                       </div>
-
+  
                       <div>
                         <div className="flex items-end justify-between gap-3">
                           <span className="text-sm text-muted-foreground">{t("priceComparable")}</span>
@@ -557,12 +634,12 @@ export default async function DealCheckPage({ params }: Props) {
                         </div>
                       </div>
                     </div>
-
+  
                     <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl bg-emerald-50/70 px-4 py-3.5">
                       <span className="text-sm text-emerald-900">{t("sampleCheaper")}</span>
                       <span className="text-lg font-semibold tabular-nums text-emerald-700">−5.0%</span>
                     </div>
-
+  
                     <p className="mt-4 text-xs leading-relaxed text-muted-foreground sm:text-[11px]">
                       {t("sampleBasis")}
                     </p>
@@ -573,317 +650,244 @@ export default async function DealCheckPage({ params }: Props) {
                 </figure>
               </div>
             </div>
-          </div>
-
-          {/* Tool — lifted over the gradient's edge. The id is the target of
-              the closing band's CTA; scroll-mt keeps it clear of the navbar. */}
-          <div id="dc-tool" className="relative -mt-32 sm:-mt-60 pb-14 sm:pb-16 scroll-mt-20 sm:scroll-mt-24">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6">
-              <DealCheckClient />
-              {/* Same example, below the tool on mobile. */}
-              <figure className="relative mt-8 lg:hidden">
-                <div className="rounded-[20px] bg-white p-5 sm:p-7 shadow-2xl shadow-black/25">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
-                      {t("sampleLabel")}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
-                      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      {t("vBelow")}
-                    </span>
-                  </div>
-
-                  <p className="mt-4 text-sm font-medium text-foreground">{t("sampleProperty")}</p>
-
-                  <div className="my-5 h-px bg-border/60" />
-
-                  {/* Stacked bars on one shared scale — two lengths you can
-                      compare at a glance, which two side-by-side numbers
-                      never let you do. */}
-                  <div className="space-y-5">
-                    <div>
-                      <div className="flex items-end justify-between gap-3">
-                        <span className="text-sm text-muted-foreground">{t("priceThis")}</span>
-                        <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
-                          2,298
-                          <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
-                            {t("perSqft")}
-                          </span>
-                        </span>
-                      </div>
-                      <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
-                        <div className="h-full rounded-full bg-[#1A7A5A]" style={{ width: "95%" }} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex items-end justify-between gap-3">
-                        <span className="text-sm text-muted-foreground">{t("priceComparable")}</span>
-                        <span className="text-2xl sm:text-[28px] font-semibold tabular-nums tracking-tight text-foreground">
-                          2,419
-                          <span className="ms-1.5 text-[11px] font-normal text-muted-foreground">
-                            {t("perSqft")}
-                          </span>
-                        </span>
-                      </div>
-                      <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
-                        <div className="h-full rounded-full bg-[#D4A847]" style={{ width: "100%" }} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl bg-emerald-50/70 px-4 py-3.5">
-                    <span className="text-sm text-emerald-900">{t("sampleCheaper")}</span>
-                    <span className="text-lg font-semibold tabular-nums text-emerald-700">−5.0%</span>
-                  </div>
-
-                  <p className="mt-4 text-xs leading-relaxed text-muted-foreground sm:text-[11px]">
-                    {t("sampleBasis")}
+          </section>
+  
+          {/* ── What you get back ─────────────────────────────────────────────
+              Asymmetric: the heading holds its own column so the four cards read
+              as one set rather than a centred grid under a banner. The 01-04
+              numerals are real sequence — these are the report's four sections
+              in the order they appear — set in mono so they read as indices, not
+              decoration. */}
+          <section className="py-16 sm:py-24">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)] gap-10 lg:gap-16">
+                <div className="lg:pt-2">
+                  <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#D4A847]">
+                    {t("wygEyebrow")}
                   </p>
-                  <figcaption className="mt-1.5 text-xs italic leading-relaxed text-muted-foreground/70 sm:text-[11px]">
-                    {t("sampleCaption")}
-                  </figcaption>
+                  <h2 className="mt-4 text-[28px] sm:text-[34px] leading-[1.12] font-bold text-foreground text-balance">
+                    {t("whatYouGet")}
+                  </h2>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xs">
+                    {t("wygIntro")}
+                  </p>
                 </div>
-              </figure>
-            </div>
-          </div>
-        </section>
-
-        {/* ── What you get back ─────────────────────────────────────────────
-            Asymmetric: the heading holds its own column so the four cards read
-            as one set rather than a centred grid under a banner. The 01-04
-            numerals are real sequence — these are the report's four sections
-            in the order they appear — set in mono so they read as indices, not
-            decoration. */}
-        <section className="py-16 sm:py-24">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)] gap-10 lg:gap-16">
-              <div className="lg:pt-2">
-                <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#D4A847]">
-                  {t("wygEyebrow")}
-                </p>
-                <h2 className="mt-4 text-[28px] sm:text-[34px] leading-[1.12] font-bold text-foreground text-balance">
-                  {t("whatYouGet")}
-                </h2>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xs">
-                  {t("wygIntro")}
-                </p>
+  
+                <ol className="grid sm:grid-cols-2 gap-4 sm:gap-5">
+                  {[
+                    { t: t("wyg1Title"), d: t("wyg1Desc") },
+                    { t: t("wyg2Title"), d: t("wyg2Desc") },
+                    { t: t("wyg3Title"), d: t("wyg3Desc") },
+                    { t: t("wyg4Title"), d: t("wyg4Desc") },
+                  ].map((f, i) => (
+                    <li
+                      key={f.t}
+                      className="rounded-2xl border border-border/50 bg-card p-5 sm:p-6 shadow-sm transition-colors hover:border-accent/40"
+                    >
+                      <span className="block font-mono text-xs tabular-nums text-[#D4A847]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="mt-3.5 text-[17px] font-semibold text-foreground text-balance">{f.t}</h3>
+                      <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{f.d}</p>
+                    </li>
+                  ))}
+                </ol>
               </div>
-
-              <ol className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-                {[
-                  { t: t("wyg1Title"), d: t("wyg1Desc") },
-                  { t: t("wyg2Title"), d: t("wyg2Desc") },
-                  { t: t("wyg3Title"), d: t("wyg3Desc") },
-                  { t: t("wyg4Title"), d: t("wyg4Desc") },
-                ].map((f, i) => (
-                  <li
-                    key={f.t}
-                    className="rounded-2xl border border-border/50 bg-card p-5 sm:p-6 shadow-sm transition-colors hover:border-accent/40"
-                  >
-                    <span className="block font-mono text-xs tabular-nums text-[#D4A847]">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="mt-3.5 text-[17px] font-semibold text-foreground text-balance">{f.t}</h3>
-                    <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{f.d}</p>
+            </div>
+          </section>
+  
+          {/* ── Read next ─────────────────────────────────────────────────────
+              Near-black ink rather than a green tint: the guides are a different
+              destination from the tool, and the deeper ground says so while
+              letting the gold do the only talking. Surfaces are hairline-bordered
+              translucent white over the ink, so the cards read as panels lit from
+              within rather than boxes drawn on top. */}
+          <section className="relative overflow-hidden py-16 sm:py-24 bg-[#0A0E0D]">
+            {/* Ambient cast — keeps a large flat black from reading as dead space. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(58% 46% at 76% 6%, rgba(26,122,90,0.20) 0%, rgba(26,122,90,0) 66%), radial-gradient(42% 40% at 10% 96%, rgba(212,168,71,0.09) 0%, rgba(212,168,71,0) 70%)",
+              }}
+            />
+  
+            <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+              <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
+              <h2 className="text-[28px] sm:text-[34px] font-bold text-white text-balance">
+                {t("relatedTitle")}
+              </h2>
+  
+              <ul className="mt-8 sm:mt-10 grid sm:grid-cols-3 gap-4 sm:gap-5">
+                {RELATED_GUIDE_SLUGS.map((slug, i) => (
+                  <li key={slug}>
+                    <Link
+                      href={`/pulse/guides/${slug}`}
+                      className="group relative flex h-full flex-col rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6 transition-all duration-300 hover:border-[#D4A847]/35 hover:bg-white/[0.05]"
+                    >
+                      {/* Index — the guides are a reading order, not a ranking,
+                          but the numeral still tells you how many there are. */}
+                      <span className="font-mono text-[11px] tabular-nums tracking-wider text-white/40">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+  
+                      <h3 className="mt-4 text-[17px] font-semibold leading-snug text-white text-balance">
+                        {t(`guide${i + 1}Title`)}
+                      </h3>
+                      <p className="mt-3 flex-1 text-sm leading-relaxed text-white/50">
+                        {t(`guide${i + 1}Blurb`)}
+                      </p>
+  
+                      <span className="mt-6 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4A847]">
+                        {t("readLink")}
+                        <ArrowRight
+                          className="w-3 h-3 rtl:rotate-180 transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
+                          aria-hidden
+                        />
+                      </span>
+                    </Link>
                   </li>
                 ))}
-              </ol>
+              </ul>
             </div>
-          </div>
-        </section>
-
-        {/* ── Read next ─────────────────────────────────────────────────────
-            Near-black ink rather than a green tint: the guides are a different
-            destination from the tool, and the deeper ground says so while
-            letting the gold do the only talking. Surfaces are hairline-bordered
-            translucent white over the ink, so the cards read as panels lit from
-            within rather than boxes drawn on top. */}
-        <section className="relative overflow-hidden py-16 sm:py-24 bg-[#0A0E0D]">
-          {/* Ambient cast — keeps a large flat black from reading as dead space. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(58% 46% at 76% 6%, rgba(26,122,90,0.20) 0%, rgba(26,122,90,0) 66%), radial-gradient(42% 40% at 10% 96%, rgba(212,168,71,0.09) 0%, rgba(212,168,71,0) 70%)",
-            }}
-          />
-
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-            <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
-            <h2 className="text-[28px] sm:text-[34px] font-bold text-white text-balance">
-              {t("relatedTitle")}
-            </h2>
-
-            <ul className="mt-8 sm:mt-10 grid sm:grid-cols-3 gap-4 sm:gap-5">
-              {RELATED_GUIDE_SLUGS.map((slug, i) => (
-                <li key={slug}>
-                  <Link
-                    href={`/pulse/guides/${slug}`}
-                    className="group relative flex h-full flex-col rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6 transition-all duration-300 hover:border-[#D4A847]/35 hover:bg-white/[0.05]"
-                  >
-                    {/* Index — the guides are a reading order, not a ranking,
-                        but the numeral still tells you how many there are. */}
-                    <span className="font-mono text-[11px] tabular-nums tracking-wider text-white/40">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-
-                    <h3 className="mt-4 text-[17px] font-semibold leading-snug text-white text-balance">
-                      {t(`guide${i + 1}Title`)}
-                    </h3>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-white/50">
-                      {t(`guide${i + 1}Blurb`)}
-                    </p>
-
-                    <span className="mt-6 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4A847]">
-                      {t("readLink")}
-                      <ArrowRight
-                        className="w-3 h-3 rtl:rotate-180 transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
-                        aria-hidden
-                      />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ── FAQ ───────────────────────────────────────────────────────────
-            Asymmetric, like the section above it: the heading holds its own
-            column with the escape hatch for anyone the answers don't cover,
-            and the accordion is a single bordered panel rather than nine
-            floating cards. First item open so the section shows its shape at
-            rest instead of reading as a stack of closed bars. */}
-        <section className="py-16 sm:py-24">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,2fr)] gap-10 lg:gap-14">
-              <div className="lg:pt-1">
-                <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
-                <h2 className="text-[28px] sm:text-[34px] leading-[1.12] font-bold text-foreground text-balance">
-                  {t("faqTitle")}
-                </h2>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xs">
-                  {t("faqIntro")}
-                </p>
-
-                {/* Escape hatch — a generic FAQ can't answer "is THIS one a
-                    good deal", which is the question people actually arrive
-                    with. */}
-                <div className="mt-8 rounded-2xl border border-[#D4A847]/25 bg-[#D4A847]/[0.07] p-5">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B8922F]">
-                    {t("faqStillUnsure")}
+          </section>
+  
+          {/* ── FAQ ───────────────────────────────────────────────────────────
+              Asymmetric, like the section above it: the heading holds its own
+              column with the escape hatch for anyone the answers don't cover,
+              and the accordion is a single bordered panel rather than nine
+              floating cards. First item open so the section shows its shape at
+              rest instead of reading as a stack of closed bars. */}
+          <section className="py-16 sm:py-24">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,2fr)] gap-10 lg:gap-14">
+                <div className="lg:pt-1">
+                  <div aria-hidden className="h-px w-10 bg-[#D4A847] mb-5" />
+                  <h2 className="text-[28px] sm:text-[34px] leading-[1.12] font-bold text-foreground text-balance">
+                    {t("faqTitle")}
+                  </h2>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xs">
+                    {t("faqIntro")}
                   </p>
-                  <p className="mt-2.5 text-sm leading-relaxed text-foreground/80">{t("faqAskUs")}</p>
-                  <div className="mt-4 flex flex-wrap items-center gap-2">
+  
+                  {/* Escape hatch — a generic FAQ can't answer "is THIS one a
+                      good deal", which is the question people actually arrive
+                      with. */}
+                  <div className="mt-8 rounded-2xl border border-[#D4A847]/25 bg-[#D4A847]/[0.07] p-5">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B8922F]">
+                      {t("faqStillUnsure")}
+                    </p>
+                    <p className="mt-2.5 text-sm leading-relaxed text-foreground/80">{t("faqAskUs")}</p>
+                    <div className="mt-4 flex flex-wrap items-center gap-2">
+                      <a
+                        href={waHref(t("waPrefill"), `${lp}${PATH}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-[44px] items-center rounded-xl bg-[#0B3D2E] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#14543D]"
+                      >
+                        {t("whatsappUs")}
+                      </a>
+                      <a
+                        href={`tel:+${WHATSAPP_NUMBER}`}
+                        className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-xl border border-[#0B3D2E]/25 px-4 py-2.5 text-[13px] font-semibold text-[#0B3D2E] transition-colors hover:bg-[#0B3D2E]/5"
+                      >
+                        {PHONE_DISPLAY}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+  
+                <div className="divide-y divide-border/50 overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm">
+                  {faqs.map((f, i) => (
+                    <details key={f.question} className="group" open={i === 0}>
+                      <summary className="flex min-h-[44px] cursor-pointer list-none items-start justify-between gap-4 p-5 sm:px-6 text-[15px] font-semibold text-foreground transition-colors hover:text-[#0B3D2E]">
+                        {f.question}
+                        <span
+                          aria-hidden
+                          className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#D4A847] text-base leading-none text-white transition-transform duration-200 group-open:rotate-45"
+                        >
+                          +
+                        </span>
+                      </summary>
+                      <p className="px-5 pb-5 sm:px-6 -mt-1 pe-12 text-sm leading-relaxed text-muted-foreground">
+                        {f.answer}
+                      </p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+  
+          {/* ── Closing band ──────────────────────────────────────────────────
+              One last ask, on the brand gradient. The page has spent its length
+              explaining the method; this is the sentence that says what to do. */}
+          <section className="pb-16 sm:pb-24">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div
+                className="relative overflow-hidden rounded-3xl px-6 py-10 sm:px-12 sm:py-14"
+                style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #14543D 60%, #1A7A5A 100%)" }}
+              >
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(50% 70% at 88% 20%, rgba(212,168,71,0.18) 0%, rgba(212,168,71,0) 70%)",
+                  }}
+                />
+                <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
+                  <div>
+                    <p className="text-[26px] sm:text-[32px] font-bold leading-[1.15] text-white text-balance">
+                      {t("ctaBandTitle")}
+                      <br className="hidden sm:block" /> {t("ctaBandTitle2")}
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-white/65 max-w-sm">
+                      {t("formFooter")}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-3 shrink-0">
+                    <a
+                      href="#dc-tool"
+                      className="inline-flex items-center rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:shadow-md"
+                      style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+                    >
+                      {t("submit")}
+                    </a>
                     <a
                       href={waHref(t("waPrefill"), `${lp}${PATH}`)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-[44px] items-center rounded-xl bg-[#0B3D2E] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#14543D]"
+                      className="inline-flex items-center rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/[0.18]"
                     >
                       {t("whatsappUs")}
-                    </a>
-                    <a
-                      href={`tel:+${WHATSAPP_NUMBER}`}
-                      className="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-xl border border-[#0B3D2E]/25 px-4 py-2.5 text-[13px] font-semibold text-[#0B3D2E] transition-colors hover:bg-[#0B3D2E]/5"
-                    >
-                      {PHONE_DISPLAY}
                     </a>
                   </div>
                 </div>
               </div>
-
-              <div className="divide-y divide-border/50 overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm">
-                {faqs.map((f, i) => (
-                  <details key={f.question} className="group" open={i === 0}>
-                    <summary className="flex min-h-[44px] cursor-pointer list-none items-start justify-between gap-4 p-5 sm:px-6 text-[15px] font-semibold text-foreground transition-colors hover:text-[#0B3D2E]">
-                      {f.question}
-                      <span
-                        aria-hidden
-                        className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#D4A847] text-base leading-none text-white transition-transform duration-200 group-open:rotate-45"
-                      >
-                        +
-                      </span>
-                    </summary>
-                    <p className="px-5 pb-5 sm:px-6 -mt-1 pe-12 text-sm leading-relaxed text-muted-foreground">
-                      {f.answer}
-                    </p>
-                  </details>
-                ))}
-              </div>
             </div>
-          </div>
-        </section>
-
-        {/* ── Closing band ──────────────────────────────────────────────────
-            One last ask, on the brand gradient. The page has spent its length
-            explaining the method; this is the sentence that says what to do. */}
-        <section className="pb-16 sm:pb-24">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div
-              className="relative overflow-hidden rounded-3xl px-6 py-10 sm:px-12 sm:py-14"
-              style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #14543D 60%, #1A7A5A 100%)" }}
-            >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(50% 70% at 88% 20%, rgba(212,168,71,0.18) 0%, rgba(212,168,71,0) 70%)",
-                }}
-              />
-              <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
-                <div>
-                  <p className="text-[26px] sm:text-[32px] font-bold leading-[1.15] text-white text-balance">
-                    {t("ctaBandTitle")}
-                    <br className="hidden sm:block" /> {t("ctaBandTitle2")}
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-white/65 max-w-sm">
-                    {t("formFooter")}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-3 shrink-0">
-                  <a
-                    href="#dc-tool"
-                    className="inline-flex items-center rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:shadow-md"
-                    style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-                  >
-                    {t("submit")}
-                  </a>
-                  <a
-                    href={waHref(t("waPrefill"), `${lp}${PATH}`)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/[0.18]"
-                  >
-                    {t("whatsappUs")}
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      <Footer />
-
-      <FAQJsonLd faqs={faqs} inLanguage={locale} />
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", href: locale === "en" ? "/" : `/${locale}` },
-          { name: "Deal Check", href: `${lp}${PATH}` },
-        ]}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(appSchema).replace(/</g, "\\u003c"),
-        }}
-      />
-    </>
+          </section>
+  
+        </main>
+  
+        <Footer />
+  
+        <FAQJsonLd faqs={faqs} inLanguage={locale} />
+        <BreadcrumbJsonLd
+          items={[
+            { name: "Home", href: locale === "en" ? "/" : `/${locale}` },
+            { name: "Deal Check", href: `${lp}${PATH}` },
+          ]}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(appSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+      </>
+    </NextIntlClientProvider>
   );
 }

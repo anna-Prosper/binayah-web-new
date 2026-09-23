@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- programmatic SEO matrix page; community copy localized via the community data, UI chrome via ListingsPageClient */
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch, getAreaSoldMatrix, findSoldCombo } from "@/lib/api";
@@ -245,23 +248,25 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
   );
 
   return (
-    <>
-      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
-      <ListingsPageClient
-        initialListings={initialListings}
-        totalCount={totalCount}
-        listingType={p.listingType}
-        title={h1}
-        subtitle={localizeCommunityText(c.shortIntro, locale)}
-        initialPage={1}
-        batchSize={BATCH}
-        community={apiCommunity}
-        propertyType={p.type.canon}
-        bedrooms={p.beds}
-        headerSlot={seoBlock}
-        emptyState={emptyState}
-      />
-      <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} localePrefix={lp} nonce={nonce} />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail", "rent"])}>
+      <>
+        <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
+        <ListingsPageClient
+          initialListings={initialListings}
+          totalCount={totalCount}
+          listingType={p.listingType}
+          title={h1}
+          subtitle={localizeCommunityText(c.shortIntro, locale)}
+          initialPage={1}
+          batchSize={BATCH}
+          community={apiCommunity}
+          propertyType={p.type.canon}
+          bedrooms={p.beds}
+          headerSlot={seoBlock}
+          emptyState={emptyState}
+        />
+        <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} localePrefix={lp} nonce={nonce} />
+      </>
+    </NextIntlClientProvider>
   );
 }

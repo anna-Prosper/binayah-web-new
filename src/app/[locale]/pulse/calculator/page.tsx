@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NewsletterStrip from "@/components/NewsletterStrip";
@@ -82,12 +85,14 @@ export default async function CalculatorPage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <PulseEmirateNav />
-      <CalculatorClient marketStats={marketStats} marketData={marketData} />
-      <NewsletterStrip source="calculator-page" />
-      <Footer />
-    </div>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseCalculator", "pulseEmirateNav"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <PulseEmirateNav />
+        <CalculatorClient marketStats={marketStats} marketData={marketData} />
+        <NewsletterStrip source="calculator-page" />
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

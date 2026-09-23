@@ -1,4 +1,7 @@
 import { notFound, permanentRedirect } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import PropertyDetailClient from "@/app/_clients/property/[slug]/PropertyDetailClient";
 import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
@@ -146,14 +149,16 @@ export default async function PropertyPage({
   ];
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        nonce={nonce}
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <PropertyDetailClient listing={listing} similarListings={similarListings} />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["projectDetail", "propertyDetail"])}>
+      <>
+        <script
+          type="application/ld+json"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <PropertyDetailClient listing={listing} similarListings={similarListings} />
+      </>
+    </NextIntlClientProvider>
   );
 }

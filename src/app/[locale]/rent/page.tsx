@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- multilingual SEO landing page */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -364,111 +367,113 @@ export default async function RentPage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      <FAQJsonLd faqs={[...c.faqs]} />
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <CollectionPageJsonLd name={`${c.h1} ${c.h1sub}`} description={c.metaDesc} url="/rent" items={collectionItems} />
-      <Navbar />
-
-      {/* Hero */}
-      <section
-        className="relative overflow-hidden pt-20 sm:pt-28 pb-8 sm:pb-12 text-white"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{c.heroLabel}</p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-1">
-            {c.h1} <span className="font-light text-primary-foreground/70">{c.h1sub}</span>
-          </h1>
-          <p className="text-primary-foreground/75 text-sm sm:text-base mt-3 max-w-2xl">{c.heroDesc}</p>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="border-b border-border/50 bg-card">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className={`grid ${STAT_COLS[stats.length] ?? "grid-cols-2 sm:grid-cols-3"} divide-x divide-y sm:divide-y-0 divide-border/40`}>
-            {stats.map((s) => (
-              <div key={s.label} className="py-4 sm:py-5 px-3 sm:px-6 text-center">
-                <p className="text-xl sm:text-2xl font-black text-primary mb-0.5">{s.n}</p>
-                <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide leading-tight">{s.label}</p>
-              </div>
-            ))}
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail"])}>
+      <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
+        <FAQJsonLd faqs={[...c.faqs]} />
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <CollectionPageJsonLd name={`${c.h1} ${c.h1sub}`} description={c.metaDesc} url="/rent" items={collectionItems} />
+        <Navbar />
+  
+        {/* Hero */}
+        <section
+          className="relative overflow-hidden pt-20 sm:pt-28 pb-8 sm:pb-12 text-white"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+            <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{c.heroLabel}</p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-1">
+              {c.h1} <span className="font-light text-primary-foreground/70">{c.h1sub}</span>
+            </h1>
+            <p className="text-primary-foreground/75 text-sm sm:text-base mt-3 max-w-2xl">{c.heroDesc}</p>
           </div>
-        </div>
-      </section>
-
-      {/* Full-width embedded search (spans the page like the sections above) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
-        <SearchPageClient defaultIntent="rent" syncUrl={false} initialData={initialData} />
-      </div>
-
-      {/* FAQ + CTA, with the sidebar starting here (below the full-width search) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
-
-        {/* Main column: FAQ + CTA */}
-        <div className="min-w-0 space-y-12 sm:space-y-16">
-
-          {/* FAQ */}
-          <div>
-            <div className="text-center mb-8">
-              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                {locale === "ru" ? "Частые вопросы об аренде" : locale === "ar" ? "أسئلة شائعة عن الإيجار" : locale === "zh" ? "租房常见问题" : locale === "vi" ? "Thuê tại Dubai, Câu hỏi thường gặp" : locale === "he" ? "שכירות בדובאי, שאלות נפוצות" : "Renting in Dubai, FAQs"}
-              </h2>
-            </div>
-            <div className="space-y-2 sm:space-y-3">
-              {c.faqs.map((faq, i) => (
-                <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
-                  <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
-                    <span>{faq.question}</span>
-                    <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
-                  </summary>
-                  <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
-                </details>
+        </section>
+  
+        {/* Stats */}
+        <section className="border-b border-border/50 bg-card">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className={`grid ${STAT_COLS[stats.length] ?? "grid-cols-2 sm:grid-cols-3"} divide-x divide-y sm:divide-y-0 divide-border/40`}>
+              {stats.map((s) => (
+                <div key={s.label} className="py-4 sm:py-5 px-3 sm:px-6 text-center">
+                  <p className="text-xl sm:text-2xl font-black text-primary mb-0.5">{s.n}</p>
+                  <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide leading-tight">{s.label}</p>
+                </div>
               ))}
             </div>
           </div>
-
-          {/* CTA */}
-          <section
-            className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
-            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-          >
-            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-            <div className="relative z-10">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">{c.ctaTitle}</h2>
-              <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{c.ctaDesc}</p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href={`${lp}/contact`}
-                  className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
-                  style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
-                >
-                  {c.ctaBtn}
-                </Link>
-                <a
-                  href={waHref(WA_DEFAULT_MESSAGE, "/rent")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
-                >
-                  WhatsApp
-                </a>
+        </section>
+  
+        {/* Full-width embedded search (spans the page like the sections above) */}
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
+          <SearchPageClient defaultIntent="rent" syncUrl={false} initialData={initialData} />
+        </div>
+  
+        {/* FAQ + CTA, with the sidebar starting here (below the full-width search) */}
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+  
+          {/* Main column: FAQ + CTA */}
+          <div className="min-w-0 space-y-12 sm:space-y-16">
+  
+            {/* FAQ */}
+            <div>
+              <div className="text-center mb-8">
+                <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                  {locale === "ru" ? "Частые вопросы об аренде" : locale === "ar" ? "أسئلة شائعة عن الإيجار" : locale === "zh" ? "租房常见问题" : locale === "vi" ? "Thuê tại Dubai, Câu hỏi thường gặp" : locale === "he" ? "שכירות בדובאי, שאלות נפוצות" : "Renting in Dubai, FAQs"}
+                </h2>
+              </div>
+              <div className="space-y-2 sm:space-y-3">
+                {c.faqs.map((faq, i) => (
+                  <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
+                    <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
+                      <span>{faq.question}</span>
+                      <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+                    </summary>
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
+                  </details>
+                ))}
               </div>
             </div>
-          </section>
+  
+            {/* CTA */}
+            <section
+              className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
+              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+            >
+              <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+              <div className="relative z-10">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-3">{c.ctaTitle}</h2>
+                <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{c.ctaDesc}</p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link
+                    href={`${lp}/contact`}
+                    className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
+                    style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
+                  >
+                    {c.ctaBtn}
+                  </Link>
+                  <a
+                    href={waHref(WA_DEFAULT_MESSAGE, "/rent")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
+                  >
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+            </section>
+          </div>
+  
+          {/* Sidebar */}
+          <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+            <PropertyTypeSidebar locale={locale} slug="rent" />
+          </aside>
         </div>
-
-        {/* Sidebar */}
-        <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-          <PropertyTypeSidebar locale={locale} slug="rent" />
-        </aside>
+  
+        <NewsletterStrip source="rent-landing" />
+        <Footer />
       </div>
-
-      <NewsletterStrip source="rent-landing" />
-      <Footer />
-    </div>
+    </NextIntlClientProvider>
   );
 }

@@ -1,6 +1,8 @@
 import ServicesPageClient from "./ServicesPageClient";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getMessages } from "next-intl/server";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { FAQJsonLd } from "@/components/JsonLd";
 import { getAgents, isPublishableAgent } from "@/lib/agents";
@@ -63,9 +65,11 @@ export default async function Page({ params }: Props) {
   // Note: the visible <Breadcrumbs> inside ServicesPageClient already emits the
   // BreadcrumbList JSON-LD, so we don't add another here (avoids a duplicate).
   return (
-    <>
-      <FAQJsonLd faqs={faqs} />
-      <ServicesPageClient agentCount={agentCount} />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["services"])}>
+      <>
+        <FAQJsonLd faqs={faqs} />
+        <ServicesPageClient agentCount={agentCount} />
+      </>
+    </NextIntlClientProvider>
   );
 }

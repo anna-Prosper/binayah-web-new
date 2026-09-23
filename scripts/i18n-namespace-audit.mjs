@@ -96,7 +96,14 @@ const rows = [];
 for (const page of pages) {
   const route = page.slice(PAGES_ROOT.length).replace(/\/page\.tsx$/, "") || "/";
   const needed = [...clientNamespacesFor(page)].filter((n) => !BASE.has(n));
-  const provided = route === "/" ? HOME : new Set();
+  // What the page itself provides: the named homepage constant, and/or the
+  // inline array it passes to pickRouteMessages(...).
+  const provided = new Set();
+  const pageSource = source.get(page) || "";
+  for (const call of pageSource.matchAll(/pickRouteMessages\([^,]*,\s*\[([^\]]*)\]/g)) {
+    for (const ns of call[1].matchAll(/["']([^"']+)["']/g)) provided.add(ns[1]);
+  }
+  if (/HOME_CLIENT_NAMESPACES/.test(pageSource)) HOME.forEach((n) => provided.add(n));
   const missing = needed.filter((n) => !provided.has(n)).sort();
   if (missing.length) rows.push({ route, missing });
 }

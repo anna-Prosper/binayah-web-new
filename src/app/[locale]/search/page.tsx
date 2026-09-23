@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
@@ -60,5 +63,9 @@ export default async function SearchPage() {
   // Seed the default (all-inventory) grid so bare /search ships listings in the
   // SSR HTML for crawlers; filtered views are noindex and re-fetch client-side.
   const initialData = await getCachedSearch("pageSize=24");
-  return <SearchPageClient initialData={initialData} />;
+  return (
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail"])}>
+      <SearchPageClient initialData={initialData} />
+    </NextIntlClientProvider>
+  );
 }

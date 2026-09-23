@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import AboutPageClient from "./AboutPageClient";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
@@ -59,5 +62,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page() {
   const agents = await getAgents();
   const agentCount = agents.filter(isPublishableAgent).length;
-  return <AboutPageClient agentCount={agentCount} supportCount={SUPPORT_TEAM.length} />;
+  return (
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["about", "contact"])}>
+      <AboutPageClient agentCount={agentCount} supportCount={SUPPORT_TEAM.length} />
+    </NextIntlClientProvider>
+  );
 }

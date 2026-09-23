@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -7,7 +9,7 @@ import GuideDetailClient from "./GuideDetailClient";
 import { guideDates } from "@/lib/pulse-guides";
 import { loadGuides, loadGuide } from "@/lib/guides-data";
 import { getAreaStats } from "@/lib/area-stats";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale, getMessages } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
 import { resolveGuideBody, translatedLocalesForGuideDoc } from "@/lib/guide-i18n";
@@ -137,24 +139,26 @@ export default async function GuideDetailPage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <ArticleJsonLd
-        headline={title}
-        description={description}
-        url={url}
-        imageUrl={guide.heroImage?.url ?? `${AE_URL}/assets/og-image.webp`}
-        datePublished={published}
-        dateModified={modified}
-        wordCount={wordCount}
-        articleBody={articleBodyText(body)}
-        locale={locale}
-      />
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      {faq && faq.length > 0 && <FAQJsonLd faqs={faq} />}
-      <Navbar />
-      <PulseEmirateNav />
-      <GuideDetailClient guide={localizedGuide} areaStats={areaStats} published={published} relatedGuides={relatedGuides} />
-      <Footer />
-    </div>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseEmirateNav", "pulseGuides"])}>
+      <div className="min-h-screen bg-background">
+        <ArticleJsonLd
+          headline={title}
+          description={description}
+          url={url}
+          imageUrl={guide.heroImage?.url ?? `${AE_URL}/assets/og-image.webp`}
+          datePublished={published}
+          dateModified={modified}
+          wordCount={wordCount}
+          articleBody={articleBodyText(body)}
+          locale={locale}
+        />
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        {faq && faq.length > 0 && <FAQJsonLd faqs={faq} />}
+        <Navbar />
+        <PulseEmirateNav />
+        <GuideDetailClient guide={localizedGuide} areaStats={areaStats} published={published} relatedGuides={relatedGuides} />
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

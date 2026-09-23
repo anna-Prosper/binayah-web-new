@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import NewsPageClient from "@/app/_clients/news/NewsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
@@ -59,5 +62,9 @@ export default async function NewsPage({ params }: Props) {
     console.warn("[NewsPage] API unavailable:", (err as Error).message);
   }
 
-  return <NewsPageClient articles={articles} />;
+  return (
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["news"])}>
+      <NewsPageClient articles={articles} />
+    </NextIntlClientProvider>
+  );
 }

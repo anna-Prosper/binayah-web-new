@@ -1,4 +1,7 @@
 import DeveloperDetailClient from "@/app/_clients/developers/[slug]/DeveloperDetailClient";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { notFound } from "next/navigation";
 import { getDeveloper } from "@/lib/api";
 import type { Metadata } from "next";
@@ -137,18 +140,20 @@ export default async function DeveloperDetailPage({ params }: Props) {
   ];
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        nonce={nonce}
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }}
-      />
-      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
-      <DeveloperDetailClient
-        developer={developer}
-        projects={projects || []}
-        localizedDescription={localizedDescription}
-      />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["developerDetail"])}>
+      <>
+        <script
+          type="application/ld+json"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }}
+        />
+        <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
+        <DeveloperDetailClient
+          developer={developer}
+          projects={projects || []}
+          localizedDescription={localizedDescription}
+        />
+      </>
+    </NextIntlClientProvider>
   );
 }

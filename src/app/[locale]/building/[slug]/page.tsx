@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- programmatic SEO template; values are data-driven */
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TrendingUp, Building2, LineChart, BadgeDollarSign, MapPin, ArrowRight, Percent, Bed, Bath, Maximize, ChevronRight, MessageCircle } from "lucide-react";
@@ -538,278 +541,280 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
   ].filter(Boolean) as { label: string; value: string }[];
 
   return (
-    <div className="min-h-screen bg-background">
-      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
-      {faqs.length > 0 && <FAQJsonLd faqs={faqs} nonce={nonce} />}
-      <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <Navbar />
-
-      {/* ── Hero (image-led: listing → community → gradient) ── */}
-      <section className={`relative flex items-end overflow-hidden text-white ${heroImage ? "min-h-[58vh] sm:min-h-[68vh]" : ""}`}>
-        {heroImage ? (
-          <ImageWithFallback src={heroImage} alt={`${b.name}, ${b.area}`} fill priority sizes="100vw" className="object-cover" />
-        ) : (
-          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
-        )}
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,61,46,0.97) 0%, rgba(11,61,46,0.78) 38%, rgba(11,61,46,0.30) 72%, rgba(11,61,46,0.12) 100%)" }} />
-        {!heroImage && <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 pb-8 sm:pb-12">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70 mb-5">
-            <Link href={`${lp}/`} className="hover:text-white transition-colors">{t.home}</Link>
-            <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
-            <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="hover:text-white transition-colors whitespace-nowrap">{b.area}</Link>
-            <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
-            <span className="text-white/90 truncate">{b.name}</span>
-          </nav>
-          <p className="text-accent font-bold tracking-[0.25em] uppercase text-[11px] sm:text-xs mb-3">{t.dldEyebrow}</p>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] mb-3 max-w-3xl">{b.name}</h1>
-          <p className="flex items-center gap-2 text-white/85 text-base sm:text-lg mb-7">
-            <MapPin className="h-4 w-4 flex-shrink-0" style={{ color: "#D4A847" }} /> {b.area}, {b.city || "Dubai"}{b.masterProject ? ` · ${b.masterProject}` : ""}
-          </p>
-          {/* Glass stat tiles */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md max-w-3xl">
-            {stats.map((s) => (
-              <div key={s.label} className="bg-white/[0.06] px-4 py-4 sm:py-5">
-                <s.icon className="h-4 w-4 mb-2" style={{ color: "#D4A847" }} />
-                <p className="text-lg sm:text-2xl font-bold tabular-nums leading-none">{s.value}</p>
-                <p className="text-[10px] text-white/70 mt-1.5 tracking-[0.08em] uppercase leading-tight">{s.label}</p>
-              </div>
-            ))}
-          </div>
-          {/* CTAs */}
-          <div className="flex flex-wrap gap-3 mt-6">
-            <Link href={`${lp}/search?q=${encodeURIComponent(b.name)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm shadow-lg transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-              {t.viewListings} <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link href={parent ? `${lp}/communities/${communitySlug}` : `${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
-              {t.explore} {areaName} <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Sticky section sub-nav ── */}
-      {navItems.length > 1 && (
-        <nav aria-label="Sections" className="sticky top-0 sm:top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border/50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center gap-1 sm:gap-3 overflow-x-auto scrollbar-hide">
-            {navItems.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className="flex-shrink-0 px-3 sm:px-4 py-3.5 text-sm font-medium text-muted-foreground hover:text-foreground border-b-2 border-transparent hover:border-accent whitespace-nowrap transition-colors">
-                {n.label}
-              </a>
-            ))}
-          </div>
-        </nav>
-      )}
-
-      {/* ── Two-column body ── */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-        <div className="lg:col-span-2 space-y-12 min-w-0">
-          {/* Overview / narrative */}
-          <section id="overview" className="scroll-mt-32">
-            <SectionEyebrow eyebrow={t.ebMarketSnapshot} title={t.tNumbers(b.name)} />
-            <div className="space-y-4">
-              {paras.map((p, i) => (
-                <p key={i} className="text-base sm:text-lg text-foreground/85 leading-relaxed">{p}</p>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["weeklyReport"])}>
+      <div className="min-h-screen bg-background">
+        <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
+        {faqs.length > 0 && <FAQJsonLd faqs={faqs} nonce={nonce} />}
+        <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+        <Navbar />
+  
+        {/* ── Hero (image-led: listing → community → gradient) ── */}
+        <section className={`relative flex items-end overflow-hidden text-white ${heroImage ? "min-h-[58vh] sm:min-h-[68vh]" : ""}`}>
+          {heroImage ? (
+            <ImageWithFallback src={heroImage} alt={`${b.name}, ${b.area}`} fill priority sizes="100vw" className="object-cover" />
+          ) : (
+            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
+          )}
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,61,46,0.97) 0%, rgba(11,61,46,0.78) 38%, rgba(11,61,46,0.30) 72%, rgba(11,61,46,0.12) 100%)" }} />
+          {!heroImage && <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />}
+          <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 pb-8 sm:pb-12">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70 mb-5">
+              <Link href={`${lp}/`} className="hover:text-white transition-colors">{t.home}</Link>
+              <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+              <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="hover:text-white transition-colors whitespace-nowrap">{b.area}</Link>
+              <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+              <span className="text-white/90 truncate">{b.name}</span>
+            </nav>
+            <p className="text-accent font-bold tracking-[0.25em] uppercase text-[11px] sm:text-xs mb-3">{t.dldEyebrow}</p>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] mb-3 max-w-3xl">{b.name}</h1>
+            <p className="flex items-center gap-2 text-white/85 text-base sm:text-lg mb-7">
+              <MapPin className="h-4 w-4 flex-shrink-0" style={{ color: "#D4A847" }} /> {b.area}, {b.city || "Dubai"}{b.masterProject ? ` · ${b.masterProject}` : ""}
+            </p>
+            {/* Glass stat tiles */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md max-w-3xl">
+              {stats.map((s) => (
+                <div key={s.label} className="bg-white/[0.06] px-4 py-4 sm:py-5">
+                  <s.icon className="h-4 w-4 mb-2" style={{ color: "#D4A847" }} />
+                  <p className="text-lg sm:text-2xl font-bold tabular-nums leading-none">{s.value}</p>
+                  <p className="text-[10px] text-white/70 mt-1.5 tracking-[0.08em] uppercase leading-tight">{s.label}</p>
+                </div>
               ))}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-5">{t.figuresNote(b.name, b.area, !!yieldPct)}</p>
-          </section>
-
-          {/* Price trend */}
-          {trendPts.length > 1 && (
-            <section id="trend" className="scroll-mt-32">
-              <SectionEyebrow eyebrow={t.nav.trend} title={t.tPriceTrend(b.name)} className="mb-3" />
-              <p className="text-sm text-muted-foreground mb-5">
-                {t.trendDesc(sinceLabel(trend) || "—", smoothed)}
-                {changePct != null && (
-                  <span className="ml-2 inline-flex items-center gap-1 font-bold" style={{ color: changePct > 0.5 ? "#1A7A5A" : changePct < -0.5 ? "#E53E3E" : "#6B7782" }}>
-                    {changePct > 0 ? "+" : ""}{changePct}% <TrendingUp className={`h-3.5 w-3.5 ${changePct < -0.5 ? "rotate-180" : ""}`} />
-                  </span>
-                )}
-              </p>
-              <div className="rounded-2xl border border-border/50 bg-card p-4 sm:p-6 shadow-sm">
-                <TrendChart points={trendPts} />
-              </div>
-            </section>
-          )}
-
-          {/* Prices by unit type — cards + unit-mix chips */}
-          {byBedrooms.length > 0 && (
-            <section id="units" className="scroll-mt-32">
-              <SectionEyebrow eyebrow={t.nav.units} title={t.tPricesByUnit} />
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                {byBedrooms.map((r) => (
-                  <div key={r.bedrooms} className="rounded-2xl border border-border/50 bg-card p-4 sm:p-5 hover:border-accent/40 transition-colors">
-                    <p className="text-xs font-bold tracking-[0.12em] uppercase text-accent-foreground" style={{ color: "#B8922F" }}>{r.bedrooms === 0 ? t.studio : t.bed(r.bedrooms)}</p>
-                    <p className="text-xl sm:text-2xl font-bold text-foreground mt-2 tabular-nums leading-none">{fmtAed(r.avgPrice)}</p>
-                    <p className="text-xs text-muted-foreground mt-1.5 tabular-nums">{r.avgPpsf ? `AED ${toSqft(r.avgPpsf).toLocaleString("en-AE")}/sqft` : t.avgSalePrice}</p>
-                    <p className="text-[11px] text-muted-foreground mt-3 pt-3 border-t border-border/50">{t.saleCount(r.count.toLocaleString("en-AE"), r.count)}</p>
-                  </div>
-                ))}
-              </div>
-              {roomMix.length > 0 && (
-                <div className="mt-5 rounded-2xl border border-border/50 bg-gradient-to-b from-card to-muted/20 p-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent mb-3">{t.unitMix}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {roomMix.map((r) => (
-                      <span key={r.label} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/60 bg-background text-sm">
-                        <span className="font-semibold text-foreground">{r.label}</span>
-                        <span className="text-muted-foreground tabular-nums">{r.n!.toLocaleString("en-AE")}</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </section>
-          )}
-
-          {/* Recent transactions */}
-          {txns.length > 0 && (
-            <section id="transactions" className="scroll-mt-32">
-              <SectionEyebrow eyebrow={t.nav.transactions} title={t.tRecentSold} />
-              <div className="overflow-x-auto rounded-2xl border border-border/50 shadow-sm">
-                <table className="w-full text-sm">
-                  <thead className="bg-primary/[0.04] text-left text-[11px] uppercase tracking-wider text-muted-foreground">
-                    <tr>
-                      <th className="px-4 py-3.5 font-semibold">{t.thDate}</th>
-                      <th className="px-4 py-3.5 font-semibold">{t.thType}</th>
-                      <th className="px-4 py-3.5 font-semibold">{t.thBeds}</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">{t.thSize}</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">{t.thPrice}</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">{t.thPpsf}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/50">
-                    {txns.map((t, i) => (
-                      <tr key={i} className="odd:bg-muted/20 hover:bg-accent/[0.04] transition-colors">
-                        <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{t.transactionDate ? new Date(t.transactionDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-"}</td>
-                        <td className="px-4 py-3">{t.transactionType || t.propertyType || "-"}</td>
-                        <td className="px-4 py-3">{t.bedrooms ?? "-"}</td>
-                        <td className="px-4 py-3 text-right tabular-nums">{t.size ? Math.round(t.size * 10.764).toLocaleString("en-AE") : "-"}</td>
-                        <td className="px-4 py-3 text-right tabular-nums font-semibold text-foreground">{t.amount ? fmtAed(t.amount) : "-"}</td>
-                        <td className="px-4 py-3 text-right tabular-nums font-semibold" style={{ color: "#B8922F" }}>{t.pricePerSqft ? `AED ${toSqft(t.pricePerSqft).toLocaleString("en-AE")}` : "-"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
-
-          {/* Live inventory */}
-          {listings.length > 0 && (
-            <section className="scroll-mt-32">
-              <SectionEyebrow eyebrow={t.ebLiveInventory} title={t.tAvailableNow(b.name)} />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {listings.map((l) => (
-                  <Link key={l.slug} href={`${lp}/property/${l.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
-                    <div className="relative overflow-hidden aspect-[4/3]">
-                      <ImageWithFallback src={l.featuredImage || "/assets/property-placeholder-v2.webp"} alt={l.title || l.name || b.name} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                      {(l.listingType || l._src) && (
-                        <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                          {l.listingType === "Rent" || l._src === "rent" ? t.forRent : t.forSale}
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-5">
-                      <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">{l.title || l.name}</h3>
-                      <p className="text-sm font-bold text-primary mb-3">{l.price ? `AED ${l.price.toLocaleString("en-AE")}` : t.priceOnRequest}</p>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground border-t border-border pt-3">
-                        {l.bedrooms != null && <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.bedrooms || t.studio}</span>}
-                        {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms}</span>}
-                        {l.size ? <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString("en-AE")} {l.sizeUnit || "sqft"}</span> : null}
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
-
-        {/* ── Sidebar ── */}
-        <aside className="lg:col-span-1 space-y-5">
-          <div className="rounded-2xl border border-border/50 bg-gradient-to-b from-card to-muted/20 p-6">
-            <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent mb-4">{t.atGlance}</p>
-            <dl className="space-y-3 text-sm">
-              {glance.map((g) => (
-                <div key={g.label} className="flex items-start justify-between gap-4 border-b border-border/40 pb-3 last:border-0 last:pb-0">
-                  <dt className="text-muted-foreground flex-shrink-0">{g.label}</dt>
-                  <dd className="font-semibold text-foreground text-right">{g.value}</dd>
-                </div>
-              ))}
-            </dl>
-            <a href={WA} target="_blank" rel="noopener noreferrer" className="mt-5 flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-              <MessageCircle className="h-4 w-4" /> {t.talkAdvisor}
-            </a>
-          </div>
-
-          <WeeklySubscribeForm source={`building:${slug}`} variant="card" defaultAreas={[communitySlug]} />
-        </aside>
-      </div>
-
-      {/* ── About the area — parent community's editorial context + guide link ── */}
-      {areaAbout && (
-        <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
-          <div className="rounded-3xl border border-border/50 bg-card p-6 sm:p-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] mb-2" style={{ color: "#B8922F" }}>{t.ebAboutArea}</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">{t.tIsIn(b.name, areaName)}</h2>
-            <p className="text-muted-foreground leading-relaxed max-w-3xl">{areaAbout}</p>
-            {parent && (
-              <Link href={`${lp}/communities/${communitySlug}`} className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline">
-                {t.exploreGuide(areaName)} <ArrowRight className="h-4 w-4" />
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3 mt-6">
+              <Link href={`${lp}/search?q=${encodeURIComponent(b.name)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm shadow-lg transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                {t.viewListings} <ArrowRight className="h-4 w-4" />
               </Link>
+              <Link href={parent ? `${lp}/communities/${communitySlug}` : `${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
+                {t.explore} {areaName} <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
+  
+        {/* ── Sticky section sub-nav ── */}
+        {navItems.length > 1 && (
+          <nav aria-label="Sections" className="sticky top-0 sm:top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border/50">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center gap-1 sm:gap-3 overflow-x-auto scrollbar-hide">
+              {navItems.map((n) => (
+                <a key={n.id} href={`#${n.id}`} className="flex-shrink-0 px-3 sm:px-4 py-3.5 text-sm font-medium text-muted-foreground hover:text-foreground border-b-2 border-transparent hover:border-accent whitespace-nowrap transition-colors">
+                  {n.label}
+                </a>
+              ))}
+            </div>
+          </nav>
+        )}
+  
+        {/* ── Two-column body ── */}
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          <div className="lg:col-span-2 space-y-12 min-w-0">
+            {/* Overview / narrative */}
+            <section id="overview" className="scroll-mt-32">
+              <SectionEyebrow eyebrow={t.ebMarketSnapshot} title={t.tNumbers(b.name)} />
+              <div className="space-y-4">
+                {paras.map((p, i) => (
+                  <p key={i} className="text-base sm:text-lg text-foreground/85 leading-relaxed">{p}</p>
+                ))}
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-5">{t.figuresNote(b.name, b.area, !!yieldPct)}</p>
+            </section>
+  
+            {/* Price trend */}
+            {trendPts.length > 1 && (
+              <section id="trend" className="scroll-mt-32">
+                <SectionEyebrow eyebrow={t.nav.trend} title={t.tPriceTrend(b.name)} className="mb-3" />
+                <p className="text-sm text-muted-foreground mb-5">
+                  {t.trendDesc(sinceLabel(trend) || "—", smoothed)}
+                  {changePct != null && (
+                    <span className="ml-2 inline-flex items-center gap-1 font-bold" style={{ color: changePct > 0.5 ? "#1A7A5A" : changePct < -0.5 ? "#E53E3E" : "#6B7782" }}>
+                      {changePct > 0 ? "+" : ""}{changePct}% <TrendingUp className={`h-3.5 w-3.5 ${changePct < -0.5 ? "rotate-180" : ""}`} />
+                    </span>
+                  )}
+                </p>
+                <div className="rounded-2xl border border-border/50 bg-card p-4 sm:p-6 shadow-sm">
+                  <TrendChart points={trendPts} />
+                </div>
+              </section>
+            )}
+  
+            {/* Prices by unit type — cards + unit-mix chips */}
+            {byBedrooms.length > 0 && (
+              <section id="units" className="scroll-mt-32">
+                <SectionEyebrow eyebrow={t.nav.units} title={t.tPricesByUnit} />
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                  {byBedrooms.map((r) => (
+                    <div key={r.bedrooms} className="rounded-2xl border border-border/50 bg-card p-4 sm:p-5 hover:border-accent/40 transition-colors">
+                      <p className="text-xs font-bold tracking-[0.12em] uppercase text-accent-foreground" style={{ color: "#B8922F" }}>{r.bedrooms === 0 ? t.studio : t.bed(r.bedrooms)}</p>
+                      <p className="text-xl sm:text-2xl font-bold text-foreground mt-2 tabular-nums leading-none">{fmtAed(r.avgPrice)}</p>
+                      <p className="text-xs text-muted-foreground mt-1.5 tabular-nums">{r.avgPpsf ? `AED ${toSqft(r.avgPpsf).toLocaleString("en-AE")}/sqft` : t.avgSalePrice}</p>
+                      <p className="text-[11px] text-muted-foreground mt-3 pt-3 border-t border-border/50">{t.saleCount(r.count.toLocaleString("en-AE"), r.count)}</p>
+                    </div>
+                  ))}
+                </div>
+                {roomMix.length > 0 && (
+                  <div className="mt-5 rounded-2xl border border-border/50 bg-gradient-to-b from-card to-muted/20 p-5">
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent mb-3">{t.unitMix}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {roomMix.map((r) => (
+                        <span key={r.label} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/60 bg-background text-sm">
+                          <span className="font-semibold text-foreground">{r.label}</span>
+                          <span className="text-muted-foreground tabular-nums">{r.n!.toLocaleString("en-AE")}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+            )}
+  
+            {/* Recent transactions */}
+            {txns.length > 0 && (
+              <section id="transactions" className="scroll-mt-32">
+                <SectionEyebrow eyebrow={t.nav.transactions} title={t.tRecentSold} />
+                <div className="overflow-x-auto rounded-2xl border border-border/50 shadow-sm">
+                  <table className="w-full text-sm">
+                    <thead className="bg-primary/[0.04] text-left text-[11px] uppercase tracking-wider text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3.5 font-semibold">{t.thDate}</th>
+                        <th className="px-4 py-3.5 font-semibold">{t.thType}</th>
+                        <th className="px-4 py-3.5 font-semibold">{t.thBeds}</th>
+                        <th className="px-4 py-3.5 text-right font-semibold">{t.thSize}</th>
+                        <th className="px-4 py-3.5 text-right font-semibold">{t.thPrice}</th>
+                        <th className="px-4 py-3.5 text-right font-semibold">{t.thPpsf}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/50">
+                      {txns.map((t, i) => (
+                        <tr key={i} className="odd:bg-muted/20 hover:bg-accent/[0.04] transition-colors">
+                          <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{t.transactionDate ? new Date(t.transactionDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-"}</td>
+                          <td className="px-4 py-3">{t.transactionType || t.propertyType || "-"}</td>
+                          <td className="px-4 py-3">{t.bedrooms ?? "-"}</td>
+                          <td className="px-4 py-3 text-right tabular-nums">{t.size ? Math.round(t.size * 10.764).toLocaleString("en-AE") : "-"}</td>
+                          <td className="px-4 py-3 text-right tabular-nums font-semibold text-foreground">{t.amount ? fmtAed(t.amount) : "-"}</td>
+                          <td className="px-4 py-3 text-right tabular-nums font-semibold" style={{ color: "#B8922F" }}>{t.pricePerSqft ? `AED ${toSqft(t.pricePerSqft).toLocaleString("en-AE")}` : "-"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
+  
+            {/* Live inventory */}
+            {listings.length > 0 && (
+              <section className="scroll-mt-32">
+                <SectionEyebrow eyebrow={t.ebLiveInventory} title={t.tAvailableNow(b.name)} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {listings.map((l) => (
+                    <Link key={l.slug} href={`${lp}/property/${l.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
+                      <div className="relative overflow-hidden aspect-[4/3]">
+                        <ImageWithFallback src={l.featuredImage || "/assets/property-placeholder-v2.webp"} alt={l.title || l.name || b.name} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                        {(l.listingType || l._src) && (
+                          <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                            {l.listingType === "Rent" || l._src === "rent" ? t.forRent : t.forSale}
+                          </span>
+                        )}
+                      </div>
+                      <div className="p-5">
+                        <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">{l.title || l.name}</h3>
+                        <p className="text-sm font-bold text-primary mb-3">{l.price ? `AED ${l.price.toLocaleString("en-AE")}` : t.priceOnRequest}</p>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground border-t border-border pt-3">
+                          {l.bedrooms != null && <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.bedrooms || t.studio}</span>}
+                          {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms}</span>}
+                          {l.size ? <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString("en-AE")} {l.sizeUnit || "sqft"}</span> : null}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
             )}
           </div>
-        </section>
-      )}
-
-      {/* ── Related buildings ── */}
-      {siblings.length > 0 && (
-        <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
-          <SectionEyebrow eyebrow={t.ebNearby} title={t.tOtherBuildings(b.area)} />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {siblings.map((s) => (
-              <Link key={s.slug} href={`${lp}/building/${s.slug}`} className="group flex items-center justify-between gap-3 rounded-2xl border border-border/50 bg-card px-5 py-4 hover:border-primary/20 hover:shadow-md transition-all">
-                <div className="min-w-0">
-                  <p className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">{s.name}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 tabular-nums">
-                    {b.area}{s.sales ? ` · ${s.sales.toLocaleString("en-AE")} ${t.salesWord}` : ""}{s.avgPrice ? ` · ${fmtAed(s.avgPrice)} ${t.avgWord}` : ""}
-                  </p>
-                </div>
-                <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ── FAQs ── */}
-      {faqs.length > 0 && (
-        <section id="faqs" className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-14 scroll-mt-32">
-          <SectionEyebrow eyebrow={t.ebFaq} title={t.tFaq(b.name)} />
-          <FaqAccordion faqs={faqs} variant="card" emitJsonLd={false} />
-        </section>
-      )}
-
-      {/* ── Closing CTA band ── */}
-      <section className="relative overflow-hidden text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-        <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-14 sm:py-16 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">{t.considering(b.name)}</h2>
-          <p className="text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">{t.ctaBody(b.area)}</p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm text-white shadow-lg transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-              <MessageCircle className="h-4 w-4" /> {t.talkAdvisor}
-            </a>
-            <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
-              {t.explore} {b.area} <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+  
+          {/* ── Sidebar ── */}
+          <aside className="lg:col-span-1 space-y-5">
+            <div className="rounded-2xl border border-border/50 bg-gradient-to-b from-card to-muted/20 p-6">
+              <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent mb-4">{t.atGlance}</p>
+              <dl className="space-y-3 text-sm">
+                {glance.map((g) => (
+                  <div key={g.label} className="flex items-start justify-between gap-4 border-b border-border/40 pb-3 last:border-0 last:pb-0">
+                    <dt className="text-muted-foreground flex-shrink-0">{g.label}</dt>
+                    <dd className="font-semibold text-foreground text-right">{g.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <a href={WA} target="_blank" rel="noopener noreferrer" className="mt-5 flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                <MessageCircle className="h-4 w-4" /> {t.talkAdvisor}
+              </a>
+            </div>
+  
+            <WeeklySubscribeForm source={`building:${slug}`} variant="card" defaultAreas={[communitySlug]} />
+          </aside>
         </div>
-      </section>
-
-      <Footer />
-    </div>
+  
+        {/* ── About the area — parent community's editorial context + guide link ── */}
+        {areaAbout && (
+          <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
+            <div className="rounded-3xl border border-border/50 bg-card p-6 sm:p-8">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] mb-2" style={{ color: "#B8922F" }}>{t.ebAboutArea}</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">{t.tIsIn(b.name, areaName)}</h2>
+              <p className="text-muted-foreground leading-relaxed max-w-3xl">{areaAbout}</p>
+              {parent && (
+                <Link href={`${lp}/communities/${communitySlug}`} className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline">
+                  {t.exploreGuide(areaName)} <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+            </div>
+          </section>
+        )}
+  
+        {/* ── Related buildings ── */}
+        {siblings.length > 0 && (
+          <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
+            <SectionEyebrow eyebrow={t.ebNearby} title={t.tOtherBuildings(b.area)} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {siblings.map((s) => (
+                <Link key={s.slug} href={`${lp}/building/${s.slug}`} className="group flex items-center justify-between gap-3 rounded-2xl border border-border/50 bg-card px-5 py-4 hover:border-primary/20 hover:shadow-md transition-all">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">{s.name}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 tabular-nums">
+                      {b.area}{s.sales ? ` · ${s.sales.toLocaleString("en-AE")} ${t.salesWord}` : ""}{s.avgPrice ? ` · ${fmtAed(s.avgPrice)} ${t.avgWord}` : ""}
+                    </p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+  
+        {/* ── FAQs ── */}
+        {faqs.length > 0 && (
+          <section id="faqs" className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-14 scroll-mt-32">
+            <SectionEyebrow eyebrow={t.ebFaq} title={t.tFaq(b.name)} />
+            <FaqAccordion faqs={faqs} variant="card" emitJsonLd={false} />
+          </section>
+        )}
+  
+        {/* ── Closing CTA band ── */}
+        <section className="relative overflow-hidden text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-14 sm:py-16 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3">{t.considering(b.name)}</h2>
+            <p className="text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">{t.ctaBody(b.area)}</p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm text-white shadow-lg transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                <MessageCircle className="h-4 w-4" /> {t.talkAdvisor}
+              </a>
+              <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
+                {t.explore} {b.area} <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
+  
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

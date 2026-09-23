@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import PrivacyPolicyClient from "./PrivacyPolicyClient";
 
@@ -41,6 +44,10 @@ export async function generateMetadata({
   };
 }
 
-export default function PrivacyPolicyPage() {
-  return <PrivacyPolicyClient />;
+export default async function PrivacyPolicyPage() {
+  return (
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["privacyPolicy"])}>
+      <PrivacyPolicyClient />
+    </NextIntlClientProvider>
+  );
 }

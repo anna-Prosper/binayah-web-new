@@ -1,4 +1,7 @@
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { Suspense } from "react";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl } from "@/lib/api";
@@ -96,35 +99,37 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   ];
 
   return (
-    <>
-      {/* NewsDetailClient reads useSearchParams() (a debug-only ?hero= layout
-          toggle). Without a Suspense boundary around it, Next.js can't SSR the
-          component at all — the ENTIRE tree, including the LCP hero image,
-          silently drops out of the server HTML and only renders after client
-          hydration. That was tanking mobile LCP across every article page. */}
-      <Suspense>
-        <NewsDetailClient article={article} related={related} marketStats={marketStats} />
-      </Suspense>
-      {/* Was a hand-rolled block that omitted description/mainEntityOfPage and
-          drifted from the other three article types. Shares ArticleJsonLd now;
-          author stays a Person because 502 of these carry a real human byline
-          (newsAuthorOrDefault falls back to the editorial name for the rest). */}
-      <ArticleJsonLd
-        type="NewsArticle"
-        headline={article.title}
-        description={article.metaDescription || article.excerpt || article.title}
-        url={canonical(locale, `/news/${slug}`)}
-        imageUrl={article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`}
-        datePublished={article.publishedAt}
-        dateModified={article.updatedAt}
-        authorName={newsAuthorOrDefault(article.author)}
-        authorType="Person"
-        articleBody={newsBodyText}
-        wordCount={newsWordCount}
-        locale={locale}
-        nonce={nonce}
-      />
-      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["newsDetail"])}>
+      <>
+        {/* NewsDetailClient reads useSearchParams() (a debug-only ?hero= layout
+            toggle). Without a Suspense boundary around it, Next.js can't SSR the
+            component at all — the ENTIRE tree, including the LCP hero image,
+            silently drops out of the server HTML and only renders after client
+            hydration. That was tanking mobile LCP across every article page. */}
+        <Suspense>
+          <NewsDetailClient article={article} related={related} marketStats={marketStats} />
+        </Suspense>
+        {/* Was a hand-rolled block that omitted description/mainEntityOfPage and
+            drifted from the other three article types. Shares ArticleJsonLd now;
+            author stays a Person because 502 of these carry a real human byline
+            (newsAuthorOrDefault falls back to the editorial name for the rest). */}
+        <ArticleJsonLd
+          type="NewsArticle"
+          headline={article.title}
+          description={article.metaDescription || article.excerpt || article.title}
+          url={canonical(locale, `/news/${slug}`)}
+          imageUrl={article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`}
+          datePublished={article.publishedAt}
+          dateModified={article.updatedAt}
+          authorName={newsAuthorOrDefault(article.author)}
+          authorType="Person"
+          articleBody={newsBodyText}
+          wordCount={newsWordCount}
+          locale={locale}
+          nonce={nonce}
+        />
+        <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
+      </>
+    </NextIntlClientProvider>
   );
 }

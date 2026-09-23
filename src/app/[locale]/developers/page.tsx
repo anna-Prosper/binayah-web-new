@@ -1,4 +1,7 @@
 import DevelopersPageClient from "@/app/_clients/developers/DevelopersPageClient";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
@@ -80,21 +83,23 @@ export default async function DevelopersPage({
   }
 
   return (
-    <>
-      {/* This hub had no BreadcrumbList, so it was ineligible for the breadcrumb
-          rich result its own child pages already qualify for. */}
-      <BreadcrumbJsonLd
-        items={[
-          { name: CRUMB_HOME[locale] ?? CRUMB_HOME.en, href: `${lp}/` },
-          { name: (titles[locale] ?? titles.en).split(" | ")[0], href: `${lp}/developers` },
-        ]}
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["developers"])}>
+      <>
+        {/* This hub had no BreadcrumbList, so it was ineligible for the breadcrumb
+            rich result its own child pages already qualify for. */}
+        <BreadcrumbJsonLd
+          items={[
+            { name: CRUMB_HOME[locale] ?? CRUMB_HOME.en, href: `${lp}/` },
+            { name: (titles[locale] ?? titles.en).split(" | ")[0], href: `${lp}/developers` },
+          ]}
+        />
+      <DevelopersPageClient
+        initialDevelopers={initialDevelopers}
+        totalCount={totalCount}
+        initialPage={page}
+        batchSize={BATCH_SIZE}
       />
-    <DevelopersPageClient
-      initialDevelopers={initialDevelopers}
-      totalCount={totalCount}
-      initialPage={page}
-      batchSize={BATCH_SIZE}
-    />
-    </>
+      </>
+    </NextIntlClientProvider>
   );
 }

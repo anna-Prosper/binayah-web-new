@@ -5,13 +5,18 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { Suspense } from "react";
 import ForgotPasswordClient from "./ForgotPasswordClient";
 
-export default function ForgotPasswordPage() {
+export default async function ForgotPasswordPage() {
   return (
-    <Suspense>
-      <ForgotPasswordClient />
-    </Suspense>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["forgotPassword"])}>
+      <Suspense>
+        <ForgotPasswordClient />
+      </Suspense>
+    </NextIntlClientProvider>
   );
 }

@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- multilingual SEO landing page */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -499,124 +502,126 @@ export default async function MortgagePage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      <FAQJsonLd faqs={c.faqs.map(f => ({ question: f.question, answer: f.answer }))} />
-      <BreadcrumbJsonLd items={bcItems} />
-      <Navbar />
-
-      {/* Hero */}
-      <section
-        className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{c.heroLabel}</p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-2">
-            {c.h1}
-          </h1>
-          <p className="text-3xl sm:text-4xl font-light text-primary-foreground/70 mb-6">{c.h1sub}</p>
-          <p className="text-primary-foreground/80 text-lg leading-relaxed max-w-2xl">{c.heroDesc}</p>
-        </div>
-      </section>
-
-      {/* Calculator */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <h2 className="text-2xl font-bold text-foreground mb-6 text-center">{c.calcTitle}</h2>
-        <MortgageCalculator embedded />
-      </section>
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-16 space-y-12 sm:space-y-16">
-
-        {/* Guide */}
-        <section>
-          <h2 className="text-3xl font-bold text-foreground mb-8">{c.guideTitle}</h2>
-          <div className="space-y-6">
-            {c.sections.map((s) => (
-              <div key={s.title} className="bg-card border border-border/50 rounded-2xl p-6">
-                <h3 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                  {s.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.body}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Banks */}
-        <section>
-          <div className="text-center mb-8">
-            <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Banks</p>
-            <h2 className="text-3xl font-bold text-foreground">{c.banksTitle}</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {c.banks.map((b) => (
-              <div key={b.name} className="bg-card border border-border/50 rounded-2xl p-5 hover:border-primary/20 transition-all">
-                <h3 className="font-bold text-foreground mb-1">{b.name}</h3>
-                <p className="text-xl font-black text-primary mb-2">{b.rate}</p>
-                <p className="text-xs text-muted-foreground">{b.note}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground text-center mt-4">
-            {locale === "ru" ? "* Ставки актуальны на 2026 г. Условия зависят от профиля заёмщика." :
-             locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." : locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" : locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." : locale === "fr" ? "* Taux en vigueur en 2026. Les conditions dépendent du profil de l'emprunteur et du type de bien." : locale === "he" ? "* שיעורים נכון ל-2026. התנאים תלויים בפרופיל הלווה ובסוג הנכס." : "* Rates as of 2026. Terms depend on borrower profile and property type."}
-          </p>
-        </section>
-
-        {/* FAQ */}
-        <section>
-          <div className="text-center mb-10">
-            <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-            <h2 className="text-3xl font-bold text-foreground">{c.faqTitle}</h2>
-          </div>
-          <div className="space-y-3">
-            {c.faqs.map((faq, i) => (
-              <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
-                <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
-                  <span>{faq.question}</span>
-                  <span className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</span>
-                </summary>
-                <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">{faq.answer}</div>
-              </details>
-            ))}
-          </div>
-        </section>
-
-        {/* CTA */}
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["mortgageCalculator"])}>
+      <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
+        <FAQJsonLd faqs={c.faqs.map(f => ({ question: f.question, answer: f.answer }))} />
+        <BreadcrumbJsonLd items={bcItems} />
+        <Navbar />
+  
+        {/* Hero */}
         <section
-          className="rounded-3xl p-10 sm:p-14 text-center text-white relative overflow-hidden"
+          className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white"
           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
         >
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-          <div className="relative z-10">
-            <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">Binayah Properties</p>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">{c.ctaTitle}</h2>
-            <p className="text-primary-foreground/75 text-lg mb-10 max-w-xl mx-auto">{c.ctaDesc}</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href={`${lp}/contact`}
-                className="font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
-                style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
-              >
-                {c.ctaBtn}
-              </Link>
-              <a
-                href={waHref(WA_DEFAULT_MESSAGE, "/mortgage")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all"
-              >
-                {c.ctaWhatsApp}
-              </a>
-            </div>
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+            <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{c.heroLabel}</p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-2">
+              {c.h1}
+            </h1>
+            <p className="text-3xl sm:text-4xl font-light text-primary-foreground/70 mb-6">{c.h1sub}</p>
+            <p className="text-primary-foreground/80 text-lg leading-relaxed max-w-2xl">{c.heroDesc}</p>
           </div>
         </section>
-
+  
+        {/* Calculator */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <h2 className="text-2xl font-bold text-foreground mb-6 text-center">{c.calcTitle}</h2>
+          <MortgageCalculator embedded />
+        </section>
+  
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-16 space-y-12 sm:space-y-16">
+  
+          {/* Guide */}
+          <section>
+            <h2 className="text-3xl font-bold text-foreground mb-8">{c.guideTitle}</h2>
+            <div className="space-y-6">
+              {c.sections.map((s) => (
+                <div key={s.title} className="bg-card border border-border/50 rounded-2xl p-6">
+                  <h3 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                    {s.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+  
+          {/* Banks */}
+          <section>
+            <div className="text-center mb-8">
+              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Banks</p>
+              <h2 className="text-3xl font-bold text-foreground">{c.banksTitle}</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {c.banks.map((b) => (
+                <div key={b.name} className="bg-card border border-border/50 rounded-2xl p-5 hover:border-primary/20 transition-all">
+                  <h3 className="font-bold text-foreground mb-1">{b.name}</h3>
+                  <p className="text-xl font-black text-primary mb-2">{b.rate}</p>
+                  <p className="text-xs text-muted-foreground">{b.note}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground text-center mt-4">
+              {locale === "ru" ? "* Ставки актуальны на 2026 г. Условия зависят от профиля заёмщика." :
+               locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." : locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" : locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." : locale === "fr" ? "* Taux en vigueur en 2026. Les conditions dépendent du profil de l'emprunteur et du type de bien." : locale === "he" ? "* שיעורים נכון ל-2026. התנאים תלויים בפרופיל הלווה ובסוג הנכס." : "* Rates as of 2026. Terms depend on borrower profile and property type."}
+            </p>
+          </section>
+  
+          {/* FAQ */}
+          <section>
+            <div className="text-center mb-10">
+              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+              <h2 className="text-3xl font-bold text-foreground">{c.faqTitle}</h2>
+            </div>
+            <div className="space-y-3">
+              {c.faqs.map((faq, i) => (
+                <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
+                  <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
+                    <span>{faq.question}</span>
+                    <span className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</span>
+                  </summary>
+                  <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">{faq.answer}</div>
+                </details>
+              ))}
+            </div>
+          </section>
+  
+          {/* CTA */}
+          <section
+            className="rounded-3xl p-10 sm:p-14 text-center text-white relative overflow-hidden"
+            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+          >
+            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+            <div className="relative z-10">
+              <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">Binayah Properties</p>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">{c.ctaTitle}</h2>
+              <p className="text-primary-foreground/75 text-lg mb-10 max-w-xl mx-auto">{c.ctaDesc}</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href={`${lp}/contact`}
+                  className="font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
+                  style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
+                >
+                  {c.ctaBtn}
+                </Link>
+                <a
+                  href={waHref(WA_DEFAULT_MESSAGE, "/mortgage")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all"
+                >
+                  {c.ctaWhatsApp}
+                </a>
+              </div>
+            </div>
+          </section>
+  
+        </div>
+  
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </NextIntlClientProvider>
   );
 }

@@ -1,9 +1,11 @@
 import Navbar from "@/components/Navbar";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import DubaiEmirateClient from "./DubaiEmirateClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale, getMessages } from "next-intl/server";
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -108,104 +110,106 @@ export default async function DubaiEmiratePage({ params }: { params: Promise<{ l
   const txSummary = marketData?.transactions?.summary;
 
   return (
-    <div className="min-h-screen" style={{ background: "hsl(var(--pulse-bg))" }}>
-      <Navbar />
-      <PulseEmirateNav />
-
-      {/* Hero — Dubai skyline image at low opacity beneath brand-green gradient
-          keeps premium editorial feel while anchoring to real place identity. */}
-      <section className="relative pt-36 pb-28 overflow-hidden text-white">
-        {/* Base: Dubai skyline at low opacity */}
-        <div className="absolute inset-0">
-          <Image
-            src="/assets/dubai-hero.webp"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["communityLeaderboard", "dubaiEmirate", "featuredInsight", "pulseEmirateNav", "pulseSentimentChip", "weeklyReport"])}>
+      <div className="min-h-screen" style={{ background: "hsl(var(--pulse-bg))" }}>
+        <Navbar />
+        <PulseEmirateNav />
+  
+        {/* Hero — Dubai skyline image at low opacity beneath brand-green gradient
+            keeps premium editorial feel while anchoring to real place identity. */}
+        <section className="relative pt-36 pb-28 overflow-hidden text-white">
+          {/* Base: Dubai skyline at low opacity */}
+          <div className="absolute inset-0">
+            <Image
+              src="/assets/dubai-hero.webp"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover object-center"
+              priority
+            />
+          </div>
+          {/* Brand-green gradient — strong at left, eases at right so image breathes through */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(135deg, rgba(11,61,46,0.94) 0%, rgba(26,122,90,0.82) 60%, rgba(11,61,46,0.75) 100%)",
+            }}
           />
-        </div>
-        {/* Brand-green gradient — strong at left, eases at right so image breathes through */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(135deg, rgba(11,61,46,0.94) 0%, rgba(26,122,90,0.82) 60%, rgba(11,61,46,0.75) 100%)",
-          }}
-        />
-        {/* Gold accent rule along the top */}
-        <div
-          className="absolute top-0 left-0 right-0 h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, #D4A847 30%, #D4A847 70%, transparent 100%)",
-          }}
-        />
-        {/* Subtle gold dot grid */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, #D4A847 1px, transparent 0)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <p
-            className="text-[10px] font-bold tracking-[0.4em] uppercase mb-3"
-            style={{ color: "#D4A847" }}
-          >
-            {t("eyebrow")}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4 mb-3">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
-              {t("title")} <span className="font-light">{t("titleItalic")}</span>
-            </h1>
-          </div>
-
-          <p className="max-w-2xl text-base sm:text-lg mb-8 text-white/75">
-            {t("lede")}
-          </p>
-
-          {/* Live indicator + quick stat strip */}
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/60">
-            <div className="flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
-              {t("liveData")}
+          {/* Gold accent rule along the top */}
+          <div
+            className="absolute top-0 left-0 right-0 h-px"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, #D4A847 30%, #D4A847 70%, transparent 100%)",
+            }}
+          />
+          {/* Subtle gold dot grid */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, #D4A847 1px, transparent 0)",
+              backgroundSize: "48px 48px",
+            }}
+          />
+  
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+            <p
+              className="text-[10px] font-bold tracking-[0.4em] uppercase mb-3"
+              style={{ color: "#D4A847" }}
+            >
+              {t("eyebrow")}
+            </p>
+  
+            <div className="flex flex-wrap items-center gap-4 mb-3">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
+                {t("title")} <span className="font-light">{t("titleItalic")}</span>
+              </h1>
             </div>
-            <span className="text-white/30 hidden sm:block">·</span>
-            <span>{t("dldSource")}</span>
-            {txSummary?.totalTransactions && (
-              <>
-                <span className="text-white/30 hidden sm:block">·</span>
-                <span className="text-white/80 font-medium">
-                  {txSummary.totalTransactions.toLocaleString()} {t("heroTxYtd")}
-                </span>
-              </>
-            )}
-            {txSummary?.avgPpsf && (
-              <>
-                <span className="text-white/30 hidden sm:block">·</span>
-                <span className="text-white/80 font-medium">
-                  AED {txSummary.avgPpsf.toLocaleString()} {t("heroAvgPpsf")}
-                </span>
-              </>
-            )}
+  
+            <p className="max-w-2xl text-base sm:text-lg mb-8 text-white/75">
+              {t("lede")}
+            </p>
+  
+            {/* Live indicator + quick stat strip */}
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/60">
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
+                {t("liveData")}
+              </div>
+              <span className="text-white/30 hidden sm:block">·</span>
+              <span>{t("dldSource")}</span>
+              {txSummary?.totalTransactions && (
+                <>
+                  <span className="text-white/30 hidden sm:block">·</span>
+                  <span className="text-white/80 font-medium">
+                    {txSummary.totalTransactions.toLocaleString()} {t("heroTxYtd")}
+                  </span>
+                </>
+              )}
+              {txSummary?.avgPpsf && (
+                <>
+                  <span className="text-white/30 hidden sm:block">·</span>
+                  <span className="text-white/80 font-medium">
+                    AED {txSummary.avgPpsf.toLocaleString()} {t("heroAvgPpsf")}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
-
-      <DubaiEmirateClient
-        marketStats={marketStats}
-        marketData={marketData}
-        areasData={areasData}
-        projectsData={projectsData}
-        communityImages={communityImages as (string | null)[]}
-      />
-
-      <Footer />
-    </div>
+        </section>
+  
+        <DubaiEmirateClient
+          marketStats={marketStats}
+          marketData={marketData}
+          areasData={areasData}
+          projectsData={projectsData}
+          communityImages={communityImages as (string | null)[]}
+        />
+  
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

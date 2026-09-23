@@ -1,10 +1,12 @@
 import Navbar from "@/components/Navbar";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import DailyClient from "./DailyClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { CalendarDays } from "lucide-react";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale, getMessages } from "next-intl/server";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
@@ -54,45 +56,47 @@ export default async function DailyPage({ params }: Props) {
   const initialData = await fetchJson("/api/dld/daily");
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <PulseEmirateNav />
-
-      {/* Hero — verbatim pulse green gradient band */}
-      <section
-        className="relative pt-32 pb-14 text-white overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-          <div className="flex items-center gap-3 mb-4">
-            <CalendarDays className="h-5 w-5 text-accent" />
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs">{t("heroLabel")}</p>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseDaily", "pulseEmirateNav"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <PulseEmirateNav />
+  
+        {/* Hero — verbatim pulse green gradient band */}
+        <section
+          className="relative pt-32 pb-14 text-white overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+              backgroundSize: "48px 48px",
+            }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+            <div className="flex items-center gap-3 mb-4">
+              <CalendarDays className="h-5 w-5 text-accent" />
+              <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs">{t("heroLabel")}</p>
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+              {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
+            </h1>
+            <p className="text-primary-foreground/70 max-w-2xl text-base sm:text-lg">
+              {t("heroSubtitle")}
+            </p>
+            <div className="mt-5">
+              <span className="inline-flex items-center gap-2 text-[11px] sm:text-xs text-primary-foreground/80 bg-white/10 border border-white/15 rounded-full px-3 py-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                {t("sourcePill")}
+              </span>
+            </div>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
-          </h1>
-          <p className="text-primary-foreground/70 max-w-2xl text-base sm:text-lg">
-            {t("heroSubtitle")}
-          </p>
-          <div className="mt-5">
-            <span className="inline-flex items-center gap-2 text-[11px] sm:text-xs text-primary-foreground/80 bg-white/10 border border-white/15 rounded-full px-3 py-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              {t("sourcePill")}
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <DailyClient initialData={initialData} />
-
-      <Footer />
-    </div>
+        </section>
+  
+        <DailyClient initialData={initialData} />
+  
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

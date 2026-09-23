@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import type { Metadata } from "next";
 import TermsOfServiceClient from "./TermsOfServiceClient";
 
@@ -41,6 +44,10 @@ export async function generateMetadata({
   };
 }
 
-export default function TermsOfServicePage() {
-  return <TermsOfServiceClient />;
+export default async function TermsOfServicePage() {
+  return (
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["termsOfService"])}>
+      <TermsOfServiceClient />
+    </NextIntlClientProvider>
+  );
 }

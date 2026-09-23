@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- multilingual SEO landing page */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -242,89 +245,91 @@ export default async function RentTypePage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <CollectionPageJsonLd
-        name={titleFor(typeLabel, locale).split(" | ")[0]}
-        description={descFor(typeLabel, locale)}
-        url={`/rent/${type}`}
-        items={collectionItems}
-      />
-      <FAQJsonLd faqs={faqs} />
-      <Navbar />
-
-      <section
-        className="relative overflow-hidden pt-28 pb-12 text-white"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{rent}</p>
-          <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{titleFor(typeLabel, locale).split(" | ")[0]}</h1>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl">{descFor(typeLabel, locale)}</p>
-        </div>
-      </section>
-
-      {/* Embedded search (SSR'd listings) — sidebar docked beside the listings
-          via sidebarSlot; the filter bar stays full-width. */}
-      <SearchPageClient
-        defaultIntent="rent"
-        defaultType={entry.searchType}
-        syncUrl={false}
-        initialData={initialData}
-        sidebarSlot={<PropertyTypeSidebar locale={locale} slug={entry.slug} />}
-      />
-
-      {/* FAQ + CTA — unique, indexable content below the listings */}
-      <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-14 space-y-12 sm:space-y-16">
-        <div>
-          <div className="text-center mb-8">
-            <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground">{fillRent(rc.faqHeading, typeLabel)}</h2>
-          </div>
-          <div className="space-y-2 sm:space-y-3">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
-                <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
-                  <span>{faq.question}</span>
-                  <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
-                </summary>
-                <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
-              </details>
-            ))}
-          </div>
-        </div>
-
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail"])}>
+      <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <CollectionPageJsonLd
+          name={titleFor(typeLabel, locale).split(" | ")[0]}
+          description={descFor(typeLabel, locale)}
+          url={`/rent/${type}`}
+          items={collectionItems}
+        />
+        <FAQJsonLd faqs={faqs} />
+        <Navbar />
+  
         <section
-          className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
+          className="relative overflow-hidden pt-28 pb-12 text-white"
           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
         >
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-          <div className="relative z-10">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3">{fillRent(rc.ctaTitle, typeLabel)}</h2>
-            <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{fillRent(rc.ctaDesc, typeLabel)}</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href={`${lp}/contact`}
-                className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
-                style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
-              >
-                {rc.ctaBtn}
-              </Link>
-              <a
-                href={waHref(WA_DEFAULT_MESSAGE, "/rent")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
-              >
-                WhatsApp
-              </a>
-            </div>
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+            <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{rent}</p>
+            <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{titleFor(typeLabel, locale).split(" | ")[0]}</h1>
+            <p className="text-primary-foreground/80 text-lg max-w-2xl">{descFor(typeLabel, locale)}</p>
           </div>
         </section>
+  
+        {/* Embedded search (SSR'd listings) — sidebar docked beside the listings
+            via sidebarSlot; the filter bar stays full-width. */}
+        <SearchPageClient
+          defaultIntent="rent"
+          defaultType={entry.searchType}
+          syncUrl={false}
+          initialData={initialData}
+          sidebarSlot={<PropertyTypeSidebar locale={locale} slug={entry.slug} />}
+        />
+  
+        {/* FAQ + CTA — unique, indexable content below the listings */}
+        <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-14 space-y-12 sm:space-y-16">
+          <div>
+            <div className="text-center mb-8">
+              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground">{fillRent(rc.faqHeading, typeLabel)}</h2>
+            </div>
+            <div className="space-y-2 sm:space-y-3">
+              {faqs.map((faq, i) => (
+                <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
+                  <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
+                    <span>{faq.question}</span>
+                    <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+                  </summary>
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
+                </details>
+              ))}
+            </div>
+          </div>
+  
+          <section
+            className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
+            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+          >
+            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+            <div className="relative z-10">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3">{fillRent(rc.ctaTitle, typeLabel)}</h2>
+              <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{fillRent(rc.ctaDesc, typeLabel)}</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link
+                  href={`${lp}/contact`}
+                  className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
+                  style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
+                >
+                  {rc.ctaBtn}
+                </Link>
+                <a
+                  href={waHref(WA_DEFAULT_MESSAGE, "/rent")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
+                >
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+  
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </NextIntlClientProvider>
   );
 }

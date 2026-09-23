@@ -25,8 +25,9 @@
  *   "home", so listing "home" covers them.
  * - `t.raw()` / `t.has()` read whole subtrees, so a namespace is all-or-nothing.
  *   Never prune keys inside a namespace.
- * - A missing namespace makes next-intl throw at render rather than silently
- *   rendering key paths, so mistakes surface immediately in dev/build.
+ * - A missing namespace does NOT throw: next-intl logs via onError and renders
+ *   the raw key path ("footer.copyright") as visible page text. Silent, so it
+ *   is guarded by scripts/i18n-namespace-audit.mjs rather than a type check.
  */
 
 type Msgs = Record<string, unknown>;
@@ -103,13 +104,18 @@ export function pickBaseMessages(messages: Msgs): Msgs {
 }
 
 /**
- * A page's own slice, for a nested provider. Excludes anything already in the
- * base set so the two providers never serialise the same namespace twice.
+ * A page's slice, for a nested provider.
+ *
+ * MUST include the base namespaces: next-intl's IntlProvider REPLACES the
+ * context rather than merging with an outer provider, so anything rendered
+ * inside this provider only sees what is passed here. Omitting the base set
+ * made the layout's Footer render raw key paths ("footer.copyright"), because
+ * `children` is nested inside the page's provider.
+ *
+ * This still cuts the payload hard: base + one route's namespaces is a small
+ * fraction of the 80-namespace catalogue. The overlap with the layout's own
+ * provider is a few KB of chrome strings, not the whole catalogue.
  */
 export function pickRouteMessages(messages: Msgs, namespaces: readonly string[]): Msgs {
-  const base = new Set<string>(BASE_CLIENT_NAMESPACES);
-  return pick(
-    messages,
-    namespaces.filter((n) => !base.has(n)),
-  );
+  return pick(messages, [...BASE_CLIENT_NAMESPACES, ...namespaces]);
 }

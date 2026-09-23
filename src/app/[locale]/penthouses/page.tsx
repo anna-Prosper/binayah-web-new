@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { notFound } from "next/navigation";
 import PropertyTypeLanding from "@/components/PropertyTypeLanding";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
@@ -35,13 +38,15 @@ export default async function Page({ params }: Props) {
   if (!page) return notFound();
   const c = page[locale as keyof typeof page] as any || page.en;
   return (
-    <PropertyTypeLanding
-      locale={locale}
-      slug="penthouses"
-      icon={page.icon}
-      searchType={page.searchType}
-      c={c}
-      searchSlot={<SearchPageClient defaultType="Penthouse" defaultIntent="buy" syncUrl={false} />}
-    />
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail"])}>
+      <PropertyTypeLanding
+        locale={locale}
+        slug="penthouses"
+        icon={page.icon}
+        searchType={page.searchType}
+        c={c}
+        searchSlot={<SearchPageClient defaultType="Penthouse" defaultIntent="buy" syncUrl={false} />}
+      />
+    </NextIntlClientProvider>
   );
 }

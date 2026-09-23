@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
@@ -83,11 +86,13 @@ export default async function TrendingPage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <PulseEmirateNav />
-      <TrendingClient marketData={marketData} projects={projects} marketStats={marketStats} binayahNews={binayahNews} />
-      <Footer />
-    </div>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseEmirateNav", "pulseTrending"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <PulseEmirateNav />
+        <TrendingClient marketData={marketData} projects={projects} marketStats={marketStats} binayahNews={binayahNews} />
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

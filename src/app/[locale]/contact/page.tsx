@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import ContactPageClient from "./ContactPageClient";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
@@ -45,6 +48,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function Page() {
-  return <ContactPageClient />;
+export default async function Page() {
+  return (
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["contact"])}>
+      <ContactPageClient />
+    </NextIntlClientProvider>
+  );
 }

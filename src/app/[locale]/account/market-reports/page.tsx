@@ -1,9 +1,11 @@
 // Locale-aware redirect: the callbackUrl was already locale-correct, but the
 // "/signin" target itself was bare and resolved to the DEFAULT locale.
 import { redirect } from "@/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getMessages } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MarketReportsClient, { type SubscriptionData } from "./MarketReportsClient";
@@ -59,25 +61,27 @@ export default async function MarketReportsPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-24 pt-32">
-        <div className="mb-8">
-          <p className="text-xs uppercase tracking-[0.3em] font-semibold text-accent mb-3">
-            {t("account.eyebrow")}
-          </p>
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t("account.heading")}</h1>
-          <p className="text-base text-muted-foreground leading-relaxed">{t("account.lede")}</p>
-        </div>
-
-        <MarketReportsClient
-          initialSubscription={subscription}
-          userEmail={session.user.email ?? ""}
-        />
-      </main>
-
-      <Footer />
-    </div>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["weeklyReport"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+  
+        <main className="max-w-2xl mx-auto px-4 sm:px-6 py-24 pt-32">
+          <div className="mb-8">
+            <p className="text-xs uppercase tracking-[0.3em] font-semibold text-accent mb-3">
+              {t("account.eyebrow")}
+            </p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">{t("account.heading")}</h1>
+            <p className="text-base text-muted-foreground leading-relaxed">{t("account.lede")}</p>
+          </div>
+  
+          <MarketReportsClient
+            initialSubscription={subscription}
+            userEmail={session.user.email ?? ""}
+          />
+        </main>
+  
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

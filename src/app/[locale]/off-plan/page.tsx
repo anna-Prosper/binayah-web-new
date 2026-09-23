@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string -- multilingual SEO landing page */
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -235,65 +238,67 @@ export default async function OffPlanPage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      <FAQJsonLd faqs={c.faqs.map(f => ({ question: f.question, answer: f.answer }))} />
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <CollectionPageJsonLd name={c.h1} description={c.heroDesc} url="/off-plan" items={collectionItems} />
-      <Navbar />
-
-      {/* Hero */}
-      <section
-        className="relative overflow-hidden pt-28 pb-12 text-white"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-      >
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{c.heroLabel}</p>
-          <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{c.h1}</h1>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl">{c.heroDesc}</p>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["propertyDetail"])}>
+      <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
+        <FAQJsonLd faqs={c.faqs.map(f => ({ question: f.question, answer: f.answer }))} />
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <CollectionPageJsonLd name={c.h1} description={c.heroDesc} url="/off-plan" items={collectionItems} />
+        <Navbar />
+  
+        {/* Hero */}
+        <section
+          className="relative overflow-hidden pt-28 pb-12 text-white"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+            <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{c.heroLabel}</p>
+            <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{c.h1}</h1>
+            <p className="text-primary-foreground/80 text-lg max-w-2xl">{c.heroDesc}</p>
+          </div>
+        </section>
+  
+        {/* Full-width embedded search (spans the page like the sections above) */}
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
+          <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" syncUrl={false} initialData={initialData} />
         </div>
-      </section>
-
-      {/* Full-width embedded search (spans the page like the sections above) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
-        <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" syncUrl={false} initialData={initialData} />
-      </div>
-
-      {/* FAQ, with the sidebar starting here (below the full-width search) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
-
-        {/* Main column: FAQ */}
-        <div className="min-w-0 space-y-12 sm:space-y-16">
-
-          {/* FAQ */}
-          <div>
-            <div className="text-center mb-10">
-              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-              <h2 className="text-3xl font-bold text-foreground">
-                {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi về Off-Plan" : locale === "he" ? "שאלות נפוצות על הנייר" : locale === "fr" ? "Questions fréquentes sur le sur plan" : "Off-Plan FAQs"}
-              </h2>
-            </div>
-            <div className="space-y-3">
-              {c.faqs.map((faq, i) => (
-                <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
-                  <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
-                    <span>{faq.question}</span>
-                    <span className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</span>
-                  </summary>
-                  <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">{faq.answer}</div>
-                </details>
-              ))}
+  
+        {/* FAQ, with the sidebar starting here (below the full-width search) */}
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+  
+          {/* Main column: FAQ */}
+          <div className="min-w-0 space-y-12 sm:space-y-16">
+  
+            {/* FAQ */}
+            <div>
+              <div className="text-center mb-10">
+                <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+                <h2 className="text-3xl font-bold text-foreground">
+                  {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi về Off-Plan" : locale === "he" ? "שאלות נפוצות על הנייר" : locale === "fr" ? "Questions fréquentes sur le sur plan" : "Off-Plan FAQs"}
+                </h2>
+              </div>
+              <div className="space-y-3">
+                {c.faqs.map((faq, i) => (
+                  <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
+                    <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
+                      <span>{faq.question}</span>
+                      <span className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</span>
+                    </summary>
+                    <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">{faq.answer}</div>
+                  </details>
+                ))}
+              </div>
             </div>
           </div>
+  
+          {/* Sidebar */}
+          <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+            <PropertyTypeSidebar locale={locale} slug="off-plan" />
+          </aside>
         </div>
-
-        {/* Sidebar */}
-        <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-          <PropertyTypeSidebar locale={locale} slug="off-plan" />
-        </aside>
+  
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </NextIntlClientProvider>
   );
 }

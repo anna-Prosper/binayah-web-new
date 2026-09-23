@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { notFound } from "next/navigation";
 import { getNewsArticle } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
@@ -16,5 +19,9 @@ export default async function NewsRawPage({
   const article = applyTranslation(await getNewsArticle(slug), locale);
   if (!article) return notFound();
 
-  return <NewsDetailClient article={{ ...article, featuredImage: OVERRIDE_IMAGE }} />;
+  return (
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["newsDetail"])}>
+      <NewsDetailClient article={{ ...article, featuredImage: OVERRIDE_IMAGE }} />
+    </NextIntlClientProvider>
+  );
 }

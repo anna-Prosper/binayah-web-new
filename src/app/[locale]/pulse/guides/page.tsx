@@ -1,11 +1,13 @@
 import Navbar from "@/components/Navbar";
+import { NextIntlClientProvider } from "next-intl";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import Footer from "@/components/Footer";
 import NewsletterStrip from "@/components/NewsletterStrip";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuidesClient from "./GuidesClient";
 import type { Metadata } from "next";
 import { canonical, altLangs } from "@/lib/site";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getMessages } from "next-intl/server";
 import { loadGuides } from "@/lib/guides-data";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
@@ -43,22 +45,24 @@ export default async function GuidesPage({ params }: Props) {
   const tNav = await getTranslations({ locale, namespace: "nav" });
   const guides = await loadGuides();
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      {/* The guide detail pages carry a BreadcrumbList; this hub did not, so the
-          Home > Market Pulse > Guides trail broke at the level Google reads for
-          the breadcrumb rich result. */}
-      <BreadcrumbJsonLd
-        items={[
-          { name: tCrumb("home"), href: `${lp}/` },
-          { name: tNav("pulse"), href: `${lp}/pulse` },
-          { name: `${t("title")} ${t("titleItalic")}`.trim(), href: `${lp}/pulse/guides` },
-        ]}
-      />
-      <PulseEmirateNav />
-      <GuidesClient guides={guides} />
-      <NewsletterStrip source="guides-index" />
-      <Footer />
-    </div>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseEmirateNav", "pulseGuides"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        {/* The guide detail pages carry a BreadcrumbList; this hub did not, so the
+            Home > Market Pulse > Guides trail broke at the level Google reads for
+            the breadcrumb rich result. */}
+        <BreadcrumbJsonLd
+          items={[
+            { name: tCrumb("home"), href: `${lp}/` },
+            { name: tNav("pulse"), href: `${lp}/pulse` },
+            { name: `${t("title")} ${t("titleItalic")}`.trim(), href: `${lp}/pulse/guides` },
+          ]}
+        />
+        <PulseEmirateNav />
+        <GuidesClient guides={guides} />
+        <NewsletterStrip source="guides-index" />
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

@@ -6,6 +6,9 @@ export const metadata = {
 };
 
 import { getServerSession } from "next-auth";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { authOptions } from "@/lib/auth";
 // Locale-aware redirect: the bare "/signin" this used to pass resolved to the
 // DEFAULT locale, so a signed-out Russian visitor landed on the English sign-in.
@@ -27,10 +30,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <ProfileClient user={session.user} />
-      <Footer />
-    </div>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["profile"])}>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <ProfileClient user={session.user} />
+        <Footer />
+      </div>
+    </NextIntlClientProvider>
   );
 }

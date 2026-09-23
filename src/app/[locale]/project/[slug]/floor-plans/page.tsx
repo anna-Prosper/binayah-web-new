@@ -1,4 +1,7 @@
 import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { projectUrl } from "@/lib/routes";
 import { getProject } from "@/lib/api";
@@ -99,14 +102,16 @@ export default async function FloorPlansPage({ params }: { params: Promise<{ loc
   };
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        nonce={nonce}
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
-      <BreadcrumbJsonLd items={breadcrumbs} />
-      <ProjectDetailClient serverProject={project} defaultTab="floor-plans" seoStats={seoStats} />
-    </>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["brochureRequest", "projectDetail", "projectFaq", "propertyDetail"])}>
+      <>
+        <script
+          type="application/ld+json"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
+        <BreadcrumbJsonLd items={breadcrumbs} />
+        <ProjectDetailClient serverProject={project} defaultTab="floor-plans" seoStats={seoStats} />
+      </>
+    </NextIntlClientProvider>
   );
 }
