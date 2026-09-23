@@ -1,7 +1,7 @@
 "use client";
 
 import { IMAGE_PLACEHOLDER } from "@/lib/images";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { useState } from "react";
 import { Bed, Bath, Maximize, MapPin, ArrowUpRight } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
@@ -63,17 +63,13 @@ const FeaturedPropertiesClient = ({
   return (
     <section id="sale" className="py-8 sm:py-12 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <Reveal
+          y={20}
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-4 sm:mb-10 gap-3"
         >
           <div>
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "3rem" }}
-              viewport={{ once: true }}
+            <Reveal
+              width="3rem"
               className="h-[2px] mb-4 sm:mb-6"
               style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
             />
@@ -113,7 +109,7 @@ const FeaturedPropertiesClient = ({
           <Link href={viewAllHref} className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
             {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
-        </motion.div>
+        </Reveal>
 
         {listings.length === 0 && (
           <div className="text-center py-10">
@@ -131,12 +127,10 @@ const FeaturedPropertiesClient = ({
         {listings.length > 0 && (
           <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2">
             {listings.map((p, i) => (
-              <motion.div
+              <Reveal
                 key={p._id}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
+                x={20}
+                delay={i * 80}
                 className="flex-shrink-0 w-[260px] snap-start"
               >
                 <Link href={`/property/${p.slug}`} className="group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50">
@@ -170,7 +164,7 @@ const FeaturedPropertiesClient = ({
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         )}
@@ -179,13 +173,7 @@ const FeaturedPropertiesClient = ({
         {listings.length > 0 && (
           <div className="hidden sm:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7">
             {listings.map((p, i) => (
-              <motion.div
-                key={p._id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.5 }}
-              >
+              <Reveal key={p._id} y={30} delay={i * 150}>
                 <Link href={`/property/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <ImageWithFallback src={getImage(p)} alt={getLabel(p)} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
@@ -220,7 +208,7 @@ const FeaturedPropertiesClient = ({
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         )}
