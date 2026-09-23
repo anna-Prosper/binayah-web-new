@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import { dldAreaFor } from "@/lib/market";
 
 // ── Live per-area DLD stats for the Pulse area guides ──────────────────────
 // Normalises the Dubai Land Department transaction feed into publishable
@@ -26,12 +27,13 @@ export interface AreaStats {
   source: "dld-area" | "dld-buildings";
 }
 
-// Marketing name → DLD area name where they differ.
-const ALIAS: Record<string, string> = {
-  "downtown dubai": "Burj Khalifa",
-  "downtown": "Burj Khalifa",
-  "dubai hills estate": "Dubai Hills",
-};
+// Marketing name → DLD area name resolution is `dldAreaFor` in lib/market.ts.
+// This file used to carry its own 3-entry copy of that table while market.ts
+// held 25 verified mappings in the same directory, so seven guides silently
+// rendered no stats panel over real DLD data — Dubai Islands (→ Palm Deira,
+// 3,509 sales), Sobha Hartland (→ Hadaeq Sheikh Mohammed Bin Rashid, 1,024),
+// Damac Hills 2 (→ Madinat Hind 4, 896), Emaar Beachfront (→ Dubai Harbour,
+// 274), Town Square and The Valley. One table, one behaviour.
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = (n: number, step = 1) => Math.round(n / step) * step;
@@ -103,7 +105,7 @@ function fromBuildings(area: string, rows: any[]): AreaStats | null {
 
 export const getAreaStats = cache(async (area: string): Promise<AreaStats | null> => {
   if (!area) return null;
-  const target = ALIAS[norm(area)] ?? area;
+  const target = dldAreaFor(area);
   const areas = await fetchJson("/api/dld/areas?limit=800");
   const rec = areas.find((r) => norm(r?.name ?? "") === norm(target));
   if (rec) return fromAreaRecord(area, rec);

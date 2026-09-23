@@ -180,6 +180,14 @@ async function fetchMatrixCombos(db: SitemapDb): Promise<string[]> {
     nameToSlug.set(norm(c.name), c.slug);
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
+    // Synonyms too — projects/listings store JLT as "JLT" and International
+    // City as "International City Dubai", neither of which is the name or the
+    // apiName. Without these the row never resolved to a slug and the URL was
+    // silently absent from the sitemap (9 missing: 6x JLT, 2x international
+    // city, 1x al-barari).
+    for (const syn of (c as { synonyms?: string[] }).synonyms ?? []) {
+      if (syn) nameToSlug.set(norm(syn), c.slug);
+    }
   }
   try {
     const rows = await db.collection("listings").aggregate([
@@ -219,6 +227,14 @@ async function fetchDevCommunityCombos(db: SitemapDb): Promise<string[]> {
     nameToSlug.set(norm(c.name), c.slug);
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
+    // Synonyms too — projects/listings store JLT as "JLT" and International
+    // City as "International City Dubai", neither of which is the name or the
+    // apiName. Without these the row never resolved to a slug and the URL was
+    // silently absent from the sitemap (9 missing: 6x JLT, 2x international
+    // city, 1x al-barari).
+    for (const syn of (c as { synonyms?: string[] }).synonyms ?? []) {
+      if (syn) nameToSlug.set(norm(syn), c.slug);
+    }
   }
   try {
     const rows = await db.collection("projects").aggregate([
@@ -250,6 +266,14 @@ async function fetchSuperlativeCombos(db: SitemapDb): Promise<string[]> {
     nameToSlug.set(norm(c.name), c.slug);
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
+    // Synonyms too — projects/listings store JLT as "JLT" and International
+    // City as "International City Dubai", neither of which is the name or the
+    // apiName. Without these the row never resolved to a slug and the URL was
+    // silently absent from the sitemap (9 missing: 6x JLT, 2x international
+    // city, 1x al-barari).
+    for (const syn of (c as { synonyms?: string[] }).synonyms ?? []) {
+      if (syn) nameToSlug.set(norm(syn), c.slug);
+    }
   }
   try {
     const rows = await db.collection("listings").aggregate([

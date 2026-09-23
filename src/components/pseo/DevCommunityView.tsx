@@ -37,7 +37,16 @@ async function resolve(devSlug: string, communitySlug: string) {
   const data = (await getDeveloper(devSlug)) as { developer?: { name?: string }; projects?: any[] } | null;
   if (!data?.developer?.name) return null;
   const apiCommunity = community.apiName ?? community.name;
-  const targets = new Set([norm(community.name), norm(apiCommunity)]);
+  // `synonyms` has to be in the match set: projects store JLT as "JLT", while
+  // this entry's name/apiName are "Jumeirah Lakes Towers"/"Jumeirah Lake
+  // Towers". Without it the filter dropped all 21 JLT projects, so six
+  // developer×JLT pages rendered "No projects listed" AND set noindex on
+  // themselves (see buildDevCommunityMeta below) over real inventory.
+  const targets = new Set([
+    norm(community.name),
+    norm(apiCommunity),
+    ...(community.synonyms ?? []).map(norm),
+  ]);
   const projects = (data.projects || []).filter((p) => {
     const cn = norm(p.community || "");
     return cn && (targets.has(cn) || [...targets].some((t) => cn.includes(t) || t.includes(cn)));

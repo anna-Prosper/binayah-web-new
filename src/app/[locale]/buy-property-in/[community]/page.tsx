@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
-import { serverApiUrl, serverFetch, getDldBuildings } from "@/lib/api";
+import { serverApiUrl, serverFetch, getDldBuildings, getRelatedProjects } from "@/lib/api";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities";
 import { getCommunityStats, buildMarketNote, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
@@ -146,10 +146,10 @@ export default async function BuyInCommunityPage({
   let offPlanProjects: any[] = [];
   let similarListings: any[] = [];
   if (totalCount === 0) {
-    try {
-      const projRes = await serverFetch(serverApiUrl(`/api/projects?community=${encodeURIComponent(c.name)}&limit=6`));
-      if (projRes.ok) offPlanProjects = await projRes.json();
-    } catch { /* best-effort */ }
+    // Via getRelatedProjects so the synonym fallback applies: this passed
+    // `c.name` alone, and for JLT that is "Jumeirah Lakes Towers" while the
+    // projects store "JLT" — 21 off-plan projects were invisible here.
+    offPlanProjects = await getRelatedProjects(c.name, "", "", 6, c.synonyms ?? []);
 
     if (offPlanProjects.length === 0) {
       try {
