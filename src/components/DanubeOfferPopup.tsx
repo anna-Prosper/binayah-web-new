@@ -263,7 +263,7 @@ export default function DanubeOfferPopup({
 
         {/* Left: the offer, stated over the hero image */}
         <div
-          className="relative hidden flex-col justify-end overflow-hidden p-5 md:flex"
+          className="relative hidden flex-col justify-end overflow-hidden p-5 pb-6 md:flex"
           style={{
             backgroundColor: "#123634",
             backgroundImage: `url("${panelImage}")`,
@@ -275,7 +275,7 @@ export default function DanubeOfferPopup({
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0) 34%, rgba(0,0,0,0.55) 100%)",
+                "linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.42) 62%, rgba(0,0,0,0.78) 100%)",
             }}
           />
           <span
@@ -284,14 +284,26 @@ export default function DanubeOfferPopup({
           >
             Danube Properties
           </span>
+          {/* The deferral is the hook, so 70% leads and the booking figure
+              plays support. "Nothing in between" is the line that makes the
+              structure land — it reads as the offer, not as a footnote. */}
           <div className="relative z-[1] mt-auto">
-            <div className="text-white" style={{ fontSize: 40, lineHeight: 1, fontWeight: 800, letterSpacing: "-0.01em" }}>
-              20 : 70
+            <div className="flex items-baseline gap-1.5 text-white">
+              <span style={{ fontSize: 44, lineHeight: 1, fontWeight: 800, letterSpacing: "-0.02em" }}>
+                70%
+              </span>
+              <span className="text-[13px] font-bold uppercase tracking-[0.1em] text-white/90">
+                on handover
+              </span>
             </div>
-            <div className="mt-2 text-[11px] font-bold uppercase leading-[1.4] tracking-[0.13em] text-white/90">
-              20% to book, 0% during build
-              <br />
-              70% on handover
+            <div className="mt-2.5 text-[12px] font-bold uppercase leading-[1.5] tracking-[0.11em] text-white/90">
+              20% booking
+            </div>
+            <div
+              className="mt-1 text-[12px] font-bold uppercase leading-[1.5] tracking-[0.11em]"
+              style={{ color: "#7fd4d2" }}
+            >
+              Nothing in between
             </div>
           </div>
         </div>
@@ -332,11 +344,14 @@ export default function DanubeOfferPopup({
                 className="mt-3.5 text-[22px] font-bold leading-[1.2]"
                 style={{ color: INK }}
               >
-                Book a Danube home for just <span style={{ color: TEAL_DEEP }}>20%</span>
+                Pay <span style={{ color: TEAL_DEEP }}>70%</span> only when you get the keys
               </h2>
               <p className="mt-2 text-[13px] leading-[1.55]" style={{ color: MUTED }}>
                 10% now, 10% within 60 days, nothing during construction, and 70% due only on
-                handover — plus a 10% waiver on the price.
+                handover.
+              </p>
+              <p className="mt-1.5 text-[13px] font-bold leading-[1.55]" style={{ color: TEAL_DEEP }}>
+                Plus a 10% waiver!
               </p>
 
               {/* the offer's own terms, matching the live offer page exactly */}
