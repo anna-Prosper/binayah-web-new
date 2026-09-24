@@ -84,7 +84,7 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
     image: "https://www.binayah.ae/assets/dubai-hero.webp",
     description:
       "Dubai's trusted property partner since 2007. Find luxury homes, off-plan investments, and expert property management services.",
-    telephone: "+971555099157",
+    telephone: "+971549988811",
     email: "info@binayah.com",
     address: {
       "@type": "PostalAddress",
@@ -152,7 +152,7 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
     identifier: { "@type": "PropertyValue", propertyID: "RERA ORN", value: "1162" },
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+971555099157",
+      telephone: "+971549988811",
       contactType: "sales",
       areaServed: "AE",
       availableLanguage: ["English", "Arabic", "Russian", "French", "Chinese"],
@@ -609,7 +609,7 @@ export function OfferJsonLd({
       "@type": "RealEstateAgent",
       name: "Binayah Properties",
       url: base,
-      telephone: "+971-55-509-9157",
+      telephone: "+971-54-998-8811",
     },
   };
 

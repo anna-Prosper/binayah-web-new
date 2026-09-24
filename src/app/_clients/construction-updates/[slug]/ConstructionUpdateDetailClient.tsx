@@ -31,7 +31,7 @@ interface ProjectArticle {
 }
 
 const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
-const WHATSAPP_NUMBER = "971555099157";
+const WHATSAPP_NUMBER = "971549988811";
 
 
 const LABELS: Record<string, Record<string, string>> = {

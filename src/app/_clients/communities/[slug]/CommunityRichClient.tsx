@@ -73,7 +73,7 @@ interface Props {
   topBuildings?: TopBuilding[];
 }
 
-const WA = "https://wa.me/971555099157";
+const WA = "https://wa.me/971549988811";
 const year = (d?: string | null) => { if (!d) return null; const dt = new Date(d); return isNaN(dt.getTime()) ? d : dt.getFullYear(); };
 const projSlug = (name: string) => name.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-");
 // Widened after an audit found "Not publicly specified", "Varied" and "Upon

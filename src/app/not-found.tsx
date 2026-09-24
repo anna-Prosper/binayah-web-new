@@ -41,11 +41,11 @@ export default function NotFound() {
               <p className="text-xs text-muted-foreground">
                 Need help?{" "}
                 <a
-                  href="tel:+971555099157"
+                  href="tel:+971549988811"
                   className="text-[#1A7A5A] hover:underline inline-flex items-center gap-1"
                 >
                   <Phone className="h-3 w-3" />
-                  +971 55 509 9157
+                  +971 54 998 8811
                 </a>
               </p>
             </div>

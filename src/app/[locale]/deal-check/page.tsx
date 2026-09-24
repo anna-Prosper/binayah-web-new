@@ -21,7 +21,7 @@ interface Props {
 const PATH = "/deal-check";
 
 /** Display form of the company number; waHref/tel: use the digits-only const. */
-const PHONE_DISPLAY = "+971 55 509 9157";
+const PHONE_DISPLAY = "+971 54 998 8811";
 
 const titles: Record<string, string> = {
   en: "Deal Check — Is That Dubai Property Priced Right? | Binayah",
