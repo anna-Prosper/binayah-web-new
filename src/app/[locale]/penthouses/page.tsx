@@ -9,6 +9,12 @@ import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import { findPropertyTypePage } from "@/lib/property-type-pages";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
+// EFFECTIVE WINDOW: 3600, not the 86400 declared here. The page body is static
+// copy, but the hero shows a LIVE inventory count via getCachedSearch, and a
+// route's window is the MINIMUM across every fetch in its render. That call was
+// pinning this page to a 10-minute rebuild until it was moved to the 1h cache;
+// an hour is the right floor for an inventory number. Verify in
+// .next/prerender-manifest.json — the export alone proves nothing.
 export const revalidate = 86400;
 interface Props { params: Promise<{ locale: string }> }
 

@@ -103,9 +103,10 @@ const _searchCachedLong = unstable_cache(_searchUncached, ["search-grid-1h"], { 
  * `longTtl` exists because the 600s window above is a CEILING on the calling
  * route's ISR window, not just a cache setting (see the note on serverFetch).
  * /buy, /rent, /off-plan and /search are force-dynamic, so 600 costs them
- * nothing and stays their default. The property-type landing pages are ISR and
- * export 86400, so without this they were silently rebuilt every 10 minutes —
- * 144x more often than declared — for a hero inventory tile.
+ * nothing and stays their default. The seven property-type landing pages and
+ * [searchSlug] are ISR, and this pinned them to a 10-minute rebuild — those
+ * pages now sit at 3600, which is the right floor for a live inventory count
+ * (they declare 86400/1800, but that is deliberately NOT reached here).
  */
 export async function getCachedSearch<T = any>(query: string, longTtl = false): Promise<T | null> {
   try {
