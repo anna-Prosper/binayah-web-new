@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 import { getCommunity, getDldBuildings, getDldArea, getDldAreaYield, getCommunitiesIndex } from "@/lib/api";
 import { getCommunityWiki } from "@/lib/community-wiki";
 import type { Metadata } from "next";
-import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
+import { localizedSeo, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
 import { dldAreaFor } from "@/lib/market";
-import { getCommunityEnrichmentTranslation, mergeEnrichment } from "@/lib/community-i18n";
+import { getCommunityEnrichmentTranslation, mergeEnrichment, translatedLocalesForCommunity } from "@/lib/community-i18n";
 import { buildCommunityMeta, pickPriceFrom } from "@/lib/community-meta";
 import { findCommunityCoords } from "@/lib/parseNearby";
 
@@ -134,15 +134,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params;
 
-  const [wikiResult, dbResult, transResult] = await Promise.allSettled([
+  const [wikiResult, dbResult, transResult, translatedLocalesResult] = await Promise.allSettled([
     getCommunityWiki(slug),
     getCommunity(slug, true),
     locale !== "en" ? getCommunityEnrichmentTranslation(locale, slug) : Promise.resolve(null),
+    translatedLocalesForCommunity(slug),
   ]);
 
   const wiki = wikiResult.status === "fulfilled" ? wikiResult.value : null;
   const db = dbResult.status === "fulfilled" ? dbResult.value : null;
   const trans = transResult.status === "fulfilled" ? transResult.value : null;
+  // Only 55 of 152 communities have enrichment JSON at all — a community
+  // outside that set renders English at every locale, so it must canonicalise
+  // to English and drop those locales from hreflang (see localizedSeo()).
+  const translatedLocales = translatedLocalesResult.status === "fulfilled" ? translatedLocalesResult.value : [];
 
   const name =
     db?.community?.name ||
@@ -192,7 +197,7 @@ export async function generateMetadata({
   // rich form.
 
 
-  const canonicalUrl = makeCanonical(locale, `/communities/${slug}`);
+  const { url: canonicalUrl, languages } = localizedSeo(locale, `/communities/${slug}`, translatedLocales);
 
   // Wiki-only pages have no DB record → no Binayah inventory, no editorial copy
   // of our own — they duplicate Wikipedia verbatim. Return 404 so Google drops
@@ -213,7 +218,7 @@ export async function generateMetadata({
     ...(noindex ? { robots: { index: false as const, follow: true } } : {}),
     alternates: {
       canonical: canonicalUrl,
-      languages: altLangs(`/communities/${slug}`),
+      languages,
     },
     openGraph: {
       title,

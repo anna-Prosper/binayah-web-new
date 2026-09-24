@@ -28,6 +28,29 @@ export function isCommunityLocaleTranslated(locale: string): boolean {
   return TRANSLATED_COMMUNITY_LOCALES.includes(locale);
 }
 
+/**
+ * Which of the translated locales actually contain THIS community — mirrors
+ * translatedLocalesForGuide() in @/lib/guide-i18n. Only 55 of 152 communities
+ * are in these JSON files; a community missing from all of them renders
+ * English enrichment at every locale, so it must canonicalise to English and
+ * drop those locales from hreflang rather than advertise a translation that
+ * doesn't exist for it specifically.
+ */
+export async function translatedLocalesForCommunity(slug: string): Promise<string[]> {
+  const out: string[] = [];
+  for (const l of TRANSLATED_COMMUNITY_LOCALES) {
+    const loader = LOADERS[l];
+    if (!loader) continue;
+    try {
+      const map = await loader();
+      if (map[slug]) out.push(l);
+    } catch {
+      /* ignore a missing/broken locale file */
+    }
+  }
+  return out;
+}
+
 export async function getCommunityEnrichmentTranslation(
   locale: string,
   slug: string,

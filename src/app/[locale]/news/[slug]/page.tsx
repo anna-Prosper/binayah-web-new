@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl } from "@/lib/api";
 import { getMarketStats } from "@/lib/market";
-import { canonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
+import { canonical, localizedSeo, AE_URL, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { sanitizeArticleHtml, articleBodyText, newsBodyToPlainText } from "@/lib/sanitize";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -68,19 +68,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // noindex"). Classification runs on the English base fields, which every
   // locale shares, so all 7 locales agree.
   const indexable = isIndexableNewsArticle(article);
+  // article.translatedLocales comes from the API (computed from the raw
+  // translations blob before it's stripped) — which non-English locales
+  // actually have this article's body, not just a translations[locale] key.
+  // An untranslated locale renders the English body under a /xx/ URL, so it
+  // canonicalises to English and is dropped from hreflang instead of
+  // asserting a duplicate as if it were a distinct page.
+  const path = `/news/${slug}`;
+  const { url: seoUrl, languages } = localizedSeo(locale, path, article.translatedLocales ?? []);
   return {
     ...(indexable ? {} : { robots: { index: false, follow: true } }),
     title: article.metaTitle || `${article.title} | Binayah Properties`,
     description: article.metaDescription || article.excerpt,
     alternates: {
-      canonical: canonical(locale, `/news/${slug}`),
-      languages: altLangs(`/news/${slug}`),
+      canonical: seoUrl,
+      languages,
     },
     openGraph: {
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,
       type: "article",
-      url: canonical(locale, `/news/${slug}`),
+      url: seoUrl,
       locale: OG_LOCALE[locale] ?? "en_AE",
       ...(article.featuredImage ? { images: [article.featuredImage] } : {}),
     },
@@ -141,7 +149,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
           type="NewsArticle"
           headline={article.title}
           description={article.metaDescription || article.excerpt || article.title}
-          url={canonical(locale, `/news/${slug}`)}
+          url={localizedSeo(locale, `/news/${slug}`, article.translatedLocales ?? []).url}
           imageUrl={article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`}
           datePublished={article.publishedAt}
           dateModified={article.updatedAt}

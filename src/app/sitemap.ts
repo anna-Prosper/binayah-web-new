@@ -3,6 +3,8 @@ import { projectUrl } from "@/lib/routes";
 import { MongoClient, type Db } from "mongodb";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
+import { translatedLocalesForGuideDoc } from "@/lib/guide-i18n";
+import { translatedLocalesForCommunity } from "@/lib/community-i18n";
 import { OFFERS, isExpired } from "@/lib/offers";
 import { BUY_COMMUNITIES, CURATED_COMMUNITY_SLUGS, communityVariantToSlug, normalizeCommunityName } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
@@ -13,6 +15,7 @@ import { getAgents, isPublishableAgent } from "@/lib/agents";
 import { isIndexableNewsArticle } from "@/lib/news-topicality";
 
 import { AE_URL, RU_BASE, SITE_URL } from "@/lib/site";
+import { translatedLocalesOf } from "@/lib/translation-coverage";
 
 /**
  * One Mongo connection for the whole sitemap build.
@@ -103,13 +106,26 @@ async function fetchAllListingSlugs(db: SitemapDb): Promise<{ slug: string; last
 // already renders all of their sections), so they are no longer submitted at all
 // and no flags are computed for them.
 async function fetchProjectsForSitemap(db: SitemapDb): Promise<
-  { slug: string; lastmod?: Date; sub: { location: boolean } }[]
+  { slug: string; lastmod?: Date; sub: { location: boolean }; translatedLocales: string[] }[]
 > {
   if (!db) return [];
   try {
     const docs = await db.collection("projects").find(
       { publishStatus: "published", slug: { $exists: true, $ne: "" } },
-      { projection: { _id: 0, slug: 1, updatedAt: 1, locationDescription: 1, nearbyAttractions: 1 } }
+      {
+        projection: {
+          _id: 0, slug: 1, updatedAt: 1, locationDescription: 1, nearbyAttractions: 1,
+          // Only the two body fields translatedLocalesOf() checks, per locale —
+          // not the whole translations blob, which would drag every other field
+          // (name, faqs, amenities, ...) across 3,092 docs for no reason.
+          "translations.ru.fullDescription": 1, "translations.ru.shortOverview": 1,
+          "translations.ar.fullDescription": 1, "translations.ar.shortOverview": 1,
+          "translations.zh.fullDescription": 1, "translations.zh.shortOverview": 1,
+          "translations.vi.fullDescription": 1, "translations.vi.shortOverview": 1,
+          "translations.he.fullDescription": 1, "translations.he.shortOverview": 1,
+          "translations.fr.fullDescription": 1, "translations.fr.shortOverview": 1,
+        },
+      }
     ).toArray();
     return (docs as Record<string, unknown>[])
       .filter((d) => d.slug)
@@ -122,6 +138,7 @@ async function fetchProjectsForSitemap(db: SitemapDb): Promise<
           sub: {
             location: !!((d.locationDescription && String(d.locationDescription).trim()) || (Array.isArray(nearby) && nearby.length > 0)),
           },
+          translatedLocales: translatedLocalesOf(d as { translations?: Record<string, Record<string, unknown>> }, ["fullDescription", "shortOverview"]),
         };
       });
   } catch (err) {
@@ -301,14 +318,42 @@ function withAlternates(path: string, priority: number, changeFrequency: Metadat
 
 // Lean entry (no hreflang alternates) — used for high-volume secondary URLs like
 // project sub-pages. Alternates multiply each entry ~8x and would blow past
-// Vercel's 19 MB sitemap pre-render cap; hreflang for these is still served via
-// the middleware's HTTP Link headers.
+// Vercel's 19 MB sitemap pre-render cap. These sub-pages simply aren't
+// hreflang-annotated anywhere — there is no middleware Link-header mechanism
+// serving it (checked: no such header is set in src/middleware.ts or
+// next.config.ts). That's an accepted gap, not a redundancy.
 function plainEntry(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
   return {
     url: IS_RU ? `${RU_BASE}${path}` : `${AE_URL}${path}`,
     lastModified,
     changeFrequency,
     priority,
+  };
+}
+
+// Same as withAlternates, but only advertises hreflang for locales the
+// document actually has translated content for (translatedLocales, computed
+// with translatedLocalesOf() against the same body fields the page itself
+// checks). A locale left out here is exactly the set the page's own
+// generateMetadata canonicalises to English — sitemap.ts and the page must
+// agree, or GSC reports "Alternate page with proper canonical tag" drift.
+function withPartialAlternates(
+  path: string,
+  translatedLocales: readonly string[],
+  priority: number,
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
+  lastModified: Date,
+): MetadataRoute.Sitemap[number] {
+  const languages: Record<string, string> = { en: `${AE_URL}${path}`, "x-default": `${AE_URL}${path}` };
+  for (const l of translatedLocales) {
+    languages[l] = l === "ru" ? (path === "/" ? RU_BASE : `${RU_BASE}${path}`) : localeAlt(AE_URL, l, path);
+  }
+  return {
+    url: IS_RU && translatedLocales.includes("ru") ? `${RU_BASE}${path}` : `${AE_URL}${path}`,
+    lastModified,
+    changeFrequency,
+    priority,
+    alternates: { languages },
   };
 }
 
@@ -321,6 +366,7 @@ type SitemapNewsItem = {
   slug?: string; title?: string; excerpt?: string; metaDescription?: string;
   category?: string | string[]; tags?: string[];
   updatedAt?: string; modifiedAt?: string; publishedAt?: string;
+  translatedLocales?: string[];
 };
 
 /**
@@ -345,7 +391,7 @@ function classifyForSitemap(d: SitemapNewsItem, failures: string[]): boolean {
   }
 }
 
-async function fetchIndexableNewsForSitemap(): Promise<{ slug: string; lastmod?: Date }[]> {
+async function fetchIndexableNewsForSitemap(): Promise<{ slug: string; lastmod?: Date; translatedLocales: string[] }[]> {
   try {
     // /api/news/index-feed, not /api/news. The list route caps limit at 100 with
     // no pagination, so this was classifying 100 of 1,254 articles and
@@ -372,7 +418,7 @@ async function fetchIndexableNewsForSitemap(): Promise<{ slug: string; lastmod?:
       .map((d) => {
         const raw = d.updatedAt || d.modifiedAt || d.publishedAt;
         const t = raw ? new Date(raw) : null;
-        return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
+        return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined, translatedLocales: d.translatedLocales ?? [] };
       });
     if (failures.length) {
       console.error(`[sitemap] ${failures.length} of ${items.length} article(s) failed classification and were omitted:`);
@@ -475,21 +521,30 @@ async function fetchOffersForSitemap(db: SitemapDb): Promise<{ slug: string; dea
   }
 }
 
-async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; lastmod?: Date }[]> {
-  if (!db) return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
+async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; lastmod?: Date; translatedLocales: string[] }[]> {
+  if (!db) return await Promise.all(PULSE_GUIDES.map(async (g) => ({ slug: g.slug, translatedLocales: await translatedLocalesForGuideDoc(g) })));
   try {
     const docs = await db
       .collection("guides")
-      .find({ published: true }, { projection: { _id: 0, slug: 1, updatedAt: 1 } })
+      .find({ published: true }, { projection: { _id: 0, slug: 1, updatedAt: 1, translations: 1 } })
       .toArray();
-    if (!docs.length) return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
-    return (docs as unknown as { slug: string; updatedAt?: Date }[]).map((d) => ({
-      slug: d.slug,
-      lastmod: d.updatedAt instanceof Date ? d.updatedAt : undefined,
-    }));
+    if (!docs.length) return await Promise.all(PULSE_GUIDES.map(async (g) => ({ slug: g.slug, translatedLocales: await translatedLocalesForGuideDoc(g) })));
+    return await Promise.all(
+      (docs as unknown as { slug: string; updatedAt?: Date; translations?: Record<string, { body?: string; faq?: { question: string; answer: string }[] }> }[]).map(
+        async (d) => ({
+          slug: d.slug,
+          lastmod: d.updatedAt instanceof Date ? d.updatedAt : undefined,
+          // The route's own page checks the DB translations map AND the bundled
+          // guide-i18n JSON (74 pre-migration guides carry translations there,
+          // not in Mongo) — sitemap.ts must count both or it undercounts and
+          // strips hreflang the live page actually serves.
+          translatedLocales: await translatedLocalesForGuideDoc({ slug: d.slug, body: "", translations: d.translations }),
+        }),
+      ),
+    );
   } catch (err) {
     console.error("[sitemap] guides query failed — falling back to the bundled array:", err);
-    return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
+    return await Promise.all(PULSE_GUIDES.map(async (g) => ({ slug: g.slug, translatedLocales: await translatedLocalesForGuideDoc(g) })));
   }
 }
 
@@ -569,6 +624,13 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
   const allMatrixCombos = [...new Set([...matrixCombos, ...dldMatrixCombos])];
   const publishableAgents = agents.filter(isPublishableAgent);
 
+  // Community translation coverage is local (bundled JSON, not DB/API), so it
+  // isn't in `communities` from fetchSlugs — looked up per-slug here instead.
+  // Only 55 of 152 communities have an entry in any locale file.
+  const communityTranslatedLocales = new Map(
+    await Promise.all(communities.map(async (c) => [c.slug, await translatedLocalesForCommunity(c.slug)] as const)),
+  );
+
   const staticPages: MetadataRoute.Sitemap = [
     withAlternates("/", 1.0, "daily", now),
     withAlternates("/off-plan", 0.9, "daily", now),
@@ -629,7 +691,7 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
   ];
 
   const dynamicPages: MetadataRoute.Sitemap = [
-    ...projects.map((p) => withAlternates(projectUrl(p.slug), 0.8, "weekly", p.lastmod ?? now)),
+    ...projects.map((p) => withPartialAlternates(projectUrl(p.slug), p.translatedLocales, 0.8, "weekly", p.lastmod ?? now)),
     // Project sub-pages — /location ONLY. /faq, /floor-plans and /payment-plan
     // are unconditionally noindex (84-95% duplicates of the parent, which already
     // renders every one of those sections in full), so submitting them would both
@@ -641,22 +703,23 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
       p.sub.location ? [plainEntry(projectUrl(p.slug, "location"), 0.6, "weekly", p.lastmod ?? now)] : []
     ),
     ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
-    ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),
+    ...articles.map((a) => withPartialAlternates(`/news/${a.slug}`, a.translatedLocales, 0.6, "weekly", a.lastmod ?? now)),
     ...reports.map((r) => withAlternates(`/pulse/reports/${r.slug}`, 0.7, "weekly", r.lastmod ?? now)),
     // Skip duplicate community slugs that 301 to their canonical — submitting a
     // redirect trips a GSC "submitted URL is a redirect" notice. These are the
     // redirect SOURCES: arjan/downtown/the-valley → "-dubai"; meydan-dubai and
     // the MBR mis-spellings → the enriched meydan / mohammed-bin-rashid-city.
-    ...communities.filter((c) => !["arjan", "downtown", "the-valley", "meydan-dubai", "mohammad-bin-rashid-city", "mohd-bin-rashid-city", "jvc", "akoya-damac-hills", "impz-dubai", "port-rashid", "arabian-ranches-1"].includes(c.slug)).map((c) => withAlternates(`/communities/${c.slug}`, 0.7, "monthly", c.lastmod ?? now)),
+    ...communities.filter((c) => !["arjan", "downtown", "the-valley", "meydan-dubai", "mohammad-bin-rashid-city", "mohd-bin-rashid-city", "jvc", "akoya-damac-hills", "impz-dubai", "port-rashid", "arabian-ranches-1"].includes(c.slug)).map((c) => withPartialAlternates(`/communities/${c.slug}`, communityTranslatedLocales.get(c.slug) ?? [], 0.7, "monthly", c.lastmod ?? now)),
     ...projectGuides.map((g) => withAlternates(`/construction-updates/${g.slug}`, 0.6, "weekly", g.lastmod ?? now)),
     ...developers.map((d) => withAlternates(`/developers/${d.slug}`, 0.6, "monthly", d.lastmod ?? now)),
     // DLD building pages — lean entries (no hreflang) to respect the sitemap size cap.
     ...buildings.map((b) => plainEntry(`/building/${b.slug}`, 0.55, "monthly", b.lastmod ?? now)),
-    // SEO content routes (compiled, not API-driven). Guides are English-only
-    // content, so we submit just the EN URL (non-EN routes are noindex).
-    // Guides are now fully translated in all 7 locales (body + FAQ), so submit
-    // them WITH hreflang alternates.
-    ...guides.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", g.lastmod ?? now)),
+    // Guides: 130 of 143 are fully translated (body + FAQ) in at least one
+    // non-English locale, not all of them in all locales — translatedLocales
+    // is computed per guide (translatedLocalesForGuideDoc, DB map + bundled
+    // guide-i18n JSON) so each guide only advertises the hreflang alternates
+    // it actually has. Matches the noindex→EN behavior in the route itself.
+    ...guides.map((g) => withPartialAlternates(`/pulse/guides/${g.slug}`, g.translatedLocales, 0.7, "monthly", g.lastmod ?? now)),
     // Promotional offers — fully translated in all 7 locales via each document's
     // `translations` map, so they carry hreflang alternates. Expired offers stay
     // in the sitemap: the page keeps its rankings and its backlinks, and it
