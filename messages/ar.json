@@ -1818,7 +1818,9 @@
     "successTitle": "تم الاشتراك!",
     "successDesc": "تحقق من بريدك الإلكتروني لتأكيد اشتراكك.",
     "errorTitle": "تعذر الاشتراك",
-    "errorDesc": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    "errorDesc": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "phonePlaceholder": "رقم الهاتف",
+    "phoneInvalid": "يرجى إدخال رقم هاتف صحيح."
   },
   "cookieConsent": {
     "title": "نحن نهتم بخصوصيتك",
@@ -2717,6 +2719,8 @@
     "category_MarketAnalysis": "تحليل السوق",
     "category_Renting": "الإيجار",
     "category_Financing": "التمويل",
+    "category_Buying": "الشراء",
+    "category_Market": "السوق",
     "guide_dubaiMortgageGuide_title": "كيفية الحصول على قرض عقاري في دبي",
     "guide_dubaiMortgageGuide_desc": "شروط الأهلية، حدود نسبة القرض إلى القيمة، الأسعار وخطوات الحصول على قرض عقاري في دبي للمقيمين وغير المقيمين.",
     "guide_cashVsMortgageDubai_title": "الشراء نقدًا أو بالتمويل العقاري في دبي",

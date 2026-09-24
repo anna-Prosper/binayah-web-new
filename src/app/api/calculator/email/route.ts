@@ -227,7 +227,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           name,
           email,
-          phone: phone || undefined,
+          phone: phone || "",
           intents: ["calculator-lead"],
           areas: calc?.community ? [calc.community] : [],
           propertyTypes: calc?.propType ? [calc.propType] : [],

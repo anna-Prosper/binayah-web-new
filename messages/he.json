@@ -1818,7 +1818,9 @@
     "successTitle": "נרשמתם!",
     "successDesc": "בדקו את תיבת הדואר שלכם לאישור ההרשמה.",
     "errorTitle": "לא ניתן להירשם",
-    "errorDesc": "משהו השתבש. אנא נסו שוב."
+    "errorDesc": "משהו השתבש. אנא נסו שוב.",
+    "phonePlaceholder": "מספר טלפון",
+    "phoneInvalid": "יש להזין מספר טלפון תקין."
   },
   "cookieConsent": {
     "title": "אנו מעריכים את פרטיותך",
@@ -2717,6 +2719,8 @@
     "category_MarketAnalysis": "ניתוח שוק",
     "category_Renting": "השכרה",
     "category_Financing": "מימון",
+    "category_Buying": "רכישה",
+    "category_Market": "שוק",
     "guide_dubaiMortgageGuide_title": "איך לקבל משכנתא בדובאי",
     "guide_dubaiMortgageGuide_desc": "תנאי זכאות, תקרות יחס הלוואה לשווי, ריביות ותהליך המשכנתא שלב אחר שלב לתושבים ולתושבי חוץ הקונים בדובאי.",
     "guide_cashVsMortgageDubai_title": "קנייה במזומן או במשכנתא בדובאי",

@@ -1818,7 +1818,9 @@
     "successTitle": "Abonné !",
     "successDesc": "Vérifiez votre boîte de réception pour confirmer votre abonnement.",
     "errorTitle": "Impossible de s'abonner",
-    "errorDesc": "Une erreur s'est produite. Veuillez réessayer."
+    "errorDesc": "Une erreur s'est produite. Veuillez réessayer.",
+    "phonePlaceholder": "Numéro de téléphone",
+    "phoneInvalid": "Veuillez saisir un numéro de téléphone valide."
   },
   "cookieConsent": {
     "title": "Nous accordons de l'importance à votre vie privée",
@@ -2717,6 +2719,8 @@
     "category_MarketAnalysis": "Analyse de marché",
     "category_Renting": "Location",
     "category_Financing": "Financement",
+    "category_Buying": "Achat",
+    "category_Market": "Marché",
     "guide_dubaiMortgageGuide_title": "Comment Obtenir un Prêt Immobilier à Dubaï",
     "guide_dubaiMortgageGuide_desc": "Conditions d'éligibilité, plafonds du ratio prêt/valeur, taux et étapes du prêt immobilier à Dubaï pour résidents et non-résidents.",
     "guide_cashVsMortgageDubai_title": "Achat Comptant ou Prêt Immobilier à Dubaï",

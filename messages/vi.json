@@ -1818,7 +1818,9 @@
     "successTitle": "Đã đăng ký!",
     "successDesc": "Kiểm tra hộp thư để xác nhận đăng ký của bạn.",
     "errorTitle": "Không thể đăng ký",
-    "errorDesc": "Đã xảy ra lỗi. Vui lòng thử lại."
+    "errorDesc": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "phonePlaceholder": "Số điện thoại",
+    "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ."
   },
   "cookieConsent": {
     "title": "Chúng tôi tôn trọng quyền riêng tư của bạn",
@@ -2717,6 +2719,8 @@
     "category_MarketAnalysis": "Phân tích thị trường",
     "category_Renting": "Cho thuê",
     "category_Financing": "Tài chính",
+    "category_Buying": "Mua nhà",
+    "category_Market": "Thị trường",
     "guide_dubaiMortgageGuide_title": "Cách Vay Thế Chấp Mua Nhà Tại Dubai",
     "guide_dubaiMortgageGuide_desc": "Điều kiện, hạn mức tỷ lệ vay trên giá trị (LTV), lãi suất và quy trình vay thế chấp từng bước cho cư dân và người không cư trú mua nhà tại Dubai.",
     "guide_cashVsMortgageDubai_title": "Mua Nhà Trả Tiền Mặt Hay Vay Thế Chấp Tại Dubai",

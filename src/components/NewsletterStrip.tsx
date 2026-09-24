@@ -7,9 +7,11 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
 import { useHoneypot } from "@/components/Honeypot";
+import { phoneLooksValid } from "@/lib/phone-check";
 
 const NewsletterStrip = ({ source = "newsletter-strip" }: { source?: string } = {}) => {
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { value: hp, field: honeypotField } = useHoneypot();
   const { toast } = useToast();
@@ -18,12 +20,18 @@ const NewsletterStrip = ({ source = "newsletter-strip" }: { source?: string } = 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || submitting) return;
+    // The API requires a phone on every newsletter subscribe; tell the person
+    // here rather than letting it come back as a generic error toast.
+    if (!phoneLooksValid(phone)) {
+      toast({ title: t("errorTitle"), description: t("phoneInvalid"), variant: "destructive" });
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch(apiUrl("/api/market-report/subscribe"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ hp, email: email.trim().toLowerCase(), source }),
+        body: JSON.stringify({ hp, email: email.trim().toLowerCase(), phone: phone.trim(), source }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -32,6 +40,7 @@ const NewsletterStrip = ({ source = "newsletter-strip" }: { source?: string } = 
       }
       toast({ title: t("successTitle"), description: t("successDesc") });
       setEmail("");
+      setPhone("");
     } catch {
       toast({ title: t("errorTitle"), description: t("errorDesc"), variant: "destructive" });
     } finally {
@@ -72,6 +81,15 @@ const NewsletterStrip = ({ source = "newsletter-strip" }: { source?: string } = 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("placeholder")}
+              className="flex-1 min-w-0 bg-white/25 border border-white/20 rounded-full px-4 py-3 text-sm text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/40 focus:bg-white/35"
+              required
+            />
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder={t("phonePlaceholder")}
+              aria-label={t("phonePlaceholder")}
               className="flex-1 min-w-0 bg-white/25 border border-white/20 rounded-full px-4 py-3 text-sm text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/40 focus:bg-white/35"
               required
             />

@@ -1818,7 +1818,9 @@
     "successTitle": "Подписка оформлена!",
     "successDesc": "Проверьте почту и подтвердите подписку.",
     "errorTitle": "Не удалось подписаться",
-    "errorDesc": "Что-то пошло не так. Пожалуйста, попробуйте снова."
+    "errorDesc": "Что-то пошло не так. Пожалуйста, попробуйте снова.",
+    "phonePlaceholder": "Номер телефона",
+    "phoneInvalid": "Введите действительный номер телефона."
   },
   "cookieConsent": {
     "title": "Мы ценим вашу конфиденциальность",
@@ -2717,6 +2719,8 @@
     "category_MarketAnalysis": "Анализ рынка",
     "category_Renting": "Аренда",
     "category_Financing": "Финансирование",
+    "category_Buying": "Покупка",
+    "category_Market": "Рынок",
     "guide_dubaiMortgageGuide_title": "Как получить ипотеку в Дубае",
     "guide_dubaiMortgageGuide_desc": "Требования, лимиты LTV, ставки и пошаговый процесс получения ипотеки в Дубае для резидентов и нерезидентов.",
     "guide_cashVsMortgageDubai_title": "Покупка за наличные или в ипотеку в Дубае",

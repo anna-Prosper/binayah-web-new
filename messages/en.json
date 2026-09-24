@@ -1818,7 +1818,9 @@
     "successTitle": "Subscribed!",
     "successDesc": "Check your inbox to confirm your subscription.",
     "errorTitle": "Couldn't subscribe",
-    "errorDesc": "Something went wrong. Please try again."
+    "errorDesc": "Something went wrong. Please try again.",
+    "phonePlaceholder": "Phone number",
+    "phoneInvalid": "Enter a valid phone number."
   },
   "cookieConsent": {
     "title": "We value your privacy",
@@ -2717,6 +2719,8 @@
     "category_MarketAnalysis": "Market Analysis",
     "category_Renting": "Renting",
     "category_Financing": "Financing",
+    "category_Buying": "Buying",
+    "category_Market": "Market",
     "guide_dubaiMortgageGuide_title": "How to Get a Mortgage in Dubai",
     "guide_dubaiMortgageGuide_desc": "Eligibility, loan-to-value caps, rates and the step-by-step mortgage process for residents and non-residents buying in Dubai.",
     "guide_cashVsMortgageDubai_title": "Cash vs Mortgage in Dubai",

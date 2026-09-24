@@ -185,6 +185,7 @@ export default function CalculatorEmailModal({ calcSnapshot, onClose }: Props) {
                   </label>
                   <input
                     type="tel"
+                    required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder={t("emailFieldPhonePlaceholder")}

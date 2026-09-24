@@ -1824,7 +1824,9 @@
     "successTitle": "订阅成功！",
     "successDesc": "请查收邮箱以确认订阅。",
     "errorTitle": "订阅失败",
-    "errorDesc": "出现问题，请稍后再试。"
+    "errorDesc": "出现问题，请稍后再试。",
+    "phonePlaceholder": "电话号码",
+    "phoneInvalid": "请输入有效的电话号码。"
   },
   "cookieConsent": {
     "title": "我们重视您的隐私",
@@ -2723,6 +2725,8 @@
     "category_MarketAnalysis": "市场分析",
     "category_Renting": "租赁",
     "category_Financing": "融资",
+    "category_Buying": "购房",
+    "category_Market": "市场",
     "guide_dubaiMortgageGuide_title": "如何在迪拜获得房屋贷款",
     "guide_dubaiMortgageGuide_desc": "资格条件、贷款价值比上限、利率以及居民和非居民在迪拜购房的分步贷款流程。",
     "guide_cashVsMortgageDubai_title": "在迪拜全款购房还是贷款购房",
