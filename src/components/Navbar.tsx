@@ -569,7 +569,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <ChevronDown className={`h-2.5 w-2.5 transition-transform ${showCurrencyDropdown ? "rotate-180" : ""}`} />
                 </button>
                 {showCurrencyDropdown && (
-                  <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[100px]">
+                  <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[100px] max-h-64 overflow-y-auto">
                     {CURRENCIES.map((c) => (
                       <button
                         key={c}

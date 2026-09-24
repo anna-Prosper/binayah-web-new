@@ -4,12 +4,19 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useLocale, useTranslations } from "next-intl";
 import { DirhemSign } from "@/components/DirhemSign";
 
-const SUPPORTED = ["AED", "USD", "EUR", "GBP", "CNY", "RUB", "ILS", "VND", "SGD", "INR", "PKR", "KZT"] as const;
+const SUPPORTED = [
+  "AED", "USD", "EUR", "GBP", "CNY", "RUB", "ILS", "VND", "SGD", "INR", "PKR", "KZT",
+  // Source markets with a foreign-buyer guide. Only listed once the rate feed
+  // carries them — a currency with no live rate silently shows a stale
+  // constant, which is worse than showing dirhams.
+  "TRY", "PLN", "ZAR", "NGN", "KES",
+] as const;
 type Currency = (typeof SUPPORTED)[number];
 
 // Per 1 AED. Fallbacks only — live daily rates from /api/currency-rates override these.
 const FALLBACK_RATES: Record<string, number> = {
   AED: 1, USD: 0.2723, EUR: 0.2343, GBP: 0.2011, CNY: 1.8321, RUB: 23.4444, ILS: 0.8207, VND: 7072, SGD: 0.3447, INR: 25.745, PKR: 75.6127, KZT: 123.68,
+  TRY: 13.3048, PLN: 1.0452, ZAR: 4.454, NGN: 361.2991, KES: 35.2626,
 };
 
 // Default currency per language, used until the visitor picks one explicitly.
