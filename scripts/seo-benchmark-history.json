@@ -135,6 +135,71 @@
       "checked": 20,
       "withArticle": 1,
       "pctWithArticle": 5
+    },
+    "searchConsole": {
+      "note": "GSC sc-domain:binayah.ae. Recorded the day the P0-P2 fixes shipped; rankings move over weeks, so this is the before-state to compare against.",
+      "window": {
+        "start": "2026-08-26",
+        "end": "2026-09-23"
+      },
+      "site": {
+        "clicks": 461,
+        "impressions": 49200,
+        "ctrPct": 0.94,
+        "position": 25.7
+      },
+      "previousWindow": {
+        "start": "2026-07-29",
+        "end": "2026-08-25",
+        "clicks": 460,
+        "impressions": 73321,
+        "ctrPct": 0.63,
+        "position": 29.5
+      },
+      "byGroup": {
+        "project": {
+          "clicks": 198,
+          "prevClicks": 222,
+          "impressions": 18610,
+          "position": 31.8,
+          "pages": 4555
+        },
+        "other": {
+          "clicks": 156,
+          "prevClicks": 174,
+          "impressions": 19973,
+          "position": 19.7,
+          "pages": 3564
+        },
+        "news": {
+          "clicks": 93,
+          "prevClicks": 61,
+          "impressions": 7101,
+          "position": 20.5,
+          "pages": 1068
+        },
+        "pulseGuides": {
+          "clicks": 15,
+          "prevClicks": 10,
+          "impressions": 2424,
+          "position": 26.6,
+          "pages": 263
+        },
+        "communityHub": {
+          "clicks": 4,
+          "prevClicks": 3,
+          "impressions": 2834,
+          "position": 50.1,
+          "pages": 273
+        },
+        "property": {
+          "clicks": 2,
+          "prevClicks": 1,
+          "impressions": 283,
+          "position": 24.4,
+          "pages": 161
+        }
+      }
     }
   }
 ]
