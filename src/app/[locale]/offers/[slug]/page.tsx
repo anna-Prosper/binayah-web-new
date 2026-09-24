@@ -210,12 +210,21 @@ export default async function OfferPage({ params }: Props) {
   
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="relative flex min-h-[92vh] items-end overflow-hidden">
-          <img
-            src={offer.heroImage}
-            alt={`${offer.developer} ${offer.shortName} offer`}
-            className="ofr-kenburns absolute inset-0 h-full w-full object-cover"
-            fetchPriority="high"
-          />
+          {/* The hero box is portrait on a phone (content makes it far taller
+              than the viewport), so object-cover crops a landscape image down
+              to a narrow vertical sliver — usually sky, with the building cut
+              out. An offer can supply a portrait crop for narrow screens. */}
+          <picture className="absolute inset-0 block">
+            {offer.heroImageMobile && (
+              <source media="(max-width: 639px)" srcSet={offer.heroImageMobile} />
+            )}
+            <img
+              src={offer.heroImage}
+              alt={`${offer.developer} ${offer.shortName} offer`}
+              className="ofr-kenburns h-full w-full object-cover"
+              fetchPriority="high"
+            />
+          </picture>
           {/* Vertical wash to seat the copy, plus a warm side-light from the left
               so the headline edge doesn't sit flat against the photograph. */}
           <div
@@ -230,7 +239,7 @@ export default async function OfferPage({ params }: Props) {
           />
   
           <div className="relative w-full">
-            <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 sm:px-6">
+            <div className="mx-auto max-w-6xl px-4 pb-12 pt-24 sm:px-6 sm:pb-16 sm:pt-32">
               <div className="max-w-3xl">
                 <div className="hero-fade-up flex flex-wrap items-center gap-2.5">
                   {!expired && (

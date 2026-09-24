@@ -62,6 +62,10 @@ export interface Offer {
   /** One-sentence promise, shown under the H1. */
   subtitle: string;
   heroImage: string;
+  /** Portrait crop for the tall mobile hero box. A landscape heroImage crops to
+   *  a narrow sliver there, often missing the building entirely. Optional —
+   *  without it the landscape image is used at every width. */
+  heroImageMobile?: string;
   /** ISO 8601 with explicit +04:00 offset. Drives the countdown and the expiry
    *  state. Leave EMPTY when the developer hasn't published an end date: the
    *  offer then shows `windowLabel` (defaulting to "Limited time offer") with no
