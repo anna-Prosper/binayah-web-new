@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { getAttribution } from "@/lib/attribution";
-import { motion, AnimatePresence } from "framer-motion";
+import Presence from "@/components/Presence";
 import { MessageCircle, X, Send, Bot, User, Headset } from "lucide-react";
 import dynamic from "next/dynamic";
 
@@ -304,29 +304,24 @@ const AIChatWidget = () => {
   return (
     <>
       {/* Toggle button */}
-      <motion.button
+      {/* One-shot pop-in 1.5s after mount — CSS keyframe, see globals.css */}
+      <button
         data-chat-trigger
         onClick={() => setOpen(!open)}
-        className="hidden sm:flex fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full items-center justify-center shadow-lg transition-all hover:scale-110" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 8px 24px rgba(11,61,46,0.4)" }}
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1.5, type: "spring", stiffness: 200 }}
+        className="ai-fab-in hidden sm:flex fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full items-center justify-center shadow-lg transition-all hover:scale-110" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 8px 24px rgba(11,61,46,0.4)" }}
         aria-label={t("open")}
       >
         {open ? <X className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" /> : <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />}
-      </motion.button>
+      </button>
 
       {/* Chat panel */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-20 sm:bottom-24 right-2 sm:right-6 z-50 w-[400px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] bg-card rounded-2xl flex flex-col overflow-hidden"
-            style={{ height: "min(520px, calc(100vh - 140px))", boxShadow: "0 24px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(11,61,46,0.12)" }}
-          >
+      <Presence
+        show={open}
+        y={20}
+        scale={0.95}
+        className="fixed bottom-20 sm:bottom-24 right-2 sm:right-6 z-50 w-[400px] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] bg-card rounded-2xl flex flex-col overflow-hidden"
+        style={{ height: "min(520px, calc(100vh - 140px))", boxShadow: "0 24px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(11,61,46,0.12)" }}
+      >
             {/* Header */}
             <div className="px-5 py-4 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
@@ -499,9 +494,7 @@ const AIChatWidget = () => {
                 </div>
               </>
             )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </Presence>
     </>
   );
 };

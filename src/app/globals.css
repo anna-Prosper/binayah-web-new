@@ -321,11 +321,23 @@ body.livechat-visible #chat-widget-container {
 @keyframes ofr-bar-in { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: none; } }
 .ofr-bar-in { animation: ofr-bar-in .35s cubic-bezier(0.22,1,0.36,1) both; }
 
+/* WhatsApp FAB pops in 2s after mount (was a framer-motion spring; the widget
+   is layout-mounted, so keeping the library on the critical path for one
+   one-shot scale was the whole reason framer sat in every page's bundle). */
+@keyframes wa-fab-in { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+.wa-fab-in { animation: wa-fab-in .45s cubic-bezier(0.34,1.56,0.64,1) 2s both; }
+
+/* AI chat FAB, same one-shot pop-in, 1.5s after mount. */
+@keyframes ai-fab-in { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+.ai-fab-in { animation: ai-fab-in .45s cubic-bezier(0.34,1.56,0.64,1) 1.5s both; }
+
 @media (prefers-reduced-motion: reduce) {
   .ofr-reveal { opacity: 1; transform: none; transition: none; }
   .ofr-sheen::after,
   .ofr-live-dot,
   .ofr-reveal.is-in .ofr-rail,
   .ofr-kenburns,
-  .ofr-bar-in { animation: none; }
+  .ofr-bar-in,
+  .wa-fab-in,
+  .ai-fab-in { animation: none; }
 }
