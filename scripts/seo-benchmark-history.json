@@ -67,5 +67,74 @@
       "withArticle": 1,
       "pctWithArticle": 5
     }
+  },
+  {
+    "at": "2026-09-24T08:44:48.360Z",
+    "site": "https://www.binayah.ae",
+    "sample": 20,
+    "sitemap": {
+      "urls": 11626,
+      "bytes": 7712355,
+      "projectUrls": 3089
+    },
+    "rawI18nKeys": {
+      "total": 0,
+      "found": {}
+    },
+    "pageWeight": {
+      "/": 572,
+      "/off-plan": 581,
+      "/rent": 922,
+      "/news": 236,
+      "/pulse/guides": 569,
+      "/communities": 398,
+      "/valuation": 140,
+      "/buy-property-in/dubai-marina": 294
+    },
+    "descriptionInHtml": {
+      "pagesMeasured": 6,
+      "chunksShown": 251,
+      "chunksTotal": 263,
+      "pctInHtml": 95.4,
+      "pagesTruncated": 0,
+      "pctPagesTruncated": 0,
+      "worst": [
+        {
+          "slug": "eterno-townhouses-and-villas-for-sale-at-damac-hills-2",
+          "words": 789,
+          "pctInHtml": 89.8
+        },
+        {
+          "slug": "dubai-creek-residences-by-emaar-at-dubai-creek-harbour",
+          "words": 669,
+          "pctInHtml": 97.6
+        },
+        {
+          "slug": "08-life-residences-2-2",
+          "words": 272,
+          "pctInHtml": 100
+        },
+        {
+          "slug": "golfville-apartments",
+          "words": 93,
+          "pctInHtml": 100
+        },
+        {
+          "slug": "j-haus-residences",
+          "words": 110,
+          "pctInHtml": 100
+        },
+        {
+          "slug": "mas-barsha-residency",
+          "words": 196,
+          "pctInHtml": 100
+        }
+      ]
+    },
+    "longFormCoverage": {
+      "checked": 20,
+      "withArticle": 1,
+      "pctWithArticle": 5
+    }
   }
 ]
