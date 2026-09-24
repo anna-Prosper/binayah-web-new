@@ -69,8 +69,15 @@ export default function CookieConsent() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[60] p-4 sm:p-6 animate-in slide-in-from-bottom duration-500">
-      <div className="max-w-4xl mx-auto bg-card border border-border rounded-2xl shadow-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+    // Was bottom-0/inset-x-0 at z-[60] — a full-width strip sitting ABOVE the
+    // AI chat FAB (z-50) and WhatsApp bubble (z-40) on desktop, and directly
+    // overlapping the mobile sticky WhatsApp bar's own bottom-0 strip. Every
+    // first-time visitor had both lead-capture entry points unclickable until
+    // they dismissed this banner. Lifted clear of both: above the mobile bar's
+    // reserved h-16, and inset from the right on desktop so it never sits atop
+    // the FAB column (bottom-6 through bottom-24, right-6).
+    <div className="fixed bottom-20 sm:bottom-6 left-0 right-0 sm:left-auto sm:right-24 sm:max-w-md z-[60] px-4 sm:px-0 animate-in slide-in-from-bottom duration-500">
+      <div className="max-w-4xl sm:max-w-none mx-auto bg-card border border-border rounded-2xl shadow-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="flex-1 min-w-0">
           <p className="text-sm text-foreground font-medium mb-1">{t("title")}</p>
           <p className="text-xs text-muted-foreground leading-relaxed">
