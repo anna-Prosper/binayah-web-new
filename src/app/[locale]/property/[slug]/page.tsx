@@ -148,8 +148,15 @@ export default async function PropertyPage({
     { name: listing.name || listing.title, href: `${localePrefix}/property/${slug}` },
   ];
 
+  // `mortgageCalculator` is required here: PropertyDetailClient renders the
+  // mortgage calculator, and without the namespace every one of its 17 keys
+  // rendered as the raw key on the live page ("mortgageCalculator.downPayment"
+  // where "Down Payment" belongs). The namespaces listed here must cover every
+  // client component this route renders, not just the page's own copy — and
+  // note the calculator arrives via dynamic(() => import(…)), which the
+  // namespace audit could not see until it learned to follow lazy imports.
   return (
-    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["projectDetail", "propertyDetail"])}>
+    <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["projectDetail", "propertyDetail", "mortgageCalculator"])}>
       <>
         <script
           type="application/ld+json"

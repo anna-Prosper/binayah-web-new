@@ -84,10 +84,25 @@ const dynamicNamespaceCalls = (f) =>
     .map((m) => m[1].trim())
     .filter((arg) => arg && !/^["'`]/.test(arg));
 
-const importsOf = (f) =>
-  [...(source.get(f) || "").matchAll(/from\s+["']([^"']+)["']/g)]
-    .map((m) => resolveImport(f, m[1]))
-    .filter(Boolean);
+/**
+ * Static `from "…"` imports AND lazy `import("…")` calls.
+ *
+ * `dynamic(() => import("@/components/MortgageCalculator"))` has no `from`
+ * clause, so a `from`-only scan never reached the module and its namespace
+ * looked unused. That blind spot hid a live bug: /property/[slug] renders the
+ * mortgage calculator through exactly that form and shipped 17 raw key paths
+ * ("mortgageCalculator.downPayment" where "Down Payment" belongs) while this
+ * audit reported all routes clean. 15 translated components are lazy-loaded
+ * this way, so the gap was not specific to one page.
+ */
+const importsOf = (f) => {
+  const s = source.get(f) || "";
+  const specs = [
+    ...[...s.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]),
+    ...[...s.matchAll(/\bimport\(\s*["']([^"']+)["']\s*\)/g)].map((m) => m[1]),
+  ];
+  return specs.map((spec) => resolveImport(f, spec)).filter(Boolean);
+};
 
 /**
  * Namespaces reachable on the CLIENT from a route entry point. A module only

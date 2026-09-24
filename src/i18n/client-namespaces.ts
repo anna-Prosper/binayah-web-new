@@ -87,6 +87,14 @@ export const HOME_CLIENT_NAMESPACES = [
   "services",
   "valuation",
   "valuationBanner",
+  // PropertyComparison renders on the homepage (HomePageClient) and reads all
+  // three. It only mounts once the visitor adds something to compare, so the
+  // raw key paths never appear in the initial HTML and this stayed invisible to
+  // a page fetch — the drawer would have rendered "propertyDetail.bedrooms"
+  // instead of "Bedrooms" for the person who opened it.
+  "propertyComparison",
+  "propertyDetail",
+  "enums",
 ] as const;
 
 function pick(messages: Msgs, keys: readonly string[]): Msgs {
