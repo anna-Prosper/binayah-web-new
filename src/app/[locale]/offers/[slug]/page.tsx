@@ -237,9 +237,18 @@ export default async function OfferPage({ params }: Props) {
             className="absolute inset-0"
             style={{ background: `radial-gradient(120% 90% at 0% 100%, rgba(212,168,71,0.16) 0%, transparent 55%)` }}
           />
+          {/* On a phone the copy runs the full height of the image rather than
+              sitting in the dark lower band, so the wash above is too light to
+              read against. Deepen it for narrow screens only. */}
+          <div
+            className="absolute inset-0 sm:hidden"
+            style={{
+              background: `linear-gradient(to bottom, rgba(7,42,32,0.42) 0%, rgba(7,42,32,0.52) 50%, rgba(7,42,32,0.62) 100%)`,
+            }}
+          />
   
           <div className="relative w-full">
-            <div className="mx-auto max-w-6xl px-4 pb-12 pt-24 sm:px-6 sm:pb-16 sm:pt-32">
+            <div className="mx-auto max-w-6xl px-4 pb-12 pt-20 sm:px-6 sm:pb-16 sm:pt-32">
               <div className="max-w-3xl">
                 <div className="hero-fade-up flex flex-wrap items-center gap-2.5">
                   {!expired && (
@@ -263,7 +272,7 @@ export default async function OfferPage({ params }: Props) {
                     WhatsApp bar at the very bottom of the first mobile viewport.
                     sm:/lg: unchanged — desktop had room and looked right. */}
                 <h1
-                  className="hero-rise mt-5 text-[1.9rem] font-extrabold leading-[1.12] tracking-[-0.01em] text-white sm:mt-6 sm:text-[3.4rem] sm:leading-[1.04] sm:tracking-[-0.02em] lg:text-[4.1rem]"
+                  className="hero-rise mt-4 text-[1.7rem] font-extrabold leading-[1.14] tracking-[-0.01em] text-white sm:mt-6 sm:text-[3.4rem] sm:leading-[1.04] sm:tracking-[-0.02em] lg:text-[4.1rem]"
                   style={{ textShadow: "0 2px 40px rgba(0,0,0,0.35)" }}
                 >
                   {offer.h1}
