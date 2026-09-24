@@ -136,7 +136,7 @@ export async function generateMetadata({
 
   const [wikiResult, dbResult, transResult] = await Promise.allSettled([
     getCommunityWiki(slug),
-    getCommunity(slug),
+    getCommunity(slug, true),
     locale !== "en" ? getCommunityEnrichmentTranslation(locale, slug) : Promise.resolve(null),
   ]);
 
@@ -243,7 +243,7 @@ export default async function CommunityPage({
   // are already 404'd in generateMetadata before this component runs, so the
   // wiki lookup that used to happen here has been removed. getCommunity swallows
   // its own errors and returns null.
-  const dbData = await getCommunity(slug);
+  const dbData = await getCommunity(slug, true);
   const hasDb = !!(dbData?.community);
   if (!hasDb) return notFound();
 
@@ -281,7 +281,7 @@ export default async function CommunityPage({
     const dldAreaName = dldAreaFor(communityName);
     const [dldArea, buildingsRes] = await Promise.all([
       getDldArea(dldAreaName),
-      getDldBuildings(`area=${encodeURIComponent(dldAreaName)}&limit=8&sortBy=sales`),
+      getDldBuildings(`area=${encodeURIComponent(dldAreaName)}&limit=8&sortBy=sales`, 3600),
     ]);
     const dldYield = dldArea?.slug ? await getDldAreaYield(dldArea.slug) : null;
     // The DLD dataset starts ~Jan 2026, so a "12-month" sample can cover far

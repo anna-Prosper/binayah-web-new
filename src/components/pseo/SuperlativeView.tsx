@@ -42,7 +42,9 @@ function resolve(p: { mode: "cheapest" | "expensive"; typeKey: string; community
 
 async function fetchListings(apiCommunity: string, typeCanon: string, mode: "cheapest" | "expensive") {
   const sort = mode === "cheapest" ? "price_asc" : "price_desc";
-  const data = (await getCachedSearch(`status=Secondary&type=${encodeURIComponent(typeCanon)}&locations=${encodeURIComponent(apiCommunity)}&sort=${sort}&pageSize=24`)) as any;
+  // longTtl: [searchSlug] is ISR at 1800, and getCachedSearch's default 600s
+  // window would otherwise cap that whole pSEO route at 10 minutes.
+  const data = (await getCachedSearch(`status=Secondary&type=${encodeURIComponent(typeCanon)}&locations=${encodeURIComponent(apiCommunity)}&sort=${sort}&pageSize=24`, true)) as any;
   const listings = Array.isArray(data?.listings) ? data.listings : [];
   return { listings, total: Number(data?.listingCount ?? listings.length) };
 }

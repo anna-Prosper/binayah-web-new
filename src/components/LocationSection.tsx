@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { MapPin, Compass, Map } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type React from "react";
@@ -155,12 +155,10 @@ export function LocationSection({
             {nearby.map((item, i) => {
               const Icon = iconForType(item.type);
               return (
-                <motion.div
+                <Reveal
                   key={`${item.name}-${i}`}
-                  initial={{ opacity: 0, x: -8 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
+                  x={-8}
+                  delay={i * 60}
                   className="flex items-center justify-between p-3 sm:p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors group"
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3.5">
@@ -177,7 +175,7 @@ export function LocationSection({
                       {item.distance}
                     </span>
                   )}
-                </motion.div>
+                </Reveal>
               );
             })}
           </div>

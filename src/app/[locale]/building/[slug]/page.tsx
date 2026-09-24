@@ -93,7 +93,17 @@ async function resolveAreaCommunity(dldArea: string): Promise<{ name: string; sl
   );
 }
 
+// EFFECTIVE WINDOW: 3600, not the 86400 declared here. A route's window is the
+// MINIMUM across every fetch in its render, and two of them legitimately hold
+// the floor at an hour: getCommunitiesIndex (an unstable_cache at 3600) and
+// getBuildingListings, which reads LIVE inventory in this tower and must not go
+// a day stale. The DLD figures and the community bundle are given 24h/1h
+// explicitly so they no longer set the floor — before that, getCommunity's 600s
+// cache pinned all 3,563 of these pages to a 10-minute rebuild. Net 600 -> 3600.
+// Verify in .next/prerender-manifest.json; the export alone proves nothing.
 export const revalidate = 86400;
+
+const DLD_TTL = 86400; // daily 03:00 DLD import
 
 // Opt into ISR. Without generateStaticParams a [slug] route is fully dynamic
 // (private, no-store) regardless of `revalidate`. Returning [] prerenders
@@ -365,7 +375,7 @@ function TrendChart({ points }: { points: { label: string; value: number; count:
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
   const { slug, locale } = await params;
-  const b = await getDldBuilding(slug);
+  const b = await getDldBuilding(slug, DLD_TTL);
   if (!b) return { title: "Building Not Found" };
   const ppsf = toSqft(b.avgPpsf);
   const { points: trend } = smoothTrend(((Array.isArray(b.trend) ? b.trend : []) as TrendPoint[]).filter((t) => t.avgPpsf > 0));
@@ -408,7 +418,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BuildingPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
-  const b = await getDldBuilding(slug);
+  const b = await getDldBuilding(slug, DLD_TTL);
   if (!b) return notFound();
   const nonce = await getNonce();
   const lp = locale === "en" ? "" : `/${locale}`;
@@ -419,9 +429,9 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
   const resolved = await resolveAreaCommunity(b.area);
   const communitySlug = resolved?.slug || slugifyArea(b.area);
   const [siblingsRes, listings, communityBundle] = await Promise.all([
-    getDldBuildings(`area=${encodeURIComponent(b.area)}&limit=13&sortBy=sales`),
+    getDldBuildings(`area=${encodeURIComponent(b.area)}&limit=13&sortBy=sales`, DLD_TTL),
     getBuildingListings(b.name),
-    getCommunity(communitySlug),
+    getCommunity(communitySlug, true),
   ]);
   // getCommunity returns the landing bundle — the community doc is nested.
   const parent = communityBundle?.community || null;

@@ -19,6 +19,11 @@ import AreaRankingView, { parseAreaRanking, buildAreaRankingMeta } from "@/compo
 
 export const revalidate = 1800;
 
+// Every fetch in this render must carry this, or the shortest one silently sets
+// the route's window (see the note on serverFetch) — getCachedSearch's 600s
+// cache in SuperlativeView was doing exactly that.
+const PAGE_TTL = 1800;
+
 // Opt into ISR. Without generateStaticParams a [searchSlug] route is fully
 // dynamic (private, no-store) regardless of `revalidate` — so every crawl hit
 // on these pSEO pages was a cold, uncached render + live API fetch. Returning []
@@ -79,7 +84,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!c) return {};
   // Real DLD sold-price data for this bedroom×type combo (apartments/villas,
   // sale only). Its presence makes the page data-rich even with no live listings.
-  const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug), p.type.canon, p.beds) : null;
+  const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug, PAGE_TTL), p.type.canon, p.beds) : null;
   const M = mx(locale);
   const bedsL = bedsLabelL(locale, p.beds);
   const typeL = typeLabelL(locale, p.type.canon);
@@ -99,7 +104,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   let confirmedEmpty = false;
   try {
     const apiCommunity = c.apiName ?? c.name;
-    const res = await serverFetch(serverApiUrl(`/api/listings?listingType=${p.listingType}&community=${encodeURIComponent(apiCommunity)}&propertyType=${encodeURIComponent(p.type.canon)}&bedrooms=${p.beds}&countOnly=1`));
+    const res = await serverFetch(serverApiUrl(`/api/listings?listingType=${p.listingType}&community=${encodeURIComponent(apiCommunity)}&propertyType=${encodeURIComponent(p.type.canon)}&bedrooms=${p.beds}&countOnly=1`), 8000, undefined, PAGE_TTL);
     if (res.ok) confirmedEmpty = ((await res.json()).total ?? 0) === 0;
   } catch { /* API down — don't 404 on transient errors */ }
   if (confirmedEmpty && !soldCombo) notFound();
@@ -145,8 +150,8 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
   try {
     const base = `/api/listings?listingType=${p.listingType}&community=${encodeURIComponent(apiCommunity)}&propertyType=${encodeURIComponent(p.type.canon)}&bedrooms=${p.beds}`;
     const [listRes, countRes] = await Promise.all([
-      serverFetch(serverApiUrl(`${base}&limit=${BATCH}`)),
-      serverFetch(serverApiUrl(`${base}&countOnly=1`)),
+      serverFetch(serverApiUrl(`${base}&limit=${BATCH}`), 8000, undefined, PAGE_TTL),
+      serverFetch(serverApiUrl(`${base}&countOnly=1`), 8000, undefined, PAGE_TTL),
     ]);
     if (listRes.ok) initialListings = await listRes.json();
     if (countRes.ok) totalCount = (await countRes.json()).total ?? 0;
@@ -154,10 +159,10 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
     /* API down — render the page shell with stats/FAQ depth */
   }
 
-  const stats = await getCommunityStats(apiCommunity);
+  const stats = await getCommunityStats(apiCommunity, PAGE_TTL);
   const faqs = buildCommunityFaqs(c.name, stats, locale);
   const nonce = await getNonce();
-  const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug), p.type.canon, p.beds) : null;
+  const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug, PAGE_TTL), p.type.canon, p.beds) : null;
 
   const M = mx(locale);
   const bedsL = bedsLabelL(locale, p.beds);

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Star, MessageCircle } from "lucide-react";
 import NextImage from "next/image";
 import { useTranslations } from "next-intl";
@@ -45,12 +45,10 @@ export function TestimonialsCarousel({ title, items }: TestimonialsCarouselProps
 
       <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory">
         {items.map((review, i) => (
-          <motion.div
+          <Reveal
             key={i}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
+            y={12}
+            delay={i * 100}
             className="flex-shrink-0 w-[75%] sm:w-auto snap-start bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
           >
             <div className="flex items-center gap-0.5 mb-3">
@@ -87,7 +85,7 @@ export function TestimonialsCarousel({ title, items }: TestimonialsCarouselProps
                 <p className="text-[11px] text-muted-foreground truncate">{review.role}</p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         ))}
       </div>
     </div>

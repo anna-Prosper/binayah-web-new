@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import {
   TrendingUp, TrendingDown, BarChart3, Layers, Home, Building2,
   ChevronLeft, ChevronRight, CalendarDays, RefreshCw, MapPin, KeyRound,
@@ -345,29 +345,25 @@ function SplitBar({ data, t }: { data: DailyData; t: T }) {
       <SectionHeader label={t("splitLabel")} title={t("splitTitle")} titleItalic={t("splitTitleItalic")} />
       <div className="bg-card border border-border/50 rounded-2xl p-5">
         <div className="h-12 w-full rounded-xl overflow-hidden flex bg-muted/40">
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: `${offPlanPct}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
+          <Reveal
+            width={`${offPlanPct}%`}
+            duration={900}
             className="h-full flex items-center justify-center"
             style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
             {offPlanPct >= 12 && (
               <span className="text-[11px] font-bold text-white px-2 truncate">{Math.round(offPlanPct)}%</span>
             )}
-          </motion.div>
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: `${readyPct}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
+          </Reveal>
+          <Reveal
+            width={`${readyPct}%`}
+            duration={900}
             className="h-full flex items-center justify-center bg-muted-foreground/20"
           >
             {readyPct >= 12 && (
               <span className="text-[11px] font-bold text-foreground/70 px-2 truncate">{Math.round(readyPct)}%</span>
             )}
-          </motion.div>
+          </Reveal>
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-xs">
           <div className="flex items-center gap-2">
@@ -417,11 +413,10 @@ function Leaderboard({ data, t }: { data: DailyData; t: T }) {
                   </span>
                 </div>
                 <div className="h-3 w-full rounded-full bg-muted/40 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${pct}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.06 }}
+                  <Reveal
+                    width={`${pct}%`}
+                    duration={700}
+                    delay={i * 60}
                     className="h-full rounded-full"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                   />
@@ -492,11 +487,10 @@ function MixRow({ label, count, value, pct, index, t }: {
           </span>
         </div>
         <div className="h-2.5 w-full rounded-full bg-muted/40 overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: `${pct}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
+          <Reveal
+            width={`${pct}%`}
+            duration={600}
+            delay={index * 50}
             className="h-full rounded-full"
             style={{ background: "#1A7A5A" }}
           />

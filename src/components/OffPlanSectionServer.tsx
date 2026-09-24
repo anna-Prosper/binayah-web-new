@@ -1,7 +1,7 @@
 "use client";
 
 import { IMAGE_PLACEHOLDER } from "@/lib/images";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Building, CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -30,20 +30,20 @@ export default function OffPlanSectionClient({ projects }: { projects: Project[]
   return (
     <section id="offplan" className="py-24 bg-card scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 gap-4">
+        <Reveal y={20} className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 gap-4">
           <div>
-            <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
+            <Reveal width="3rem" className="h-[2px] bg-accent mb-6" />
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("newLaunches")}</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">{t("offPlan")} <span className="font-light">{t("projectsItalic")}</span></h2>
           </div>
           <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
             {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
-        </motion.div>
+        </Reveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {projects.map((p, i) => (
-            <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="h-full">
+            <Reveal key={p._id} y={30} delay={i * 80} className="h-full">
               <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-background rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                 <div className="relative overflow-hidden aspect-[4/3]">
                   <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || IMAGE_PLACEHOLDER} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -61,7 +61,7 @@ export default function OffPlanSectionClient({ projects }: { projects: Project[]
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>

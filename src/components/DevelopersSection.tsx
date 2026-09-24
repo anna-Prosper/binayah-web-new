@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { ArrowUpRight, Building2 } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -29,17 +29,13 @@ const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
   return (
     <section id="developers" className="py-14 sm:py-24 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <Reveal
+          y={20}
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 sm:mb-14 gap-4"
         >
           <div>
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "3rem" }}
-              viewport={{ once: true }}
+            <Reveal
+              width="3rem"
               className="h-[2px] bg-accent mb-6"
             />
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
@@ -55,18 +51,16 @@ const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
           >
             {t("viewDeveloper")} <ArrowUpRight className="h-4 w-4" />
           </Link>
-        </motion.div>
+        </Reveal>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
           {TOP_DEVELOPERS.map((dev, i) => {
             const logoUrl = logos?.[dev.slug];
             return (
-              <motion.div
+              <Reveal
                 key={dev.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
+                y={30}
+                delay={i * 60}
                 className="h-full"
               >
                 <Link
@@ -90,7 +84,7 @@ const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
                     {dev.name}
                   </h3>
                 </Link>
-              </motion.div>
+              </Reveal>
             );
           })}
         </div>

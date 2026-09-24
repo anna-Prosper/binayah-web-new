@@ -3,16 +3,21 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 /**
- * Reveal-on-scroll without framer-motion.
+ * Reveal-on-scroll (or on-mount) without framer-motion.
  *
- * FeaturedPropertiesClient and OffPlanSectionClient sit directly below the hero
- * — they are in the homepage's critical hydration path — and pulled in all of
+ * Originally written for FeaturedPropertiesClient and OffPlanSectionClient —
+ * homepage sections in the critical hydration path that pulled in all of
  * framer-motion to do `initial` + `whileInView` + `viewport={{ once: true }}`.
- * That is a one-shot fade/slide, which an IntersectionObserver and a CSS
+ * That's a one-shot fade/slide/scale, which an IntersectionObserver and a CSS
  * transition do natively for a fraction of the parse and execute cost.
+ * Since then, extended to cover every framer usage in the codebase that is
+ * ONLY `initial`+`animate`(+`whileInView`) with no `exit` — i.e. every
+ * one-shot entrance animation, whether scroll-triggered or immediate. See
+ * src/components/Presence.tsx for the separate mount/unmount (`exit`) case.
  *
- * Deliberately matches the previous framer defaults (0.6s ease-out, 20px
- * travel) so the motion is unchanged on screen.
+ * `trigger="mount"` animates immediately (mirrors bare `initial`+`animate`,
+ * no scroll gate). `trigger="scroll"` (default) waits for the element to
+ * enter the viewport (mirrors `whileInView`+`viewport={{once:true}}`).
  *
  * Respects prefers-reduced-motion by rendering in the final state immediately.
  */
@@ -23,37 +28,57 @@ export default function Reveal({
   /** Travel distance/direction, mirroring framer's `initial` offset. */
   y = 0,
   x = 0,
+  /** Starting scale, mirroring framer's `initial={{ scale }}`. 1 = no scale animation. */
+  scale = 1,
   /** Animate width from 0 to this value (the gold rule dividers). */
   width,
   delay = 0,
+  duration = 600,
+  trigger = "scroll",
   as: Tag = "div",
+  ...rest
 }: {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
   y?: number;
   x?: number;
+  scale?: number;
   width?: string;
   delay?: number;
-  as?: "div" | "section" | "article";
-}) {
+  duration?: number;
+  trigger?: "scroll" | "mount";
+  as?: "div" | "section" | "article" | "li" | "form";
+} & Record<string, unknown>) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // No IntersectionObserver (or reduced motion): show immediately rather than
-    // leaving content stuck at opacity 0.
-    if (
-      typeof IntersectionObserver === "undefined" ||
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-    ) {
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
       setShown(true);
       return;
     }
 
+    if (trigger === "mount") {
+      // Two frames: one to commit the hidden state, one to transition from it.
+      // A single rAF can be coalesced with the mount paint and skip the
+      // animation. Same fix as Presence.tsx's enter transition.
+      let inner = 0;
+      const outer = requestAnimationFrame(() => {
+        inner = requestAnimationFrame(() => setShown(true));
+      });
+      return () => {
+        cancelAnimationFrame(outer);
+        if (inner) cancelAnimationFrame(inner);
+      };
+    }
+
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -65,23 +90,22 @@ export default function Reveal({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [trigger]);
 
   const hidden: CSSProperties = width
     ? { width: 0 }
-    : { opacity: 0, transform: `translate(${x}px, ${y}px)` };
-  const visible: CSSProperties = width
-    ? { width }
-    : { opacity: 1, transform: "translate(0, 0)" };
+    : { opacity: 0, transform: `translate(${x}px, ${y}px)${scale !== 1 ? ` scale(${scale})` : ""}` };
+  const visible: CSSProperties = width ? { width } : { opacity: 1, transform: "translate(0, 0) scale(1)" };
 
   return (
     <Tag
+      {...rest}
       ref={ref as never}
       className={className}
       style={{
         ...style,
         ...(shown ? visible : hidden),
-        transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms, width 600ms ease-out ${delay}ms`,
+        transition: `opacity ${duration}ms ease-out ${delay}ms, transform ${duration}ms ease-out ${delay}ms, width ${duration}ms ease-out ${delay}ms`,
         willChange: shown ? undefined : "opacity, transform",
       }}
     >

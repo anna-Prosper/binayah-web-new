@@ -44,8 +44,11 @@ function formatCount(n: number, locale: string): string {
  * caches across requests so this costs no extra upstream call per render.)
  */
 async function liveInventoryCount(searchType: string, intent: string): Promise<number | null> {
+  // longTtl: these landing pages are ISR at 86400, and getCachedSearch's default
+  // 600s window would otherwise cap the whole route at 10 minutes (see its note).
   const data = await getCachedSearch<{ totalCount?: number }>(
-    `intent=${encodeURIComponent(intent)}&type=${encodeURIComponent(searchType)}&pageSize=1`
+    `intent=${encodeURIComponent(intent)}&type=${encodeURIComponent(searchType)}&pageSize=1`,
+    true
   );
   const n = Number(data?.totalCount);
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : null;

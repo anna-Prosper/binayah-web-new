@@ -94,9 +94,22 @@ const _searchUncached = async (query: string): Promise<unknown> => {
   return res.json();
 };
 const _searchCached = unstable_cache(_searchUncached, ["home-search-grid"], { revalidate: 600 });
-export async function getCachedSearch<T = any>(query: string): Promise<T | null> {
+// Same fetch, longer window, for ISR pages rather than the force-dynamic grids.
+// unstable_cache bakes `revalidate` in at definition, so a second window means a
+// second instance; the cache KEY differs too, or the two would collide and
+// whichever ran first would decide the window for both.
+const _searchCachedLong = unstable_cache(_searchUncached, ["search-grid-1h"], { revalidate: 3600 });
+/**
+ * `longTtl` exists because the 600s window above is a CEILING on the calling
+ * route's ISR window, not just a cache setting (see the note on serverFetch).
+ * /buy, /rent, /off-plan and /search are force-dynamic, so 600 costs them
+ * nothing and stays their default. The property-type landing pages are ISR and
+ * export 86400, so without this they were silently rebuilt every 10 minutes —
+ * 144x more often than declared — for a hero inventory tile.
+ */
+export async function getCachedSearch<T = any>(query: string, longTtl = false): Promise<T | null> {
   try {
-    return (await _searchCached(query)) as T;
+    return (await (longTtl ? _searchCachedLong : _searchCached)(query)) as T;
   } catch {
     return null;
   }
@@ -233,9 +246,12 @@ export const getListing = cache(async (slug: string) =>
 // These endpoints require the API key, so fetch server-side with the x-api-key
 // header (never exposed to the browser).
 const DLD_HEADERS = (): Record<string, string> => ({ "x-api-key": process.env.API_KEY || "" });
-export const getDldBuilding = cache(async (slug: string): Promise<any | null> => {
+// `revalidate` lifts serverFetch's 3600 ceiling off the calling route's ISR
+// window (see the note there). Default unchanged. The figures come from the
+// daily 03:00 DLD import, so a 24h window matches the data's real cadence.
+export const getDldBuilding = cache(async (slug: string, revalidate?: number): Promise<any | null> => {
   try {
-    const res = await serverFetch(serverApiUrl(`/api/dld/buildings/${encodeURIComponent(slug)}`), 8000, DLD_HEADERS());
+    const res = await serverFetch(serverApiUrl(`/api/dld/buildings/${encodeURIComponent(slug)}`), 8000, DLD_HEADERS(), revalidate);
     if (!res.ok) return null;
     return await res.json();
   } catch {
@@ -245,9 +261,12 @@ export const getDldBuilding = cache(async (slug: string): Promise<any | null> =>
 export interface SoldCombo { type: "apartments" | "villas"; bedrooms: number; count: number; medianPrice: number; minPrice: number; maxPrice: number; pricePerSqft: number | null; }
 // DLD sold-price aggregates by bedroom × type for a community (real transactions,
 // gated to a minimum sample). Powers the data-backed matrix pages.
-export const getAreaSoldMatrix = cache(async (slug: string): Promise<SoldCombo[]> => {
+// `revalidate` lifts serverFetch's 3600 ceiling off the calling route's ISR
+// window (see the note there). Default unchanged. DLD sold-price matrices come
+// from the daily 03:00 import.
+export const getAreaSoldMatrix = cache(async (slug: string, revalidate?: number): Promise<SoldCombo[]> => {
   try {
-    const res = await serverFetch(serverApiUrl(`/api/dld/areas/${encodeURIComponent(slug)}/matrix?min=12`), 10_000, DLD_HEADERS());
+    const res = await serverFetch(serverApiUrl(`/api/dld/areas/${encodeURIComponent(slug)}/matrix?min=12`), 10_000, DLD_HEADERS(), revalidate);
     if (!res.ok) return [];
     const d = await res.json();
     return Array.isArray(d?.combos) ? (d.combos as SoldCombo[]) : [];
@@ -391,9 +410,23 @@ const _communityUncached = async (slug: string) => {
 const _communityCached = unstable_cache(_communityUncached, ["community-landing"], {
   revalidate: 600,
 });
-export const getCommunity = cache(async (slug: string) => {
+// Longer-window twin for ISR callers. unstable_cache bakes `revalidate` in at
+// definition, so a second window needs a second instance — and a distinct KEY,
+// or the two would collide and whichever ran first would fix the window for both.
+const _communityCachedLong = unstable_cache(_communityUncached, ["community-landing-1h"], {
+  revalidate: 3600,
+});
+/**
+ * `longTtl` exists because the 600s window above is a CEILING on the calling
+ * route's ISR window, not just a cache setting (see the note on serverFetch).
+ * Both callers are ISR — communities/[slug] exports 3600 and building/[slug]
+ * exports 86400 — so without this they were silently rebuilt every 10 minutes.
+ * Community documents are edited by hand, not by a feed, and an edit can be
+ * published immediately via POST /api/revalidate.
+ */
+export const getCommunity = cache(async (slug: string, longTtl = false) => {
   try {
-    return await _communityCached(slug);
+    return await (longTtl ? _communityCachedLong : _communityCached)(slug);
   } catch {
     return null;
   }

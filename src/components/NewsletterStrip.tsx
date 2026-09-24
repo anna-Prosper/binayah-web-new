@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Mail } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -51,11 +51,10 @@ const NewsletterStrip = ({ source = "newsletter-strip" }: { source?: string } = 
   return (
     <section className="py-6 sm:py-10" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <motion.form
+        <Reveal
+          as="form"
           onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          y={20}
           className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6"
         >
           {honeypotField}
@@ -102,7 +101,7 @@ const NewsletterStrip = ({ source = "newsletter-strip" }: { source?: string } = 
               {submitting ? "…" : t("button")}
             </button>
           </div>
-        </motion.form>
+        </Reveal>
       </div>
     </section>
   );

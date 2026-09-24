@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Building2, MapPin, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
@@ -58,11 +58,9 @@ export function SimilarItemsCarousel({ icon: HeaderIcon = Building2, title, eyeb
       >
         {items.map((item, i) => {
           const card = (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
+            <Reveal
+              x={20}
+              delay={i * 80}
               className="min-w-[260px] sm:min-w-[280px] flex-shrink-0 snap-start rounded-2xl border border-border/50 bg-card overflow-hidden group hover:border-primary/30 transition-colors h-full"
             >
               <div className="h-36 bg-muted/30 flex items-center justify-center relative overflow-hidden">
@@ -101,7 +99,7 @@ export function SimilarItemsCarousel({ icon: HeaderIcon = Building2, title, eyeb
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
           );
 
           return item.href ? (

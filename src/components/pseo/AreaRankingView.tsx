@@ -27,7 +27,9 @@ export function parseAreaRanking(slug: string): { mode: "yield" | "price" } | nu
 const norm = (s: string) => (s || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
 
 async function ranked(mode: "yield" | "price") {
-  const data = await getMarketStats();
+  // 1800 matches [searchSlug]'s own window; the default 3600 would not cap it,
+  // but keeping them equal means the page rebuilds on one clock, not two.
+  const data = await getMarketStats(1800);
   const rows = (data?.communityMatrix || []) as CommunityStat[];
   // Map to known buy-communities so every row links somewhere real.
   const nameToSlug = new Map<string, { slug: string; name: string }>();

@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { useTranslations } from "next-intl";
 
 export default function PrivacyPolicyClient() {
@@ -37,7 +37,7 @@ export default function PrivacyPolicyClient() {
           }}
         />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 relative">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
               {t("heroLabel")}
             </p>
@@ -49,7 +49,7 @@ export default function PrivacyPolicyClient() {
               {t("heroSubtitle")}
             </p>
             <p className="text-white/40 text-sm">{t("lastUpdated")}</p>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -58,12 +58,10 @@ export default function PrivacyPolicyClient() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="space-y-10">
             {sections.map((key, i) => (
-              <motion.div
+              <Reveal
                 key={key}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
+                y={24}
+                delay={i * 60}
                 className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50"
               >
                 <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
@@ -73,7 +71,7 @@ export default function PrivacyPolicyClient() {
                 <p className="text-muted-foreground leading-relaxed">
                   {t(`sections.${key}.body`)}
                 </p>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>

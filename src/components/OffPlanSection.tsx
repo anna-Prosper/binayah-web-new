@@ -2,7 +2,7 @@
 
 import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { apiUrl } from "@/lib/api";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -28,14 +28,12 @@ const OffPlanSection = () => {
   return (
     <section id="offplan" className="py-14 sm:py-24 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <Reveal
+          y={20}
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 sm:mb-14 gap-4"
         >
           <div>
-            <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
+            <Reveal width="3rem" className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
               {t("title")} <span className="font-light">{t("titleItalic")}</span>
@@ -44,18 +42,17 @@ const OffPlanSection = () => {
           <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
             {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
-        </motion.div>
+        </Reveal>
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {(projects || []).map((p, i) => {
 
             return (
-              <motion.div
+              <Reveal
                 key={p.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                y={30}
+                delay={i * 100}
+                duration={500}
                 className="h-full"
               >
                 <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
@@ -91,7 +88,7 @@ const OffPlanSection = () => {
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </Reveal>
             );
           })}
         </div>

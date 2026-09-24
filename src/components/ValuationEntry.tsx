@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import {
   Target, TrendingUp, TrendingDown, BarChart3, ArrowRight, Sparkles,
 } from "lucide-react";
@@ -42,16 +42,12 @@ const ValuationEntry = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
       {/* Section header — same pattern as ROICalculator / MarketDashboard */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+      <Reveal
+        y={20}
         className="text-center mb-14"
       >
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: "3rem" }}
-          viewport={{ once: true }}
+        <Reveal
+          width="3rem"
           className="h-[2px] bg-accent mx-auto mb-6"
         />
         <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("ownerTool")}</p>
@@ -62,16 +58,14 @@ const ValuationEntry = () => {
         <p className="mt-4 text-muted-foreground max-w-lg mx-auto">
           {t("subtitle")}
         </p>
-      </motion.div>
+      </Reveal>
 
       {/* Two-column layout */}
       <div className="grid lg:grid-cols-2 gap-8 items-center">
 
         {/* Left — how it works */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+        <Reveal
+          x={-30}
           className="space-y-4"
         >
           {steps.map((step, i) => (
@@ -93,13 +87,11 @@ const ValuationEntry = () => {
               </div>
             </div>
           ))}
-        </motion.div>
+        </Reveal>
 
         {/* Right — output preview card + CTA */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+        <Reveal
+          x={30}
           className="flex flex-col gap-5"
         >
           {/* Mock result card */}
@@ -159,7 +151,7 @@ const ValuationEntry = () => {
               <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </div>
           </Link>
-        </motion.div>
+        </Reveal>
       </div>
     </div>
   </section>

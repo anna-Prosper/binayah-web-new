@@ -15,6 +15,12 @@ import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/s
 
 export const revalidate = 86400;
 
+// Every DLD fetch below must carry this, or serverFetch's 3600 default silently
+// pins the route to an hour despite the 24h declared above (see the note on
+// serverFetch). The figures come from the daily 03:00 DLD import, so a 24h
+// window matches the data's real cadence.
+const PAGE_TTL = 86400;
+
 export function generateStaticParams() {
   const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
   return locales.flatMap((locale) =>
@@ -61,7 +67,7 @@ export async function generateMetadata({
   if (!CURATED_COMMUNITY_SLUGS.includes(community)) return {};
   const c = findBuyCommunity(community);
   if (!c) return {};
-  const stats = await getCommunityStats(c.apiName ?? c.name);
+  const stats = await getCommunityStats(c.apiName ?? c.name, PAGE_TTL);
   const M = META_T[locale] ?? META_T.en;
   const ppsfVal = stats?.avgPricePerSqft ? `AED ${stats.avgPricePerSqft.toLocaleString("en-AE")}/sqft` : (c.priceRange || "");
   const ppsfClause = ppsfVal ? ` (${M.avg} ${ppsfVal})` : "";
@@ -102,8 +108,8 @@ export default async function PropertyValuationCommunityPage({
   const nonce = await getNonce();
   const apiName = c.apiName ?? c.name;
 
-  const stats = await getCommunityStats(apiName);
-  const buildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(c.name))}&limit=12&sortBy=sales`)).results
+  const stats = await getCommunityStats(apiName, PAGE_TTL);
+  const buildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(c.name))}&limit=12&sortBy=sales`, PAGE_TTL)).results
     .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
     .slice(0, 12)
     .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));

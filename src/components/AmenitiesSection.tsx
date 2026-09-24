@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { useTranslations } from "next-intl";
 import {
   Star, Waves, Dumbbell, Baby, Car, Lock, HeartPulse, Flame, TrendingUp,
@@ -61,19 +61,17 @@ export function AmenitiesSection({ amenities, className = "" }: AmenitiesSection
         {amenities.map((amenity, i) => {
           const AIcon = pickIcon(amenity);
           return (
-            <motion.div
+            <Reveal
               key={`${i}-${amenity}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: Math.min(i * 0.03, 0.4) }}
+              scale={0.9}
+              delay={Math.min(i * 30, 400)}
               className="rounded-lg sm:rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors p-2 sm:p-3 flex flex-col items-center text-center gap-1.5 sm:gap-2"
             >
               <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
                 <AIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
               </div>
               <span className="text-[10px] sm:text-[11px] font-semibold text-foreground leading-tight">{amenity}</span>
-            </motion.div>
+            </Reveal>
           );
         })}
       </div>
