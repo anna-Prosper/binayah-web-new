@@ -4,7 +4,7 @@ import { MongoClient, type Db } from "mongodb";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
 import { OFFERS, isExpired } from "@/lib/offers";
-import { BUY_COMMUNITIES, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities";
+import { BUY_COMMUNITIES, CURATED_COMMUNITY_SLUGS, communityVariantToSlug, normalizeCommunityName } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 import { SOURCE_CITIES } from "@/lib/source-cities";
 import { GOLDEN_VISA_NATIONALITIES } from "@/lib/golden-visa-nationalities";
@@ -139,12 +139,11 @@ async function fetchProjectsForSitemap(db: SitemapDb): Promise<
 // dev×community sitemap sets are held to these — the 38 communities added in
 // the 2026-07 catalog expansion contribute only their hub + off-plan-in pages
 // (live listing inventory is too thin to back a matrix long-tail).
-const MATRIX_SLUGS = new Set<string>([
-  "dubai-marina", "downtown-dubai", "palm-jumeirah", "business-bay", "jumeirah-village-circle",
-  "dubai-hills-estate", "arabian-ranches", "jumeirah-beach-residence", "difc", "dubai-creek-harbour",
-  "mbr-city", "damac-hills", "emirates-hills", "bluewaters-island", "mirdif", "al-barari",
-  "jumeirah-lakes-towers", "town-square", "the-springs", "international-city",
-]);
+// Derived, not re-listed: this was a hand-copy of CURATED_COMMUNITY_SLUGS with
+// nothing enforcing that the two stayed equal, and buy-communities.ts even
+// carried a comment claiming the mirror. They were identical when this was
+// collapsed; deriving it means they cannot silently diverge.
+const MATRIX_SLUGS = new Set<string>(CURATED_COMMUNITY_SLUGS);
 
 // Data-backed matrix combos (phase 2): bedroom × type sale pages the DLD
 // sold-price endpoint reports enough real transactions for. This is what makes
@@ -177,22 +176,8 @@ async function fetchDldMatrixCombos(): Promise<string[]> {
 async function fetchMatrixCombos(db: SitemapDb): Promise<string[]> {
   if (!db) return [];
   const TYPE_SLUG: Record<string, string> = { Apartment: "apartments", Villa: "villas", Townhouse: "townhouses", Penthouse: "penthouses" };
-  const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
-  const nameToSlug = new Map<string, string>();
-  for (const c of BUY_COMMUNITIES) {
-    if (!MATRIX_SLUGS.has(c.slug)) continue;
-    nameToSlug.set(norm(c.name), c.slug);
-    const apiName = (c as { apiName?: string }).apiName;
-    if (apiName) nameToSlug.set(norm(apiName), c.slug);
-    // Synonyms too — projects/listings store JLT as "JLT" and International
-    // City as "International City Dubai", neither of which is the name or the
-    // apiName. Without these the row never resolved to a slug and the URL was
-    // silently absent from the sitemap (9 missing: 6x JLT, 2x international
-    // city, 1x al-barari).
-    for (const syn of (c as { synonyms?: string[] }).synonyms ?? []) {
-      if (syn) nameToSlug.set(norm(syn), c.slug);
-    }
-  }
+  const norm = normalizeCommunityName;
+  const nameToSlug = communityVariantToSlug(MATRIX_SLUGS);
   try {
     const rows = await db.collection("listings").aggregate([
       { $match: { publishStatus: "published", community: { $nin: [null, ""] }, propertyType: { $in: Object.keys(TYPE_SLUG) }, bedrooms: { $gte: 0, $lte: 7 } } },
@@ -224,23 +209,9 @@ async function fetchMatrixCombos(db: SitemapDb): Promise<string[]> {
 // substantial pages are submitted.
 async function fetchDevCommunityCombos(db: SitemapDb): Promise<string[]> {
   if (!db) return [];
-  const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
+  const norm = normalizeCommunityName;
   const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  const nameToSlug = new Map<string, string>();
-  for (const c of BUY_COMMUNITIES) {
-    if (!MATRIX_SLUGS.has(c.slug)) continue;
-    nameToSlug.set(norm(c.name), c.slug);
-    const apiName = (c as { apiName?: string }).apiName;
-    if (apiName) nameToSlug.set(norm(apiName), c.slug);
-    // Synonyms too — projects/listings store JLT as "JLT" and International
-    // City as "International City Dubai", neither of which is the name or the
-    // apiName. Without these the row never resolved to a slug and the URL was
-    // silently absent from the sitemap (9 missing: 6x JLT, 2x international
-    // city, 1x al-barari).
-    for (const syn of (c as { synonyms?: string[] }).synonyms ?? []) {
-      if (syn) nameToSlug.set(norm(syn), c.slug);
-    }
-  }
+  const nameToSlug = communityVariantToSlug(MATRIX_SLUGS);
   try {
     const rows = await db.collection("projects").aggregate([
       { $match: { publishStatus: "published", developerName: { $nin: [null, ""] }, community: { $nin: [null, ""] } } },
@@ -265,22 +236,8 @@ async function fetchDevCommunityCombos(db: SitemapDb): Promise<string[]> {
 async function fetchSuperlativeCombos(db: SitemapDb): Promise<string[]> {
   if (!db) return [];
   const TYPE_SLUG: Record<string, string> = { Apartment: "apartments", Villa: "villas", Townhouse: "townhouses", Penthouse: "penthouses" };
-  const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
-  const nameToSlug = new Map<string, string>();
-  for (const c of BUY_COMMUNITIES) {
-    if (!MATRIX_SLUGS.has(c.slug)) continue;
-    nameToSlug.set(norm(c.name), c.slug);
-    const apiName = (c as { apiName?: string }).apiName;
-    if (apiName) nameToSlug.set(norm(apiName), c.slug);
-    // Synonyms too — projects/listings store JLT as "JLT" and International
-    // City as "International City Dubai", neither of which is the name or the
-    // apiName. Without these the row never resolved to a slug and the URL was
-    // silently absent from the sitemap (9 missing: 6x JLT, 2x international
-    // city, 1x al-barari).
-    for (const syn of (c as { synonyms?: string[] }).synonyms ?? []) {
-      if (syn) nameToSlug.set(norm(syn), c.slug);
-    }
-  }
+  const norm = normalizeCommunityName;
+  const nameToSlug = communityVariantToSlug(MATRIX_SLUGS);
   try {
     const rows = await db.collection("listings").aggregate([
       { $match: { publishStatus: "published", listingType: "Sale", community: { $nin: [null, ""] }, propertyType: { $in: Object.keys(TYPE_SLUG) } } },

@@ -1166,6 +1166,37 @@ function communityNameIndex(): Map<string, BuyCommunity> {
   return index;
 }
 
+/**
+ * normalised community variant → slug, for matching aggregation rows against
+ * curated communities.
+ *
+ * `resolveBuyCommunity` answers "which community is this string?" for a single
+ * value. This returns the whole lookup, which is what a Mongo aggregation needs
+ * when it is mapping thousands of rows in a loop.
+ *
+ * `only` restricts the map to a subset of slugs — the sitemap's matrix,
+ * superlative and dev×community sets are all held to CURATED_COMMUNITY_SLUGS.
+ *
+ * Built from name, apiName AND synonyms: projects and listings store JLT as
+ * "JLT" and International City as "International City Dubai", neither of which
+ * is the name or the apiName. Without the synonyms those rows resolved to
+ * nothing and the URLs were silently absent from the sitemap (9 missing:
+ * 6x JLT, 2x international city, 1x al-barari).
+ */
+export function communityVariantToSlug(only?: ReadonlySet<string> | readonly string[]): Map<string, string> {
+  const allow = only ? new Set(only) : null;
+  const map = new Map<string, string>();
+  for (const c of BUY_COMMUNITIES) {
+    if (allow && !allow.has(c.slug)) continue;
+    for (const variant of [c.name, c.apiName, ...(c.synonyms ?? [])]) {
+      if (!variant) continue;
+      const key = normalizeCommunityName(variant);
+      if (key && !map.has(key)) map.set(key, c.slug);
+    }
+  }
+  return map;
+}
+
 export function findBuyCommunity(slug: string): BuyCommunity | undefined {
   return BUY_COMMUNITIES.find((c) => c.slug === slug);
 }
@@ -1173,7 +1204,7 @@ export function findBuyCommunity(slug: string): BuyCommunity | undefined {
 // The original curated 20 — communities with full editorial copy + strong DLD
 // data depth. Used for the highest-quality programmatic surfaces (e.g. the
 // bedroom×type matrix and /property-valuation) where thin newer catalog entries
-// would dilute quality. Mirrors sitemap.ts MATRIX_SLUGS.
+// would dilute quality. sitemap.ts derives MATRIX_SLUGS from this list.
 export const CURATED_COMMUNITY_SLUGS: readonly string[] = [
   "dubai-marina", "downtown-dubai", "palm-jumeirah", "business-bay", "jumeirah-village-circle",
   "dubai-hills-estate", "arabian-ranches", "jumeirah-beach-residence", "difc", "dubai-creek-harbour",
