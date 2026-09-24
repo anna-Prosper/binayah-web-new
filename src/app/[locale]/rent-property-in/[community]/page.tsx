@@ -14,9 +14,15 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
 // See the matching comment on buy-property-in/[community]: 413 prerendered
-// pages here too, same 30-minute timer, same daily-cadence data underneath —
-// including the note that shared data helpers cap the EFFECTIVE window at 3600.
+// pages here too, same 30-minute timer, same daily-cadence data underneath,
+// and the same requirement that every fetch below carry PAGE_TTL.
 export const revalidate = 21600;
+
+// Every fetch in this render must carry this window too, or serverFetch's
+// 3600 default silently pins the route to an hour (see the note on
+// serverFetch). Data behind these is the daily 03:00 DLD import plus listing
+// inventory that turns over daily.
+const PAGE_TTL = 21600; // 6h
 
 export function generateStaticParams() {
   const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
@@ -121,8 +127,8 @@ export default async function RentInCommunityPage({
     const namesToTry = [apiCommunity, ...(c.synonyms ?? []).filter(s => s !== apiCommunity)];
     for (const name of namesToTry) {
       const [listingsRes, countRes] = await Promise.all([
-        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`), 8000, undefined, 21600),
-        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&countOnly=1`), 8000, undefined, 21600),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`), 8000, undefined, PAGE_TTL),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&countOnly=1`), 8000, undefined, PAGE_TTL),
       ]);
       const count = countRes.ok ? ((await countRes.json()).total ?? 0) : 0;
       if (count > 0) {
@@ -154,12 +160,12 @@ export default async function RentInCommunityPage({
     // Via getRelatedProjects so the synonym fallback applies: this passed
     // `c.name` alone, and for JLT that is "Jumeirah Lakes Towers" while the
     // projects store "JLT" — 21 off-plan projects were invisible here.
-    offPlanProjects = await getRelatedProjects(c.name, "", "", 6, c.synonyms ?? []);
+    offPlanProjects = await getRelatedProjects(c.name, "", "", 6, c.synonyms ?? [], PAGE_TTL);
 
     // Generic Dubai-wide block stays gated on a genuinely EMPTY page.
     if (totalCount === 0 && offPlanProjects.length === 0) {
       try {
-        const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Rent&limit=6`));
+        const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Rent&limit=6`), 8000, undefined, PAGE_TTL);
         if (similarRes.ok) {
           const data = await similarRes.json();
           similarListings = Array.isArray(data) ? data : (data.results ?? []);
@@ -169,7 +175,7 @@ export default async function RentInCommunityPage({
   }
 
   // Rent-side DLD market note — diverges this page from its /buy-property-in twin.
-  const stats = await getCommunityStats(apiCommunity);
+  const stats = await getCommunityStats(apiCommunity, PAGE_TTL);
   const marketNote = buildMarketNote(c.name, stats, "rent", locale);
   // Data-driven FAQs are safe here despite citing sale-side figures — each
   // question is self-labeled ("average price per square foot", "gross rental
@@ -180,7 +186,7 @@ export default async function RentInCommunityPage({
 
   let areaBuildings: { slug: string; name: string }[] = [];
   try {
-    areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(apiCommunity))}&limit=12&sortBy=sales`)).results
+    areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(apiCommunity))}&limit=12&sortBy=sales`, PAGE_TTL)).results
       .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
       .slice(0, 12)
       .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));

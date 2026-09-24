@@ -21,15 +21,18 @@ import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/s
 // not a half-hourly one. An urgent change can be published immediately via
 // POST /api/revalidate, which carries this route pattern.
 //
-// NOTE: the EFFECTIVE window is 3600, not 21600. A route's revalidate is the
-// MINIMUM of this export and every fetch() revalidate reached during render,
-// and getCommunityStats / getDldBuildings / getRelatedProjects all go through
-// serverFetch's 3600 default. Those helpers are shared with many other routes,
-// so they are deliberately left alone. Raising this export alone is still a 6x
-// cut (1800 -> 3600); to actually reach 6h, those helpers must be given a
-// longer revalidate first — verify against .next/prerender-manifest.json, since
-// the cap is silent.
+// Reaching 21600 took more than this export: a route's window is the MINIMUM of
+// it and EVERY fetch reached during render, so each call below passes PAGE_TTL
+// explicitly. Miss one — the listings fallback was easy to overlook — and the
+// whole route silently drops back to serverFetch's 3600 default with no error.
+// Always confirm initialRevalidateSeconds in .next/prerender-manifest.json.
 export const revalidate = 21600;
+
+// Every fetch in this render must carry this window too, or serverFetch's
+// 3600 default silently pins the route to an hour (see the note on
+// serverFetch). Data behind these is the daily 03:00 DLD import plus listing
+// inventory that turns over daily.
+const PAGE_TTL = 21600; // 6h
 
 export function generateStaticParams() {
   const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
@@ -141,8 +144,8 @@ export default async function BuyInCommunityPage({
     const namesToTry = [apiCommunity, ...(c.synonyms ?? []).filter(s => s !== apiCommunity)];
     for (const name of namesToTry) {
       const [listingsRes, countRes] = await Promise.all([
-        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`), 8000, undefined, 21600),
-        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&countOnly=1`), 8000, undefined, 21600),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`), 8000, undefined, PAGE_TTL),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&countOnly=1`), 8000, undefined, PAGE_TTL),
       ]);
       const count = countRes.ok ? ((await countRes.json()).total ?? 0) : 0;
       if (count > 0) {
@@ -178,14 +181,14 @@ export default async function BuyInCommunityPage({
     // Via getRelatedProjects so the synonym fallback applies: this passed
     // `c.name` alone, and for JLT that is "Jumeirah Lakes Towers" while the
     // projects store "JLT" — 21 off-plan projects were invisible here.
-    offPlanProjects = await getRelatedProjects(c.name, "", "", 6, c.synonyms ?? []);
+    offPlanProjects = await getRelatedProjects(c.name, "", "", 6, c.synonyms ?? [], PAGE_TTL);
 
     // The generic Dubai-wide block stays gated on a genuinely EMPTY page — it
     // is a last resort for a community with nothing of its own, and would be
     // filler on a page that already shows real local stock.
     if (totalCount === 0 && offPlanProjects.length === 0) {
       try {
-        const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Sale&limit=6`));
+        const similarRes = await serverFetch(serverApiUrl(`/api/listings?listingType=Sale&limit=6`), 8000, undefined, PAGE_TTL);
         if (similarRes.ok) {
           const data = await similarRes.json();
           similarListings = Array.isArray(data) ? data : (data.results ?? []);
@@ -197,7 +200,7 @@ export default async function BuyInCommunityPage({
   // Real market depth: same DLD stats object powers both the sale-side market
   // note below and the data-driven FAQ set + stats band further down — one
   // fetch, reused, rather than the market note computing its own copy.
-  const stats = await getCommunityStats(apiCommunity);
+  const stats = await getCommunityStats(apiCommunity, PAGE_TTL);
   const marketNote = buildMarketNote(c.name, stats, "buy", locale);
   const faqs = buildCommunityFaqs(c.name, stats, locale);
   const nonce = await getNonce();
@@ -207,7 +210,7 @@ export default async function BuyInCommunityPage({
   // name doesn't match a DLD record.
   let areaBuildings: { slug: string; name: string }[] = [];
   try {
-    areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(apiCommunity))}&limit=12&sortBy=sales`)).results
+    areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(apiCommunity))}&limit=12&sortBy=sales`, PAGE_TTL)).results
       .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
       .slice(0, 12)
       .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));

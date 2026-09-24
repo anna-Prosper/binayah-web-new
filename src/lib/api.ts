@@ -146,9 +146,17 @@ export async function getHomepageData(locale: string = "en") {
 // ---------------------------------------------------------------------------
 
 // Typed as `any` to match current call sites; tightening types is out of scope.
-async function fetchJsonOr404<T = any>(path: string): Promise<T | null> {
+//
+// `revalidate` defaults to serverFetch's own default, so every existing caller
+// keeps its current behaviour. It exists because that default is a silent
+// CEILING on the calling route's ISR window (see the note on serverFetch), so a
+// page whose content is genuinely slower-moving than an hour has no other way
+// to lift it. Pass a longer window ONLY when the data behind THIS path is
+// immutable or near-immutable — it caches the upstream response, so it also
+// applies to any dynamic (`revalidate = 0`) page calling the same helper.
+async function fetchJsonOr404<T = any>(path: string, revalidate?: number): Promise<T | null> {
   try {
-    const res = await serverFetch(serverApiUrl(path));
+    const res = await serverFetch(serverApiUrl(path), undefined, undefined, revalidate);
     if (!res.ok) return null;
     return (await res.json()) as T;
   } catch {
@@ -185,6 +193,13 @@ export const getRelatedProjects = cache(
      * it just was not being passed through.
      */
     synonyms: string[] = [],
+    /**
+     * Lifts serverFetch's 3600 ceiling off the CALLING route's ISR window (see
+     * the note on serverFetch). Default unchanged, so existing callers are
+     * untouched. Project records change on publish, not continuously, and any
+     * edit can be published immediately via POST /api/revalidate.
+     */
+    revalidate?: number,
   ): Promise<any[]> => {
     const fetchFor = async (value: string): Promise<any[]> => {
       const params = new URLSearchParams();
@@ -192,7 +207,7 @@ export const getRelatedProjects = cache(
       else if (developerName) params.set("q", developerName);
       if (excludeSlug) params.set("exclude", excludeSlug);
       params.set("limit", String(limit));
-      const raw = await fetchJsonOr404<any[]>(`/api/projects?${params.toString()}`);
+      const raw = await fetchJsonOr404<any[]>(`/api/projects?${params.toString()}`, revalidate);
       const arr = Array.isArray(raw) ? raw : [];
       return arr.filter((p) => p?.slug && p.slug !== excludeSlug).slice(0, limit);
     };
@@ -247,10 +262,14 @@ export function findSoldCombo(combos: SoldCombo[], canonType: string, beds: numb
   return combos.find((c) => c.type === t && c.bedrooms === beds) ?? null;
 }
 
+// `revalidate` lets a caller lift serverFetch's 3600 ceiling off its own ISR
+// window (see the note on serverFetch). Default unchanged. The DLD buildings
+// data behind this is rebuilt by the daily 03:00 import, so a multi-hour window
+// costs no freshness.
 export const getDldBuildings = cache(
-  async (params: string): Promise<{ results: any[]; total: number; hasMore: boolean }> => {
+  async (params: string, revalidate?: number): Promise<{ results: any[]; total: number; hasMore: boolean }> => {
     try {
-      const res = await serverFetch(serverApiUrl(`/api/dld/buildings?${params}`), 10_000, DLD_HEADERS());
+      const res = await serverFetch(serverApiUrl(`/api/dld/buildings?${params}`), 10_000, DLD_HEADERS(), revalidate);
       if (!res.ok) return { results: [], total: 0, hasMore: false };
       const d = await res.json();
       return { results: Array.isArray(d?.results) ? d.results : [], total: d?.total ?? 0, hasMore: !!d?.hasMore };
@@ -315,13 +334,24 @@ export const getCommunitiesIndex = cache(async (): Promise<{ name: string; slug:
     return [];
   }
 });
-export const getNewsArticle = cache(async (slug: string, lang = "en") =>
-  fetchJsonOr404(`/api/news/${slug}?lang=${lang}`)
+// A published article's body does not change, so news/[slug] passes a long
+// window to lift serverFetch's 3600 ceiling off its own ISR window. The default
+// is deliberately left at 3600: this helper is ALSO called by the dynamic
+// (`revalidate = 0`) /news/[slug]/raw debug page, and the data cache is
+// independent of the page's own window — defaulting to a week here would make
+// that page serve week-old article JSON while still looking "dynamic".
+export const getNewsArticle = cache(async (slug: string, lang = "en", revalidate?: number) =>
+  fetchJsonOr404(`/api/news/${slug}?lang=${lang}`, revalidate)
 );
+// NOTE the asymmetry with getNewsArticle: this fetches the news FEED, not one
+// article. The feed genuinely changes as articles publish, so it must NOT get
+// an article-length window — caching it for a week would freeze the "related"
+// rail on every article page. The caller passes a window long enough to stop
+// capping its route but short enough that the rail keeps refreshing.
 export const getRelatedNews = cache(
-  async (currentSlug: string, category?: string, limit = 3, lang = "en"): Promise<any[]> => {
+  async (currentSlug: string, category?: string, limit = 3, lang = "en", revalidate?: number): Promise<any[]> => {
     try {
-      const raw = await fetchJsonOr404<any>(`/api/news?limit=20&lang=${lang}`);
+      const raw = await fetchJsonOr404<any>(`/api/news?limit=20&lang=${lang}`, revalidate);
       const list: any[] = Array.isArray(raw)
         ? raw
         : Array.isArray(raw?.articles)

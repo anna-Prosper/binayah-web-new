@@ -15,21 +15,25 @@ import { newsAuthorOrDefault } from "@/lib/news-author";
 
 // A scraped article's body is immutable once published — only the "related"
 // rail and the market-stats sidebar drift, and both are cosmetic. At 1,029
-// articles x 7 locales an hourly timer is the largest single source of ISR
+// articles x 7 locales an hourly timer was the largest single source of ISR
 // writes on the site (~25k/day at full coverage) for content that does not
 // change. Safe to lengthen because an edit or a retraction can be published
-// immediately via POST /api/revalidate, which now carries this route pattern
-// in DEFAULT_TARGETS.
+// immediately via POST /api/revalidate, which carries this route pattern in
+// DEFAULT_TARGETS.
 //
-// NOTE: the EFFECTIVE window is still 3600, so this export has NOT yet reduced
-// writes. getMarketStats is passed a matching 7d window, but getNewsArticle and
-// getRelatedNews go through fetchJsonOr404 -> serverFetch's 3600 default, and a
-// route's window is the MINIMUM across every fetch in its render. Those helpers
-// are shared with getProject and most other detail pages, so they are left
-// alone here rather than widened blind. Finishing this means giving the news
-// helpers their own revalidate, then confirming initialRevalidateSeconds in
-// .next/prerender-manifest.json — the export alone proves nothing.
+// EFFECTIVE WINDOW: 86400, not the 604800 exported here — and that is by
+// design, not an oversight. A route's window is the MINIMUM across every fetch
+// in its render, and the floor is deliberately set by the "related" rail:
+// getRelatedNews reads the news FEED, which genuinely gains ~4 articles a day,
+// so it is pinned to 24h rather than a week. The article body and the market
+// stats (both immutable / slow-moving) are passed a week and do not constrain
+// it. Net effect is 3600 -> 86400, a 24x cut in ISR writes on this route.
+// Verified in .next/prerender-manifest.json — the export alone proves nothing.
 export const revalidate = 604800;
+
+// Window constants, named so the trade-off above is legible at each call site.
+const ARTICLE_TTL = 604800; // 7d — a published article's body is immutable
+const FEED_TTL = 86400; // 24h — the related rail must not freeze as news lands
 // Pre-render the most recent articles (the hot pages) at build so they never hit
 // a cold on-demand render; the long tail still renders on-demand and is cached
 // (dynamicParams defaults to true).
@@ -48,7 +52,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
-  const article = await getNewsArticle(slug, locale);
+  // Same ARTICLE_TTL as the page body: generateMetadata runs as part of the
+  // route's render, so a 3600 fetch here would cap the whole route at an hour
+  // no matter what the body passes. React cache() dedupes it with the body's
+  // identical call within a single render.
+  const article = await getNewsArticle(slug, locale, ARTICLE_TTL);
   if (!article) return { title: "Not Found" };
   // The /news feed is a general UAE news scrape, so a chunk of it (restaurant
   // openings, concerts, chip fabs) has nothing to do with property. Those pages
@@ -87,8 +95,8 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   // stacking API latency onto cold ISR renders (~8s). market-stats doesn't
   // depend on the article, so it shouldn't be on the critical path after it.
   const [article, marketStats] = await Promise.all([
-    getNewsArticle(slug, locale),
-    getMarketStats(604800), // cosmetic sidebar; must not cap this page's 7d window
+    getNewsArticle(slug, locale, ARTICLE_TTL),
+    getMarketStats(ARTICLE_TTL), // cosmetic sidebar; must not cap this page's window
   ]);
   // A slug may exist in one locale but not another (e.g. no Arabic translation) →
   // getNewsArticle returns null. Bail to 404 before dereferencing it below; without
@@ -100,7 +108,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   // Related news needs the article's category, so it runs after the article.
   let related: any[] = [];
   try {
-    related = await getRelatedNews(slug, article.category, 3, locale);
+    related = await getRelatedNews(slug, article.category, 3, locale, FEED_TTL);
   } catch {
     related = [];
   }

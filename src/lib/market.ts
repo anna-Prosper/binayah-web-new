@@ -162,9 +162,14 @@ const FUZZY_MATCH_MIN_RATIO = 0.6;
  * against all 58 BUY_COMMUNITIES against the live /api/market-stats matrix
  * before shipping this: fixes both, zero other communities regress.
  */
-export const getCommunityStats = cache(async (community: string): Promise<CommunityStat | null> => {
+// `revalidate` is forwarded to getMarketStats so a caller can lift serverFetch's
+// 3600 ceiling off its own ISR window (see the note on serverFetch). Default
+// unchanged, so every existing caller behaves exactly as before. The DLD figures
+// behind this are refreshed by the daily 03:00 import, so a window of several
+// hours costs no freshness.
+export const getCommunityStats = cache(async (community: string, revalidate?: number): Promise<CommunityStat | null> => {
   if (!community) return null;
-  const data = await getMarketStats();
+  const data = await getMarketStats(revalidate);
   const rows = data?.communityMatrix;
   if (!Array.isArray(rows) || rows.length === 0) return null;
 
