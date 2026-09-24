@@ -319,10 +319,15 @@ export default async function OfferPage({ params }: Props) {
                   </div>
                 )}
   
-                <div className="hero-rise mt-6 flex flex-wrap gap-3 sm:mt-9">
+                {/* The three CTAs are sized as one set rather than to their own
+                    labels: full width stacked on mobile, and a shared minimum
+                    width in the desktop row. `min-w` rather than a fixed width
+                    so a longer label in another locale grows instead of
+                    clipping. */}
+                <div className="hero-rise mt-6 grid grid-cols-1 gap-3 sm:mt-9 sm:flex sm:flex-wrap">
                   <a
                     href="#enquire"
-                    className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.03]"
+                    className="group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.03] sm:w-auto sm:min-w-[16rem]"
                     style={{
                       background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
                       color: GREEN,
@@ -336,7 +341,7 @@ export default async function OfferPage({ params }: Props) {
                     href={waLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 rounded-full px-8 py-4 text-sm font-bold text-white transition-transform hover:scale-[1.03]"
+                    className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 text-sm font-bold text-white transition-transform hover:scale-[1.03] sm:w-auto sm:min-w-[16rem]"
                     style={{ background: "#25D366", boxShadow: "0 8px 30px rgba(37,211,102,0.34)" }}
                   >
                     <WhatsAppIcon className="h-[18px] w-[18px]" />
@@ -344,7 +349,7 @@ export default async function OfferPage({ params }: Props) {
                   </a>
                   <a
                     href="tel:+971549988811"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/12"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/12 sm:w-auto sm:min-w-[16rem]"
                   >
                     <Phone className="h-4 w-4" /> +971 54 998 8811
                   </a>
