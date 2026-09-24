@@ -876,7 +876,11 @@ export default async function OfferPage({ params }: Props) {
               boxShadow: "0 6px 20px rgba(212,168,71,0.35)",
             }}
           >
-            <KeyRound className="h-5 w-5" style={{ color: GREEN }} />
+            {/* KeyRound's glyph isn't symmetric in its own viewBox — the bow
+                sits top-right and the teeth trail off bottom-left — so a
+                mathematically centered icon still reads as left-shifted.
+                Nudge it to compensate. */}
+            <KeyRound className="h-5 w-5 translate-x-[1.5px] -translate-y-[0.5px]" style={{ color: GREEN }} />
           </span>
         </div>
         )}
