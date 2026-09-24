@@ -52,3 +52,35 @@ export function altLangs(path: string, exclude: readonly string[] = []): Record<
   out["x-default"] = `${AE_URL}${path}`;
   return out;
 }
+
+const NON_EN_LOCALES = ["ru", "ar", "zh", "vi", "he", "fr"] as const;
+
+/**
+ * Canonical + hreflang for a document that isn't translated into every
+ * locale — a project, article or community where `translations[locale]`
+ * doesn't exist or is empty. Untranslated locales get the ENGLISH body under
+ * a `/xx/...` URL, which is a near-duplicate rather than a distinct page, so
+ * that locale canonicalises to English and is dropped from hreflang entirely.
+ *
+ * Deliberately NOT combined with `robots: {index: false}` — noindex plus a
+ * canonical pointing elsewhere is a contradictory pair of signals (Google's
+ * own guidance is to pick one), and the goal here is consolidation, not
+ * removal: the untranslated page still resolves and is still linkable, it
+ * just stops competing with the English URL for the same query.
+ *
+ * `translatedLocales` is a whitelist of which non-English locales genuinely
+ * have this document's content — compute it with `translatedLocalesOf()` from
+ * `@/lib/translation-coverage`, not from `Object.keys(doc.translations)`,
+ * since a translations map can carry a locale key with only a translated
+ * title and an empty body.
+ */
+export function localizedSeo(
+  locale: string,
+  path: string,
+  translatedLocales: readonly string[],
+): { url: string; languages: Record<string, string> } {
+  const indexableHere = locale === "en" || translatedLocales.includes(locale);
+  const url = indexableHere ? canonical(locale, path) : canonical("en", path);
+  const exclude = NON_EN_LOCALES.filter((l) => !translatedLocales.includes(l));
+  return { url, languages: altLangs(path, exclude) };
+}

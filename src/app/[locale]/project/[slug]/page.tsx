@@ -3,10 +3,11 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { pickRouteMessages } from "@/i18n/client-namespaces";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
-import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { localizedSeo, OG_LOCALE } from "@/lib/site";
 import { projectUrl } from "@/lib/routes";
 import { getProject, getRelatedProjects } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
+import { translatedLocalesOf } from "@/lib/translation-coverage";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
 import { sanitizeDescriptions } from "@/lib/sanitize";
@@ -99,21 +100,26 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   // path is now /dubai-projects/<slug>, so it 404s) or outdated .ae slugs â
   // so honoring the stored value risks canonicalising to a non-existent URL.
   const path = projectUrl(slug);
-  const canonicalUrl = makeCanonical(locale, path);
+  // `project` is the post-applyTranslation merge, but the merge preserves the
+  // raw `translations` map (only the per-field overrides get spread in), so
+  // this still reflects which locales actually have body copy — not just
+  // which locale the current request is in.
+  const translatedLocales = translatedLocalesOf(project, ["fullDescription", "shortOverview"]);
+  const { url: canonicalUrl, languages } = localizedSeo(locale, path, translatedLocales);
 
   return {
     title: sanitizeTitle(seo.metaTitle || titleFallback),
     description: seo.metaDescription || descFallback,
     alternates: {
       canonical: canonicalUrl,
-      languages: altLangs(path),
+      languages,
     },
     openGraph: {
       title: sanitizeTitle(seo.ogTitle || seo.metaTitle || titleFallback),
       description: seo.ogDescription || seo.metaDescription || descFallback,
       // opengraph-image.tsx serves the dynamic branded OG image (price/completion/photo overlay).
       type: "website",
-      url: makeCanonical(locale, path),
+      url: canonicalUrl,
       locale: OG_LOCALE[locale] ?? "en_AE",
     },
     twitter: {
@@ -142,11 +148,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
   const ytId = project.videoUrl ? youtubeId(project.videoUrl) : null;
   const vmId = project.videoUrl ? vimeoId(project.videoUrl) : null;
+  // Matches generateMetadata's canonical: an untranslated locale's JSON-LD
+  // should point at the English URL too, not assert this /xx/ URL as "the" page.
+  const jsonLdUrl = localizedSeo(
+    locale,
+    projectUrl(slug),
+    translatedLocalesOf(project, ["fullDescription", "shortOverview"]),
+  ).url;
   const realEstate: Record<string, unknown> = {
     "@type": "RealEstateListing",
     name: project.name,
     description: project.shortOverview || project.overview || undefined,
-    url: makeCanonical(locale, projectUrl(slug)),
+    url: jsonLdUrl,
     ...(project.featuredImage ? { image: [project.featuredImage] } : {}),
     ...(project.startingPrice ? {
       offers: {
