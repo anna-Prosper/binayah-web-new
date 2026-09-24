@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { serverApiUrl, serverFetch } from "@/lib/api";
-import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { localizedSeo, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import ProjectArticleDetailClient from "@/app/_clients/construction-updates/[slug]/ConstructionUpdateDetailClient";
 import { articleBodyText } from "@/lib/sanitize";
@@ -43,17 +43,23 @@ export async function generateMetadata({ params }: Props) {
   const { slug, locale } = await params;
   const article = await fetchArticle(slug, locale);
   if (!article) return { title: "Not Found" };
+  // article.translatedLocales comes from the API (computed from the raw
+  // translations blob before it's stripped) — an untranslated locale
+  // canonicalises to English and is dropped from hreflang instead of
+  // asserting a duplicate as if it were a distinct page (see localizedSeo()).
+  const path = `/construction-updates/${slug}`;
+  const { url, languages } = localizedSeo(locale, path, article.translatedLocales ?? []);
   return {
     title: article.metaTitle || `${article.h1} | Binayah`,
     description: article.metaDescription || article.excerpt || "",
     alternates: {
-      canonical: canonical(locale, `/construction-updates/${slug}`),
-      languages: altLangs(`/construction-updates/${slug}`),
+      canonical: url,
+      languages,
     },
     openGraph: {
       title: article.metaTitle || article.h1,
       description: article.metaDescription || "",
-      url: canonical(locale, `/construction-updates/${slug}`),
+      url,
       type: "article",
       locale: OG_LOCALE[locale] ?? "en_AE",
       images: [{ url: article.heroImage?.url || DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
@@ -67,7 +73,7 @@ export default async function ProjectArticlePage({ params }: Props) {
   if (!article) return notFound();
 
   const lp = locale === "en" ? "" : `/${locale}`;
-  const url = canonical(locale, `/construction-updates/${slug}`);
+  const url = localizedSeo(locale, `/construction-updates/${slug}`, article.translatedLocales ?? []).url;
 
   // FAQ is rendered visibly on the page, so the schema matches the content.
   const faqItems: { question: string; answer: string }[] = Array.isArray(article.faq)

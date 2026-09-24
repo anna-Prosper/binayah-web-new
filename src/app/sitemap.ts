@@ -495,6 +495,34 @@ async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date 
   }
 }
 
+// Same shape as fetchSlugs, but also carries `langs` (0 of 351 project
+// articles have French — see routes/project-articles.ts) so
+// /construction-updates entries can use withPartialAlternates instead of
+// blanket 7-locale hreflang.
+async function fetchProjectArticlesForSitemap(): Promise<{ slug: string; lastmod?: Date; translatedLocales: string[] }[]> {
+  try {
+    const res = await serverFetch(serverApiUrl("/api/project-articles?limit=1000"), 10_000);
+    if (!res.ok) return [];
+    const data = await res.json();
+    const items: { slug?: string; updatedAt?: string; modifiedAt?: string; publishedAt?: string; langs?: string[] }[] =
+      Array.isArray(data) ? data : [];
+    return items
+      .filter((d) => d.slug)
+      .map((d) => {
+        const raw = d.updatedAt || d.modifiedAt || d.publishedAt;
+        const t = raw ? new Date(raw) : null;
+        return {
+          slug: d.slug as string,
+          lastmod: t && !isNaN(t.getTime()) ? t : undefined,
+          translatedLocales: (d.langs ?? []).filter((l) => l !== "en"),
+        };
+      });
+  } catch (err) {
+    console.error("[sitemap] project-articles query failed — /construction-updates URLs are omitted:", err);
+    return [];
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
@@ -566,7 +594,7 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
   let reports: Awaited<ReturnType<typeof fetchSlugs>>;
   let communities: Awaited<ReturnType<typeof fetchSlugs>>;
   let developers: Awaited<ReturnType<typeof fetchSlugs>>;
-  let projectGuides: Awaited<ReturnType<typeof fetchSlugs>>;
+  let projectGuides: Awaited<ReturnType<typeof fetchProjectArticlesForSitemap>>;
   let buildings: Awaited<ReturnType<typeof fetchSlugDatesFromDb>>;
   let offers: Awaited<ReturnType<typeof fetchOffersForSitemap>>;
   let guides: Awaited<ReturnType<typeof fetchGuidesForSitemap>>;
@@ -595,7 +623,7 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
       // Project guides (project_articles) — the ONLY data the /construction-updates/{slug}
       // route renders. The old /api/construction-updates source was removed: those
       // slugs (project slugs) have no page and returned ~980 soft-404s in the sitemap.
-      fetchSlugs("/api/project-articles?limit=1000"),
+      fetchProjectArticlesForSitemap(),
       // DLD building pages — only those with recorded sales (non-thin). Direct
       // DB read (no API 100-cap) like projects/listings.
       // Submit every INDEXABLE building page. This filter must mirror the
@@ -710,7 +738,7 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
     // redirect SOURCES: arjan/downtown/the-valley → "-dubai"; meydan-dubai and
     // the MBR mis-spellings → the enriched meydan / mohammed-bin-rashid-city.
     ...communities.filter((c) => !["arjan", "downtown", "the-valley", "meydan-dubai", "mohammad-bin-rashid-city", "mohd-bin-rashid-city", "jvc", "akoya-damac-hills", "impz-dubai", "port-rashid", "arabian-ranches-1"].includes(c.slug)).map((c) => withPartialAlternates(`/communities/${c.slug}`, communityTranslatedLocales.get(c.slug) ?? [], 0.7, "monthly", c.lastmod ?? now)),
-    ...projectGuides.map((g) => withAlternates(`/construction-updates/${g.slug}`, 0.6, "weekly", g.lastmod ?? now)),
+    ...projectGuides.map((g) => withPartialAlternates(`/construction-updates/${g.slug}`, g.translatedLocales, 0.6, "weekly", g.lastmod ?? now)),
     ...developers.map((d) => withAlternates(`/developers/${d.slug}`, 0.6, "monthly", d.lastmod ?? now)),
     // DLD building pages — lean entries (no hreflang) to respect the sitemap size cap.
     ...buildings.map((b) => plainEntry(`/building/${b.slug}`, 0.55, "monthly", b.lastmod ?? now)),
