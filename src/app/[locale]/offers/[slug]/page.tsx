@@ -383,7 +383,13 @@ export default async function OfferPage({ params }: Props) {
                     <div
                       className="text-[1.9rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.9rem]"
                       style={{
-                        background: `linear-gradient(140deg, ${GOLD} 0%, ${GOLD_DEEP} 58%, #96751D 100%)`,
+                        // A "0%" stat means nothing is due, not a reward, so it
+                        // reads as a neutral grey rather than the gold used for
+                        // every other figure on this band.
+                        background:
+                          h.value.trim() === "0%"
+                            ? "linear-gradient(140deg, #9CA3AF 0%, #6B7280 58%, #4B5563 100%)"
+                            : `linear-gradient(140deg, ${GOLD} 0%, ${GOLD_DEEP} 58%, #96751D 100%)`,
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent",
                         backgroundClip: "text",
