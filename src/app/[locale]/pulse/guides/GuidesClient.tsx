@@ -10,7 +10,8 @@ import { BookOpen, Clock, Eye, ArrowRight, Search, Activity, X, Calendar } from 
 // readers back into English. This variant prefixes hrefs with the active locale.
 import { Link } from "@/navigation";
 import Image from "next/image";
-import { guideDates, type PulseGuide } from "@/lib/pulse-guides";
+import { guideDates } from "@/lib/pulse-guides";
+import type { GuideCard as GuideCardData } from "@/lib/guides-data";
 
 // Curated filter order — most useful clusters first; only categories that
 // actually exist in the data are shown.
@@ -27,7 +28,7 @@ const CATEGORY_ORDER = [
 
 type Tx = ReturnType<typeof useTranslations<"pulseGuides">>;
 
-export default function GuidesClient({ guides: allGuides }: { guides: PulseGuide[] }) {
+export default function GuidesClient({ guides: allGuides }: { guides: GuideCardData[] }) {
   const t = useTranslations("pulseGuides");
   const locale = useLocale();
   const [active, setActive] = useState<string>("all");
@@ -176,7 +177,7 @@ function GuideCard({
   locale,
   t,
 }: {
-  guide: PulseGuide;
+  guide: GuideCardData;
   title: string;
   description: string;
   locale: string;

@@ -8,7 +8,7 @@ import GuidesClient from "./GuidesClient";
 import type { Metadata } from "next";
 import { canonical, altLangs } from "@/lib/site";
 import { getTranslations, getMessages } from "next-intl/server";
-import { loadGuides } from "@/lib/guides-data";
+import { loadGuideCards } from "@/lib/guides-data";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 86400;
@@ -43,7 +43,7 @@ export default async function GuidesPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
   const tCrumb = await getTranslations({ locale, namespace: "breadcrumbs" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
-  const guides = await loadGuides();
+  const guides = await loadGuideCards();
   return (
     <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["pulseEmirateNav", "pulseGuides"])}>
       <div className="min-h-screen bg-background">

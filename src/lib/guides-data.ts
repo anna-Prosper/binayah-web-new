@@ -49,6 +49,76 @@ export const loadGuides = cache(async (): Promise<PulseGuide[]> => {
   return [...PULSE_GUIDES].sort(newestFirst);
 });
 
+/**
+ * The subset of a guide the index grid renders. Everything a card shows, plus
+ * what guideTitle()/guideDescription() read to resolve copy — and nothing else.
+ */
+export type GuideCard = Pick<
+  PulseGuide,
+  | "slug"
+  | "category"
+  | "readTime"
+  | "views"
+  | "titleKey"
+  | "descriptionKey"
+  | "title"
+  | "description"
+  | "heroImage"
+  | "area"
+  | "createdAt"
+  | "order"
+> & { translations?: Record<string, { title?: string; description?: string }> };
+
+/**
+ * Every published guide, newest first, trimmed to card fields.
+ *
+ * /pulse/guides passes its result into a client component, so every byte is
+ * serialised into the RSC payload. Handing it the full documents made the live
+ * page a 6.8 MB HTML response — 4.4 MB of it guide JSON, of which `body`
+ * (1.1 MB) and `translations` (3.0 MB, every guide's full text in six other
+ * languages) are never rendered by a card. That is 94% of the payload, and it
+ * grows with every guide published.
+ *
+ * `translations` is kept, but only the title/description of each locale: the
+ * index resolves a card's copy from the document's own per-locale fields
+ * (see guideTitle in lib/guide-text.ts), so dropping the key entirely would
+ * silently fall back to English on all six translated locales.
+ *
+ * Detail pages still use loadGuide(), which returns the whole document.
+ */
+export const loadGuideCards = cache(async (): Promise<GuideCard[]> => {
+  const guides = await loadGuides();
+  return guides.map((g) => {
+    const translations = g.translations
+      ? Object.fromEntries(
+          Object.entries(g.translations)
+            .map(([loc, t]) => {
+              const trimmed: { title?: string; description?: string } = {};
+              if (t?.title) trimmed.title = t.title;
+              if (t?.description) trimmed.description = t.description;
+              return [loc, trimmed] as const;
+            })
+            .filter(([, t]) => t.title || t.description),
+        )
+      : undefined;
+    return {
+      slug: g.slug,
+      category: g.category,
+      readTime: g.readTime,
+      views: g.views,
+      titleKey: g.titleKey,
+      descriptionKey: g.descriptionKey,
+      title: g.title,
+      description: g.description,
+      heroImage: g.heroImage,
+      area: g.area,
+      createdAt: g.createdAt,
+      order: g.order,
+      ...(translations && Object.keys(translations).length ? { translations } : {}),
+    };
+  });
+});
+
 /** One published guide, or null when it genuinely doesn't exist. */
 export const loadGuide = cache(async (slug: string): Promise<PulseGuide | null> => {
   const r = await get<PulseGuide>(`/api/guides/${slug}`);
