@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import NewsletterStrip from "@/components/NewsletterStrip";
 import { CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { BedDouble, Bath, MapPin, Loader2, Maximize2, Building, Hash } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -154,7 +154,7 @@ function ListingsPageClientInner({
           }}
         />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
               {listingType === "Rent" ? t("rentalsLabel") : t("secondaryMarketLabel")}
             </p>
@@ -165,7 +165,7 @@ function ListingsPageClientInner({
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
               {t("subtitleWithCount", { subtitle, count: totalCount })}
             </p>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -178,12 +178,10 @@ function ListingsPageClientInner({
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {listings.map((l, i) => (
-                <motion.div
+                <Reveal
                   key={l._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: Math.min(i * 0.05, 0.3) }}
+                  y={30}
+                  delay={Math.min(i * 50, 300)}
                   className="h-full"
                 >
                   <Link
@@ -281,7 +279,7 @@ function ListingsPageClientInner({
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
           )}

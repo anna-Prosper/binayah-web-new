@@ -48,7 +48,7 @@ export default function Reveal({
   delay?: number;
   duration?: number;
   trigger?: "scroll" | "mount";
-  as?: "div" | "section" | "article" | "li" | "form";
+  as?: "div" | "section" | "article" | "li" | "form" | "span";
 } & Record<string, unknown>) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);

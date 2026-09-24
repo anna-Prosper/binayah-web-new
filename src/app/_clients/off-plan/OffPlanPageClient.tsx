@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CardActions } from "@/components/PropertyActions";
 import { useCurrency } from "@/context/CurrencyContext";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -114,13 +114,13 @@ function OffPlanPageClientInner({
       <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("title")}</p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{t("title")}</h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
               {t("subtitleWithCount", { count: totalCount.toLocaleString() })}
             </p>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -128,12 +128,10 @@ function OffPlanPageClientInner({
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((p, i) => (
-              <motion.div
+              <Reveal
                 key={p._id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: Math.min(i * 0.06, 0.3) }}
+                y={30}
+                delay={Math.min(i * 60, 300)}
                 className="h-full"
               >
                 <Link href={p.slug === "__fallback__" ? "#" : `/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
@@ -171,7 +169,7 @@ function OffPlanPageClientInner({
                     </div>
                   </div>
                 </Link>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
 

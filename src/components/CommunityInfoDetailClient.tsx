@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Building2, CheckCircle2, ChevronRight, MapPin, Building, Wallet } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -79,7 +79,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
             <span className="text-white">{name}</span>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             {/* Badge — the ONE signal that reframes this page as reference */}
             <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full mb-4 bg-accent text-accent-foreground">
               {t("badge")}
@@ -97,7 +97,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                 {location}
               </p>
             )}
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -110,12 +110,9 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left column — description */}
               {description && (
-                <motion.div
+                <Reveal
                   className="lg:col-span-2"
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0 * 0.08 }}
+                  y={24}
                 >
                   <div className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50 h-full">
                     {/* Eyebrow rule */}
@@ -130,17 +127,15 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                       {description}
                     </p>
                   </div>
-                </motion.div>
+                </Reveal>
               )}
 
               {/* Right sidebar — location, developer, price range */}
               {(location || developerName || priceRange) && (
-                <motion.div
+                <Reveal
                   className={description ? "lg:col-span-1" : "lg:col-span-3"}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 1 * 0.08 }}
+                  y={24}
+                  delay={80}
                 >
                   <div className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50 h-full space-y-6">
                     <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60" />
@@ -182,7 +177,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                       </div>
                     )}
                   </div>
-                </motion.div>
+                </Reveal>
               )}
             </div>
           </div>
@@ -195,12 +190,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
       {hasAmenities && (
         <section className="pb-12 sm:pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 2 * 0.08 }}
-            >
+            <Reveal y={24} delay={160}>
               <div className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50">
                 <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
                 <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-2">
@@ -211,21 +201,20 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                 </h2>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
                   {amenities!.map((amenity, i) => (
-                    <motion.span
+                    <Reveal
+                      as="span"
                       key={`${amenity}-${i}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.04 }}
+                      y={10}
+                      delay={i * 40}
                       className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-muted text-sm text-foreground"
                     >
                       <CheckCircle2 className="h-3.5 w-3.5 text-accent flex-shrink-0" />
                       {amenity}
-                    </motion.span>
+                    </Reveal>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
           </div>
         </section>
       )}

@@ -3,7 +3,7 @@
 import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Building2, Search, Loader2 } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -134,7 +134,7 @@ function DevelopersPageClientInner({
           }}
         />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
               {t("heroLabel")}
             </p>
@@ -145,7 +145,7 @@ function DevelopersPageClientInner({
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
               {t("heroSubtitle")}
             </p>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -172,12 +172,10 @@ function DevelopersPageClientInner({
           {/* Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
             {developers.map((dev, i) => (
-              <motion.div
+              <Reveal
                 key={dev._id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: Math.min(i * 0.04, 0.3) }}
+                y={30}
+                delay={Math.min(i * 40, 300)}
               >
                 <Link
                   href={`/developers/${dev.slug}`}
@@ -205,7 +203,7 @@ function DevelopersPageClientInner({
                     </p>
                   )}
                 </Link>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
 

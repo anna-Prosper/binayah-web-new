@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import { buildDeveloperSummary } from "@/lib/developerSummary";
 import { AedPrice } from "@/components/AedPrice";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import {
   Building2,
   MapPin,
@@ -119,9 +119,9 @@ export default function DeveloperDetailClient({
             <ArrowLeft className="h-4 w-4" /> {t("breadcrumbDevelopers")}
           </Link>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          <Reveal
+            trigger="mount"
+            y={20}
             className="flex flex-col sm:flex-row items-start gap-6"
           >
             <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center overflow-hidden border border-white/10 flex-shrink-0">
@@ -185,7 +185,7 @@ export default function DeveloperDetailClient({
                 )}
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -202,12 +202,10 @@ export default function DeveloperDetailClient({
           {projects.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((p, i) => (
-                <motion.div
+                <Reveal
                   key={p._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: Math.min(i * 0.06, 0.3) }}
+                  y={30}
+                  delay={Math.min(i * 60, 300)}
                 >
                   <Link
                     href={`/project/${p.slug}`}
@@ -261,7 +259,7 @@ export default function DeveloperDetailClient({
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
           ) : (

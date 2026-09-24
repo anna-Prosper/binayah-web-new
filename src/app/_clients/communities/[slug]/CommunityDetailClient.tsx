@@ -6,7 +6,7 @@ import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import Navbar from "@/components/Navbar";
 import { AedPrice } from "@/components/AedPrice";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { ArrowLeft, Building, CalendarDays, ChevronRight, MapPin } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -63,10 +63,10 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white">{communityName}</span>
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">{communityName}</h1>
             {desc && <p className="text-white/70 max-w-2xl text-lg leading-relaxed">{getHeroExcerpt(desc)}</p>}
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -76,7 +76,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
           {projects && projects.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {projects.map((p, i) => (
-                <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
+                <Reveal key={p._id} y={30} delay={i * 80}>
                   <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || IMAGE_PLACEHOLDER} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -91,7 +91,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
           ) : (

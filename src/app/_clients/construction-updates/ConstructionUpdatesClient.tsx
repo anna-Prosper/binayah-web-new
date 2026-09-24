@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 // Locale-aware Link prefixes the active locale itself — hrefs stay bare.
 import { Link } from "@/navigation";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Calendar, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -50,11 +50,11 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
       <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{label.overline}</p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{label.h1}</h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">{label.sub}</p>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
@@ -66,7 +66,7 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
               {articles.map((a, i) => (
-                <motion.div key={a._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: Math.min(i * 0.06, 0.3) }} className="h-full">
+                <Reveal key={a._id} y={30} delay={Math.min(i * 60, 300)} className="h-full">
                   <Link href={`/construction-updates/${a.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                     <div className="relative overflow-hidden aspect-[16/10]">
                       <Image
@@ -89,7 +89,7 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
                       {a.excerpt && <p className="text-sm text-muted-foreground line-clamp-2">{a.excerpt}</p>}
                     </div>
                   </Link>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
           )}

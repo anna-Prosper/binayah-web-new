@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import {
   TrendingUp, TrendingDown, Newspaper, Building2,
   Share2, Copy, MessageCircle, Check, ExternalLink,
@@ -231,10 +231,8 @@ export default function TrendingClient({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12">
       {/* ── Hero ───────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+      <Reveal
+        trigger="mount" y={20} duration={400}
       >
         <div className="flex items-center gap-2 mb-3">
           <TrendingUp className="h-5 w-5 text-accent" />
@@ -244,14 +242,12 @@ export default function TrendingClient({
           {t("title")} <span className="font-light">{t("titleItalic")}</span>
         </h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>
-      </motion.div>
+      </Reveal>
 
       {/* ── Weekly stat strip ──────────────────────────────────── */}
       {latest ? (
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <Reveal
+          as="section" y={20}
         >
           <SectionHeader label={t("summaryLabel")} title={t("summaryTitle")} titleItalic={t("summaryItalic")} />
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -280,15 +276,12 @@ export default function TrendingClient({
           <p className="text-xs text-muted-foreground mt-3">
             {t("summaryPeriod", { period: latest.label })}
           </p>
-        </motion.section>
+        </Reveal>
       ) : null}
 
       {/* ── Biggest Movers ─────────────────────────────────────── */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.05 }}
+      <Reveal
+        as="section" y={20} delay={50}
       >
         <SectionHeader label={t("moversLabel")} title={t("moversTitle")} titleItalic={t("moversItalic")} />
 
@@ -339,14 +332,11 @@ export default function TrendingClient({
             <p className="text-[10px] text-muted-foreground mt-3">{t("moversNote")}</p>
           </>
         )}
-      </motion.section>
+      </Reveal>
 
       {/* ── New Launches ─────────────────────────────────────────── */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.08 }}
+      <Reveal
+        as="section" y={20} delay={80}
       >
         <SectionHeader label={t("launchesLabel")} title={t("launchesTitle")} titleItalic={t("launchesItalic")} />
 
@@ -362,15 +352,12 @@ export default function TrendingClient({
             ))}
           </div>
         )}
-      </motion.section>
+      </Reveal>
 
       {/* ── Yield Champions ───────────────────────────────────────── */}
       {yieldChampions.length > 0 && (
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.09 }}
+        <Reveal
+          as="section" y={20} delay={90}
         >
           <SectionHeader label={t("yieldLabel")} title={t("yieldTitle")} titleItalic={t("yieldItalic")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -390,16 +377,13 @@ export default function TrendingClient({
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
       )}
 
       {/* ── Best Value Areas ──────────────────────────────────────── */}
       {bestValue.length > 0 && (
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
+        <Reveal
+          as="section" y={20} delay={100}
         >
           <SectionHeader label={t("investmentLabel")} title={t("bestValueTitle")} titleItalic={t("bestValueItalic")} />
           <div className="bg-card border border-border/50 rounded-2xl overflow-hidden">
@@ -430,16 +414,13 @@ export default function TrendingClient({
               </tbody>
             </table>
           </div>
-        </motion.section>
+        </Reveal>
       )}
 
       {/* ── DLD Activity Leaders ──────────────────────────────────── */}
       {activityLeaders.length > 0 && (
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.11 }}
+        <Reveal
+          as="section" y={20} delay={110}
         >
           <SectionHeader label={t("dldLabel")} title={t("txTitle")} titleItalic={t("txItalic")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -460,16 +441,13 @@ export default function TrendingClient({
             ))}
           </div>
           <p className="text-[10px] text-muted-foreground mt-2">{t("dldSource")}</p>
-        </motion.section>
+        </Reveal>
       )}
 
       {/* ── Off-Plan Hotspots ─────────────────────────────────────── */}
       {offPlanHotspots.length > 0 && (
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.12 }}
+        <Reveal
+          as="section" y={20} delay={120}
         >
           <SectionHeader label={t("devLabel")} title={t("offPlanTitle")} titleItalic={t("hotspotItalic")} />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -484,16 +462,13 @@ export default function TrendingClient({
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
       )}
 
       {/* ── Featured Insight ─────────────────────────────────────── */}
       {featuredNews && (
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.13 }}
+        <Reveal
+          as="section" y={20} delay={130}
         >
           <SectionHeader label={t("insightLabel")} title={t("insightTitle")} titleItalic={t("insightItalic")} />
           <a
@@ -529,14 +504,12 @@ export default function TrendingClient({
               </div>
             </div>
           </a>
-        </motion.section>
+        </Reveal>
       )}
 
       {/* ── Share ────────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+      <Reveal
+        y={10}
         className="bg-card border border-border/50 rounded-2xl p-5"
       >
         <h3 className="font-bold text-sm text-foreground mb-3 flex items-center gap-2">
@@ -585,7 +558,7 @@ export default function TrendingClient({
             {t("savePdf")}
           </a>
         </div>
-      </motion.div>
+      </Reveal>
     </div>
   );
 }

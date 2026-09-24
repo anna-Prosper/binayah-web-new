@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import {
   Building2,
   BadgeCheck,
@@ -121,7 +121,7 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
           }}
         />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
               {t("heroLabel")}
             </p>
@@ -145,18 +145,14 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
                 {t("chipOffice")}
               </span>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
       {/* ── 1. Who Binayah is — the direct answer, first thing on the page ── */}
       <section className="py-20 sm:py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <Reveal y={20}>
             <div className="h-[2px] w-12 bg-accent mb-6" />
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
               {t("answerTitle")} <span className="font-light">{t("answerTitleItalic")}</span>
@@ -166,19 +162,14 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
               <p>{t("answerP2")}</p>
               <p>{t("answerP3")}</p>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
       {/* ── 2. Company facts / credentials ───────────────────────────────── */}
       <section className="py-20 sm:py-24 bg-card border-y border-border/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
+          <Reveal y={20} className="mb-10">
             <p className="text-accent font-semibold tracking-[0.3em] uppercase text-[11px] mb-3">
               {t("factsLabel")}
             </p>
@@ -186,7 +177,7 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
               {t("factsTitle")} <span className="font-light">{t("factsTitleItalic")}</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl leading-relaxed">{t("factsSubtitle")}</p>
-          </motion.div>
+          </Reveal>
 
           <dl className="grid sm:grid-cols-2 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border/60">
             {facts.map((f) => (
@@ -221,28 +212,21 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
       {/* ── 3. Track record ──────────────────────────────────────────────── */}
       <section className="py-20 sm:py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
+          <Reveal y={20} className="mb-10">
             <p className="text-accent font-semibold tracking-[0.3em] uppercase text-[11px] mb-3">
               {t("trackLabel")}
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
               {t("trackTitle")} <span className="font-light">{t("trackTitleItalic")}</span>
             </h2>
-          </motion.div>
+          </Reveal>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {stats.map((s, i) => (
-              <motion.div
+              <Reveal
                 key={s.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
+                y={20}
+                delay={i * 80}
                 className="bg-card border border-border/50 rounded-2xl p-5 sm:p-6"
               >
                 <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
@@ -251,17 +235,12 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
                 <p className="text-2xl sm:text-3xl font-bold text-foreground">{s.value}</p>
                 <p className="text-sm text-foreground/80 mt-1 font-medium">{s.label}</p>
                 <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{s.note}</p>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
 
           <div className="grid md:grid-cols-2 gap-5 mt-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-card border border-border/50 rounded-2xl p-6"
-            >
+            <Reveal y={20} className="bg-card border border-border/50 rounded-2xl p-6">
               <h3 className="font-bold text-lg text-foreground mb-3">{t("devTitle")}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">{t("devBody")}</p>
               <ul className="flex flex-wrap gap-2">
@@ -274,19 +253,13 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </Reveal>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.08 }}
-              className="bg-card border border-border/50 rounded-2xl p-6"
-            >
+            <Reveal y={20} delay={80} className="bg-card border border-border/50 rounded-2xl p-6">
               <h3 className="font-bold text-lg text-foreground mb-3">{t("scopeTitle")}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{t("scopeBody")}</p>
               <p className="text-sm text-muted-foreground leading-relaxed mt-3">{t("scopeBody2")}</p>
-            </motion.div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -295,11 +268,7 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
       <section className="py-20 sm:py-24 bg-card border-y border-border/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
+            <Reveal x={-30}>
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                 <NextImage
                   src="/assets/team.webp"
@@ -309,13 +278,9 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
                   className="object-cover object-top"
                 />
               </div>
-            </motion.div>
+            </Reveal>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
+            <Reveal x={30}>
               <p className="text-accent font-semibold tracking-[0.3em] uppercase text-[11px] mb-3">
                 {t("teamLabel")}
               </p>
@@ -336,7 +301,7 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
                 {t("teamCta")}
                 <ArrowRight className="h-4 w-4 rtl:rotate-180" />
               </Link>
-            </motion.div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -344,28 +309,21 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
       {/* ── 5. Services ──────────────────────────────────────────────────── */}
       <section className="py-20 sm:py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
+          <Reveal y={20} className="mb-10">
             <p className="text-accent font-semibold tracking-[0.3em] uppercase text-[11px] mb-3">
               {t("servicesLabel")}
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
               {t("servicesTitle")} <span className="font-light">{t("servicesTitleItalic")}</span>
             </h2>
-          </motion.div>
+          </Reveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {services.map((s, i) => (
-              <motion.div
+              <Reveal
                 key={s.href}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
+                y={20}
+                delay={i * 50}
               >
                 <Link
                   href={s.href}
@@ -378,7 +336,7 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
                 </Link>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -387,12 +345,7 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
       {/* ── 6. Contact / NAP ─────────────────────────────────────────────── */}
       <section className="py-20 sm:py-24 bg-card border-t border-border/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
+          <Reveal y={20} className="mb-10">
             <p className="text-accent font-semibold tracking-[0.3em] uppercase text-[11px] mb-3">
               {t("contactLabel")}
             </p>
@@ -400,7 +353,7 @@ export default function AboutPage({ agentCount, supportCount }: Props) {
               {t("contactTitle")} <span className="font-light">{t("contactTitleItalic")}</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl leading-relaxed">{t("contactSubtitle")}</p>
-          </motion.div>
+          </Reveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             <div className="bg-background border border-border/50 rounded-2xl p-6">

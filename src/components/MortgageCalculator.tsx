@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { Calculator, TrendingUp, Banknote, Calendar } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -53,7 +53,7 @@ export default function MortgageCalculator({ initialPrice, embedded, hideHeading
 
   if (embedded) {
     return (
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-10">
+      <Reveal trigger="mount" y={20} delay={200} className="mb-10">
         <div className="flex items-center gap-3 mb-5">
           <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
             <Calculator className="h-4 w-4 text-accent" />
@@ -129,7 +129,7 @@ export default function MortgageCalculator({ initialPrice, embedded, hideHeading
             <p className="text-[10px] text-muted-foreground/60 leading-relaxed">{t("disclaimer")}</p>
           </div>
         </div>
-      </motion.div>
+      </Reveal>
     );
   }
 
@@ -252,10 +252,8 @@ export default function MortgageCalculator({ initialPrice, embedded, hideHeading
 
           {/* Results */}
           <div className="space-y-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <Reveal
+              y={20}
               className="rounded-2xl p-6 sm:p-8 text-white"
               style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
             >
@@ -266,7 +264,7 @@ export default function MortgageCalculator({ initialPrice, embedded, hideHeading
                 AED {formatNumber(result.monthlyPayment)}
               </p>
               <p className="text-white/50 text-xs mt-1">{t("perMonth")}</p>
-            </motion.div>
+            </Reveal>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-card border border-border/50 rounded-xl p-5">

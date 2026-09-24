@@ -8,7 +8,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 // readers back into English. This variant prefixes hrefs with the active locale.
 import { Link } from "@/navigation";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -55,7 +55,7 @@ export default function CommunitiesPageClient({
           }}
         />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Reveal trigger="mount" y={20}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
               {t("heroLabel")}
             </p>
@@ -66,15 +66,15 @@ export default function CommunitiesPageClient({
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
               {t("heroSubtitle")}
             </p>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {communities.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <Reveal
+              trigger="mount"
+              y={20}
               className="flex flex-col items-center justify-center py-24 text-center bg-card rounded-2xl border border-border/50"
             >
               <MapPin className="h-12 w-12 text-muted-foreground/30 mb-4" />
@@ -82,16 +82,14 @@ export default function CommunitiesPageClient({
                 {t("emptyTitle")}
               </h3>
               <p className="text-muted-foreground max-w-sm">{t("emptyBody")}</p>
-            </motion.div>
+            </Reveal>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {communities.map((c, i) => (
-                <motion.div
+                <Reveal
                   key={c.slug}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.04 }}
+                  y={30}
+                  delay={i * 40}
                   className="h-full"
                 >
                   <Link
@@ -129,7 +127,7 @@ export default function CommunitiesPageClient({
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
           )}
