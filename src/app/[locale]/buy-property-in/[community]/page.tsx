@@ -13,7 +13,23 @@ import { getNonce } from "@/lib/nonce";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
-export const revalidate = 1800;
+// 413 prerendered pages (59 communities x 7 locales) — and the same again on
+// the rent side, making these two routes the largest bucket in the prerender
+// manifest. On a 30-minute timer they alone accounted for ~39k ISR writes/day
+// at full coverage. What they render is DLD market stats (recomputed daily) and
+// the first batch of listings; listing inventory turns over on a daily cadence,
+// not a half-hourly one. An urgent change can be published immediately via
+// POST /api/revalidate, which carries this route pattern.
+//
+// NOTE: the EFFECTIVE window is 3600, not 21600. A route's revalidate is the
+// MINIMUM of this export and every fetch() revalidate reached during render,
+// and getCommunityStats / getDldBuildings / getRelatedProjects all go through
+// serverFetch's 3600 default. Those helpers are shared with many other routes,
+// so they are deliberately left alone. Raising this export alone is still a 6x
+// cut (1800 -> 3600); to actually reach 6h, those helpers must be given a
+// longer revalidate first — verify against .next/prerender-manifest.json, since
+// the cap is silent.
+export const revalidate = 21600;
 
 export function generateStaticParams() {
   const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
@@ -125,8 +141,8 @@ export default async function BuyInCommunityPage({
     const namesToTry = [apiCommunity, ...(c.synonyms ?? []).filter(s => s !== apiCommunity)];
     for (const name of namesToTry) {
       const [listingsRes, countRes] = await Promise.all([
-        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`)),
-        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&countOnly=1`)),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`), 8000, undefined, 21600),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&countOnly=1`), 8000, undefined, 21600),
       ]);
       const count = countRes.ok ? ((await countRes.json()).total ?? 0) : 0;
       if (count > 0) {

@@ -13,7 +13,10 @@ import { getNonce } from "@/lib/nonce";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
-export const revalidate = 1800;
+// See the matching comment on buy-property-in/[community]: 413 prerendered
+// pages here too, same 30-minute timer, same daily-cadence data underneath —
+// including the note that shared data helpers cap the EFFECTIVE window at 3600.
+export const revalidate = 21600;
 
 export function generateStaticParams() {
   const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
@@ -118,8 +121,8 @@ export default async function RentInCommunityPage({
     const namesToTry = [apiCommunity, ...(c.synonyms ?? []).filter(s => s !== apiCommunity)];
     for (const name of namesToTry) {
       const [listingsRes, countRes] = await Promise.all([
-        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`)),
-        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&countOnly=1`)),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`), 8000, undefined, 21600),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&countOnly=1`), 8000, undefined, 21600),
       ]);
       const count = countRes.ok ? ((await countRes.json()).total ?? 0) : 0;
       if (count > 0) {

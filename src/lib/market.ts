@@ -26,7 +26,15 @@ export interface MarketStatsResponse {
   figuresUpdatedAt?: string;
 }
 
-export const getMarketStats = cache(async (): Promise<MarketStatsResponse | null> => {
+export const getMarketStats = cache(async (
+  // A page's effective ISR window is the MINIMUM of its own `revalidate` and
+  // every fetch revalidate reached during its render, so this 1-hour default
+  // silently caps any caller that asks for longer. Callers whose own content is
+  // slower-moving than the market snapshot (news/[slug]: a published article is
+  // immutable, and this feeds a cosmetic sidebar) pass a longer window. Default
+  // unchanged at 3600 so every existing caller behaves exactly as before.
+  revalidate: number = 3600,
+): Promise<MarketStatsResponse | null> => {
   try {
     // Cross-request cache: /api/market-stats is a heavy, site-wide, slow-moving
     // endpoint. serverFetch() is uncached (Next defaults to no-store), so every
@@ -35,7 +43,7 @@ export const getMarketStats = cache(async (): Promise<MarketStatsResponse | null
     // dedupes within a single render; next.revalidate caches across requests.)
     const res = await fetch(serverApiUrl("/api/market-stats"), {
       signal: AbortSignal.timeout(10_000),
-      next: { revalidate: 3600 },
+      next: { revalidate },
     });
     if (!res.ok) return null;
     return (await res.json()) as MarketStatsResponse;

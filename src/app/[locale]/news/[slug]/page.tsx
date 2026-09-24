@@ -13,7 +13,23 @@ import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { isIndexableNewsArticle } from "@/lib/news-topicality";
 import { newsAuthorOrDefault } from "@/lib/news-author";
 
-export const revalidate = 3600;
+// A scraped article's body is immutable once published — only the "related"
+// rail and the market-stats sidebar drift, and both are cosmetic. At 1,029
+// articles x 7 locales an hourly timer is the largest single source of ISR
+// writes on the site (~25k/day at full coverage) for content that does not
+// change. Safe to lengthen because an edit or a retraction can be published
+// immediately via POST /api/revalidate, which now carries this route pattern
+// in DEFAULT_TARGETS.
+//
+// NOTE: the EFFECTIVE window is still 3600, so this export has NOT yet reduced
+// writes. getMarketStats is passed a matching 7d window, but getNewsArticle and
+// getRelatedNews go through fetchJsonOr404 -> serverFetch's 3600 default, and a
+// route's window is the MINIMUM across every fetch in its render. Those helpers
+// are shared with getProject and most other detail pages, so they are left
+// alone here rather than widened blind. Finishing this means giving the news
+// helpers their own revalidate, then confirming initialRevalidateSeconds in
+// .next/prerender-manifest.json — the export alone proves nothing.
+export const revalidate = 604800;
 // Pre-render the most recent articles (the hot pages) at build so they never hit
 // a cold on-demand render; the long tail still renders on-demand and is cached
 // (dynamicParams defaults to true).
@@ -72,7 +88,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   // depend on the article, so it shouldn't be on the critical path after it.
   const [article, marketStats] = await Promise.all([
     getNewsArticle(slug, locale),
-    getMarketStats(), // cross-request cached (1h) — no longer a live call per render
+    getMarketStats(604800), // cosmetic sidebar; must not cap this page's 7d window
   ]);
   // A slug may exist in one locale but not another (e.g. no Arabic translation) →
   // getNewsArticle returns null. Bail to 404 before dereferencing it below; without

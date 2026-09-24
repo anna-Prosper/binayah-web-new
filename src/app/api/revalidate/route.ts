@@ -49,6 +49,19 @@ const DEFAULT_TARGETS: { path: string; type?: "page" | "layout" }[] = [
   { path: projectRoutePattern("payment-plan"), type: "page" },
   { path: projectRoutePattern("location"), type: "page" },
   { path: "/[locale]/property/[slug]", type: "page" },
+  // News articles. Same reasoning as projects above: a scraped article's body
+  // is immutable once published, and 1,029 articles x 7 locales on an hourly
+  // timer is the single largest remaining source of ISR writes. The page now
+  // exports a 7-day window (effective window still 3600 — see the note there),
+  // which is only safe to pursue because an edit or a retraction can be
+  // published immediately from here.
+  { path: "/[locale]/news/[slug]", type: "page" },
+  // Community buy/rent landing pages. Raised from 30 minutes (826 prerendered
+  // pages across the two routes — previously the largest bucket in the
+  // prerender manifest, now 3600). Listed here so a listing correction on a
+  // community page can still be published without waiting out the window.
+  { path: "/[locale]/buy-property-in/[community]", type: "page" },
+  { path: "/[locale]/rent-property-in/[community]", type: "page" },
   // The sitemap reads news, offers and projects straight from the API and the
   // DB, so its contents drift the moment any of those change — but it was not
   // in this list, so the no-body form never refreshed it. After the news feed

@@ -51,10 +51,20 @@ export async function serverFetch(
   // Next 15 defaults fetch() to `no-store`, which opts the ENTIRE route into
   // dynamic rendering (private, no-store) — so ISR-eligible detail pages
   // (property/project/community/building) were never edge-cached. Tagging the
-  // fetch with a revalidate makes it cacheable so those routes become ISR. The
-  // route's own `export const revalidate` still governs the HTML cache window;
+  // fetch with a revalidate makes it cacheable so those routes become ISR.
   // force-dynamic pages override this back to no-store automatically. Pass
   // `false` for genuinely per-request data (auth, admin, live streams).
+  //
+  // THIS DEFAULT IS A CEILING, NOT JUST A DEFAULT. A route's effective ISR
+  // window is the MINIMUM of its `export const revalidate` and every fetch
+  // revalidate reached during its render. So a page that exports 86400 but
+  // calls any helper routed through here is silently pinned to 3600 — no
+  // warning, no error, and the page looks correctly configured in source.
+  // This is why news/[slug] and buy|rent-property-in/[community] export longer
+  // windows than they actually get. To genuinely lengthen one, give the helpers
+  // it calls a longer revalidate too, then CONFIRM the result in
+  // .next/prerender-manifest.json (initialRevalidateSeconds) after a build —
+  // the source export alone proves nothing.
   revalidate: number | false = 3600
 ): Promise<Response> {
   // Identify server-side ISR/SSR fetches to the API with the shared key so the
