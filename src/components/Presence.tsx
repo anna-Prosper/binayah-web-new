@@ -69,11 +69,17 @@ export default function Presence({
       // Two frames: one to commit the hidden state, one to transition from it.
       // A single rAF can be coalesced with the mount paint, which skips the
       // animation entirely.
-      const a = requestAnimationFrame(() => {
-        const b = requestAnimationFrame(() => setVisible(true));
-        return b;
+      //
+      // Both handles are tracked so neither frame leaks: cancelling only the
+      // outer one would leave the inner frame scheduled after unmount.
+      let inner = 0;
+      const outer = requestAnimationFrame(() => {
+        inner = requestAnimationFrame(() => setVisible(true));
       });
-      return () => cancelAnimationFrame(a);
+      return () => {
+        cancelAnimationFrame(outer);
+        if (inner) cancelAnimationFrame(inner);
+      };
     }
     setVisible(false);
     if (reduced.current) {
