@@ -1,5 +1,27 @@
 import sanitizeHtml from "sanitize-html";
 
+/**
+ * The range a Dubai off-plan starting price can actually occupy.
+ *
+ * Same reasoning as the PLAUSIBLE_* bands in lib/deal-check/constants.ts: every
+ * calculation downstream can be correct while the input is garbage, and nothing
+ * objects. A figure outside this band is a parse artifact, not a cheap or an
+ * expensive unit.
+ *
+ * The absolute band is deliberately wide: below the cheapest studios that
+ * actually transact, above Dubai's genuine record penthouse sales. It only
+ * catches the grossest errors.
+ *
+ * The sharper signals are relative, and they are what actually caught the real
+ * case — reef-999-at-al-furjan-dubai's 156,000,000 sits inside any sane
+ * absolute band, but implies AED 345,133/sqft on a 452 sqft apartment (23x the
+ * PSF ceiling) and exceeds the project's own priceMax of 7,168,666.
+ */
+export const PLAUSIBLE_PROJECT_PRICE_MIN = 100_000;
+export const PLAUSIBLE_PROJECT_PRICE_MAX = 500_000_000;
+/** Shared with the deal-check tool's band; above this is not a sale PSF. */
+export const PLAUSIBLE_PROJECT_PSF_MAX = 15_000;
+
 // Migrated WordPress content (articles, project descriptions) still references
 // the old binayah.com site. binayah.ae must not mention or depend on it:
 //  - LINKS (href) are rewritten to binayah.ae (keep the path).
@@ -162,6 +184,34 @@ export function sanitizeDescriptions<T extends Record<string, unknown>>(obj: T):
   // AED 1,692,000 unit written as "from AED 1,690,000") into the HTML source.
   delete out.seoArticle;
   delete out.wpContent;
+
+  // A startingPrice outside the range a Dubai off-plan unit can occupy is a
+  // parse artifact, not a price. reef-999-at-al-furjan-dubai stores the
+  // malformed string "starting from AED 156,000,000,56M"; 156,000,000 was
+  // parsed out of it and the live page rendered "AED 156,000,000" for an
+  // Al Furjan apartment — roughly 100x the plausible ~1.56M.
+  //
+  // Suppressing beats rendering: the page already has a "Price on request"
+  // path for a missing price, and an obviously impossible figure costs more
+  // credibility than an absent one. The value also feeds the FAQ answers and
+  // the RealEstateListing JSON-LD, so guarding here — the one boundary every
+  // project route passes through — covers all of them at once.
+  const price = Number(out.startingPrice);
+  if (out.startingPrice != null && price !== 0) {
+    const size = Number(out.unitSizeMin);
+    const max = Number(out.priceMax);
+    const impossible =
+      !Number.isFinite(price) ||
+      price < PLAUSIBLE_PROJECT_PRICE_MIN ||
+      price > PLAUSIBLE_PROJECT_PRICE_MAX ||
+      // Implied PSF far outside what a Dubai sale can be. Only when the size is
+      // itself plausible — a bad unitSizeMin must not discard a good price.
+      (Number.isFinite(size) && size >= 200 && size <= 50_000 && price / size > PLAUSIBLE_PROJECT_PSF_MAX) ||
+      // A starting price above the project's own ceiling is self-contradictory.
+      (Number.isFinite(max) && max >= PLAUSIBLE_PROJECT_PRICE_MIN && price > max);
+    if (impossible) out.startingPrice = null;
+  }
+
   return out as T;
 }
 
