@@ -85,6 +85,11 @@ const nextConfig: NextConfig = {
       // Legal pages use full slugs — catch the short forms.
       { source: "/privacy", destination: "/privacy-policy", permanent: true },
       { source: "/terms", destination: "/terms-of-service", permanent: true },
+      // The Danube 20:70 offer was auto-generated with a dated "rebate" slug.
+      // The incentive is a waiver, and the other Danube offers carry no date,
+      // so the slug was renamed to match.
+      { source: "/offers/danube-properties-20-70-offer-10-rebate-26-27-sep-2026", destination: "/offers/danube-20-70-payment-plan-10-waiver", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/offers/danube-properties-20-70-offer-10-rebate-26-27-sep-2026", destination: "/:locale/offers/danube-20-70-payment-plan-10-waiver", permanent: true },
       // Palm Jebel Ali showcase moved to its own standalone site/repo/Vercel
       // project (anna-Prosper/palm-jebel-ali) — 301 the old in-site route.
       { source: "/palm-jebel-ali", destination: "https://palm-jebel-ali-prosper3.vercel.app", permanent: true },
