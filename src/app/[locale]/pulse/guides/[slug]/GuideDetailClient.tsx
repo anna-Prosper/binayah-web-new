@@ -1,5 +1,5 @@
 "use client";
-import { guideTitle, guideDescription } from "@/lib/guide-text";
+import { guideTitle, guideDescription, guideCategoryLabel } from "@/lib/guide-text";
 
 import React from "react";
 import { useTranslations } from "next-intl";
@@ -393,7 +393,7 @@ export default function GuideDetailClient({
 
   const title = guideTitle(guide, t, locale);
   const description = guideDescription(guide, t, locale);
-  const category = t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<typeof t>[0]);
+  const category = guideCategoryLabel(guide.category, t);
   const toc = extracttoc(guide.body);
   const publishedLabel = published
     ? new Date(published).toLocaleDateString(locale === "en" ? "en-GB" : locale, { day: "numeric", month: "short", year: "numeric" })

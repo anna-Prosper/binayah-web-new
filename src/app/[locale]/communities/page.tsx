@@ -1,3 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import CommunitiesPageClient from "@/app/_clients/communities/CommunitiesPageClient";
 import { fetchPlaceCards } from "./fetchPlaces";
 import type { Metadata } from "next";
@@ -70,7 +73,13 @@ export default async function CommunitiesPage({ params }: Props) {
         url="/communities"
         items={items}
       />
-      <CommunitiesPageClient communities={merged} />
+      {/* CommunitiesPageClient picks its namespace at runtime
+          (`kind === "area" ? "areas" : "communities"`), so both have to be in
+          the slice — a ternary is invisible to the namespace audit's literal
+          scan, and the hero rendered "communities.heroTitle" live. */}
+      <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["communities", "areas"])}>
+        <CommunitiesPageClient communities={merged} />
+      </NextIntlClientProvider>
     </>
   );
 }

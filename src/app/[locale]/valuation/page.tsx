@@ -1,4 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- FAQ content */
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { pickRouteMessages } from "@/i18n/client-namespaces";
 import { ValuationPage } from "@/components/valuation";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
@@ -146,7 +149,13 @@ export default async function Page({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd).replace(/</g, "\\u003c") }}
       />
-      <ValuationPage />
+      {/* SharedValuationPage.jsx reads the "valuation" namespace. It is the
+          only .jsx component in the tree, so the namespace audit (which walks
+          .ts/.tsx only) never saw it and 28 raw keys — form labels included —
+          rendered on this lead-capture page. */}
+      <NextIntlClientProvider messages={pickRouteMessages(await getMessages(), ["valuation"])}>
+        <ValuationPage />
+      </NextIntlClientProvider>
     </>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import { guideTitle, guideDescription } from "@/lib/guide-text";
+import { guideTitle, guideDescription, guideCategoryLabel } from "@/lib/guide-text";
 
 import { useMemo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
@@ -51,7 +51,7 @@ export default function GuidesClient({ guides: allGuides }: { guides: PulseGuide
     for (const c of present) if (!ordered.includes(c)) ordered.push(c);
     return ordered.map((c) => ({
       key: c,
-      label: t(`category_${c.replace(/\s/g, "")}` as Parameters<Tx>[0]),
+      label: guideCategoryLabel(c, t),
       count: allGuides.filter((g) => g.category === c).length,
     }));
   }, [t, allGuides]);
@@ -186,7 +186,7 @@ function GuideCard({
   // Prefixing here produced /ru/ru/pulse/guides/... — 87 dead links per
   // non-English locale straight off the guides index.
   const href = `/pulse/guides/${guide.slug}`;
-  const category = t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<Tx>[0]);
+  const category = guideCategoryLabel(guide.category, t);
   const { published } = guideDates(guide.slug);
   const dateLabel = new Date(published).toLocaleDateString(locale === "en" ? "en-GB" : locale, {
     day: "numeric",

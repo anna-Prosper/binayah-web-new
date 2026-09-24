@@ -37,6 +37,25 @@ export function guideTitle(
   return fromSlug(guide.slug);
 }
 
+/**
+ * Resolve a guide category's display label.
+ *
+ * The key is derived from the category string itself
+ * (`"Market Analysis"` → `category_MarketAnalysis`), so a category that exists
+ * in Mongo but has no catalogue key renders the raw path — the live
+ * /pulse/guides index showed "pulseGuides.category_Buying" and
+ * "pulseGuides.category_Market" eight times this way. Two guards:
+ * `.trim()` first, because a stored `"Legal "` derives `category_Legal` and
+ * misses `category_Legal&Process`; and fall back to the category string, which
+ * is already human-readable English, rather than a key path.
+ */
+export function guideCategoryLabel(category: string, t: Translator): string {
+  const name = category.trim();
+  if (!name) return "";
+  const key = `category_${name.replace(/\s/g, "")}`;
+  return t.has(key) ? t(key) : name;
+}
+
 /** As guideTitle, for the description. Returns "" rather than a slug: an empty
  *  meta description is better than a mangled one. */
 export function guideDescription(
