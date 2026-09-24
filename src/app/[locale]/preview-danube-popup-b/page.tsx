@@ -27,7 +27,7 @@ export default function PreviewDanubePopupB() {
         </Link>
         .
       </p>
-      <DanubeOfferPopup forceOpen panelImage={PANEL_B} />
+      <DanubeOfferPopup forceOpen panelImage={PANEL_B} variant="b" />
     </main>
   );
 }

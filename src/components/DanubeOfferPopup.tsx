@@ -114,10 +114,16 @@ function writeCookie(value: keyof typeof MAXAGE) {
 export default function DanubeOfferPopup({
   forceOpen = false,
   panelImage = PANEL_IMAGE,
+  variant = "a",
 }: {
   forceOpen?: boolean;
   panelImage?: string;
+  /** Split-test variant. "b" pairs with a light/dusk panel image: stronger
+   *  scrim, solid badge and a lifted caption block, since white-on-pale-sky
+   *  is what makes that render hard to read. */
+  variant?: "a" | "b";
 }) {
+  const isB = variant === "b";
   const pathname = usePathname();
   const [visible, setVisible] = useState(forceOpen);
   const [inGeo, setInGeo] = useState(forceOpen);
@@ -274,20 +280,30 @@ export default function DanubeOfferPopup({
           <div
             className="pointer-events-none absolute inset-0"
             style={{
-              background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.42) 62%, rgba(0,0,0,0.78) 100%)",
+              background: isB
+                ? // The dusk render is pale top-to-bottom, so white text needs a
+                  // much heavier foot than the night render does.
+                  "linear-gradient(to bottom, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.06) 26%, rgba(0,0,0,0.58) 58%, rgba(0,0,0,0.88) 100%)"
+                : "linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.42) 62%, rgba(0,0,0,0.78) 100%)",
             }}
           />
           <span
             className="relative z-[1] self-start rounded-full px-2.5 py-[5px] text-[10px] font-bold uppercase tracking-[0.16em] text-white"
-            style={{ background: "rgba(14,124,123,0.32)", border: "1px solid rgba(255,255,255,0.42)" }}
+            style={
+              isB
+                ? { background: TEAL_DEEP, border: "1px solid rgba(255,255,255,0.28)" }
+                : { background: "rgba(14,124,123,0.32)", border: "1px solid rgba(255,255,255,0.42)" }
+            }
           >
             Danube Properties
           </span>
           {/* The deferral is the hook, so 70% leads and the booking figure
               plays support. "Nothing in between" is the line that makes the
               structure land — it reads as the offer, not as a footnote. */}
-          <div className="relative z-[1] mt-auto">
+          <div
+            className="relative z-[1] mt-auto"
+            style={isB ? { textShadow: "0 1px 12px rgba(0,0,0,0.55)" } : undefined}
+          >
             <div className="flex items-baseline gap-1.5 text-white">
               <span style={{ fontSize: 44, lineHeight: 1, fontWeight: 800, letterSpacing: "-0.02em" }}>
                 70%
@@ -301,9 +317,18 @@ export default function DanubeOfferPopup({
             </div>
             <div
               className="mt-1 text-[12px] font-bold uppercase leading-[1.5] tracking-[0.11em]"
-              style={{ color: "#7fd4d2" }}
+              // On the pale dusk render the mid teal disappears; white with a
+              // teal rule beside it stays legible without losing the accent.
+              style={{ color: isB ? "#ffffff" : "#7fd4d2" }}
             >
-              Nothing in between
+              {isB ? (
+                <span className="inline-flex items-center gap-2">
+                  <span className="inline-block h-[13px] w-[3px] rounded-sm" style={{ background: "#3fb8b6" }} />
+                  Nothing in between
+                </span>
+              ) : (
+                "Nothing in between"
+              )}
             </div>
           </div>
         </div>
@@ -347,41 +372,78 @@ export default function DanubeOfferPopup({
                 Pay <span style={{ color: TEAL_DEEP }}>70%</span> only when you get the keys
               </h2>
               <p className="mt-2 text-[13px] leading-[1.55]" style={{ color: MUTED }}>
-                10% now, 10% within 60 days, nothing during construction, and 70% due only on
-                handover.
+                {isB
+                  ? // The step list below spells out the schedule, so repeating
+                    // it here would just be read twice.
+                    "Book your unit with 20%, pay nothing while it is built, and settle the rest when you collect the keys."
+                  : "10% now, 10% within 60 days, nothing during construction, and 70% due only on handover."}
               </p>
               <p className="mt-1.5 text-[13px] font-bold leading-[1.55]" style={{ color: TEAL_DEEP }}>
                 Plus a 10% waiver!
               </p>
 
-              {/* the offer's own terms, matching the live offer page exactly */}
-              <div
-                className="mt-4 grid grid-cols-4 rounded-[3px] px-2 py-3"
-                style={{ background: CREAM, border: `1px solid ${LINE}` }}
-              >
-                {[
-                  ["To book", "20%"],
-                  ["Build", "0%"],
-                  ["Handover", "70%"],
-                  ["Waiver", "10%"],
-                ].map(([k, v], i) => (
-                  <div
-                    key={k}
-                    className={i > 0 ? "pl-1.5 pr-0.5" : "pr-1"}
-                    style={i > 0 ? { borderLeft: `1px solid ${LINE}` } : undefined}
-                  >
+              {/* the offer's own terms, matching the live offer page exactly.
+                  Variant B states them as a sequence of steps rather than a
+                  4-up grid: the grid's 8.5px labels are the least readable
+                  part of the pop-up, and the payment plan is inherently
+                  ordered, so a list carries the meaning the columns lose. */}
+              {isB ? (
+                <div
+                  className="mt-4 rounded-[4px] px-3.5 py-3"
+                  style={{ background: CREAM, border: `1px solid ${LINE}` }}
+                >
+                  {[
+                    ["10%", "on booking"],
+                    ["10%", "within 60 days"],
+                    ["0%", "during construction"],
+                    ["70%", "on handover"],
+                  ].map(([v, k], i) => (
                     <div
-                      className="text-[8.5px] font-bold uppercase leading-[1.3] tracking-[0.05em]"
-                      style={{ color: MUTED, minHeight: "22px" }}
+                      key={k}
+                      className={`flex items-baseline gap-2.5 ${i > 0 ? "mt-[7px] pt-[7px]" : ""}`}
+                      style={i > 0 ? { borderTop: `1px solid ${LINE}` } : undefined}
                     >
-                      {k}
+                      <span
+                        className="w-[38px] flex-none text-[15px] font-bold leading-none"
+                        style={{ color: i === 3 ? TEAL_DEEP : INK }}
+                      >
+                        {v}
+                      </span>
+                      <span className="text-[12.5px] leading-none" style={{ color: MUTED }}>
+                        {k}
+                      </span>
                     </div>
-                    <div className="mt-0.5 whitespace-nowrap text-[13px] font-bold leading-tight" style={{ color: INK }}>
-                      {v}
+                  ))}
+                </div>
+              ) : (
+                <div
+                  className="mt-4 grid grid-cols-4 rounded-[3px] px-2 py-3"
+                  style={{ background: CREAM, border: `1px solid ${LINE}` }}
+                >
+                  {[
+                    ["To book", "20%"],
+                    ["Build", "0%"],
+                    ["Handover", "70%"],
+                    ["Waiver", "10%"],
+                  ].map(([k, v], i) => (
+                    <div
+                      key={k}
+                      className={i > 0 ? "pl-1.5 pr-0.5" : "pr-1"}
+                      style={i > 0 ? { borderLeft: `1px solid ${LINE}` } : undefined}
+                    >
+                      <div
+                        className="text-[8.5px] font-bold uppercase leading-[1.3] tracking-[0.05em]"
+                        style={{ color: MUTED, minHeight: "22px" }}
+                      >
+                        {k}
+                      </div>
+                      <div className="mt-0.5 whitespace-nowrap text-[13px] font-bold leading-tight" style={{ color: INK }}>
+                        {v}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="mt-4">
                 {honeypotField}
