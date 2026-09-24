@@ -75,13 +75,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data?.developer) return { title: "Developer Not Found" };
   const { developer } = data;
   const name = developer.name as string;
-  // A developer page with no description and no projects is blank boilerplate.
-  // Return 404 so Google drops the URL rather than parking it as noindex.
+  // A developer page with no description and no projects is blank boilerplate
+  // and should 404. But notFound() HERE renders the not-found UI with a soft
+  // HTTP 200 and, because this early return skips the `alternates` block below,
+  // Next falls back to the ROOT layout's metadata — so 15 developer pages went
+  // live declaring <link rel="canonical" href="https://www.binayah.ae">, the
+  // homepage's own canonical, under the homepage's title and with no hreflang.
+  // Sixteen URLs all claiming to be the homepage is worse for the index than
+  // the thin page ever was.
+  //
+  // Same fix as project/[slug]: return minimal noindex metadata and let the
+  // page COMPONENT call notFound(), which sets a real 404 status.
   const hasContent = !!(
     (developer.description && String(developer.description).trim()) ||
     (Array.isArray(data.projects) && data.projects.length > 0)
   );
-  if (!hasContent) notFound();
+  if (!hasContent) {
+    return { title: `${name} | Binayah`, robots: { index: false, follow: false } };
+  }
   const m = DEV_META[locale] ?? DEV_META.en;
   return {
     title: m.title(name),
@@ -108,6 +119,15 @@ export default async function DeveloperDetailPage({ params }: Props) {
   const data = await getDeveloper(slug);
 
   if (!data || !data.developer) return notFound();
+
+  // Mirrors the emptiness test in generateMetadata above. Calling it here is
+  // what produces the real 404 status code; doing it there only produced a
+  // soft 200. Both must agree, or the metadata and the response disagree.
+  const hasContent = !!(
+    (data.developer.description && String(data.developer.description).trim()) ||
+    (Array.isArray(data.projects) && data.projects.length > 0)
+  );
+  if (!hasContent) return notFound();
 
   const { developer, projects } = data;
 

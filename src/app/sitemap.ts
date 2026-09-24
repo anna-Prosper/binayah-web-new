@@ -431,6 +431,48 @@ async function fetchIndexableNewsForSitemap(): Promise<{ slug: string; lastmod?:
   }
 }
 
+/**
+ * Developer slugs that actually have a page worth indexing.
+ *
+ * /developers/[slug] 404s when a developer has neither a description nor any
+ * projects, but the sitemap listed every slug regardless — so it pointed Google
+ * at 15 developers (27 URLs across locales) whose pages were blank. Those pages
+ * additionally fell back to the ROOT layout's metadata and declared the
+ * HOMEPAGE as their canonical, so the sitemap was actively feeding the index
+ * sixteen URLs all claiming to be the homepage.
+ *
+ * The gate mirrors the page's own `hasContent` test exactly. If the two ever
+ * disagree the sitemap starts advertising 404s again.
+ */
+async function fetchDeveloperSlugsForSitemap(): Promise<{ slug: string; lastmod?: Date }[]> {
+  try {
+    const res = await serverFetch(
+      serverApiUrl("/api/developers?limit=500&fields=slug,updatedAt,description,projectCount,totalProjects"),
+      10_000,
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    const items: {
+      slug?: string; updatedAt?: string; description?: string;
+      projectCount?: number; totalProjects?: number;
+    }[] = Array.isArray(data) ? data : [];
+    return items
+      .filter((d) => d.slug)
+      .filter((d) =>
+        !!(d.description && String(d.description).trim()) ||
+        (d.projectCount ?? 0) > 0 ||
+        (d.totalProjects ?? 0) > 0,
+      )
+      .map((d) => {
+        const t = d.updatedAt ? new Date(d.updatedAt) : null;
+        return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
+      });
+  } catch (err) {
+    console.error("[sitemap] developer query failed — /developers URLs are omitted:", err);
+    return [];
+  }
+}
+
 async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date }[]> {
   try {
     const res = await serverFetch(serverApiUrl(path), 10_000);
@@ -537,7 +579,7 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
       fetchIndexableNewsForSitemap(),
       fetchSlugs("/api/news?limit=1000&category=Weekly%20Report&fields=slug,updatedAt"),
       fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
-      fetchSlugs("/api/developers?limit=500&fields=slug,updatedAt"),
+      fetchDeveloperSlugsForSitemap(),
       // Project guides (project_articles) — the ONLY data the /construction-updates/{slug}
       // route renders. The old /api/construction-updates source was removed: those
       // slugs (project slugs) have no page and returned ~980 soft-404s in the sitemap.
