@@ -38,7 +38,7 @@ import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { ProjectSeoBlock } from "@/components/ProjectSeoBlock";
-import { BUY_COMMUNITIES } from "@/lib/buy-communities";
+import { resolveBuyCommunity } from "@/lib/buy-communities";
 import { LocationSection } from "@/components/LocationSection";
 import { parseNearbyFromDescription, resolveNearbyOrigin, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
@@ -434,9 +434,11 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
     : /villa/.test(interlinkPtype) ? "villas"
     : "";
   const interlinkTypeHref = interlinkTypeSlug ? `/off-plan/${interlinkTypeSlug}` : undefined;
-  const interlinkCommunity = BUY_COMMUNITIES.find(
-    (c) => c.name.toLowerCase() === String(project.community || "").toLowerCase()
-  );
+  // Matching on the curated `name` alone resolved only 47% of projects: the
+  // stored value is often "JVC", "Akoya Damac Hills" or a ", Dubai"-suffixed
+  // variant, and the other 53% rendered no community link at all. The resolver
+  // also tries apiName and synonyms, which the sitemap already relied on.
+  const interlinkCommunity = resolveBuyCommunity(String(project.community || ""));
   const interlinkCommunityHref = interlinkCommunity ? `/off-plan-in/${interlinkCommunity.slug}` : undefined;
 
   const leadEntity = { entityType: "project", entitySlug: project.slug, entityTitle: project.name };

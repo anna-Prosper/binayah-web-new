@@ -174,6 +174,8 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
   {
     slug: "jumeirah-village-circle",
     name: "Jumeirah Village Circle",
+    // Projects store the abbreviation far more often than the full name.
+    synonyms: ["JVC"],
     shortIntro: {
       en: "Among the strongest rental yields in Dubai. The yield-investor's first choice.",
       ru: "Одна из самых высоких доходностей аренды в Дубае. Первый выбор инвестора, ориентированного на доход.",
@@ -1091,6 +1093,78 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
     vibe: { en: "Super-tall mixed-use", fr: "Mixte super-tall", ru: "Супер-высокий смешанный", ar: "مختلط الاستخدام شاهق الارتفاع", zh: "超高层混合用途", vi: "Khu vực hỗn hợp siêu cao", he: "מחוז מעורב גבוה מאוד" },
   },
 ];
+
+/**
+ * Normalise a community string for comparison: case, punctuation and "&"/"and"
+ * differences are all noise in the values projects and listings actually store.
+ */
+export function normalizeCommunityName(s: string): string {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/**
+ * Resolve a stored community string to a curated community.
+ *
+ * Matching on `name` alone is what the data does NOT support: projects store
+ * "JVC", "Akoya Damac Hills" and "Mohammad Bin Rashid City" (a misspelling of
+ * the apiName), none of which is the curated `name`. Measured across a
+ * 120-project sample, an exact-name match resolved 47% of projects and the
+ * other 53% silently rendered no community link at all.
+ *
+ * Resolution order, widest last:
+ *   1. name / apiName / synonyms, normalised
+ *   2. the same with a trailing ", Dubai" or " Dubai" dropped — a very common
+ *      suffix on stored values ("Arjan Dubai", "Jumeirah Village Circle, Dubai")
+ *
+ * Deliberately NOT fuzzy beyond that: a wrong community link is worse than no
+ * link, because it sends the reader and the crawler somewhere untrue.
+ */
+export function resolveBuyCommunity(stored: string): BuyCommunity | undefined {
+  const raw = normalizeCommunityName(stored);
+  if (!raw) return undefined;
+
+  const index = communityNameIndex();
+  const direct = index.get(raw);
+  if (direct) return direct;
+
+  const withoutDubai = raw.replace(/\s*\bdubai\b\s*$/, "").trim();
+  if (withoutDubai && withoutDubai !== raw) {
+    const hit = index.get(withoutDubai);
+    if (hit) return hit;
+  }
+  return undefined;
+}
+
+/** name/apiName/synonyms → community, built once. */
+let NAME_INDEX: Map<string, BuyCommunity> | null = null;
+function communityNameIndex(): Map<string, BuyCommunity> {
+  if (NAME_INDEX) return NAME_INDEX;
+  const index = new Map<string, BuyCommunity>();
+  // Canonical names for EVERY community first, then apiNames, then the looser
+  // synonyms. Registering each community's variants together would let one
+  // community's synonym claim a key that is another's canonical name, and
+  // whichever came first in the array would win — a silently wrong link.
+  const tiers: ((c: BuyCommunity) => (string | undefined)[])[] = [
+    (c) => [c.name],
+    (c) => [c.apiName],
+    (c) => c.synonyms ?? [],
+  ];
+  for (const tier of tiers) {
+    for (const c of BUY_COMMUNITIES) {
+      for (const variant of tier(c)) {
+        if (!variant) continue;
+        const key = normalizeCommunityName(variant);
+        if (key && !index.has(key)) index.set(key, c);
+      }
+    }
+  }
+  NAME_INDEX = index;
+  return index;
+}
 
 export function findBuyCommunity(slug: string): BuyCommunity | undefined {
   return BUY_COMMUNITIES.find((c) => c.slug === slug);

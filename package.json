@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test:e2e": "playwright test",
-    "community-seo-audit": "tsx scripts/community-seo-audit.ts"
+    "community-seo-audit": "tsx scripts/community-seo-audit.ts",
+    "seo-benchmark": "node scripts/seo-benchmark.mjs",
+    "community-resolver-test": "tsx scripts/community-resolver-test.mts"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.2",
