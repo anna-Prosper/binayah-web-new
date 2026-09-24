@@ -42,7 +42,8 @@ async function openSitemapDb(): Promise<{ db: SitemapDb; close: () => Promise<vo
   try {
     await client.connect();
     return { db: client.db(), close: () => client.close() };
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] Mongo connect failed — every DB-backed group will be empty:", err);
     await client.close().catch(() => {});
     return { db: null, close: noop };
   }
@@ -67,7 +68,8 @@ async function fetchSlugDatesFromDb(
         const t = d.updatedAt ? new Date(d.updatedAt) : null;
         return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
       });
-  } catch {
+  } catch (err) {
+    console.error(`[sitemap] ${collection} slug query failed — those URLs are omitted:`, err);
     return [];
   }
 }
@@ -122,7 +124,8 @@ async function fetchProjectsForSitemap(db: SitemapDb): Promise<
           },
         };
       });
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] project query failed — /project URLs are omitted:", err);
     return [];
   }
 }
@@ -162,7 +165,8 @@ async function fetchDldMatrixCombos(): Promise<string[]> {
         return combos
           .filter((x) => (x.type === "apartments" || x.type === "villas") && typeof x.bedrooms === "number" && x.bedrooms >= 0 && x.bedrooms <= 7)
           .map((x) => `/${bedToken(x.bedrooms)}-${x.type}-for-sale-in-${c.slug}`);
-      } catch {
+      } catch (err) {
+        console.error(`[sitemap] DLD matrix failed for ${c.slug} — its combos are omitted:`, err);
         return [] as string[];
       }
     })
@@ -209,7 +213,8 @@ async function fetchMatrixCombos(db: SitemapDb): Promise<string[]> {
       urls.add(`/${bedToken}-${typeSlug}-for-${txn}-in-${slug}`);
     }
     return [...urls];
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] listing matrix failed — bedroom/type URLs are omitted:", err);
     return [];
   }
 }
@@ -249,7 +254,8 @@ async function fetchDevCommunityCombos(db: SitemapDb): Promise<string[]> {
       if (cslug && dslug) urls.add(`/${dslug}-projects-in-${cslug}`);
     }
     return [...urls];
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] developer×community query failed — those URLs are omitted:", err);
     return [];
   }
 }
@@ -288,7 +294,8 @@ async function fetchSuperlativeCombos(db: SitemapDb): Promise<string[]> {
       if (cs && ts) urls.add(`/cheapest-${ts}-in-${cs}`);
     }
     return [...urls];
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] superlative query failed — /cheapest-* URLs are omitted:", err);
     return [];
   }
 }
@@ -437,7 +444,8 @@ async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date 
         const t = raw ? new Date(raw) : null;
         return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
       });
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] building query failed — /building URLs are omitted:", err);
     return [];
   }
 }
@@ -462,7 +470,8 @@ async function fetchOffersForSitemap(db: SitemapDb): Promise<{ slug: string; dea
       deadline: d.deadline,
       lastmod: d.updatedAt instanceof Date ? d.updatedAt : undefined,
     }));
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] offers query failed — falling back to the bundled array:", err);
     return OFFERS.map((o) => ({ slug: o.slug, deadline: o.deadline }));
   }
 }
@@ -479,7 +488,8 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
       slug: d.slug,
       lastmod: d.updatedAt instanceof Date ? d.updatedAt : undefined,
     }));
-  } catch {
+  } catch (err) {
+    console.error("[sitemap] guides query failed — falling back to the bundled array:", err);
     return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
   }
 }
@@ -688,9 +698,25 @@ async function fetchGuidesForSitemap(db: SitemapDb): Promise<{ slug: string; las
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];
 
-  // On binayah.ru: only expose Russian URLs — other locales live on binayah.ae
-  if (IS_RU) {
-    return [...staticPages, ...dynamicPages];
+  // Every helper above degrades to [] on failure so a transient outage cannot
+  // fail the build. The cost is that a total Mongo outage produces a perfectly
+  // valid sitemap that is missing ~9,500 URLs and still serves HTTP 200 — a
+  // silent de-indexing that nothing would have reported. The per-group
+  // console.error calls name what vanished; this names the scale.
+  //
+  // Calibrated against both real states, not guessed: a healthy build is ~11,600
+  // URLs, and a build with Mongo unreachable is ~2,050 (the static + API-backed
+  // groups, which need no DB). The DB-backed groups are the ~9,500 in between.
+  // The floor has to sit ABOVE the failure mode to catch it and below healthy
+  // churn — 6,000 is roughly the midpoint, so losing even half the DB-backed
+  // URLs trips it while ordinary listing turnover never does.
+  const MIN_EXPECTED_URLS = 6_000;
+  const all = [...staticPages, ...dynamicPages];
+  if (all.length < MIN_EXPECTED_URLS) {
+    console.error(
+      `[sitemap] only ${all.length} URLs (expected >= ${MIN_EXPECTED_URLS}) — ` +
+        `a data source almost certainly failed; see the [sitemap] errors above`,
+    );
   }
-  return [...staticPages, ...dynamicPages];
+  return all;
 }
