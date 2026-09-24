@@ -1342,7 +1342,17 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                           {blocks.length > 0 &&
                             renderBlock(blocks[0], 0, !lead && blocks[0].type === "p")}
 
-                          {descExpanded && blocks.slice(1).map((b, i) => renderBlock(b, i + 1))}
+                          {/* Rendered into the DOM always, collapsed with CSS rather
+                              than unmounted. Gating on `descExpanded` (false on first
+                              render) meant only blocks[0] was ever server-rendered, so
+                              a measured 81% of the description — the richest unique
+                              copy on the core commercial template — never reached the
+                              served HTML, and the longer the description the more was
+                              hidden. `hidden` keeps it out of the a11y tree and off
+                              screen while leaving it in the markup. */}
+                          <div className="space-y-3" hidden={!descExpanded}>
+                            {blocks.slice(1).map((b, i) => renderBlock(b, i + 1))}
+                          </div>
 
                           {hasMore && (
                             <button
