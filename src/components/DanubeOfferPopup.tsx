@@ -109,8 +109,15 @@ function writeCookie(value: keyof typeof MAXAGE) {
     ` SameSite=Lax${domainAttr}${window.location.protocol === "https:" ? "; Secure" : ""}`;
 }
 
-/** `forceOpen` renders it immediately, bypassing cookie + timing + geo. Preview only. */
-export default function DanubeOfferPopup({ forceOpen = false }: { forceOpen?: boolean }) {
+/** `forceOpen` renders it immediately, bypassing cookie + timing + geo, and
+ *  `panelImage` swaps the left-hand visual. Both are preview-harness only. */
+export default function DanubeOfferPopup({
+  forceOpen = false,
+  panelImage = PANEL_IMAGE,
+}: {
+  forceOpen?: boolean;
+  panelImage?: string;
+}) {
   const pathname = usePathname();
   const [visible, setVisible] = useState(forceOpen);
   const [inGeo, setInGeo] = useState(forceOpen);
@@ -153,7 +160,7 @@ export default function DanubeOfferPopup({ forceOpen = false }: { forceOpen?: bo
     // Warm the panel image while the dwell timer runs — see SobhaOfferPopup
     // for why this needs to fire before the pop-up mounts.
     const warm = new Image();
-    warm.src = PANEL_IMAGE;
+    warm.src = panelImage;
 
     const timer = setTimeout(show, SHOW_AFTER_MS);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -161,7 +168,7 @@ export default function DanubeOfferPopup({ forceOpen = false }: { forceOpen?: bo
       clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [suppressed, inGeo, forceOpen]);
+  }, [suppressed, inGeo, forceOpen, panelImage]);
 
   useEffect(() => {
     if (!visible) return;
@@ -259,7 +266,7 @@ export default function DanubeOfferPopup({ forceOpen = false }: { forceOpen?: bo
           className="relative hidden flex-col justify-end overflow-hidden p-5 md:flex"
           style={{
             backgroundColor: "#123634",
-            backgroundImage: `url("${PANEL_IMAGE}")`,
+            backgroundImage: `url("${panelImage}")`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
