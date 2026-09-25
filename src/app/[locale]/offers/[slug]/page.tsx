@@ -549,7 +549,13 @@ export default async function OfferPage({ params }: Props) {
               </h2>
             </Reveal>
   
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {/* 2-up from the smallest breakpoint. offer.projects grew from ~5
+                to 16 as more Danube projects joined this offer, and the terms
+                line is now a short "Community · Handover Qx 20xx" (not the
+                original longer sentence this card was designed around) — a
+                full-width card per project made 16 of them an enormous
+                mobile scroll for very little content each. */}
+            <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
               {offer.projects.map((pr, i) => {
                 // Whole card is clickable → the project's primary page (falls back
                 // to the offer's enquiry form when the project has no link yet).
@@ -570,22 +576,22 @@ export default async function OfferPage({ params }: Props) {
                         />
                       </div>
                     )}
-                    <div className="p-5">
-                    <div className="flex items-start gap-2.5">
-                      <Building2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
+                    <div className="p-3 sm:p-5">
+                    <div className="flex items-start gap-2 sm:gap-2.5">
+                      <Building2 className="mt-0.5 h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" style={{ color: GOLD_DEEP }} />
                       <div className="min-w-0">
-                        <h3 className="text-[15px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary">{pr.name}</h3>
-                        <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{pr.terms}</p>
+                        <h3 className="text-[13px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary sm:text-[15px]">{pr.name}</h3>
+                        <p className="mt-1 text-[11.5px] leading-snug text-muted-foreground sm:mt-1.5 sm:text-[13px] sm:leading-relaxed">{pr.terms}</p>
                       </div>
                     </div>
-  
+
                     {pr.links?.length ? (
-                      <div className="relative z-[2] mt-4 flex flex-wrap gap-1.5 pl-[26px]">
+                      <div className="relative z-[2] mt-3 flex flex-wrap gap-1.5 pl-[22px] sm:mt-4 sm:pl-[26px]">
                         {pr.links.map((l) => (
                           <Link
                             key={l.href}
                             href={l.href}
-                            className="inline-flex items-center gap-1 min-h-[36px] rounded-full border border-border/60 px-3 py-2 text-[11px] font-semibold sm:min-h-0 sm:py-1 text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                            className="inline-flex items-center gap-1 min-h-[36px] rounded-full border border-border/60 px-2.5 py-2 text-[10.5px] font-semibold sm:min-h-0 sm:px-3 sm:py-1 sm:text-[11px] text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                           >
                             {l.label}
                             <ArrowRight className="h-3 w-3" />
@@ -593,7 +599,7 @@ export default async function OfferPage({ params }: Props) {
                         ))}
                       </div>
                     ) : (
-                      <p className="mt-4 pl-[26px] text-[11px] font-semibold text-muted-foreground">
+                      <p className="mt-3 pl-[22px] text-[10.5px] font-semibold text-muted-foreground sm:mt-4 sm:pl-[26px] sm:text-[11px]">
                         {t("messageUs")}
                       </p>
                     )}
@@ -611,18 +617,18 @@ export default async function OfferPage({ params }: Props) {
               {!!offer.investment?.items?.length && (
                 <Reveal delay={offer.projects.length * 60}>
                   <div
-                    className="group flex h-full flex-col justify-center overflow-hidden rounded-xl p-6"
+                    className="group flex h-full flex-col justify-center overflow-hidden rounded-xl p-4 sm:p-6"
                     style={{
                       background: `linear-gradient(135deg, ${GREEN} 0%, #123A2C 100%)`,
                       border: "1px solid rgba(212,168,71,0.32)",
                     }}
                   >
-                    <ShieldCheck className="h-5 w-5" style={{ color: GOLD }} />
-                    <h3 className="mt-3 text-[15px] font-bold text-white">{t("whyDeveloper", { developer: offer.developer })}</h3>
-                    <p className="mt-1.5 text-[13px] leading-relaxed text-white/65">{offer.investment.heading}</p>
-                    <ul className="mt-4 space-y-2">
+                    <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: GOLD }} />
+                    <h3 className="mt-2 text-[13px] font-bold text-white sm:mt-3 sm:text-[15px]">{t("whyDeveloper", { developer: offer.developer })}</h3>
+                    <p className="mt-1 text-[11.5px] leading-snug text-white/65 sm:mt-1.5 sm:text-[13px] sm:leading-relaxed">{offer.investment.heading}</p>
+                    <ul className="mt-3 space-y-1.5 sm:mt-4 sm:space-y-2">
                       {offer.investment.items.slice(0, 3).map((it) => (
-                        <li key={it.title} className="flex items-center gap-2 text-[12px] font-semibold text-white/85">
+                        <li key={it.title} className="flex items-center gap-2 text-[10.5px] font-semibold text-white/85 sm:text-[12px]">
                           <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: GOLD }} />
                           {it.title}
                         </li>
