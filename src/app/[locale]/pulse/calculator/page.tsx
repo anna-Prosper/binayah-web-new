@@ -8,6 +8,7 @@ import NewsletterStrip from "@/components/NewsletterStrip";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import CalculatorClient from "./CalculatorClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import { altLangs, canonical } from "@/lib/site";
 
 export const revalidate = 300;
 
@@ -48,23 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t.title,
     description: t.description,
-    alternates: {
-      canonical: locale === "ru"
-        ? `https://binayah.ru/ru/pulse/calculator`
-        : locale === "en"
-          ? `https://www.binayah.ae/pulse/calculator`
-          : `https://www.binayah.ae/${locale}/pulse/calculator`,
-      languages: {
-        en: "https://www.binayah.ae/pulse/calculator",
-        ru: "https://binayah.ru/ru/pulse/calculator",
-        ar: "https://www.binayah.ae/ar/pulse/calculator",
-        zh: "https://www.binayah.ae/zh/pulse/calculator",
-        vi: "https://www.binayah.ae/vi/pulse/calculator",
-        he: "https://www.binayah.ae/he/pulse/calculator",
-        fr: "https://www.binayah.ae/fr/pulse/calculator",
-        "x-default": "https://www.binayah.ae/pulse/calculator",
-      },
-    },
+    alternates: { canonical: canonical(locale, "/pulse/calculator"), languages: altLangs("/pulse/calculator") },
   };
 }
 

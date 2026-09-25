@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import CompareClient from "./CompareClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import { altLangs, canonical } from "@/lib/site";
 
 export const revalidate = 300;
 
@@ -47,23 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t.title,
     description: t.description,
-    alternates: {
-      canonical: locale === "ru"
-        ? `https://binayah.ru/ru/pulse/compare`
-        : locale === "en"
-          ? `https://www.binayah.ae/pulse/compare`
-          : `https://www.binayah.ae/${locale}/pulse/compare`,
-      languages: {
-        en: "https://www.binayah.ae/pulse/compare",
-        ru: "https://binayah.ru/ru/pulse/compare",
-        ar: "https://www.binayah.ae/ar/pulse/compare",
-        zh: "https://www.binayah.ae/zh/pulse/compare",
-        vi: "https://www.binayah.ae/vi/pulse/compare",
-        he: "https://www.binayah.ae/he/pulse/compare",
-        fr: "https://www.binayah.ae/fr/pulse/compare",
-        "x-default": "https://www.binayah.ae/pulse/compare",
-      },
-    },
+    alternates: { canonical: canonical(locale, "/pulse/compare"), languages: altLangs("/pulse/compare") },
   };
 }
 

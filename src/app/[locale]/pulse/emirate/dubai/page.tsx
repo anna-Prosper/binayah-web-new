@@ -8,6 +8,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import { getTranslations, setRequestLocale, getMessages } from "next-intl/server";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { altLangs, canonical } from "@/lib/site";
 
 export const revalidate = 600;
 
@@ -39,23 +40,7 @@ export async function generateMetadata({
   return {
     title: TITLES[locale] || TITLES.en,
     description: DESCS[locale] || DESCS.en,
-    alternates: {
-      canonical: locale === "ru"
-        ? `https://binayah.ru/ru/pulse/emirate/dubai`
-        : locale === "en"
-          ? `https://www.binayah.ae/pulse/emirate/dubai`
-          : `https://www.binayah.ae/${locale}/pulse/emirate/dubai`,
-      languages: {
-        en: "https://www.binayah.ae/pulse/emirate/dubai",
-        ru: "https://binayah.ru/ru/pulse/emirate/dubai",
-        ar: "https://www.binayah.ae/ar/pulse/emirate/dubai",
-        zh: "https://www.binayah.ae/zh/pulse/emirate/dubai",
-        vi: "https://www.binayah.ae/vi/pulse/emirate/dubai",
-        he: "https://www.binayah.ae/he/pulse/emirate/dubai",
-        fr: "https://www.binayah.ae/fr/pulse/emirate/dubai",
-        "x-default": "https://www.binayah.ae/pulse/emirate/dubai",
-      },
-    },
+    alternates: { canonical: canonical(locale, "/pulse/emirate/dubai"), languages: altLangs("/pulse/emirate/dubai") },
     openGraph: {
       title: TITLES[locale] || TITLES.en,
       description: DESCS[locale] || DESCS.en,

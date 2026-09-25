@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import TrendingClient from "./TrendingClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import { altLangs, canonical } from "@/lib/site";
 
 export const revalidate = 300;
 
@@ -47,23 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t.title,
     description: t.description,
-    alternates: {
-      canonical: locale === "ru"
-        ? `https://binayah.ru/ru/pulse/trending`
-        : locale === "en"
-          ? `https://www.binayah.ae/pulse/trending`
-          : `https://www.binayah.ae/${locale}/pulse/trending`,
-      languages: {
-        en: "https://www.binayah.ae/pulse/trending",
-        ru: "https://binayah.ru/ru/pulse/trending",
-        ar: "https://www.binayah.ae/ar/pulse/trending",
-        zh: "https://www.binayah.ae/zh/pulse/trending",
-        vi: "https://www.binayah.ae/vi/pulse/trending",
-        he: "https://www.binayah.ae/he/pulse/trending",
-        fr: "https://www.binayah.ae/fr/pulse/trending",
-        "x-default": "https://www.binayah.ae/pulse/trending",
-      },
-    },
+    alternates: { canonical: canonical(locale, "/pulse/trending"), languages: altLangs("/pulse/trending") },
   };
 }
 
