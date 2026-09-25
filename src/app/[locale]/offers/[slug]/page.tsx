@@ -90,6 +90,13 @@ const ICONS: Record<string, React.ComponentType<{ className?: string; style?: Re
 const GOLD = "#D4A847";
 const GOLD_LT = "#EAC873";
 const GOLD_DEEP = "#B8922F";
+
+const RELATED_READING_EYEBROW: Record<string, string> = {
+  en: "Worth reading", ru: "Стоит прочитать", ar: "يستحق القراءة", zh: "值得一读", vi: "Đáng đọc", he: "כדאי לקרוא", fr: "À lire aussi",
+};
+const RELATED_READING_HEADING: Record<string, string> = {
+  en: "Related reading", ru: "Похожие статьи", ar: "مقالات ذات صلة", zh: "相关阅读", vi: "Bài viết liên quan", he: "קריאה נוספת", fr: "Lectures associées",
+};
 const GREEN = "#0B3D2E";
 /** The one dark ground the homepage uses for every dark section (ServicesSection,
  *  WhatWeOffer). The offer page had three different bespoke gradients, which is
@@ -1129,6 +1136,36 @@ export default async function OfferPage({ params }: Props) {
           </div>
         </section>
   
+        {/* ── RELATED READING — reciprocal internal links. Articles that cite
+               this offer link here; this section links back, so the internal-
+               link equity runs both ways instead of one. Optional: only
+               renders when an offer actually has related content. ──────── */}
+        {!!offer.relatedReading?.length && (
+        <section className="bg-card py-14 sm:py-20">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6">
+            <Reveal>
+              <Eyebrow>{RELATED_READING_EYEBROW[locale] ?? RELATED_READING_EYEBROW.en}</Eyebrow>
+              <h2 className="mt-4 text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
+                {RELATED_READING_HEADING[locale] ?? RELATED_READING_HEADING.en}
+              </h2>
+              <ul className="mt-6 space-y-3">
+                {offer.relatedReading!.map((r) => (
+                  <li key={r.href}>
+                    <Link
+                      href={r.href}
+                      className="inline-flex items-center gap-1.5 text-sm font-bold hover:underline"
+                      style={{ color: GOLD_DEEP }}
+                    >
+                      {r.label} <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+        </section>
+        )}
+
         {/* ── FAQ ──────────────────────────────────────────────────────────── */}
         <section className="bg-background py-14 sm:py-24">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">

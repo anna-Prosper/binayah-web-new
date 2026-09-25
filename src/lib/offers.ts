@@ -178,6 +178,10 @@ export interface Offer {
   disclaimer: string;
   /** Optional deep link to the matching project page. */
   projectHref?: string;
+  /** Optional "Related reading" links — articles/guides that cite this offer,
+   *  rendered just above the FAQ so the internal-link equity runs both ways
+   *  (the article already links here; this is the link back). */
+  relatedReading?: { label: string; href: string }[];
 }
 
 export const OFFERS: Offer[] = [
