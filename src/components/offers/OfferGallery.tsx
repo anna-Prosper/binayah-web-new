@@ -45,10 +45,10 @@ export default function OfferGallery({ images, title }: { images: OfferGalleryIm
           col-span-1 row-span-1 each — NOT col-span-2, which would only leave
           room for 2 of them and push the rest into an overflowing implicit
           row. */}
-      <div className="grid h-[320px] grid-cols-4 grid-rows-2 gap-2.5 sm:h-[440px] sm:gap-3">
+      <div className="grid grid-cols-4 grid-rows-2 gap-2.5 sm:h-[440px] sm:gap-3">
         <button
           onClick={() => launch(0)}
-          className="group relative col-span-4 row-span-2 overflow-hidden rounded-2xl bg-muted sm:col-span-2"
+          className="group relative col-span-4 row-span-2 aspect-[16/11] overflow-hidden rounded-2xl bg-muted sm:aspect-auto sm:col-span-2"
         >
           <img
             src={shown[0].src}
@@ -74,6 +74,39 @@ export default function OfferGallery({ images, title }: { images: OfferGalleryIm
           </button>
         ))}
       </div>
+
+      {/* Mobile-only thumbnail strip. The 2x2 mosaic and second row above are
+          sm:block/sm:grid (desktop only), so a phone previously saw just the
+          one hero tile — a 10-photo gallery read as a single photo plus a
+          button. Three small tiles here signal there's more before the tap. */}
+      {!!topBlock.length && (
+        <div className="mt-2.5 grid grid-cols-3 gap-2.5 sm:hidden">
+          {topBlock.slice(0, 3).map((img, i) => {
+            const idx = i + 1;
+            const isLast = i === 2 && topBlock.length >= 3;
+            const remaining = images.length - 4; // hero + 3 shown here
+            return (
+              <button
+                key={img.src}
+                onClick={() => launch(idx)}
+                className="group relative aspect-square overflow-hidden rounded-xl bg-muted"
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {isLast && remaining > 0 && (
+                  <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-sm font-bold text-white backdrop-blur-[1px]">
+                    +{remaining}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Second strip — hidden on mobile, where the single hero tile plus the
           "view all" button is already the right amount of scroll. */}
