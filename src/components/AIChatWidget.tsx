@@ -6,6 +6,7 @@ import { getAttribution } from "@/lib/attribution";
 import Presence from "@/components/Presence";
 import { MessageCircle, X, Send, Bot, User, Headset } from "lucide-react";
 import dynamic from "next/dynamic";
+import CountryCodeSelect from "@/components/CountryCodeSelect";
 
 // Lazy-load react-markdown (~110KB) — only fetched when first message renders.
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
@@ -26,13 +27,13 @@ type Chrome = {
   connectingAgent: string; agentRequested: string;
 };
 const CHROME: Record<string, Chrome> = {
-  en: { gateTitle: "Before we begin", gateSubtitle: "Leave your phone number so our team can follow up in case the chat drops.", phonePlaceholder: "Your phone number", startChat: "Start chat", invalidPhone: "Please enter a valid phone number", talkToPerson: "Talk to a person", connectingAgent: "Connecting you to a Binayah agent — I'll keep helping here while you wait.", agentRequested: "Agent requested" },
-  ru: { gateTitle: "Прежде чем начать", gateSubtitle: "Оставьте номер телефона, чтобы наша команда связалась с вами, если чат прервётся.", phonePlaceholder: "Ваш номер телефона", startChat: "Начать чат", invalidPhone: "Введите корректный номер телефона", talkToPerson: "Связаться с человеком", connectingAgent: "Подключаю вас к агенту Binayah — я продолжу помогать, пока вы ждёте.", agentRequested: "Запрошен агент" },
-  ar: { gateTitle: "قبل أن نبدأ", gateSubtitle: "اترك رقم هاتفك ليتواصل فريقنا معك في حال انقطعت المحادثة.", phonePlaceholder: "رقم هاتفك", startChat: "ابدأ المحادثة", invalidPhone: "يرجى إدخال رقم هاتف صحيح", talkToPerson: "التحدث مع شخص", connectingAgent: "نصلك بأحد وكلاء Binayah — سأستمر في مساعدتك هنا أثناء الانتظار.", agentRequested: "تم طلب وكيل" },
-  zh: { gateTitle: "开始之前", gateSubtitle: "请留下您的电话号码，以便在聊天中断时我们的团队能与您联系。", phonePlaceholder: "您的电话号码", startChat: "开始聊天", invalidPhone: "请输入有效的电话号码", talkToPerson: "联系真人", connectingAgent: "正在为您接通 Binayah 顾问，等待期间我会继续为您提供帮助。", agentRequested: "已请求顾问" },
-  vi: { gateTitle: "Trước khi bắt đầu", gateSubtitle: "Để lại số điện thoại để đội ngũ của chúng tôi liên hệ nếu cuộc trò chuyện bị gián đoạn.", phonePlaceholder: "Số điện thoại của bạn", startChat: "Bắt đầu trò chuyện", invalidPhone: "Vui lòng nhập số điện thoại hợp lệ", talkToPerson: "Nói chuyện với người thật", connectingAgent: "Đang kết nối bạn với nhân viên Binayah — tôi vẫn ở đây hỗ trợ trong khi bạn chờ.", agentRequested: "Đã yêu cầu nhân viên" },
-  he: { gateTitle: "לפני שנתחיל", gateSubtitle: "השאירו מספר טלפון כדי שהצוות שלנו יחזור אליכם אם הצ'אט יתנתק.", phonePlaceholder: "מספר הטלפון שלך", startChat: "התחלת צ'אט", invalidPhone: "אנא הזינו מספר טלפון תקין", talkToPerson: "לדבר עם נציג", connectingAgent: "מחבר אתכם לנציג Binayah — אמשיך לעזור כאן בזמן ההמתנה.", agentRequested: "נציג התבקש" },
-  fr: { gateTitle: "Avant de commencer", gateSubtitle: "Laissez votre numéro de téléphone pour que notre équipe puisse vous recontacter si le chat se coupe.", phonePlaceholder: "Votre numéro de téléphone", startChat: "Démarrer le chat", invalidPhone: "Veuillez saisir un numéro de téléphone valide", talkToPerson: "Parler à une personne", connectingAgent: "Connexion à un agent Binayah — je continue de vous aider ici en attendant.", agentRequested: "Agent demandé" },
+  en: { gateTitle: "Before we begin", gateSubtitle: "Leave your phone number so our team can follow up in case the chat drops.", phonePlaceholder: "Your phone number", startChat: "Start chat", invalidPhone: "That number isn't valid for the selected country", talkToPerson: "Talk to a person", connectingAgent: "Connecting you to a Binayah agent — I'll keep helping here while you wait.", agentRequested: "Agent requested" },
+  ru: { gateTitle: "Прежде чем начать", gateSubtitle: "Оставьте номер телефона, чтобы наша команда связалась с вами, если чат прервётся.", phonePlaceholder: "Ваш номер телефона", startChat: "Начать чат", invalidPhone: "Номер не подходит для выбранной страны", talkToPerson: "Связаться с человеком", connectingAgent: "Подключаю вас к агенту Binayah — я продолжу помогать, пока вы ждёте.", agentRequested: "Запрошен агент" },
+  ar: { gateTitle: "قبل أن نبدأ", gateSubtitle: "اترك رقم هاتفك ليتواصل فريقنا معك في حال انقطعت المحادثة.", phonePlaceholder: "رقم هاتفك", startChat: "ابدأ المحادثة", invalidPhone: "هذا الرقم غير صالح للدولة المختارة", talkToPerson: "التحدث مع شخص", connectingAgent: "نصلك بأحد وكلاء Binayah — سأستمر في مساعدتك هنا أثناء الانتظار.", agentRequested: "تم طلب وكيل" },
+  zh: { gateTitle: "开始之前", gateSubtitle: "请留下您的电话号码，以便在聊天中断时我们的团队能与您联系。", phonePlaceholder: "您的电话号码", startChat: "开始聊天", invalidPhone: "该号码与所选国家不符", talkToPerson: "联系真人", connectingAgent: "正在为您接通 Binayah 顾问，等待期间我会继续为您提供帮助。", agentRequested: "已请求顾问" },
+  vi: { gateTitle: "Trước khi bắt đầu", gateSubtitle: "Để lại số điện thoại để đội ngũ của chúng tôi liên hệ nếu cuộc trò chuyện bị gián đoạn.", phonePlaceholder: "Số điện thoại của bạn", startChat: "Bắt đầu trò chuyện", invalidPhone: "Số này không hợp lệ với quốc gia đã chọn", talkToPerson: "Nói chuyện với người thật", connectingAgent: "Đang kết nối bạn với nhân viên Binayah — tôi vẫn ở đây hỗ trợ trong khi bạn chờ.", agentRequested: "Đã yêu cầu nhân viên" },
+  he: { gateTitle: "לפני שנתחיל", gateSubtitle: "השאירו מספר טלפון כדי שהצוות שלנו יחזור אליכם אם הצ'אט יתנתק.", phonePlaceholder: "מספר הטלפון שלך", startChat: "התחלת צ'אט", invalidPhone: "המספר אינו תקין עבור המדינה שנבחרה", talkToPerson: "לדבר עם נציג", connectingAgent: "מחבר אתכם לנציג Binayah — אמשיך לעזור כאן בזמן ההמתנה.", agentRequested: "נציג התבקש" },
+  fr: { gateTitle: "Avant de commencer", gateSubtitle: "Laissez votre numéro de téléphone pour que notre équipe puisse vous recontacter si le chat se coupe.", phonePlaceholder: "Votre numéro de téléphone", startChat: "Démarrer le chat", invalidPhone: "Ce numéro n'est pas valide pour le pays choisi", talkToPerson: "Parler à une personne", connectingAgent: "Connexion à un agent Binayah — je continue de vous aider ici en attendant.", agentRequested: "Agent demandé" },
 };
 
 type Msg = { role: "user" | "assistant" | "system"; content: string };
@@ -162,6 +163,7 @@ const AIChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [phoneReady, setPhoneReady] = useState(false);
   const [phone, setPhone] = useState("");
+  const [dial, setDial] = useState("+971");
   const [phoneErr, setPhoneErr] = useState(false);
   const [submittingPhone, setSubmittingPhone] = useState(false);
   const [humanRequested, setHumanRequested] = useState(false);
@@ -230,10 +232,15 @@ const AIChatWidget = () => {
 
   async function submitPhone(e: React.FormEvent) {
     e.preventDefault();
-    const raw = phone.trim();
-    if (!/^\+?[\d\s\-().]{7,}$/.test(raw)) { setPhoneErr(true); return; }
-    setPhoneErr(false);
+    // The country is chosen, not guessed: a bare "7499728492" reached agents
+    // with no way to know where to dial. A leading 0 is dropped, since people
+    // often type the local trunk prefix after picking the country.
     setSubmittingPhone(true);
+    const { parsePhoneNumberFromString } = await import("libphonenumber-js/max");
+    const parsed = parsePhoneNumberFromString(`${dial}${phone.replace(/\D/g, "").replace(/^0+/, "")}`);
+    if (!parsed?.isValid()) { setPhoneErr(true); setSubmittingPhone(false); return; }
+    setPhoneErr(false);
+    const raw = parsed.number;
     // Best-effort lead capture — save as an inquiry (fires the team WhatsApp
     // alert + shows in /admin/leads). Never block the chat on this.
     try {
@@ -359,23 +366,32 @@ const AIChatWidget = () => {
 
             {!phoneReady ? (
               /* ── Phone gate — required before the chat starts ── */
-              <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center">
+              <div className="flex-1 flex flex-col items-center justify-start px-6 pt-8 pb-6 text-center">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}>
                   <MessageCircle className="h-7 w-7" style={{ color: "#1A7A5A" }} />
                 </div>
                 <p className="text-sm font-semibold text-foreground mb-1">{L.gateTitle}</p>
                 <p className="text-xs text-muted-foreground mb-4 max-w-[280px]">{L.gateSubtitle}</p>
                 <form onSubmit={submitPhone} className="w-full max-w-[300px]">
-                  <input
-                    type="tel"
-                    inputMode="tel"
-                    autoFocus
-                    value={phone}
-                    onChange={(e) => { setPhone(e.target.value); if (phoneErr) setPhoneErr(false); }}
-                    placeholder={L.phonePlaceholder}
-                    className="w-full bg-white border rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all"
-                    style={{ borderColor: phoneErr ? "#dc2626" : "#e5e7eb", "--tw-ring-color": "rgba(11,61,46,0.2)" } as React.CSSProperties}
-                  />
+                  <div className="flex gap-2" dir="ltr">
+                    <CountryCodeSelect
+                      value={dial}
+                      align="left"
+                      onChange={(d) => { setDial(d); if (phoneErr) setPhoneErr(false); }}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-2.5 py-2.5 text-sm text-gray-900 whitespace-nowrap"
+                      style={{ flex: "0 0 104px" }}
+                    />
+                    <input
+                      type="tel"
+                      inputMode="tel"
+                      autoFocus
+                      value={phone}
+                      onChange={(e) => { setPhone(e.target.value); if (phoneErr) setPhoneErr(false); }}
+                      placeholder={L.phonePlaceholder}
+                      className="flex-1 min-w-0 bg-white border rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all"
+                      style={{ borderColor: phoneErr ? "#dc2626" : "#e5e7eb", "--tw-ring-color": "rgba(11,61,46,0.2)" } as React.CSSProperties}
+                    />
+                  </div>
                   {phoneErr && <p className="text-[11px] text-red-600 mt-1.5 text-left">{L.invalidPhone}</p>}
                   <button
                     type="submit"

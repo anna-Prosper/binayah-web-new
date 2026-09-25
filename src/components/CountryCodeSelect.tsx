@@ -12,6 +12,8 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   ariaLabel?: string;
+  /** Which edge the dropdown lines up with. "left" for a trigger at the start of a narrow, clipped container. */
+  align?: "left" | "right";
 }
 
 const PREFERRED_ISO_PER_DIAL: Record<string, string> = {
@@ -22,7 +24,7 @@ const PREFERRED_ISO_PER_DIAL: Record<string, string> = {
 
 const PINNED_DIALS = ["+971", "+1", "+44", "+91", "+7", "+86", "+33", "+49", "+81", "+61"];
 
-export default function CountryCodeSelect({ value, onChange, className, style, ariaLabel }: Props) {
+export default function CountryCodeSelect({ value, onChange, className, style, ariaLabel, align = "right" }: Props) {
   const t = useTranslations("countryCode");
   const id = useId();
   const [open, setOpen] = useState(false);
@@ -88,11 +90,11 @@ export default function CountryCodeSelect({ value, onChange, className, style, a
         {selected ? `${flagEmoji(selected.iso)} ${selected.dial}` : value}
       </button>
 
-      {/* Dropdown — anchored right-0 so it never overflows off the right edge */}
+      {/* Dropdown — anchored right-0 by default so it never overflows off the right edge */}
       {open && (
         <div
           onKeyDown={e => e.key === "Escape" && setOpen(false)}
-          className="absolute z-50 right-0 top-full mt-1 w-72 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-background shadow-2xl overflow-hidden"
+          className={`absolute z-50 ${align === "left" ? "left-0" : "right-0"} top-full mt-1 w-72 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-background shadow-2xl overflow-hidden`}
         >
           {/* Search bar */}
           <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
